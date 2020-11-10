@@ -1,9 +1,9 @@
 <template>
-	<header>this is my header</header>
+  <div>these are my skills</div>
 </template>
 
 <script>
 export default {
-	name: 'pa-header'
+  name: 'skills'
 }
 </script>

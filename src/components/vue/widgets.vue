@@ -1,9 +1,9 @@
 <template>
-	<header>this is my header</header>
+	<div>these are my widgets</div>
 </template>
 
 <script>
 export default {
-	name: 'pa-header'
+	name: 'pa-widgets'
 }
 </script>

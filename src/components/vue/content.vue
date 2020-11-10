@@ -1,9 +1,11 @@
 <template>
-  <section>This is my content</section>
+	<section>
+		<router-view></router-view>
+	</section>
 </template>
 
 <script>
 export default {
-  name: 'pa-content'
+	name: 'pa-content'
 }
 </script>
