@@ -7,7 +7,7 @@
 		<router-link tag="button" to="/skills">syslog</router-link>
 		<router-link tag="button" to="/skills">alicewatch</router-link>
 		<router-link tag="button" to="/skills">admin</router-link>
-		<router-link tag="button" to="/skills" v-show="settings['scenariosActive']">devmode</router-link>
+		<router-link tag="button" to="/skills">devmode</router-link>
 	</nav>
 </template>
 
