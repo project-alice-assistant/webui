@@ -94,7 +94,8 @@ nav {
 	display: flex;
 	flex: 1;
 	flex-direction: column;
-	width: 10em;
+	height: 100%;
+	overflow: auto;
 }
 
 a:link, a:visited, a:active {

@@ -5,8 +5,4 @@
 	</nav>
 </template>
 
-<script>
-export default {
-	name: 'pa-nav'
-}
-</script>
+<script src="../js/nav.js"></script>

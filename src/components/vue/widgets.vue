@@ -2,8 +2,4 @@
 	<div>these are my widgets</div>
 </template>
 
-<script>
-export default {
-	name: 'pa-widgets'
-}
-</script>
+<script src="../js/widgets.js"></script>

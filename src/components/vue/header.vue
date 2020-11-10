@@ -1,9 +1,5 @@
 <template>
-	<header>this is my header</header>
+	<header>{{ title }}</header>
 </template>
 
-<script>
-export default {
-	name: 'pa-header'
-}
-</script>
+<script src="../js/header.js"></script>

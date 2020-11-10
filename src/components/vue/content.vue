@@ -1,11 +1,7 @@
 <template>
-	<section>
+	<section id="mainSection">
 		<router-view></router-view>
 	</section>
 </template>
 
-<script>
-export default {
-	name: 'pa-content'
-}
-</script>
+<script src="../js/content.js"></script>
