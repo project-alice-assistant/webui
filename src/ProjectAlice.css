@@ -176,8 +176,8 @@ button {
 	font-family: var(--short);
 	font-size: 1.5em;
 	height: 2.5em;
-	margin: .1em;
-	text-align: center;
+	margin: .1em .1em 0 .1em;
+	text-align: left;
 }
 
 button:hover {
