@@ -9,7 +9,19 @@ export default {
 		paHeader,
 		paNav
 	},
-	mounted() {
+	data() {
+		return {
+			loading: true
+		}
+	},
+	created() {
 		this.$router.replace('home')
+
+		this.axios.get('http://192.168.1.168:5001/api/v1.0.1/utils/config/')
+			.then(response => {
+				this.$store.commit('setSettings', response.data.config)
+			})
+			.catch(reason => (console.log('Error connecting to Alice ' + reason)))
+			.finally(this.loading = false)
 	}
 }
