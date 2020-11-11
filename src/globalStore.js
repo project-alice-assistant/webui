@@ -5,11 +5,19 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
 	state: {
-		settings: {}
+		settings: {},
+		mqtt: null,
+		resourceUsage: {}
 	},
 	mutations: {
 		setSettings(state, settings) {
 			state.settings = settings
+		},
+		setMqtt(state, client) {
+			state.mqtt = client
+		},
+		setResourceUsage(state, usage) {
+			state.resourceUsage = usage
 		}
 	}
 })

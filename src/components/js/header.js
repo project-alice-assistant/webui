@@ -3,8 +3,11 @@ export default {
 	data() {
 		return {
 			title: '',
-			systemUsage: '5%'
+			mqtt: null
 		}
+	},
+	mounted: function() {
+		this.mqtt = this.$store.state.mqtt
 	},
 	watch: {
 		$route: {
