@@ -2,7 +2,8 @@ export default {
 	name: 'pa-header',
 	data() {
 		return {
-			title: ''
+			title: '',
+			systemUsage: '5%'
 		}
 	},
 	watch: {

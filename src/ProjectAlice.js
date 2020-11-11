@@ -2,6 +2,11 @@ import paHeader from './components/views/header';
 import paNav from './components/views/nav';
 import paContent from './components/views/content';
 
+import VueMqtt from 'vue-mqtt'
+import Vue from 'vue'
+
+//Vue.use(VueMqtt, 'http://192.168.1.168:1883')
+
 export default {
 	name: 'ProjectAlice',
 	components: {

@@ -1,0 +1,24 @@
+.pageTitle {
+	font-size: 2em;
+	margin-left: 1em;
+	align-items: center;
+	display: flex;
+	width: 7.4em;
+}
+
+.aliceStatus {
+	flex-grow: 1;
+}
+
+.updateChannelMarker {
+	font-style: italic;
+	margin: 0 .9em;
+	align-items: center;
+	display: flex;
+}
+
+.resourceUsage {
+	margin: 0 .9em;
+	align-items: center;
+	display: flex;
+}

@@ -62,6 +62,7 @@ html, body {
 }
 
 header {
+	display: flex;
 	align-items: center;
 	background-color: var(--mainBG);
 	flex-grow: 0;
