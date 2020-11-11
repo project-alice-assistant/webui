@@ -1,12 +1,15 @@
-import paHeader from '@/components/vue/header';
-import paNav from '@/components/vue/nav';
-import PaContent from '@/components/vue/content';
+import paHeader from './components/views/header';
+import paNav from './components/views/nav';
+import paContent from './components/views/content';
 
 export default {
 	name: 'ProjectAlice',
 	components: {
-		PaContent,
+		paContent,
 		paHeader,
 		paNav
+	},
+	mounted() {
+		this.$router.replace('home')
 	}
 }
