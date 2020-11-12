@@ -55,7 +55,7 @@ export default {
 		},
 		connectMQTT: function() {
 			let self = this
-			axios.get('http://192.168.1.168:5001/api/v1.0.1/utils/mqttConfig/')
+			axios.get(`http://${this.ip}:${this.port}/api/v1.0.1/utils/mqttConfig/`)
 				.then(response => {
 					let randomNum = Math.floor((Math.random() * 10000000) + 1);
 					let client = new Paho.Client(response.data.host, Number(response.data.port), 'ProjectAliceInterface' + randomNum)
