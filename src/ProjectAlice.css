@@ -55,7 +55,7 @@ html, body {
 	width: 100%;
 }
 
-#mainContainer {
+.mainContainer {
 	display: flex;
 	flex-direction: column;
 	height: 100%;
@@ -195,6 +195,16 @@ button:active {
 
 button:active {}
 
+.centered {
+	justify-content: center;
+	justify-items: center;
+}
+
+.vcentered {
+	align-content: center;
+	align-items: center;
+}
+
 .vue-toggles {
 	border: 1px solid var(--text);
 }
@@ -203,23 +213,45 @@ button:active {}
 	outline: none;
 }
 
-.overlay > * {
+.fullpageForm {
 	display: flex;
-	flex: 1;
 	flex-direction: column;
-	height: 100%;
-	overflow: auto;
-	align-content: center;
+	justify-items: center;
+	justify-content: center;
 	align-items: center;
-	background-color: var(--mainBG);
+	align-content: center;
 }
 
-.overlay > form > p {
+.fullpageForm > p {
 	height: 3em;
 	text-align: center;
 }
 
-.overlay > form > p > label {
+.fullpageForm > p > label {
 	display: block;
 	margin-bottom: 5px;
+}
+
+.size-15x {
+	font-size: 1.5em;
+}
+
+.size-2x {
+	font-size: 2em;
+}
+
+.size-25x {
+	font-size: 2.5em;
+}
+
+.size-3x {
+	font-size: 3em;
+}
+
+.size-35x {
+	font-size: 3.5em;
+}
+
+.size-4x {
+	font-size: 4em;
 }

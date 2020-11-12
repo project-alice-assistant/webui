@@ -1,5 +1,5 @@
 <template>
-	<form v-on:submit.prevent="login">
+	<form class="fullpageForm" v-on:submit.prevent="login">
 		<p>
 			<label for="host">Alice address</label><br/>
 			<input id="host" v-model="host" type="text" placeholder="localhost">
