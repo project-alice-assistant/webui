@@ -4,6 +4,7 @@ import paContent from './components/views/content';
 import axios from 'axios'
 import Paho from 'paho-mqtt'
 
+// noinspection JSUnusedGlobalSymbols
 export default {
 	name: 'ProjectAlice',
 	components: {
@@ -13,21 +14,45 @@ export default {
 	},
 	data() {
 		return {
-			loading: true
+			loading: true,
+			noAlice: false,
+			port: 5001,
+			ip: '',
+			remember: false
 		}
 	},
 	mounted: function() {
 		this.$router.replace('home').then()
-		let self = this
-		axios.get('http://192.168.1.168:5001/api/v1.0.1/utils/config/')
-			.then(response => {
-				self.$store.commit('setSettings', response.data.config)
-				self.connectMQTT()
-			})
-			.catch(reason => (console.log('Error connecting to Alice ' + reason)))
-			.finally(self.loading = false)
+		this.ip = this.$cookies.isKey('host') ? this.$cookies.get('host') : '127.0.0.1'
+		this.port = this.$cookies.isKey('apiPort') ? this.$cookies.get('apiPort') : 5001
+		this.connect()
 	},
 	methods: {
+		connect: function() {
+			this.$modal.hide('no-alice')
+			this.$modal.show('loading')
+			axios.get(`http://${this.ip}:${this.port}/api/v1.0.1/utils/config/`)
+				.then(response => {
+					this.$store.commit('setSettings', response.data.config)
+					this.noAlice = false
+					this.connectMQTT()
+
+					if (this.remember) {
+						this.$cookies.set('host', this.ip)
+						this.$cookies.set('apiPort', this.port)
+					}
+				})
+				.catch(reason => {
+					console.log('Error connecting to Alice ' + reason)
+					this.ip = ''
+					this.noAlice = true
+					this.$modal.show('no-alice')
+				})
+				.finally(() => {
+					this.$modal.hide('loading')
+					this.loading = false
+				})
+		},
 		connectMQTT: function() {
 			let self = this
 			axios.get('http://192.168.1.168:5001/api/v1.0.1/utils/mqttConfig/')

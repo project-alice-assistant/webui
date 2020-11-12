@@ -4,10 +4,18 @@ import router from './router'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import store from './globalStore'
+import VueCookies from 'vue-cookies'
+import VueToggles from 'vue-toggles'
+import VModal from 'vue-js-modal'
 
 Vue.config.productionTip = false
 
 Vue.use(VueAxios, axios)
+Vue.use(VueCookies)
+Vue.use(VModal)
+Vue.$cookies.config('10y')
+
+Vue.component('VueToggles', VueToggles);
 
 new Vue({
 	store,

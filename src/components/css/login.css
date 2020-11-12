@@ -1,0 +1,20 @@
+form {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	height: 100%;
+	overflow: auto;
+	align-content: center;
+	align-items: center;
+}
+
+form > p {
+	height: 3em;
+	text-align: center;
+}
+
+form > p > label {
+	display: block;
+	margin-bottom: 5px;
+}
+
