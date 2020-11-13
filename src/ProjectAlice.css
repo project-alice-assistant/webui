@@ -4,44 +4,125 @@
 	/* COLOR */
 	--accent: black;
 	--hover: yellow;
-	--long: 'neogreyregular', Arial, sans-serif;
 	--mainBG: #1e1e1e;
-	--readable: 'Roboto', Arial, sans-serif;
 	--secondary: #343434;
-	/* TEXT */
-	--short: 'marskeregular', Arial, sans-serif;
 	--text: #d1d1d1;
 	--windowBG: #636363;
+
+	/* FONTS */
+	--normal: 'Orkney', Arial, sans-serif;
 }
 
 /* ============================ FONTS ============================ */
 @font-face {
-	font-family: 'marskeregular';
+	font-family: 'Orkney';
+	src: url('./assets/webfonts/orkney/Orkney-Italic.eot');
+	src: url('./assets/webfonts/orkney/Orkney-Italic.eot?#iefix') format('embedded-opentype'),
+	url('./assets/webfonts/orkney/Orkney-Italic.woff2') format('woff2'),
+	url('./assets/webfonts/orkney/Orkney-Italic.woff') format('woff'),
+	url('./assets/webfonts/orkney/Orkney-Italic.ttf') format('truetype'),
+	url('./assets/webfonts/orkney/Orkney-Italic.svg#Orkney-Italic') format('svg');
 	font-weight: normal;
-	font-style: normal;
-	src: url('./assets/webfonts/marske-webfont.woff2') format('woff2'), url('./assets/webfonts/marske-webfont.woff') format('woff');
+	font-style: italic;
+	font-display: swap;
 }
 
 @font-face {
-	font-family: 'neogreyregular';
-	font-weight: normal;
+	font-family: 'Orkney';
+	src: url('./assets/webfonts/orkney/Orkney-Medium.eot');
+	src: url('./assets/webfonts/orkney/Orkney-Medium.eot?#iefix') format('embedded-opentype'),
+	url('./assets/webfonts/orkney/Orkney-Medium.woff2') format('woff2'),
+	url('./assets/webfonts/orkney/Orkney-Medium.woff') format('woff'),
+	url('./assets/webfonts/orkney/Orkney-Medium.ttf') format('truetype'),
+	url('./assets/webfonts/orkney/Orkney-Medium.svg#Orkney-Medium') format('svg');
+	font-weight: 500;
 	font-style: normal;
-	src: url('./assets/webfonts/neogreyregular-webfont.woff2') format('woff2'), url('./assets/webfonts/neogreyregular-webfont.woff') format('woff');
+	font-display: swap;
 }
 
 @font-face {
-	font-family: 'Roboto';
+	font-family: 'Orkney';
+	src: url('./assets/webfonts/orkney/Orkney-Light.eot');
+	src: url('./assets/webfonts/orkney/Orkney-Light.eot?#iefix') format('embedded-opentype'),
+	url('./assets/webfonts/orkney/Orkney-Light.woff2') format('woff2'),
+	url('./assets/webfonts/orkney/Orkney-Light.woff') format('woff'),
+	url('./assets/webfonts/orkney/Orkney-Light.ttf') format('truetype'),
+	url('./assets/webfonts/orkney/Orkney-Light.svg#Orkney-Light') format('svg');
+	font-weight: 300;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Orkney';
+	src: url('./assets/webfonts/orkney/Orkney-MediumItalic.eot');
+	src: url('./assets/webfonts/orkney/Orkney-MediumItalic.eot?#iefix') format('embedded-opentype'),
+	url('./assets/webfonts/orkney/Orkney-MediumItalic.woff2') format('woff2'),
+	url('./assets/webfonts/orkney/Orkney-MediumItalic.woff') format('woff'),
+	url('./assets/webfonts/orkney/Orkney-MediumItalic.ttf') format('truetype'),
+	url('./assets/webfonts/orkney/Orkney-MediumItalic.svg#Orkney-MediumItalic') format('svg');
+	font-weight: 500;
+	font-style: italic;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Orkney';
+	src: url('./assets/webfonts/orkney/Orkney-Regular.eot');
+	src: url('./assets/webfonts/orkney/Orkney-Regular.eot?#iefix') format('embedded-opentype'),
+	url('./assets/webfonts/orkney/Orkney-Regular.woff2') format('woff2'),
+	url('./assets/webfonts/orkney/Orkney-Regular.woff') format('woff'),
+	url('./assets/webfonts/orkney/Orkney-Regular.ttf') format('truetype'),
+	url('./assets/webfonts/orkney/Orkney-Regular.svg#Orkney-Regular') format('svg');
 	font-weight: normal;
 	font-style: normal;
-	src: url('./assets/webfonts/Roboto-Regular.eot');
-	src: url('./assets/webfonts/Roboto-Regular.eot?#iefix') format('embedded-opentype'), url('./assets/webfonts/Roboto-Regular.woff2') format('woff2'), url('./assets/webfonts/Roboto-Regular.woff') format('woff'), url('./assets/webfonts/Roboto-Regular.ttf') format('truetype'), url('./assets/webfonts/Roboto-Regular.svg#Roboto-Regular') format('svg');
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Orkney';
+	src: url('./assets/webfonts/orkney/Orkney-Bold.eot');
+	src: url('./assets/webfonts/orkney/Orkney-Bold.eot?#iefix') format('embedded-opentype'),
+	url('./assets/webfonts/orkney/Orkney-Bold.woff2') format('woff2'),
+	url('./assets/webfonts/orkney/Orkney-Bold.woff') format('woff'),
+	url('./assets/webfonts/orkney/Orkney-Bold.ttf') format('truetype'),
+	url('./assets/webfonts/orkney/Orkney-Bold.svg#Orkney-Bold') format('svg');
+	font-weight: bold;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Orkney';
+	src: url('./assets/webfonts/orkney/Orkney-LightItalic.eot');
+	src: url('./assets/webfonts/orkney/Orkney-LightItalic.eot?#iefix') format('embedded-opentype'),
+	url('./assets/webfonts/orkney/Orkney-LightItalic.woff2') format('woff2'),
+	url('./assets/webfonts/orkney/Orkney-LightItalic.woff') format('woff'),
+	url('./assets/webfonts/orkney/Orkney-LightItalic.ttf') format('truetype'),
+	url('./assets/webfonts/orkney/Orkney-LightItalic.svg#Orkney-LightItalic') format('svg');
+	font-weight: 300;
+	font-style: italic;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Orkney';
+	src: url('./assets/webfonts/orkney/Orkney-BoldItalic.eot');
+	src: url('./assets/webfonts/orkney/Orkney-BoldItalic.eot?#iefix') format('embedded-opentype'),
+	url('./assets/webfonts/orkney/Orkney-BoldItalic.woff2') format('woff2'),
+	url('./assets/webfonts/orkney/Orkney-BoldItalic.woff') format('woff'),
+	url('./assets/webfonts/orkney/Orkney-BoldItalic.ttf') format('truetype'),
+	url('./assets/webfonts/orkney/Orkney-BoldItalic.svg#Orkney-BoldItalic') format('svg');
+	font-weight: bold;
+	font-style: italic;
+	font-display: swap;
 }
 
 /* ========================= BUILT IN TAGS ======================== */
 html, body {
 	background-color: var(--accent);
 	color: var(--text);
-	font-family: var(--short);
+	font-family: var(--normal);
 	height: 100%;
 	margin: 0;
 	overflow: hidden;
@@ -160,7 +241,7 @@ input:focus, textarea:focus {
 	display: flex;
 	flex-basis: 0;
 	flex-grow: 0;
-	font-family: var(--short);
+	font-family: var(--normal);
 	font-size: 1.5em;
 	height: 5em;
 	justify-content: center;
@@ -174,13 +255,14 @@ button {
 	border: none;
 	box-sizing: content-box;
 	color: var(--text);
-	font-family: var(--short);
-	font-size: 1.5em;
-	height: 2.5em;
+	font-family: var(--normal);
+	font-size: 1em;
+	height: 3em;
 	margin: 2px 2px 0 2px;
 	text-align: center;
 	outline: none;
 	min-width: 100px;
+	text-transform: uppercase;
 }
 
 button:hover {
