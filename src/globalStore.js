@@ -23,8 +23,10 @@ export default new Vuex.Store({
 		userLogin(state, user) {
 			state.loggedInUser = user
 		},
-		userLogOut(state) {
+		userLogout(state) {
 			state.loggedInUser = {}
+			Vue.$cookies.remove('username')
+			Vue.$cookies.remove('apiToken')
 		}
 	}
 })
