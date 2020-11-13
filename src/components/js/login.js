@@ -4,8 +4,6 @@ export default {
 	name: 'login',
 	data: function() {
 		return {
-			host: this.$store.state.settings['aliceIp'] || 'localhost',
-			port: this.$store.state.settings['apiPort'] || '5001',
 			username: '',
 			pincode: '',
 			rememberMe : false
@@ -18,7 +16,7 @@ export default {
 			data.append('pin', this.pincode)
 			axios({
 				method: 'post',
-				url: `http://${this.host}:${this.port}/api/v1.0.1/login/`,
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/login/`,
 				data: data,
 				headers: {'Content-Type': 'multipart/form-data' }
 			}).then(response => {
@@ -30,8 +28,6 @@ export default {
 					if (this.rememberMe) {
 						this.$cookies.set('username', this.username)
 						this.$cookies.set('apiToken', response.data.apiToken)
-						this.$cookies.set('host', this.host)
-						this.$cookies.set('apiPort', this.port)
 					}
 					this.$router.replace('widgets')
 				} else {

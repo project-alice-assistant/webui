@@ -1,14 +1,6 @@
 <template>
 	<form class="fullpageForm" v-on:submit.prevent="login">
 		<p>
-			<label for="host">Alice address</label><br/>
-			<input id="host" v-model="host" type="text" placeholder="localhost">
-		</p>
-		<p>
-			<label for="port">Api port</label><br/>
-			<input id="port" v-model="port" type="text" placeholder="5001">
-		</p>
-		<p>
 			<label for="username">Username</label><br/>
 			<input id="username" v-model="username" type="text" placeholder="Username">
 		</p>

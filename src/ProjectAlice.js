@@ -21,26 +21,26 @@ export default {
 			remember: false
 		}
 	},
-	mounted: function() {
+	mounted: function () {
 		this.$router.replace('home').then()
 		this.ip = this.$cookies.isKey('host') ? this.$cookies.get('host') : '127.0.0.1'
 		this.port = this.$cookies.isKey('apiPort') ? this.$cookies.get('apiPort') : 5001
 		this.connect()
 	},
 	methods: {
-		connect: function() {
+		connect: function () {
 			this.$modal.hide('no-alice')
 			this.$modal.show('loading')
 			axios.get(`http://${this.ip}:${this.port}/api/v1.0.1/utils/config/`)
 				.then(response => {
 					this.$store.commit('setSettings', response.data.config)
 					this.noAlice = false
-					this.connectMQTT()
-
 					if (this.remember) {
 						this.$cookies.set('host', this.ip)
 						this.$cookies.set('apiPort', this.port)
 					}
+					this.connectMQTT()
+					this.validateToken()
 				})
 				.catch(reason => {
 					console.log('Error connecting to Alice ' + reason)
@@ -53,7 +53,7 @@ export default {
 					this.loading = false
 				})
 		},
-		connectMQTT: function() {
+		connectMQTT: function () {
 			let self = this
 			axios.get(`http://${this.ip}:${this.port}/api/v1.0.1/utils/mqttConfig/`)
 				.then(response => {
@@ -74,19 +74,40 @@ export default {
 					setTimeout(self.connectMQTT, 5000)
 				})
 		},
-		onMessage: function(msg) {
+		validateToken: function () {
+			if (this.$cookies.isKey('username') && this.$cookies.isKey('apiToken')) {
+				axios({
+					method: 'post',
+					url: `http://${this.ip}:${this.port}/api/v1.0.1/login/checkToken/`,
+					headers: {'auth': this.$cookies.get('apiToken')}
+				}).then(response => {
+					if ('success' in response.data) {
+						this.$store.commit('userLogin', {
+							user: this.$cookies.get('username'),
+							token: this.$cookies.get('apiToken')
+						})
+						return true
+					} else {
+						console.log('API Token validity check failed')
+						this.$cookies.remove('username')
+						this.$cookies.remove('apiToken')
+					}
+				})
+			}
+		},
+		onMessage: function (msg) {
 			if (msg.topic === 'projectalice/devices/resourceUsage') {
 				this.$store.commit('setResourceUsage', JSON.parse(msg.payloadString))
 			}
 		},
-		onConnected: function() {
+		onConnected: function () {
 			console.log('Mqtt connected')
 			this.$store.state.mqtt.subscribe('projectalice/devices/resourceUsage')
 		},
-		onConnectionFailed: function(_msg) {
+		onConnectionFailed: function (_msg) {
 			console.log('Mqtt connection failed')
 		},
-		onConnectionLost: function() {
+		onConnectionLost: function () {
 			console.log('Mqtt connection lost')
 		}
 	}
