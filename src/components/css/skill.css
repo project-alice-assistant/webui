@@ -1,9 +1,11 @@
 .skill {
 	display: flex;
 	width: 300px;
-	height: 200px;
+	height: 150px;
 	background-color: var(--windowBG);
 	margin: 15px 0 0 15px;
+	position: relative;
+	overflow: hidden;
 }
 
 .skillTitle {
@@ -28,3 +30,46 @@
 	text-align: right;
 	margin-right: 5px;
 }
+
+.skillStatus {
+	position: absolute;
+	bottom: 2px;
+	right: 2px;
+	border-right: 60px solid transparent;
+	border-top: 60px solid var(--windowBG);
+}
+
+.skillBody {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	box-sizing: border-box;
+	padding: 5px;
+}
+
+.skillActions {
+	display: flex;
+	flex: 1;
+	flex-direction: row;
+	width: 200px;
+	position: absolute;
+	bottom: 10px;
+	font-size: 2em;
+}
+
+.skillActions > i {
+	margin-right: 15px;
+}
+
+.active {
+	background-color: green;
+}
+
+.disabled {
+	background-color: yellow;
+}
+
+.dead {
+	background-color: red;
+}
+

@@ -186,6 +186,14 @@ nav {
 	flex-direction: row;
 }
 
+.clickable {
+	cursor: pointer;
+}
+
+.clickable:hover {
+	color: var(--hover);
+}
+
 a:link, a:visited, a:active {
 	color: var(--text);
 	text-decoration: none;
