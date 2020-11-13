@@ -1,9 +1,9 @@
 <template>
-	<nav>
+	<nav class="vertical">
 		<router-link tag="button" to="/widgets">widgets</router-link>
 		<router-link tag="button" to="/skills" v-if="this.$store.state.loggedInUser">skills</router-link>
 		<router-link tag="button" to="/skills">my home</router-link>
-		<router-link tag="button" to="/scenarios" v-if="this.$store.state.settings['scenariosActive']">scenarios</router-link>
+		<router-link tag="button" to="/scenarios" v-if="this.$store.state.loggedInUser && this.$store.state.settings['scenariosActive']">scenarios</router-link>
 		<router-link tag="button" to="/skills" v-if="this.$store.state.loggedInUser">syslog</router-link>
 		<router-link tag="button" to="/skills" v-if="this.$store.state.loggedInUser">alicewatch</router-link>
 		<router-link tag="button" to="/skills" v-if="this.$store.state.settings['devMode'] && this.$store.state.loggedInUser">devmode</router-link>

@@ -163,7 +163,6 @@ header {
 nav {
 	background-color: var(--mainBG);
 	display: flex;
-	flex-direction: column;
 	flex-grow: 0;
 	flex-shrink: 0;
 	margin-right: 2px;
@@ -175,9 +174,16 @@ nav {
 	background-color: var(--mainBG);
 	display: flex;
 	flex: 1;
-	flex-direction: column;
 	height: 100%;
 	overflow: auto;
+}
+
+.vertical {
+	flex-direction: column;
+}
+
+.horizontal {
+	flex-direction: row;
 }
 
 a:link, a:visited, a:active {
@@ -194,8 +200,6 @@ input, select, textarea {
 	border: 1px dotted #636363;
 	box-sizing: content-box;
 	color: var(--text);
-	margin-left: 20px;
-	margin-right: 20px;
 	outline: none;
 	padding: 5px;
 	width: auto;
@@ -278,11 +282,15 @@ button:active {
 button:active {}
 
 .centered {
+	display: flex;
+	flex: 1;
 	justify-content: center;
 	justify-items: center;
 }
 
 .vcentered {
+	display: flex;
+	flex: 1;
 	align-content: center;
 	align-items: center;
 }
@@ -311,7 +319,6 @@ button:active {}
 
 .fullpageForm > p > label {
 	display: block;
-	margin-bottom: 5px;
 }
 
 .size-15x {

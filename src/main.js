@@ -7,6 +7,7 @@ import store from './globalStore'
 import VueCookies from 'vue-cookies'
 import VueToggles from 'vue-toggles'
 import VModal from 'vue-js-modal'
+import Skill from './components/views/skill'
 
 Vue.config.productionTip = false
 
@@ -16,6 +17,7 @@ Vue.use(VModal)
 Vue.$cookies.config('10y')
 
 Vue.component('VueToggles', VueToggles);
+Vue.component('skill', Skill);
 
 new Vue({
 	store,
