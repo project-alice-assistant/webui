@@ -11,6 +11,7 @@ import VueTour from 'vue-tour'
 import Overlay from 'vuejs-overlay'
 
 import Skill from './components/views/skill'
+import ActionsMenu from './components/views/actionsMenu'
 import './components/css/overlay.css'
 
 Vue.config.productionTip = false
@@ -27,6 +28,7 @@ Vue.$cookies.config('10y')
 
 Vue.component('VueToggles', VueToggles);
 Vue.component('skill', Skill);
+Vue.component('actionsMenu', ActionsMenu);
 
 new Vue({
 	store,
