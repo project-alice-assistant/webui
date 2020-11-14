@@ -31,10 +31,18 @@
 	margin-right: 5px;
 }
 
+.skillStatusAround {
+	position: absolute;
+	bottom: 1px;
+	right: 1px;
+	border-right: 62px solid var(--mainBG);
+	border-top: 62px solid transparent;
+}
+
 .skillStatus {
 	position: absolute;
-	bottom: 2px;
-	right: 2px;
+	bottom: 3px;
+	right: 3px;
 	border-right: 60px solid transparent;
 	border-top: 60px solid var(--windowBG);
 }
@@ -73,3 +81,6 @@
 	background-color: red;
 }
 
+.v-tour__target--highlighted {
+	box-shadow: 0 0 0 99999px rgba(0, 0, 0, .75);
+}
