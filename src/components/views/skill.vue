@@ -4,17 +4,26 @@
 			<div class="skillName">{{ skill.name }}</div>
 			<div class="skillIcon"><i :class="skill.icon" aria-hidden="true"/></div>
 		</div>
-		<div class="skillBody" v-if="viewInfos">
-
-		</div>
-		<div class="skillBody" v-if="viewInstructions">
-
-		</div>
-		<div class="skillBody" v-if="viewIntents"></div>
+		<overlay :opened="viewInfos" :visible="viewInfos" @closed="viewInfos = false" animate="zoom-in" :header="`Infos - ${skill.name}`">
+			<ul class="fa-ul">
+				<li><span class="fa-li"><i class="fas fa-code-branch" aria-hidden="true"></i></span>{{ skill.version }}</li>
+				<li><span class="fa-li"><i class="fas fa-compress-arrows-alt" aria-hidden="true"></i></span>{{ skill.aliceMinVersion }}</li>
+				<li><span class="fa-li"><i class="fas fa-user" aria-hidden="true"></i></span>{{ skill.author }}</li>
+				<li><span class="fa-li"><i class="fas fa-users" aria-hidden="true"></i></span>{{ skill.maintainers.join(', ') }}</li>
+				<li><span class="fa-li"><i class="fas fa-folder-open" aria-hidden="true"></i></span>{{ skill.category }}</li>
+				<li><span class="fa-li"><i class="fas fa-quote-right" aria-hidden="true"></i></span>{{ skill.description }}</li>
+			</ul>
+		</overlay>
+		<overlay :opened="viewInstructions" :visible="viewInstructions" @closed="viewInstructions = false" animate="zoom-in" :header="`Instructions - ${skill.name}`">
+				instructions
+		</overlay>
+		<overlay :opened="viewIntents" :visible="viewIntents" @closed="viewIntents = false" animate="zoom-in" :header="`Intents - ${skill.name}`">
+				intents
+		</overlay>
 		<div class="skillBody" v-if="viewSkill">
-			<div class="clickable" @click="viewSkill = viewIntents = viewInfos = false; viewInstructions = true" data-tour="7">Instructions</div>
-			<div class="clickable" @click="viewSkill = viewInstructions = viewInfos = false; viewIntents = true" data-tour="8">Intents</div>
-			<div class="clickable" @click="viewSkill = viewIntents = viewInstructions = false; viewInfos = true" data-tour="9">Infos</div>
+			<div class="clickable" @click="viewInstructions = true" data-tour="7" v-if="skill.instructions.length > 0">Instructions</div>
+			<div class="clickable" @click="viewIntents = true" data-tour="8">Intents</div>
+			<div class="clickable" @click="viewInfos = true" data-tour="9">Infos</div>
 			<div class="skillActions">
 				<i class="fas fa-cog clickable" aria-hidden="true" v-if="Object.keys(skill.settings).length" data-tour="1"/>
 				<i class="fas fa-power-off clickable" aria-hidden="true" v-if="!skill.required" @click="toggle" data-tour="2"/>
@@ -30,4 +39,5 @@
 
 <style src="../css/skill.css" scoped></style>
 <style src="../css/tour.css" scoped></style>
+
 <script src="../js/skill.js"></script>

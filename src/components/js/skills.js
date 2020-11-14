@@ -1,5 +1,4 @@
 import axios from 'axios'
-import '../css/tour.css'
 
 export default {
 	name: 'skills',

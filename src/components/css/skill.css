@@ -80,3 +80,8 @@
 .dead {
 	background-color: red;
 }
+
+li {
+	margin-bottom: 20px;
+	font-size: 1.25em;
+}

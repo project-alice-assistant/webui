@@ -8,14 +8,17 @@ import VueCookies from 'vue-cookies'
 import VueToggles from 'vue-toggles'
 import VModal from 'vue-js-modal'
 import VueTour from 'vue-tour'
+import Overlay from 'vuejs-overlay'
 
 import Skill from './components/views/skill'
+import './components/css/overlay.css'
 
 Vue.config.productionTip = false
 
 Vue.use(VueAxios, axios)
 Vue.use(VueCookies)
 Vue.use(VModal)
+Vue.use(Overlay)
 
 require('vue-tour/dist/vue-tour.css')
 Vue.use(VueTour)
