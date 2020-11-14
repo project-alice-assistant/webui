@@ -18,7 +18,7 @@ export default {
 		reloadSkill: function() {
 			axios({
 				method: 'get',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.skill.name}/reload`,
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.skill.name}/reload/`,
 				headers: {'auth': this.$store.state.loggedInUser['token'] }
 			}).then(response => {
 				if ('skill' in response.data) {
@@ -29,7 +29,7 @@ export default {
 		toggle: function() {
 			axios({
 				method: 'get',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.skill.name}/toggleActiveState`,
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.skill.name}/toggleActiveState/`,
 				headers: {'auth': this.$store.state.loggedInUser['token'] }
 			}).then(response => (this.skill.active = !this.skill.active))
 
@@ -37,14 +37,14 @@ export default {
 		update: function() {
 			axios({
 				method: 'get',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.skill.name}/checkUpdate`,
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.skill.name}/checkUpdate/`,
 				headers: {'auth': this.$store.state.loggedInUser['token'] }
 			}).then(response => {})
 		},
 		remove: function() {
 			axios({
 				method: 'delete',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.skill.name}`,
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.skill.name}/`,
 				headers: {'auth': this.$store.state.loggedInUser['token'] }
 			}).then(response => {
 				this.$destroy()
