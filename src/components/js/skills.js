@@ -5,6 +5,13 @@ export default {
 	data: function () {
 		return {
 			skills: [],
+			menuItems: [
+				{
+					name: 'edit',
+					icon: 'fas fa-download',
+					extendedIcon: 'fas fa-times-circle'
+				}
+			],
 			steps: [
 				{
 					target: '[data-tour="0"]',
