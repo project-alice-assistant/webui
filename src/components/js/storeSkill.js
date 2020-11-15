@@ -21,6 +21,10 @@ export default {
 				this.isWanted = false
 				this.removeMethod(this.skill.name)
 			}
+		},
+		setIsDownloading: function() {
+			this.isWanted = false
+			this.isDownloading = true
 		}
 	}
 }
