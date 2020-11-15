@@ -6,11 +6,13 @@ export default {
 				{
 					name: 'edit',
 					icon: 'fas fa-pen-square',
+					isToggle: true,
 					extendedIcon: 'fas fa-times-circle'
 				},
 				{
 					name: 'theater mode',
 					icon: 'fas fa-person-booth',
+					isToggle: true,
 					callback: this.cinemaMode
 				},
 				{

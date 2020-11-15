@@ -4,12 +4,20 @@ export default {
 	name: 'skills',
 	data: function () {
 		return {
+			shopOpen: false,
 			skills: [],
+			skillsToDownload: [],
 			menuItems: [
 				{
-					name: 'edit',
+					name: 'shop',
 					icon: 'fas fa-download',
-					extendedIcon: 'fas fa-times-circle'
+					extendedIcon: 'fas fa-times-circle',
+					isToggle: true,
+					callbacks: this.toggleShop
+				},
+				{
+					name: 'download',
+					icon: 'fas fa-check-circle'
 				}
 			],
 			steps: [
@@ -89,6 +97,14 @@ export default {
 						placement: 'right',
 						highlight: true
 					}
+				},
+				{
+					target: '[data-tour="10"]',
+					content: 'Need more skills? This is where you can get them!',
+					params: {
+						placement: 'left',
+						highlight: true
+					}
 				}
 			],
 			tourCallbacks : {
@@ -111,7 +127,10 @@ export default {
 				required: false,
 				settings: {dummy: true},
 				updateAvailable: true,
-				version: '1.0.0'
+				version: '1.0.0',
+				aliceMinVersion: '1.0.0-b4',
+				category: 'system',
+				maintainers: ['project', 'alice']
 			})
 
 			this.$tours['skills'].start()
@@ -134,6 +153,9 @@ export default {
 		finishTour: function() {
 			this.$cookies.set('skillsTourCompleted', 1)
 			this.fetchSkills()
+		},
+		toggleShop: function() {
+			this.shopOpen = !this.shopOpen
 		}
 	}
 }
