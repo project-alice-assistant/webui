@@ -1,15 +1,13 @@
 <template>
-	<transition name="smooth" mode="out-in" appear>
-	<div :class="extended ? 'extended' : ''" class="menu">
-		<i :class="!extended ? item.icon : item.extendedIcon || item.icon"
+	<div class="menu" :class="{extended: isExtended}">
+		<i :class="!isExtended ? item.icon : item.extendedIcon || item.icon"
 			 class="menuButton clickable"
 			 aria-hidden="true"
-			 v-for="(item, i) in menuItems.slice(0, extended ? 999 : 1)"
+			 v-for="(item, i) in menuItems.slice(0, isExtended ? 999 : 1)"
 			 :key="item.name"
-			 @click="toggle"
+			 @click="!item.hasOwnProperty('callback') ? toggle() : item.callback()"
 		/>
 	</div>
-	</transition>
 </template>
 
 <style src="../css/actionsMenu.css" scoped></style>

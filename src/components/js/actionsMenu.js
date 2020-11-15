@@ -1,9 +1,8 @@
-
 export default {
 	name: 'actionsMenu',
 	data: function() {
 		return {
-			extended: false
+			isExtended: false
 		}
 	},
 	props: [
@@ -12,7 +11,7 @@ export default {
 	],
 	methods: {
 		toggle: function() {
-			this.extended = !this.extended
+			this.isExtended = !this.isExtended
 		}
 	}
 }

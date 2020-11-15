@@ -1,5 +1,5 @@
 <template>
-	<header>
+	<header :class="{collapsed: this.$store.state.fullScreen}">
 		<div class="pageTitle">{{ title }}</div>
 		<div id="aliceStatus" class="aliceStatus"></div>
 		<div class="resourceUsage" v-if="this.$store.state.settings['displaySystemUsage']">

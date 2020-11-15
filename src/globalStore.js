@@ -8,7 +8,8 @@ export default new Vuex.Store({
 		settings: {},
 		mqtt: null,
 		resourceUsage: {},
-		loggedInUser: false
+		loggedInUser: false,
+		fullScreen: false
 	},
 	mutations: {
 		setSettings(state, settings) {
@@ -27,6 +28,15 @@ export default new Vuex.Store({
 			state.loggedInUser = {}
 			Vue.$cookies.remove('username')
 			Vue.$cookies.remove('apiToken')
+		},
+		startCinemaMode(state) {
+			state.fullScreen = true
+		},
+		stopCinemaMode(state) {
+			state.fullScreen = false
+		},
+		toggleCinemaMode(state) {
+			state.fullScreen = !state.fullScreen
 		}
 	}
 })

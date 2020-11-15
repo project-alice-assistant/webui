@@ -1,5 +1,4 @@
 .menu {
-	max-width: 60px;
 	height: 3em;
 	font-size: 1em;
 	background-color: var(--mainBG);
@@ -11,14 +10,16 @@
 	z-index: 2;
 	display: flex;
 	flex-direction: row;
+	flex: 0.0001;
 	box-sizing: border-box;
 	padding-left: 20px;
 	align-content: center;
 	align-items: center;
+	transition: flex 2s ease-out;
 }
 
 .extended {
-	max-width: 9999px;
+	flex: 1;
 }
 
 .menuButton {

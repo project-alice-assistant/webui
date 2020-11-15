@@ -10,7 +10,8 @@ export default {
 				},
 				{
 					name: 'theater mode',
-					icon: 'fas fa-person-booth'
+					icon: 'fas fa-person-booth',
+					callback: this.cinemaMode
 				},
 				{
 					name: 'settings',
@@ -32,9 +33,20 @@ export default {
 			]
 		}
 	},
+	created() {
+		let self = this;
+		document.addEventListener('keypress', function(event) {
+			if (event.key === 'Enter') {
+				self.$store.commit('stopCinemaMode')
+			}
+		})
+	},
 	methods: {
 		saveAndClose: function() {
 			console.log('saved')
+		},
+		cinemaMode: function() {
+			this.$store.commit('toggleCinemaMode')
 		}
 	}
 }
