@@ -30,8 +30,6 @@ export default {
 						this.$cookies.set('apiToken', response.data.apiToken)
 					}
 					this.$router.replace('widgets')
-				} else {
-					console.log('nope')
 				}
 			}).catch(response => {
 				console.log('Connection failed: ' + response)

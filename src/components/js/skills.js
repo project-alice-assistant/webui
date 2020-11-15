@@ -6,6 +6,7 @@ export default {
 		return {
 			shopOpen: false,
 			skills: [],
+			storeSkills: {},
 			skillsToDownload: [],
 			menuItems: [
 				{
@@ -13,11 +14,13 @@ export default {
 					icon: 'fas fa-download',
 					extendedIcon: 'fas fa-times-circle',
 					isToggle: true,
-					callbacks: this.toggleShop
+					callback: this.toggleShop
 				},
 				{
 					name: 'download',
-					icon: 'fas fa-check-circle'
+					icon: 'fas fa-check-circle',
+					isToggle: true,
+					callback: this.doDownload
 				}
 			],
 			steps: [
@@ -137,6 +140,9 @@ export default {
 		} else {
 			this.fetchSkills()
 		}
+
+		setInterval(this.reloadStoreSkills, 5*60*1000)
+		this.reloadStoreSkills()
 	},
 	methods: {
 		fetchSkills: function() {
@@ -156,6 +162,25 @@ export default {
 		},
 		toggleShop: function() {
 			this.shopOpen = !this.shopOpen
+		},
+		reloadStoreSkills: function () {
+			axios({
+				method: 'get',
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/getStore/`
+			}).then(response => {
+				if ('store' in response.data) {
+					this.storeSkills = response.data.store
+				}
+			})
+		},
+		addSkillToDownload(skillName) {
+			this.skillsToDownload.push(skillName)
+		},
+		removeSkillToDownload(skillName) {
+			this.skillsToDownload = this.skillsToDownload.filter(e => e !== skillName)
+		},
+		doDownload: function() {
+			console.log(this.skillsToDownload)
 		}
 	}
 }

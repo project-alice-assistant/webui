@@ -174,9 +174,7 @@ nav {
 	background-color: var(--mainBG);
 	display: flex;
 	flex: 1;
-	height: 100%;
-	overflow: auto;
-	overflow-x: hidden;
+	overflow-y: auto;
 }
 
 .vertical {

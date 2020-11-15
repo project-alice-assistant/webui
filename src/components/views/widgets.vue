@@ -1,5 +1,5 @@
 <template>
-	<div class="tileContainer">
+	<div class="tileContainer horizontal">
 		<actionsMenu :menuItems="menuItems"/>
 	</div>
 </template>

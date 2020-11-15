@@ -23,6 +23,8 @@
 .skillName {
 	margin-left: 5px;
 	flex: 1;
+	width: 250px;
+	overflow: hidden;
 }
 
 .skillIcon {
