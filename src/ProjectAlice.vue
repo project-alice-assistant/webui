@@ -34,10 +34,9 @@
 	</div>
 </template>
 
-<style src="./ProjectAlice.css"></style>
-<script src="./ProjectAlice.js"></script>
+<script src="./ProjectAlice.js"/>
 
-<style src="./components/css/fa/brands.css"></style>
-<style src="./components/css/fa/regular.css"></style>
-<style src="./components/css/fa/solid.css"></style>
-<style src="./components/css/fa/fontawesome.css"></style>
+<style src="./components/css/fa/brands.css"/>
+<style src="./components/css/fa/regular.css"/>
+<style src="./components/css/fa/solid.css"/>
+<style src="./components/css/fa/fontawesome.css"/>

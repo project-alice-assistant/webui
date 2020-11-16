@@ -4,7 +4,7 @@ export default {
 	name: 'tabs',
 	data: function() {
 		return {
-			activeTab: 1,
+			activeTab: 0,
 			myTabs: this.tabs,
 			adding: false
 		}
@@ -15,8 +15,8 @@ export default {
 	created() {
 	},
 	methods: {
-		handleClick: function(id) {
-			this.activeTab = id
+		handleClick: function(position) {
+			this.activeTab = position
 		},
 		addTab: function() {
 			this.adding = true
@@ -46,12 +46,12 @@ export default {
 						}).then(response => {
 							if ('pages' in response.data) {
 								self.myTabs = []
-								for (const [id, page] of Object.entries(response.data.pages)) {
+								for (const page of Object.values(response.data.pages)) {
 									self.myTabs.push(JSON.parse(page))
 								}
 							}
 						})
-					})
+					}).catch(() => {})
 			}
 		},
 		rename: function(id) {

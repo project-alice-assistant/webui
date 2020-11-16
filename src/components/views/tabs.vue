@@ -1,8 +1,8 @@
 <template>
 	<div class="container">
 		<div class="tabs">
-			<div class="tab clickable" :class="{active: activeTab === tab.id}" v-for="tab in myTabs" :key="tab.id"
-					 @click="handleClick(tab.id)"
+			<div class="tab clickable" :class="{active: activeTab === tab.position}" v-for="tab in myTabs" :key="tab.position"
+					 @click="handleClick(tab.position)"
 					 @contextmenu.prevent="removeTab(tab.id)"
 					 @dblclick="rename(tab.id)"
 			>

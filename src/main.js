@@ -38,6 +38,9 @@ Vue.component('storeSkill', StoreSkill)
 Vue.component('actionsMenu', ActionsMenu)
 Vue.component('tabs', Tabs)
 
+import './ProjectAlice.css'
+import './components/css/overrides/vuejsdialog.css'
+
 new Vue({
 	store,
 	router,

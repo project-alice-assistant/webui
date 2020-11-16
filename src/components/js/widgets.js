@@ -52,7 +52,7 @@ export default {
 			headers: {'auth': this.$cookies.get('apiToken')}
 		}).then(response => {
 			if ('pages' in response.data) {
-				for (const [id, page] of Object.entries(response.data.pages)) {
+				for (const page of Object.values(response.data.pages)) {
 					this.tabs.push(JSON.parse(page))
 				}
 			}
