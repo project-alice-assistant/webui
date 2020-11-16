@@ -168,6 +168,7 @@ nav {
 	margin-right: 2px;
 	padding: 0;
 	width: 10em;
+	flex-direction: column;
 }
 
 #mainSection {
@@ -177,12 +178,17 @@ nav {
 	overflow-y: auto;
 }
 
-.vertical {
-	flex-direction: column;
-}
-
-.horizontal {
+.tileContainer {
+	position: relative;
+	display: flex;
+	flex: 1;
+	width: 100%;
+	box-sizing: border-box;
+	padding: 15px;
+	flex-wrap: wrap;
 	flex-direction: row;
+	justify-content: flex-start;
+	align-content: flex-start;
 }
 
 .clickable {

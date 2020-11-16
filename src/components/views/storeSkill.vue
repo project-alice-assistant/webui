@@ -1,5 +1,5 @@
 <template>
-	<div class="skill vertical">
+	<div class="skill">
 		<div class="skillTitle">
 			<div class="skillName">{{ skill.name }}</div>
 			<div class="skillIcon"><i :class="skill.icon" aria-hidden="true"/></div>

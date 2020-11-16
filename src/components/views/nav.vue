@@ -1,5 +1,5 @@
 <template>
-	<nav class="vertical" :class="{collapsed: this.$store.state.fullScreen}">
+	<nav :class="{collapsed: this.$store.state.fullScreen}">
 		<router-link tag="button" to="/widgets">widgets</router-link>
 		<router-link tag="button" to="/skills" v-if="this.$store.state.loggedInUser">skills</router-link>
 		<router-link tag="button" to="/skills">my home</router-link>
