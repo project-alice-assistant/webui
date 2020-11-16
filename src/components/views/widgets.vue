@@ -1,6 +1,7 @@
 <template>
-	<div class="tileContainer">
-		<actionsMenu :menuItems="menuItems"/>
+	<div class="tabs">
+		<div class="tab clickable"><i class="fas fa-biohazard" aria-hidden="true"/></div>
+		<div class="tab active clickable"><i class="fas fa-download" aria-hidden="true"/></div>
 	</div>
 </template>
 
