@@ -1,8 +1,10 @@
+import axios from 'axios'
 
 export default {
 	name: 'pa-widgets',
 	data: function() {
 		return {
+			tabs: [],
 			menuItems: [
 				{
 					name: 'edit',
@@ -36,11 +38,23 @@ export default {
 			]
 		}
 	},
-	created() {
+	created: function() {
 		let self = this;
 		document.addEventListener('keypress', function(event) {
 			if (event.key === 'Enter') {
 				self.$store.commit('stopCinemaMode')
+			}
+		})
+
+		axios({
+			method: 'get',
+			url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/pages/`,
+			headers: {'auth': this.$cookies.get('apiToken')}
+		}).then(response => {
+			if ('pages' in response.data) {
+				for (const [id, page] of Object.entries(response.data.pages)) {
+					this.tabs.push(JSON.parse(page))
+				}
 			}
 		})
 	},

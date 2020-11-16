@@ -9,10 +9,14 @@ import VueToggles from 'vue-toggles'
 import VModal from 'vue-js-modal'
 import VueTour from 'vue-tour'
 import Overlay from 'vuejs-overlay'
+import VueDialog from 'vuejs-dialog'
+
+import 'vuejs-dialog/dist/vuejs-dialog.min.css'
 
 import Skill from './components/views/skill'
 import StoreSkill from './components/views/storeSkill'
 import ActionsMenu from './components/views/actionsMenu'
+import Tabs from './components/views/tabs'
 import './components/css/overlay.css'
 
 Vue.config.productionTip = false
@@ -21,16 +25,18 @@ Vue.use(VueAxios, axios)
 Vue.use(VueCookies)
 Vue.use(VModal)
 Vue.use(Overlay)
+Vue.use(VueDialog)
 
 require('vue-tour/dist/vue-tour.css')
 Vue.use(VueTour)
 
 Vue.$cookies.config('10y')
 
-Vue.component('VueToggles', VueToggles);
-Vue.component('skill', Skill);
-Vue.component('storeSkill', StoreSkill);
-Vue.component('actionsMenu', ActionsMenu);
+Vue.component('VueToggles', VueToggles)
+Vue.component('skill', Skill)
+Vue.component('storeSkill', StoreSkill)
+Vue.component('actionsMenu', ActionsMenu)
+Vue.component('tabs', Tabs)
 
 new Vue({
 	store,

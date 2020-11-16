@@ -6,8 +6,7 @@ export default {
 		}
 	},
 	props: [
-		'menuItems',
-		'toggleMenu'
+		'menuItems'
 	],
 	methods: {
 		toggle: function() {

@@ -21,7 +21,7 @@ export default {
 			remember: false
 		}
 	},
-	mounted: function () {
+	created: function () {
 		this.$router.replace('home').then()
 		this.ip = this.$cookies.isKey('host') ? this.$cookies.get('host') : '127.0.0.1'
 		this.port = this.$cookies.isKey('apiPort') ? this.$cookies.get('apiPort') : 5001
