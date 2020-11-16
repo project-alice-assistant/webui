@@ -1,3 +1,4 @@
+
 export default {
 	name: 'pa-widgets',
 	data: function() {

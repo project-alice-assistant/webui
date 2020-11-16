@@ -4,4 +4,4 @@
 	</div>
 </template>
 
-<script src="../js/widgets.js"></script>
+<script src="../js/widgets.js"/>
