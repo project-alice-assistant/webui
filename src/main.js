@@ -11,13 +11,14 @@ import VueTour from 'vue-tour'
 import Overlay from 'vuejs-overlay'
 import VueDialog from 'vuejs-dialog'
 
-import 'vuejs-dialog/dist/vuejs-dialog.min.css'
-
 import Skill from './components/views/skill'
 import StoreSkill from './components/views/storeSkill'
 import ActionsMenu from './components/views/actionsMenu'
 import Tabs from './components/views/tabs'
+
+import 'vuejs-dialog/dist/vuejs-dialog.min.css'
 import './components/css/overlay.css'
+import('vue-tour/dist/vue-tour.css')
 
 Vue.config.productionTip = false
 
@@ -26,8 +27,6 @@ Vue.use(VueCookies)
 Vue.use(VModal)
 Vue.use(Overlay)
 Vue.use(VueDialog)
-
-require('vue-tour/dist/vue-tour.css')
 Vue.use(VueTour)
 
 Vue.$cookies.config('10y')
@@ -40,6 +39,7 @@ Vue.component('tabs', Tabs)
 
 import './ProjectAlice.css'
 import './components/css/overrides/vuejsdialog.css'
+import './components/css/overrides/vuetour.css'
 
 new Vue({
 	store,

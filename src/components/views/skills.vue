@@ -7,4 +7,4 @@
 	</div>
 </template>
 
-<script src="../js/skills.js"></script>
+<script src="../js/skills.js"/>

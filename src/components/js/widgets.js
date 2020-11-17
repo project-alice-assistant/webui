@@ -20,22 +20,36 @@ export default {
 				},
 				{
 					name: 'settings',
-					icon: 'fas fa-cog'
+					icon: 'fas fa-cog',
+					click: () => {
+						this.settings = true
+					}
 				},
 				{
 					name: 'add widget',
-					icon: 'far fa-plus-square'
+					icon: 'far fa-plus-square',
+					click: () => {
+						this.addWidgets = true
+					}
 				},
 				{
 					name: 'remove widget',
-					icon: 'far fa-minus-square'
+					icon: 'far fa-minus-square',
+					click: () => {
+						this.removeWidgets = true
+					}
 				},
 				{
 					name: 'save',
 					icon: 'fas fa-save',
 					callback: this.saveAndClose
 				}
-			]
+			],
+			settings: false,
+			addWidgets: true,
+			removeWidgets: false,
+			widgetTemplates: {},
+			widgetInstances: {}
 		}
 	},
 	created: function() {
@@ -55,6 +69,8 @@ export default {
 				for (const page of Object.values(response.data.pages)) {
 					this.tabs.push(JSON.parse(page))
 				}
+				this.fetchWidgetTemplates()
+				this.fetchWidgetInstances()
 			}
 		})
 	},
@@ -64,6 +80,27 @@ export default {
 		},
 		cinemaMode: function() {
 			this.$store.commit('toggleCinemaMode')
+		},
+		fetchWidgetTemplates: function() {
+			axios({
+				method: 'get',
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/templates/`
+			}).then(response => {
+				if ('widgets' in response.data) {
+					this.widgetTemplates = response.data['widgets']
+				}
+			})
+		},
+		fetchWidgetInstances: function() {
+			axios({
+				method: 'get',
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/`,
+				headers: {'auth': this.$cookies.get('apiToken')}
+			}).then(response => {
+				if ('widgets' in response.data) {
+					this.widgetInstances = response.data['widgets']
+				}
+			})
 		}
 	}
 }
