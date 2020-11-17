@@ -10,13 +10,19 @@ export default {
 		}
 	},
 	props: [
-		'tabs'
+		'tabs',
+		'onChange'
 	],
 	created() {
 	},
 	methods: {
-		handleClick: function(position) {
+		handleClick: function(position, id) {
 			this.activeTab = position
+			this.activeTabId = id
+
+			if (this.onChange) {
+				this.onChange(id)
+			}
 		},
 		addTab: function() {
 			this.adding = true

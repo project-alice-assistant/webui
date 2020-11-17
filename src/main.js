@@ -10,6 +10,7 @@ import VModal from 'vue-js-modal'
 import VueTour from 'vue-tour'
 import Overlay from 'vuejs-overlay'
 import VueDialog from 'vuejs-dialog'
+import VueTooltip from 'v-tooltip'
 
 import Skill from './components/views/skill'
 import StoreSkill from './components/views/storeSkill'
@@ -28,6 +29,7 @@ Vue.use(VModal)
 Vue.use(Overlay)
 Vue.use(VueDialog)
 Vue.use(VueTour)
+Vue.use(VueTooltip)
 
 Vue.$cookies.config('10y')
 
@@ -40,6 +42,7 @@ Vue.component('tabs', Tabs)
 import './ProjectAlice.css'
 import './components/css/overrides/vuejsdialog.css'
 import './components/css/overrides/vuetour.css'
+import './components/css/overrides/tooltips.css'
 
 new Vue({
 	store,

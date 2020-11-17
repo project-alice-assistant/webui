@@ -37,7 +37,7 @@
 	</div>
 </template>
 
-<style src="../css/skill.css" scoped></style>
-<style src="../css/tour.css" scoped></style>
+<style src="../css/skill.css" scoped/>
+<style src="../css/tour.css" scoped/>
 
-<script src="../js/skill.js"></script>
+<script src="../js/skill.js"/>

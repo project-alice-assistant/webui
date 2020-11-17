@@ -26,6 +26,14 @@ export default {
 					}
 				},
 				{
+					name: 'upload preset',
+					icon: 'fas fa-file-upload',
+				},
+				{
+					name: 'download preset',
+					icon: 'fas fa-file-download',
+				},
+				{
 					name: 'add widget',
 					icon: 'far fa-plus-square',
 					click: () => {
@@ -49,7 +57,8 @@ export default {
 			addWidgets: true,
 			removeWidgets: false,
 			widgetTemplates: {},
-			widgetInstances: {}
+			widgetInstances: {},
+			activePageId: 1
 		}
 	},
 	created: function() {
@@ -75,6 +84,9 @@ export default {
 		})
 	},
 	methods: {
+		changePage: function(id) {
+			this.activePageId = id
+		},
 		saveAndClose: function() {
 			console.log('saved')
 		},
@@ -99,6 +111,25 @@ export default {
 			}).then(response => {
 				if ('widgets' in response.data) {
 					this.widgetInstances = response.data['widgets']
+				}
+			})
+		},
+		addWidget: function(skillName, widgetName) {
+			axios({
+				method: 'put',
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/`,
+				data: {
+					skillName: skillName,
+					widgetName: widgetName,
+					pageId: this.activePageId
+				},
+				headers: {
+					'auth': this.$cookies.get('apiToken'),
+					'content-type': 'application/json'
+				}
+			}).then(response => {
+				if ('widget' in response.data) {
+					console.log(response.data['widget'])
 				}
 			})
 		}
