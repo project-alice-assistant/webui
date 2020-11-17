@@ -10,7 +10,8 @@ export default {
 					name: 'edit',
 					icon: 'fas fa-pen-square',
 					isToggle: true,
-					extendedIcon: 'fas fa-times-circle'
+					extendedIcon: 'fas fa-times-circle',
+					extendedName: 'close'
 				},
 				{
 					name: 'theater mode',

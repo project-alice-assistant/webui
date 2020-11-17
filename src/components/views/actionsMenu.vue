@@ -6,7 +6,7 @@
 			 v-for="(item, i) in menuItems.slice(0, isExtended ? 999 : 1)"
 			 :key="item.name"
 			 @click="'click' in item ? item['click']() : handleClick(item)"
-			 v-tooltip="item.name"
+			 v-tooltip="isExtended ? item.extendedName || item.name : item.name"
 		/>
 	</div>
 </template>

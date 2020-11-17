@@ -44,6 +44,8 @@ import './components/css/overrides/vuejsdialog.css'
 import './components/css/overrides/vuetour.css'
 import './components/css/overrides/tooltips.css'
 
+document.addEventListener('contextmenu', event => event.preventDefault())
+
 new Vue({
 	store,
 	router,
