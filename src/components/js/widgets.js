@@ -50,11 +50,12 @@ export default {
 				{
 					name: 'save',
 					icon: 'fas fa-save',
-					callback: this.saveAndClose
+					callback: this.saveAndClose,
+					isToggle: true,
 				}
 			],
 			settings: false,
-			addWidgets: true,
+			addWidgets: false,
 			removeWidgets: false,
 			widgetTemplates: {},
 			widgetInstances: {},
