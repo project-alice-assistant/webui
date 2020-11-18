@@ -11,7 +11,10 @@ export default {
 					icon: 'fas fa-pen-square',
 					isToggle: true,
 					extendedIcon: 'fas fa-times-circle',
-					extendedName: 'close'
+					extendedName: 'close',
+					click: () => {
+						this.dragAndResizeEnabled = !this.dragAndResizeEnabled
+					}
 				},
 				{
 					name: 'theater mode',
@@ -47,20 +50,16 @@ export default {
 					click: () => {
 						this.removeWidgets = true
 					}
-				},
-				{
-					name: 'save',
-					icon: 'fas fa-save',
-					callback: this.saveAndClose,
-					isToggle: true,
 				}
 			],
 			settings: false,
 			addWidgets: false,
 			removeWidgets: false,
 			widgetTemplates: {},
-			widgetInstances: {},
-			activePageId: 1
+			widgetInstances: [],
+			activePageId: 1,
+			selectedWidget: -1,
+			dragAndResizeEnabled: false
 		}
 	},
 	created: function() {
@@ -112,7 +111,7 @@ export default {
 				headers: {'auth': this.$cookies.get('apiToken')}
 			}).then(response => {
 				if ('widgets' in response.data) {
-					this.widgetInstances = response.data['widgets']
+					this.widgetInstances = response.data.widgets
 				}
 			})
 		},
@@ -131,9 +130,42 @@ export default {
 				}
 			}).then(response => {
 				if ('widget' in response.data) {
-					console.log(response.data['widget'])
+					this.widgetInstances.push(response.data['widget'])
 				}
 			})
+		},
+		savePosition: function(x, y) {
+			if (this.selectedWidget <= -1) {
+				return
+			}
+
+			axios({
+				method: 'patch',
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/${this.selectedWidget}/savePosition/`,
+				data: {
+					x: x,
+					y: y
+				},
+				headers: {'auth': this.$cookies.get('apiToken')}
+			}).then(response => {})
+		},
+		saveSize: function(x, y, w, h) {
+			if (this.selectedWidget <= -1) {
+				return
+			}
+			console.log('here')
+
+			axios({
+				method: 'patch',
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/${this.selectedWidget}/saveSize/`,
+				data: {
+					x: x,
+					y: y,
+					w: w,
+					h: h
+				},
+				headers: {'auth': this.$cookies.get('apiToken')}
+			}).then(response => {})
 		}
 	}
 }

@@ -11,6 +11,7 @@ import VueTour from 'vue-tour'
 import Overlay from 'vuejs-overlay'
 import VueDialog from 'vuejs-dialog'
 import VueTooltip from 'v-tooltip'
+import VueDraggableResizable from 'vue-draggable-resizable'
 
 import Skill from './components/views/skill'
 import StoreSkill from './components/views/storeSkill'
@@ -19,7 +20,8 @@ import Tabs from './components/views/tabs'
 
 import 'vuejs-dialog/dist/vuejs-dialog.min.css'
 import './components/css/overlay.css'
-import('vue-tour/dist/vue-tour.css')
+import 'vue-tour/dist/vue-tour.css'
+import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
 
 Vue.config.productionTip = false
 
@@ -34,6 +36,7 @@ Vue.use(VueTooltip)
 Vue.$cookies.config('10y')
 
 Vue.component('VueToggles', VueToggles)
+Vue.component('vue-draggable-resizable', VueDraggableResizable)
 Vue.component('skill', Skill)
 Vue.component('storeSkill', StoreSkill)
 Vue.component('actionsMenu', ActionsMenu)
@@ -44,7 +47,7 @@ import './components/css/overrides/vuejsdialog.css'
 import './components/css/overrides/vuetour.css'
 import './components/css/overrides/tooltips.css'
 
-document.addEventListener('contextmenu', event => event.preventDefault())
+//document.addEventListener('contextmenu', event => event.preventDefault())
 
 new Vue({
 	store,
