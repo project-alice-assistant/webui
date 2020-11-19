@@ -136,6 +136,21 @@ export default {
 			}).then(response => {
 				if ('widget' in response.data) {
 					this.widgetInstances[response.data['widget']['id']] = response.data['widget']
+					this.$forceUpdate()
+				}
+			})
+		},
+		removeWidget: function(widgetId) {
+			axios({
+				method: 'delete',
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/${widgetId}/`,
+				headers: {
+					'auth': this.$cookies.get('apiToken')
+				}
+			}).then(response => {
+				if ('success' in response.data && response.data.success) {
+					delete this.widgetInstances[widgetId]
+					this.$forceUpdate()
 				}
 			})
 		},
@@ -143,6 +158,9 @@ export default {
 			if (this.selectedWidget <= -1) {
 				return
 			}
+
+			x = Math.ceil(x / 5) * 5
+			y = Math.ceil(y / 5) * 5
 
 			let widgetId = this.selectedWidget
 
@@ -155,18 +173,24 @@ export default {
 				},
 				headers: {'auth': this.$cookies.get('apiToken')}
 			}).then(response => {
-				if ('success' in response.data) {
+				if ('success' in response.data && response.data.success) {
 					let widget = this.widgetInstances[widgetId]
 					widget.x = x
 					widget.y = y
 					this.widgetInstances[widgetId] = widget
 				}
+				this.$forceUpdate()
 			})
 		},
 		saveSize: function(x, y, w, h) {
 			if (this.selectedWidget <= -1) {
 				return
 			}
+			x = Math.ceil(x / 5) * 5
+			y = Math.ceil(y / 5) * 5
+			w = Math.ceil(w / 5) * 5
+			h = Math.ceil(h / 5) * 5
+
 			let widgetId = this.selectedWidget
 
 			axios({
@@ -180,7 +204,7 @@ export default {
 				},
 				headers: {'auth': this.$cookies.get('apiToken')}
 			}).then(response => {
-				if ('success' in response.data) {
+				if ('success' in response.data && response.data.success) {
 					let widget = this.widgetInstances[widgetId]
 					widget.x = x
 					widget.y = y
@@ -188,6 +212,7 @@ export default {
 					widget.h = h
 					this.widgetInstances[widgetId] = widget
 				}
+				this.$forceUpdate()
 			})
 		}
 	}

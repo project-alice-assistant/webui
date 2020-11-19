@@ -49,11 +49,14 @@
 }
 
 .widgetTool {
+	position: absolute;
+	z-index: 9999;
 	width: 1.5em;
 	height: 1.5em;
 	border-radius: 9999999px;
 	background-color: var(--accent);
 	display: flex;
+	flex-direction: column;
 	align-items: center;
 	justify-items: center;
 	justify-content: center;
@@ -62,13 +65,11 @@
 }
 
 .optioner {
-	position: absolute;
 	top: -20px;
 	left: -20px;
 }
 
 .deleter {
-	position: absolute;
 	bottom: -20px;
 	left: -20px;
 }
@@ -77,10 +78,7 @@
 	height: 3em;
 	border-radius: 1.5em;
 	background-color: var(--accent);
-	display: flex;
-	flex-direction: column;
 	justify-content: space-evenly;
-	position: absolute;
 	top: -20px;
 	right: -20px;
 }

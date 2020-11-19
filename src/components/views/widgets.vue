@@ -45,7 +45,7 @@
 				<div class="widgetTool optioner" v-if="settings">
 					<i class="fas fa-cogs clickable" aria-hidden="true"/>
 				</div>
-				<div class="widgetTool deleter" v-if="removeWidgets">
+				<div class="widgetTool deleter" v-if="removeWidgets" @click="removeWidget(widget.id)">
 					<i class="far fa-trash-alt clickable" aria-hidden="true"/>
 				</div>
 				<div class="widgetTool zindexer" v-if="settings">
