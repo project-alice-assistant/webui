@@ -23,7 +23,8 @@
 		"vuejs-dialog": "^1.4.2",
 		"vuejs-overlay": "^0.0.28",
 		"vuex": "^3.5.1",
-		"vue-draggable-resizable": "^2.2.0"
+		"vue-draggable-resizable": "^2.2.0",
+		"jquery": "^3.5.1"
 	},
 	"devDependencies": {
 		"@vue/cli-plugin-babel": "~4.5.0",

@@ -13,23 +13,44 @@
 		<div class="tab_page" v-for="tab in tabs" :key="tab.id" v-if="tab.id === activePageId">
 			<vue-draggable-resizable
 				class-name="widget"
+				classNameActive="nothingtoseehere"
 				:w="parseInt(widget['params']['size'].split('x')[0])"
 				:h="parseInt(widget['params']['size'].split('x')[1])"
 				:x="widget['params']['x']"
+				:min-width="50"
+				:min-height="50"
 				:y="widget['params']['y']"
 				:z="widget['params']['z']"
 				:grid="[10, 10]"
 				:parent="true"
-				v-for="widget in widgetInstances"
-				:key="widget.id"
-				v-if="widget['page'] === activePageId"
 				:draggable="dragAndResizeEnabled"
 				:resizable="dragAndResizeEnabled"
 				@activated="selectedWidget = widget.id"
 				@dragstop="savePosition"
 				@resizestop="saveSize"
+				v-for="widget in widgetInstances"
+				:key="widget.id"
+				v-if="widget['page'] === activePageId"
 			>
-				<div v-html="widget['html']">
+				<component is="style" type="text/css" scoped>
+					{{ widget.css }}
+				</component>
+				<div class="widgetIcon" v-if="widget.params['title']">
+					<i :class="widget.icon" aria-hidden="true"></i>
+				</div>
+				<p v-html="widget.html"/>
+				<script type="application/javascript">
+					{{ widget.js }}
+				</script>
+				<div class="widgetTool optioner" v-if="settings">
+					<i class="fas fa-cogs clickable" aria-hidden="true"/>
+				</div>
+				<div class="widgetTool deleter" v-if="removeWidgets">
+					<i class="far fa-trash-alt clickable" aria-hidden="true"/>
+				</div>
+				<div class="widgetTool zindexer" v-if="settings">
+					<i class="fas fa-level-up-alt clickable" aria-hidden="true"/>
+					<i class="fas fa-level-down-alt clickable" aria-hidden="true"/>
 				</div>
 			</vue-draggable-resizable>
 		</div>

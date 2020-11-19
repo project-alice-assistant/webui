@@ -9,18 +9,24 @@ export default {
 		'menuItems'
 	],
 	methods: {
-		toggle: function() {
+		toggle: function(item) {
 			this.isExtended = !this.isExtended
+
+			if (!this.isExtended && item.hasOwnProperty('onClose')) {
+				item['onClose']()
+			} else if (this.isExtended && item.hasOwnProperty('onOpen')) {
+				item['onOpen']()
+			}
 		},
 		handleClick: function(item) {
 			if (item.hasOwnProperty('isToggle') && item.isToggle) {
-				this.toggle()
+				this.toggle(item)
 			}
-			if (item.hasOwnProperty('click')) {
-				item['click']()
+			if (item.hasOwnProperty('onClick')) {
+				item['onClick']()
 			}
 			if (item.hasOwnProperty('callback')) {
-				item.callback()
+				item.callback(item)
 			}
 		}
 	}

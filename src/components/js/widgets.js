@@ -12,8 +12,13 @@ export default {
 					isToggle: true,
 					extendedIcon: 'fas fa-times-circle',
 					extendedName: 'close',
-					click: () => {
-						this.dragAndResizeEnabled = !this.dragAndResizeEnabled
+					onClose: () => {
+						this.removeWidgets = false
+						this.settings = false
+						this.dragAndResizeEnabled = true
+					},
+					onOpen: () => {
+						this.dragAndResizeEnabled = true
 					}
 				},
 				{
@@ -25,8 +30,8 @@ export default {
 				{
 					name: 'settings',
 					icon: 'fas fa-cog',
-					click: () => {
-						this.settings = true
+					onClick: () => {
+						this.settings = !this.settings
 					}
 				},
 				{
@@ -40,15 +45,15 @@ export default {
 				{
 					name: 'add widget',
 					icon: 'far fa-plus-square',
-					click: () => {
+					onClick: () => {
 						this.addWidgets = true
 					}
 				},
 				{
 					name: 'remove widget',
 					icon: 'far fa-minus-square',
-					click: () => {
-						this.removeWidgets = true
+					onClick: () => {
+						this.removeWidgets = !this.removeWidgets
 					}
 				}
 			],
@@ -56,7 +61,7 @@ export default {
 			addWidgets: false,
 			removeWidgets: false,
 			widgetTemplates: {},
-			widgetInstances: [],
+			widgetInstances: {},
 			activePageId: 1,
 			selectedWidget: -1,
 			dragAndResizeEnabled: false
@@ -130,7 +135,7 @@ export default {
 				}
 			}).then(response => {
 				if ('widget' in response.data) {
-					this.widgetInstances.push(response.data['widget'])
+					this.widgetInstances[response.data['widget']['id']] = response.data['widget']
 				}
 			})
 		},
@@ -139,25 +144,34 @@ export default {
 				return
 			}
 
+			let widgetId = this.selectedWidget
+
 			axios({
 				method: 'patch',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/${this.selectedWidget}/savePosition/`,
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/${widgetId}/savePosition/`,
 				data: {
 					x: x,
 					y: y
 				},
 				headers: {'auth': this.$cookies.get('apiToken')}
-			}).then(response => {})
+			}).then(response => {
+				if ('success' in response.data) {
+					let widget = this.widgetInstances[widgetId]
+					widget.x = x
+					widget.y = y
+					this.widgetInstances[widgetId] = widget
+				}
+			})
 		},
 		saveSize: function(x, y, w, h) {
 			if (this.selectedWidget <= -1) {
 				return
 			}
-			console.log('here')
+			let widgetId = this.selectedWidget
 
 			axios({
 				method: 'patch',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/${this.selectedWidget}/saveSize/`,
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/${widgetId}/saveSize/`,
 				data: {
 					x: x,
 					y: y,
@@ -165,7 +179,16 @@ export default {
 					h: h
 				},
 				headers: {'auth': this.$cookies.get('apiToken')}
-			}).then(response => {})
+			}).then(response => {
+				if ('success' in response.data) {
+					let widget = this.widgetInstances[widgetId]
+					widget.x = x
+					widget.y = y
+					widget.w = w
+					widget.h = h
+					this.widgetInstances[widgetId] = widget
+				}
+			})
 		}
 	}
 }
