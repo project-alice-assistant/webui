@@ -1,6 +1,6 @@
 <template>
 	<div class="tabs">
-		<div class="tab clickable" :class="{active: activeTab === tab.position}" v-for="tab in myTabs" :key="tab.position"
+		<div class="tab clickable" :class="{active: activeTab === tab.position}" v-for="tab in tabs" :key="tab.id"
 				 @click="handleClick(tab.position, tab.id)"
 				 @contextmenu.prevent="removeTab(tab.id)"
 				 @dblclick="rename(tab.id)"

@@ -4,7 +4,7 @@ export default {
 	name: 'pa-widgets',
 	data: function() {
 		return {
-			tabs: [],
+			tabs: {},
 			menuItems: [
 				{
 					name: 'edit',
@@ -81,9 +81,7 @@ export default {
 			headers: {'auth': this.$cookies.get('apiToken')}
 		}).then(response => {
 			if ('pages' in response.data) {
-				for (const page of Object.values(response.data.pages)) {
-					this.tabs.push(JSON.parse(page))
-				}
+				this.tabs = response.data.pages
 				this.fetchWidgetTemplates()
 				this.fetchWidgetInstances()
 			}

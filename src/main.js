@@ -47,6 +47,9 @@ import './components/css/overrides/vuejsdialog.css'
 import './components/css/overrides/vuetour.css'
 import './components/css/overrides/tooltips.css'
 
+import CustomView from './components/views/fontawesomePromptDialog'
+Vue.dialog.registerComponent('fontawesomePromptDialog', CustomView)
+
 // Jquery use ONLY FOR WIDGETS, DO NOT USE JQUERY FOR __ANYTHING ELSE__
 global.jQuery = require('jquery')
 const $ = global.jQuery
