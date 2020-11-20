@@ -47,8 +47,12 @@ import './components/css/overrides/vuejsdialog.css'
 import './components/css/overrides/vuetour.css'
 import './components/css/overrides/tooltips.css'
 
-import CustomView from './components/views/fontawesomePromptDialog'
-Vue.dialog.registerComponent('fontawesomePromptDialog', CustomView)
+import faIconOption from './components/views/fontawesomePromptDialog'
+
+Vue.dialog.registerComponent('fontawesomePromptDialog', faIconOption)
+import widgetOption from './components/views/widgetOptionsDialog'
+
+Vue.dialog.registerComponent('widgetOptionsPromptDialog', widgetOption)
 
 // Jquery use ONLY FOR WIDGETS, DO NOT USE JQUERY FOR __ANYTHING ELSE__
 global.jQuery = require('jquery')

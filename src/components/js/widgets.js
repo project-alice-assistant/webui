@@ -64,7 +64,8 @@ export default {
 			widgetInstances: {},
 			activePageId: 1,
 			selectedWidget: -1,
-			dragAndResizeEnabled: false
+			dragAndResizeEnabled: false,
+			hasTitle: true
 		}
 	},
 	created: function() {
@@ -212,6 +213,34 @@ export default {
 				}
 				this.$forceUpdate()
 			})
+		},
+		openWidgetSettings(widget) {
+			let self = this
+
+			const message = {}
+			const options = {
+				view: 'widgetOptionsPromptDialog',
+				widget: widget
+			}
+
+			this.$dialog.prompt(message, options).then(dialogue => {
+				axios({
+					method: 'PATCH',
+					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/widgets/${id}/`,
+					data: JSON.stringify(dialogue.data),
+					headers: {'auth': self.$cookies.get('apiToken')}
+				}).then(response => {
+					console.log(response.data)
+				})
+			}).catch(() =>{})
+		},
+		computeCustomStyle(widget) {
+			let style = ''
+			style += widget.params['color'] !== '' ? `color: ${widget.params['color']};` : ''
+			style += widget.params['background'] !== '' ? `background-color: ${widget.params['background']};` : ''
+			style += widget.params['background-opacity'] !== '' ? `opacity: ${widget.params['background-opacity']};` : ''
+			style += widget.params['font-size'] !== '' ? `font-size: ${widget.params['font-size']}em;` : ''
+			return style
 		}
 	}
 }

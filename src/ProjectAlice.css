@@ -234,6 +234,7 @@ input, select, textarea {
 	outline: none;
 	padding: 5px;
 	width: auto;
+	height: 1.25em;
 }
 
 input:hover, textarea:hover {
@@ -242,6 +243,13 @@ input:hover, textarea:hover {
 
 input[type='text'], input[type='password'], input[type='number'], select, textarea {
 	width: auto;
+}
+
+input[type='color'] {
+	width: 50px;
+	padding: 1px;
+	height: 2em;
+	cursor: pointer;
 }
 
 textarea {
@@ -382,4 +390,33 @@ button:active {}
 
 .collapsed {
 	display: none;
+}
+
+.configLayout {
+	display: flex;
+	flex: 1;
+	flex-direction: row;
+	width: 100%;
+}
+
+.configLayout > .labels {
+	display: flex;
+	flex-direction: column;
+	margin-right: 1em;
+}
+
+.configLayout > .labels > label {
+	height: 2.5em;
+	display: flex;
+	align-items: center;
+}
+
+.configLayout > .inputs {
+	flex: 1;
+}
+
+.configLayout > .inputs > .input {
+	height: 2.5em;
+	display: flex;
+	align-items: center;
 }

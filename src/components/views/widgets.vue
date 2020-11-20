@@ -12,7 +12,7 @@
 		<tabs :tabs="tabs" :onChange="changePage"/>
 		<div class="tab_page" v-for="tab in tabs" :key="tab.id" v-if="tab.id === activePageId">
 			<vue-draggable-resizable
-				class-name="widget"
+				class-name="widgetContainer"
 				classNameActive="nothingtoseehere"
 				:w="parseInt(widget['params']['size'].split('x')[0])"
 				:h="parseInt(widget['params']['size'].split('x')[1])"
@@ -32,25 +32,27 @@
 				:key="widget.id"
 				v-if="widget['page'] === activePageId"
 			>
-				<component is="style" type="text/css" scoped>
-					{{ widget.css }}
-				</component>
-				<div class="widgetIcon" v-if="widget.params['title']">
-					<i :class="widget.icon" aria-hidden="true"></i>
-				</div>
-				<p v-html="widget.html"/>
-				<script type="application/javascript">
-					{{ widget.js }}
-				</script>
-				<div class="widgetTool optioner" v-if="settings">
-					<i class="fas fa-cogs clickable" aria-hidden="true"/>
-				</div>
-				<div class="widgetTool deleter" v-if="removeWidgets" @click="removeWidget(widget.id)">
-					<i class="far fa-trash-alt clickable" aria-hidden="true"/>
-				</div>
-				<div class="widgetTool zindexer" v-if="settings">
-					<i class="fas fa-level-up-alt clickable" aria-hidden="true"/>
-					<i class="fas fa-level-down-alt clickable" aria-hidden="true"/>
+				<div class="widget" :style="computeCustomStyle(widget)">
+					<component is="style" type="text/css" scoped>
+						{{ widget.css }}
+					</component>
+					<div class="widgetIcon" v-if="widget.params['title']">
+						<i :class="widget.icon" aria-hidden="true"></i>
+					</div>
+					<p v-html="widget.html"/>
+					<script type="application/javascript">
+						{{ widget.js }}
+					</script>
+					<div class="widgetTool optioner" v-if="settings" @click="openWidgetSettings(widget)">
+						<i class="fas fa-cogs clickable" aria-hidden="true"/>
+					</div>
+					<div class="widgetTool deleter" v-if="removeWidgets" @click="removeWidget(widget.id)">
+						<i class="far fa-trash-alt clickable" aria-hidden="true"/>
+					</div>
+					<div class="widgetTool zindexer" v-if="settings">
+						<i class="fas fa-level-up-alt clickable" aria-hidden="true"/>
+						<i class="fas fa-level-down-alt clickable" aria-hidden="true"/>
+					</div>
 				</div>
 			</vue-draggable-resizable>
 		</div>

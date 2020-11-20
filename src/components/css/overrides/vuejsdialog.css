@@ -50,3 +50,7 @@
 	border-bottom: 1px solid #FF8C00;
 	border-radius: 0;
 }
+
+.dg-backdrop {
+	opacity: 0.3;
+}
