@@ -91,9 +91,7 @@ export default {
 	methods: {
 		changePage: function(id) {
 			this.activePageId = id
-		},
-		saveAndClose: function() {
-			console.log('saved')
+			this.$forceUpdate()
 		},
 		cinemaMode: function() {
 			this.$store.commit('toggleCinemaMode')
@@ -174,11 +172,9 @@ export default {
 			}).then(response => {
 				if ('success' in response.data && response.data.success) {
 					let widget = this.widgetInstances[widgetId]
-					widget.x = x
-					widget.y = y
-					this.widgetInstances[widgetId] = widget
+					widget.params['x'] = x
+					widget.params['y'] = y
 				}
-				this.$forceUpdate()
 			})
 		},
 		saveSize: function(x, y, w, h) {
@@ -205,13 +201,11 @@ export default {
 			}).then(response => {
 				if ('success' in response.data && response.data.success) {
 					let widget = this.widgetInstances[widgetId]
-					widget.x = x
-					widget.y = y
-					widget.w = w
-					widget.h = h
-					this.widgetInstances[widgetId] = widget
+					widget.params['x'] = x
+					widget.params['y'] = y
+					widget.params['w'] = w
+					widget.params['h'] = h
 				}
-				this.$forceUpdate()
 			})
 		},
 		openWidgetSettings(widget) {
