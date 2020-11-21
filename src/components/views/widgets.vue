@@ -9,7 +9,13 @@
 			</div>
 		</overlay>
 		<actions-menu :menuItems="menuItems" v-if="$store.state.loggedInUser"/>
-		<tabs :tabs="tabs" :onChange="changePage"/>
+		<tabs
+			:tabs="tabs"
+			:addTab="addTab"
+			:removeTab="removeTab"
+			:renameTab="renameTab"
+			:onChange="changePage"
+		/>
 		<div class="tab_page" v-for="tab in tabs" :key="tab.id" v-if="tab.id === activePageId">
 			<vue-draggable-resizable
 				class-name="widgetContainer"
