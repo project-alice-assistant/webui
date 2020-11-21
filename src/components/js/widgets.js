@@ -78,7 +78,7 @@ export default {
 
 		axios({
 			method: 'get',
-			url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/pages/`,
+			url: `http://${this.$cookies.get('host')}:${this.$cookies.get('apiPort')}/api/v1.0.1/widgets/pages/`,
 			headers: {'auth': this.$cookies.get('apiToken')}
 		}).then(response => {
 			if ('pages' in response.data) {
@@ -99,7 +99,7 @@ export default {
 		fetchWidgetTemplates: function() {
 			axios({
 				method: 'get',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/templates/`
+				url: `http://${this.$cookies.get('host')}:${this.$cookies.get('apiPort')}/api/v1.0.1/widgets/templates/`
 			}).then(response => {
 				if ('widgets' in response.data) {
 					this.widgetTemplates = response.data['widgets']
@@ -109,7 +109,7 @@ export default {
 		fetchWidgetInstances: function() {
 			axios({
 				method: 'get',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/`,
+				url: `http://${this.$cookies.get('host')}:${this.$cookies.get('apiPort')}/api/v1.0.1/widgets/`,
 				headers: {'auth': this.$cookies.get('apiToken')}
 			}).then(response => {
 				if ('widgets' in response.data) {

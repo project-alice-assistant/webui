@@ -8,7 +8,7 @@
 				</div>
 			</div>
 		</overlay>
-		<actions-menu :menuItems="menuItems"/>
+		<actions-menu :menuItems="menuItems" v-if="$store.state.loggedInUser"/>
 		<tabs :tabs="tabs" :onChange="changePage"/>
 		<div class="tab_page" v-for="tab in tabs" :key="tab.id" v-if="tab.id === activePageId">
 			<vue-draggable-resizable

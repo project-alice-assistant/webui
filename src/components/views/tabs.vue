@@ -10,7 +10,7 @@
 		<div class="tab" v-if="adding">
 			<i class="fa-spinner fa-spin" aria-hidden="true"/>
 		</div>
-		<div class="tab clickable" @click="addTab">
+		<div class="tab clickable" @click="addTab" v-if="$store.state.loggedInUser">
 			<i class="fas fa-plus" aria-hidden="true"/>
 		</div>
 	</div>

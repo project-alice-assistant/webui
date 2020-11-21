@@ -37,6 +37,9 @@ export default {
 			})
 		},
 		removeTab: function(id) {
+			if (!this.$store.state.loggedInUser) {
+				return
+			}
 			let self = this
 			if (id <= 1) {
 				this.$dialog.alert('You can\'t delete the default page').then()
@@ -57,6 +60,10 @@ export default {
 			}
 		},
 		rename: function(id) {
+			if (!this.$store.state.loggedInUser) {
+				return
+			}
+
 			let self = this
 
 			const message = {}
