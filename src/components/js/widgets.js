@@ -234,11 +234,25 @@ export default {
 						'auth': self.$cookies.get('apiToken'),
 						'content-type': 'application/json'
 					}
+				}).catch(() => {
+					widget.params = backup
+				}).finally(() => {
+					this.settings = true
 				})
-				this.settings = true
 			}).catch(() => {
 				widget.params = backup
 				this.settings = true
+			})
+		},
+		saveWidgetParams(widget) {
+			axios({
+				method: 'PATCH',
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/${widget.id}/`,
+				data: JSON.stringify(widget.params),
+				headers: {
+					'auth': self.$cookies.get('apiToken'),
+					'content-type': 'application/json'
+				}
 			})
 		},
 		computeCustomStyle(widget) {
@@ -247,6 +261,53 @@ export default {
 			style += `background-color: ${widget.params['rgba']};`
 			style += `font-size: ${widget.params['font-size']}em;`
 			return style
+		},
+		moveZUp(widget) {
+			const myIndex = widget.params['z']
+			const myNewIndex = myIndex + 1;
+			const listing = this.listOfWidgetOnPage(widget['page'])
+
+			if (myNewIndex > listing.length) {
+				return
+			}
+
+			for (const w of listing) {
+				if (w.params['z'] === myNewIndex) {
+					w.params['z'] -= 1
+					widget.params['z'] = myNewIndex
+					this.saveWidgetParams(w)
+					this.saveWidgetParams(widget)
+					return
+				}
+			}
+		},
+		moveZDown(widget) {
+			const myIndex = widget.params['z']
+			const myNewIndex = myIndex - 1;
+			const listing = this.listOfWidgetOnPage(widget['page'])
+
+			if (myNewIndex <= 0) {
+				return
+			}
+
+			for (const w of listing) {
+				if (w.params['z'] === myNewIndex) {
+					w.params['z'] += 1
+					widget.params['z'] = myNewIndex
+					this.saveWidgetParams(w)
+					this.saveWidgetParams(widget)
+					return
+				}
+			}
+		},
+		listOfWidgetOnPage(pageId) {
+			let listing = []
+			for (const w of Object.values(this.widgetInstances)) {
+				if (w['page'] === pageId) {
+					listing.push(w)
+				}
+			}
+			return listing
 		}
 	}
 }

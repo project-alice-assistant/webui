@@ -50,8 +50,8 @@
 						<i class="far fa-trash-alt clickable" aria-hidden="true"/>
 					</div>
 					<div class="widgetTool zindexer" v-if="settings">
-						<i class="fas fa-level-up-alt clickable" aria-hidden="true"/>
-						<i class="fas fa-level-down-alt clickable" aria-hidden="true"/>
+						<i class="fas fa-level-up-alt clickable" aria-hidden="true" @click="moveZUp(widget)"/>
+						<i class="fas fa-level-down-alt clickable" aria-hidden="true" @click="moveZDown(widget)"/>
 					</div>
 				</div>
 			</vue-draggable-resizable>
