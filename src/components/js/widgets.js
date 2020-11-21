@@ -15,7 +15,7 @@ export default {
 					onClose: () => {
 						this.removeWidgets = false
 						this.settings = false
-						this.dragAndResizeEnabled = true
+						this.dragAndResizeEnabled = false
 					},
 					onOpen: () => {
 						this.dragAndResizeEnabled = true
@@ -216,6 +216,8 @@ export default {
 		},
 		openWidgetSettings(widget) {
 			let self = this
+			let backup = {...widget.params}
+			this.settings = false
 
 			const message = {}
 			const options = {
@@ -226,20 +228,24 @@ export default {
 			this.$dialog.prompt(message, options).then(dialogue => {
 				axios({
 					method: 'PATCH',
-					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/widgets/${id}/`,
-					data: JSON.stringify(dialogue.data),
-					headers: {'auth': self.$cookies.get('apiToken')}
-				}).then(response => {
-					console.log(response.data)
+					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/widgets/${dialogue.data.id}/`,
+					data: JSON.stringify(dialogue.data.params),
+					headers: {
+						'auth': self.$cookies.get('apiToken'),
+						'content-type': 'application/json'
+					}
 				})
-			}).catch(() =>{})
+				this.settings = true
+			}).catch(() => {
+				widget.params = backup
+				this.settings = true
+			})
 		},
 		computeCustomStyle(widget) {
 			let style = ''
-			style += widget.params['color'] !== '' ? `color: ${widget.params['color']};` : ''
-			style += widget.params['background'] !== '' ? `background-color: ${widget.params['background']};` : ''
-			style += widget.params['background-opacity'] !== '' ? `opacity: ${widget.params['background-opacity']};` : ''
-			style += widget.params['font-size'] !== '' ? `font-size: ${widget.params['font-size']}em;` : ''
+			style += `color: ${widget.params['color']};`
+			style += `background-color: ${widget.params['rgba']};`
+			style += `font-size: ${widget.params['font-size']}em;`
 			return style
 		}
 	}

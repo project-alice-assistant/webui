@@ -71,6 +71,7 @@
 	box-shadow: 0 2px 15px var(--accent);
 	font-size: 35px;
 	color: var(--text);
+	opacity: 1;
 }
 
 .optioner {

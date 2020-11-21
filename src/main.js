@@ -59,6 +59,15 @@ global.jQuery = require('jquery')
 const $ = global.jQuery
 window.$ = global.jQuery
 
+Vue.directive('init', {
+	bind(el, binding, vnode) {
+		let vModel = vnode.data.directives.find(d => d.rawName == 'v-model')
+		if (vModel) {
+			vnode.context[vModel.expression] = binding.value
+		}
+	}
+})
+
 //document.addEventListener('contextmenu', event => event.preventDefault())
 
 new Vue({

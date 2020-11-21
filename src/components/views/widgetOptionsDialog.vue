@@ -11,19 +11,55 @@
 			</div>
 			<div class="inputs">
 				<div class="input">
-					<VueToggles id="title" checked-text="Yes" unchecked-text="No" :value="options['widget']['params']['title']" @click="options['widget']['params']['title'] = !options['widget']['params']['title']" uncheckedBg="var(--windowBG)" checkedBg="var(--windowBG)"/>
+					<VueToggles
+						id="title"
+						checked-text="Yes"
+						unchecked-text="No"
+						:value="options['widget']['params']['title']"
+						@click="options['widget']['params']['title'] = !options['widget']['params']['title']"
+						uncheckedBg="var(--windowBG)"
+						checkedBg="var(--windowBG)"
+					/>
 				</div>
 				<div class="input">
-					<input id="background" type="color" v-model="options['widget']['params']['background']"/>
+					<input
+						id="background"
+						type="color"
+						v-model="options['widget'].params['background']"
+						v-init="options['widget'].params['background']"
+						@input="hex2rgba"
+					/>
 				</div>
 				<div class="input">
-					<input id="opacity" type="range" min="0" max="1" step="0.1" v-model="options['widget']['params']['background-opacity']"/> {{ options['widget']['params']['background-opacity'] }}%
+					<input
+						id="opacity"
+						type="range"
+						min="0"
+						max="1"
+						step="0.1"
+						v-model="options['widget'].params['background-opacity']"
+						v-init="options['widget'].params['background-opacity']"
+						@input="hex2rgba"
+					/>{{ parseFloat(options['widget'].params['background-opacity']) * 100 }}%
 				</div>
 				<div class="input">
-					<input id="font-size" type="range" min="0.15" max="10" step="0.01" v-model="options['widget']['params']['font-size']"/> {{ options['widget']['params']['font-size'] }}em
+					<input
+						id="font-size"
+						type="range"
+						min="0.25"
+						max="5"
+						step="0.01"
+						v-model="options['widget'].params['font-size']"
+						v-init="options['widget'].params['font-size']"
+					/>{{ options['widget'].params['font-size'] }}em
 				</div>
 				<div class="input">
-					<input id="font-color" type="color" v-model="options['widget']['params']['color']"/>
+					<input
+						id="font-color"
+						type="color"
+						v-model="options['widget'].params['color']"
+						v-init="options['widget'].params['font-size']"
+					/>
 				</div>
 			</div>
 		</div>
@@ -39,17 +75,18 @@ import VueDialogMixin from 'vuejs-dialog/dist/vuejs-dialog-mixin.min.js'
 
 export default {
 	mixins: [VueDialogMixin],
-	data: function() {
-		return {
-			hasTitle: true
-		}
-	},
 	methods: {
 		handleConfirm() {
-			this.proceed(this.options['widget']['params'])
+			this.proceed(this.options['widget'])
 		},
 		handleDismiss() {
 			this.cancel()
+		},
+		hex2rgba() {
+			let hex = this.options['widget'].params['background']
+			let alpha = this.options['widget'].params['background-opacity']
+			const [r, g, b] = hex.match(/\w\w/g).map(x => parseInt(x, 16));
+			this.options['widget'].params['rgba'] = `rgba(${r}, ${g}, ${b}, ${alpha})`
 		}
 	}
 };
