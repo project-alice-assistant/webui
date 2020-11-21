@@ -132,8 +132,7 @@ export default {
 				}
 			}).then(response => {
 				if ('widget' in response.data) {
-					this.widgetInstances[response.data['widget']['id']] = response.data['widget']
-					this.$forceUpdate()
+					this.$set(this.widgetInstances, response.data['widget']['id'], response.data['widget'])
 				}
 			})
 		},
@@ -148,7 +147,7 @@ export default {
 				if ('success' in response.data && response.data.success) {
 					const listing = this.listOfWidgetOnPage(this.widgetInstances[widgetId]['page'])
 					const hisZIndex = this.widgetInstances[widgetId]['params']['z']
-					delete this.widgetInstances[widgetId]
+					this.$delete(this.widgetInstances, widgetId)
 
 					for (const w of listing) {
 						if (w.params['z'] > hisZIndex) {
@@ -156,8 +155,6 @@ export default {
 							this.saveWidgetParams(w)
 						}
 					}
-
-					this.$forceUpdate()
 				}
 			})
 		},
