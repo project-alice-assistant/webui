@@ -146,7 +146,17 @@ export default {
 				}
 			}).then(response => {
 				if ('success' in response.data && response.data.success) {
+					const listing = this.listOfWidgetOnPage(this.widgetInstances[widgetId]['page'])
+					const hisZIndex = this.widgetInstances[widgetId]['params']['z']
 					delete this.widgetInstances[widgetId]
+
+					for (const w of listing) {
+						if (w.params['z'] > hisZIndex) {
+							w.params['z'] -= 1
+							this.saveWidgetParams(w)
+						}
+					}
+
 					this.$forceUpdate()
 				}
 			})
