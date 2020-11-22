@@ -268,6 +268,10 @@ export default {
 				style += 'box-shadow:none;'
 			}
 
+			if (widget.params['rotation'] && widget.params['rotation'] !== 0) {
+				style += `transform:rotate(${widget.params['rotation']}deg);`
+			}
+
 			return style
 		},
 		moveZUp(widget) {

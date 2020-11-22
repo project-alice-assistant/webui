@@ -5,6 +5,7 @@
 			<div class="labels">
 				<label for="background">Display title: </label>
 				<label for="background">Borders: </label>
+				<label for="background">Rotation: </label>
 				<label for="background">Background color: </label>
 				<label for="opacity">Background opacity: </label>
 				<label for="font-size">Font size: </label>
@@ -32,6 +33,17 @@
 						uncheckedBg="var(--windowBG)"
 						checkedBg="var(--windowBG)"
 					/>
+				</div>
+				<div class="input">
+					<input
+						id="rotation"
+						type="range"
+						min="-180"
+						max="180"
+						step="5"
+						v-model="options['widget'].params['rotation']"
+						v-init="options['widget'].params['rotation']"
+					/>{{ options['widget'].params['rotation'] }}°
 				</div>
 				<div class="input">
 					<input
