@@ -14,16 +14,18 @@
 				<li><span class="fa-li"><i class="fas fa-quote-right" aria-hidden="true"></i></span>{{ skill.description }}</li>
 			</ul>
 		</overlay>
+		<overlay :opened="viewIntents" :visible="viewIntents" @closed="viewIntents = false" animate="zoom-in" :header="`Intents - ${skill.name}`">
+			<p v-for="(utterances, intent) in skill['intents']" v-if="intent.startsWith('hermes/intent/') && utterances.length > 0">
+				<strong>{{ intent.split('hermes/intent/')[1] }}: «</strong> <i>{{ utterances[Math.floor(Math.random() * utterances.length)] }}</i> <strong>»</strong>
+			</p>
+		</overlay>
 		<overlay :opened="viewInstructions" :visible="viewInstructions" @closed="viewInstructions = false" animate="zoom-in" :header="`Instructions - ${skill.name}`">
 			<vue-simple-markdown :source="skill.instructions"/>
 		</overlay>
-		<overlay :opened="viewIntents" :visible="viewIntents" @closed="viewIntents = false" animate="zoom-in" :header="`Intents - ${skill.name}`">
-				intents
-		</overlay>
 		<div class="skillBody" v-if="viewSkill">
-			<div class="clickable" @click="viewInstructions = true" data-tour="7" v-if="skill.instructions.length > 0">Instructions</div>
 			<div class="clickable" @click="viewIntents = true" data-tour="8">Intents</div>
 			<div class="clickable" @click="viewInfos = true" data-tour="9">Infos</div>
+			<div class="clickable" @click="viewInstructions = true" data-tour="7" v-if="skill.instructions.length > 0">Instructions</div>
 			<div class="skillActions">
 				<i class="fas fa-cog clickable" aria-hidden="true" v-if="Object.keys(skill.settings).length" data-tour="1"/>
 				<i class="fas fa-power-off clickable" aria-hidden="true" v-if="!skill.required" @click="toggle" data-tour="2"/>
