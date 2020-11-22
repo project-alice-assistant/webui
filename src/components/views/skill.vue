@@ -15,7 +15,7 @@
 			</ul>
 		</overlay>
 		<overlay :opened="viewInstructions" :visible="viewInstructions" @closed="viewInstructions = false" animate="zoom-in" :header="`Instructions - ${skill.name}`">
-				instructions
+			<vue-simple-markdown :source="skill.instructions"/>
 		</overlay>
 		<overlay :opened="viewIntents" :visible="viewIntents" @closed="viewIntents = false" animate="zoom-in" :header="`Intents - ${skill.name}`">
 				intents

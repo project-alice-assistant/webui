@@ -12,6 +12,7 @@ import Overlay from 'vuejs-overlay'
 import VueDialog from 'vuejs-dialog'
 import VueTooltip from 'v-tooltip'
 import VueDraggableResizable from 'vue-draggable-resizable'
+import VueSimpleMarkdown from 'vue-simple-markdown'
 
 import Skill from './components/views/skill'
 import StoreSkill from './components/views/storeSkill'
@@ -19,9 +20,9 @@ import ActionsMenu from './components/views/actionsMenu'
 import Tabs from './components/views/tabs'
 
 import 'vuejs-dialog/dist/vuejs-dialog.min.css'
-import './components/css/overlay.css'
 import 'vue-tour/dist/vue-tour.css'
 import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
+import 'vue-simple-markdown/dist/vue-simple-markdown.css'
 
 Vue.config.productionTip = false
 
@@ -32,6 +33,7 @@ Vue.use(Overlay)
 Vue.use(VueDialog)
 Vue.use(VueTour)
 Vue.use(VueTooltip)
+Vue.use(VueSimpleMarkdown)
 
 Vue.$cookies.config('10y')
 
@@ -46,6 +48,8 @@ import './ProjectAlice.css'
 import './components/css/overrides/vuejsdialog.css'
 import './components/css/overrides/vuetour.css'
 import './components/css/overrides/tooltips.css'
+import './components/css/overrides/overlay.css'
+import './components/css/overrides/vue-simple-markdown.css'
 
 import faIconOption from './components/views/fontawesomePromptDialog'
 
