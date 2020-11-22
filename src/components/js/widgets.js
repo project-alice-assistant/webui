@@ -181,6 +181,7 @@ export default {
 					let widget = this.widgetInstances[widgetId]
 					widget.params['x'] = x
 					widget.params['y'] = y
+					this.$set(this.widgetInstances, widgetId, widget)
 				}
 			})
 		},
@@ -212,6 +213,7 @@ export default {
 					widget.params['y'] = y
 					widget.params['w'] = w
 					widget.params['h'] = h
+					this.$set(this.widgetInstances, widgetId, widget)
 				}
 			})
 		},
@@ -261,6 +263,11 @@ export default {
 			style += `color: ${widget.params['color']};`
 			style += `background-color: ${widget.params['rgba']};`
 			style += `font-size: ${widget.params['font-size']}em;`
+
+			if (!widget.params['borders']) {
+				style += 'box-shadow:none;'
+			}
+
 			return style
 		},
 		moveZUp(widget) {

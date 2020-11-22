@@ -4,6 +4,7 @@ import widgets from '../components/views/widgets';
 import skills from '../components/views/skills';
 import scenarios from '../components/views/scenarios';
 import login from '../components/views/login';
+import admin from '../components/views/admin';
 
 Vue.use(VueRouter)
 
@@ -43,6 +44,13 @@ const routes = [
 		component: login,
 		meta: {
 			title: 'login'
+		}
+	},
+	{
+		path: '/admin',
+		component: admin,
+		meta: {
+			title: 'admin'
 		}
 	}
 ]

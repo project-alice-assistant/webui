@@ -4,6 +4,7 @@
 		<div class="configLayout">
 			<div class="labels">
 				<label for="background">Display title: </label>
+				<label for="background">Borders: </label>
 				<label for="background">Background color: </label>
 				<label for="opacity">Background opacity: </label>
 				<label for="font-size">Font size: </label>
@@ -17,6 +18,17 @@
 						unchecked-text="No"
 						:value="options['widget']['params']['title']"
 						@click="options['widget']['params']['title'] = !options['widget']['params']['title']"
+						uncheckedBg="var(--windowBG)"
+						checkedBg="var(--windowBG)"
+					/>
+				</div>
+				<div class="input">
+					<VueToggles
+						id="borders"
+						checked-text="Yes"
+						unchecked-text="No"
+						:value="options['widget']['params']['borders']"
+						@click="options['widget']['params']['borders'] = !options['widget']['params']['borders']"
 						uncheckedBg="var(--windowBG)"
 						checkedBg="var(--windowBG)"
 					/>
