@@ -1,5 +1,5 @@
 <template>
-	<div class="skill" data-tour="0">
+	<div class="skill" :style="skill.name === 'ProjectAliceDemo' ? 'margin-left: 200px;' : ''" data-tour="0">
 		<div class="skillTitle">
 			<div class="skillName">{{ skill.name }}</div>
 			<div class="skillIcon"><i :class="skill.icon" aria-hidden="true"/></div>
@@ -23,9 +23,9 @@
 			<vue-simple-markdown :source="skill.instructions"/>
 		</overlay>
 		<div class="skillBody" v-if="viewSkill">
-			<div class="clickable" @click="viewIntents = true" data-tour="8">Intents</div>
-			<div class="clickable" @click="viewInfos = true" data-tour="9">Infos</div>
-			<div class="clickable" @click="viewInstructions = true" data-tour="7" v-if="skill.instructions.length > 0">Instructions</div>
+			<div class="clickable" @click="viewIntents = true" data-tour="7">Intents</div>
+			<div class="clickable" @click="viewInfos = true" data-tour="8">Infos</div>
+			<div class="clickable" @click="viewInstructions = true" data-tour="9" v-if="skill.instructions.length > 0">Instructions</div>
 			<div class="skillActions">
 				<i class="fas fa-cog clickable" aria-hidden="true" v-if="Object.keys(skill.settings).length" data-tour="1"/>
 				<i class="fas fa-power-off clickable" aria-hidden="true" v-if="!skill.required" @click="toggle" data-tour="2"/>

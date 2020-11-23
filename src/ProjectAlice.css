@@ -183,6 +183,7 @@ nav {
 	padding: 0;
 	width: 10em;
 	flex-direction: column;
+	z-index: 0;
 }
 
 #mainSection {
@@ -214,7 +215,8 @@ nav {
 	align-content: flex-start;
 	flex-direction: row;
 	overflow-y: auto;
-	height: 93%;
+	height: 100%;
+	width: 100%;
 }
 
 .clickable {

@@ -79,14 +79,6 @@ export default {
 				},
 				{
 					target: '[data-tour="7"]',
-					content: 'If the skill developer included some instructions on how to use this skill, you will find them here',
-					params: {
-						placement: 'right',
-						highlight: true
-					}
-				},
-				{
-					target: '[data-tour="8"]',
 					content: 'Don\'t know what to say to use this skill? Check here!',
 					params: {
 						placement: 'right',
@@ -94,8 +86,16 @@ export default {
 					}
 				},
 				{
-					target: '[data-tour="9"]',
+					target: '[data-tour="8"]',
 					content: 'Get some useful info about the skill, like, who made it, its actual version etc.',
+					params: {
+						placement: 'right',
+						highlight: true
+					}
+				},
+				{
+					target: '[data-tour="9"]',
+					content: 'If the skill developer included some instructions on how to use this skill, you will find them here',
 					params: {
 						placement: 'right',
 						highlight: true
@@ -135,7 +135,6 @@ export default {
 				category: 'system',
 				maintainers: ['project', 'alice']
 			})
-
 			this.$tours['skills'].start()
 		} else {
 			this.fetchSkills()
