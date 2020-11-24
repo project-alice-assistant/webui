@@ -37,14 +37,14 @@ export default {
 				},
 				{
 					target: '[data-tour="1"]',
-					content: 'If the skill has any user settings available, this icon will appear. Click it to configure your skill!',
+					content: 'If the skill has any user settings available, this button will appear. Click it to configure your skill!',
 					params: {
 						highlight: true
 					}
 				},
 				{
 					target: '[data-tour="2"]',
-					content: 'You can stop any skill that isn\'t required for Alice to run using this icon',
+					content: 'You can stop any skill that isn\'t required for Alice to run using this button',
 					params: {
 						highlight: true
 					}
@@ -58,7 +58,7 @@ export default {
 				},
 				{
 					target: '[data-tour="4"]',
-					content: 'You disabled skill auto update? In that case you\'ll still be able to update your skill using this icon!',
+					content: 'You disabled skill auto update? In that case you\'ll still be able to update your skill using this button!',
 					params: {
 						highlight: true
 					}
