@@ -4,7 +4,7 @@
 		<h3>Skill settings</h3>
 		<div class="configLayout">
 			<div class="labels">
-				<label :for="settingName" v-for="(settingTemplate, settingName) in options['skill']['settingsTemplate']">
+				<label :for="settingName" v-for="(settingTemplate, settingName) in options['skill']['settingsTemplate']" v-tooltip="settingTemplate['description']">
 					{{ settingName }}:
 				</label>
 			</div>
@@ -17,7 +17,6 @@
 						v-model="options['skill']['settings'][settingName]"
 						v-init="options['skill']['settings'][settingName]"
 						:placeholder="settingTemplate['defaultValue']"
-						v-tooltip="settingTemplate['description']"
 					/>
 					<input
 						:id="settingName"
@@ -26,7 +25,6 @@
 						v-model="options['skill']['settings'][settingName]"
 						v-init="options['skill']['settings'][settingName]"
 						:placeholder="settingTemplate['defaultValue']"
-						v-tooltip="settingTemplate['description']"
 					/>
 					<input
 						:id="settingName"
@@ -35,7 +33,6 @@
 						v-model="options['skill']['settings'][settingName]"
 						v-init="options['skill']['settings'][settingName]"
 						:placeholder="settingTemplate['defaultValue']"
-						v-tooltip="settingTemplate['description']"
 					/>
 					<input
 						:id="settingName"
@@ -44,7 +41,6 @@
 						v-model="options['skill']['settings'][settingName]"
 						v-init="options['skill']['settings'][settingName]"
 						:placeholder="settingTemplate['defaultValue']"
-						v-tooltip="settingTemplate['description']"
 					/>
 					<VueToggles
 						:id="settingName"
@@ -55,7 +51,6 @@
 						@click="options['skill']['settings'][settingName] = !options['skill']['settings'][settingName]"
 						uncheckedBg="var(--windowBG)"
 						checkedBg="var(--windowBG)"
-						v-tooltip="settingTemplate['description']"
 					/>
 					<input
 						:id="settingName"
@@ -67,13 +62,11 @@
 						v-model="options['skill']['settings'][settingName]"
 						v-init="options['skill']['settings'][settingName]"
 						:placeholder="settingTemplate['defaultValue']"
-						v-tooltip="settingTemplate['description']"
 					/>
 					<textarea
 						:id="settingName"
 						v-if="settingTemplate['dataType'] === 'longstring'"
 						:placeholder="settingTemplate['defaultValue']"
-						v-tooltip="settingTemplate['description']"
 						v-model="options['skill']['settings'][settingName]"
 						v-init="options['skill']['settings'][settingName]"
 					/>
