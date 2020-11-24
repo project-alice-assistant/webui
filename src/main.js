@@ -52,17 +52,18 @@ import './components/css/overrides/overlay.css'
 import './components/css/overrides/vue-simple-markdown.css'
 
 import faIconOption from './components/views/fontawesomePromptDialog'
-
-Vue.dialog.registerComponent('fontawesomePromptDialog', faIconOption)
 import widgetOption from './components/views/widgetOptionsDialog'
-
+import skillSettings from './components/views/skillSettingsDialog'
+Vue.dialog.registerComponent('fontawesomePromptDialog', faIconOption)
 Vue.dialog.registerComponent('widgetOptionsPromptDialog', widgetOption)
+Vue.dialog.registerComponent('skillSettingsPromptDialog', skillSettings)
 
 // Jquery use ONLY FOR WIDGETS, DO NOT USE JQUERY FOR __ANYTHING ELSE__
 global.jQuery = require('jquery')
 const $ = global.jQuery
 window.$ = global.jQuery
 
+// Workaround to init v-models
 Vue.directive('init', {
 	bind(el, binding, vnode) {
 		let vModel = vnode.data.directives.find(d => d.rawName == 'v-model')

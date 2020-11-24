@@ -1,11 +1,11 @@
 <template>
 	<div class="custom-view-wrapper">
-		<h3>Widget settings</h3>
+		<h3>Widget options</h3>
 		<div class="configLayout">
 			<div class="labels">
-				<label for="background">Display title: </label>
-				<label for="background">Borders: </label>
-				<label for="background">Rotation: </label>
+				<label for="title">Display title: </label>
+				<label for="borders">Borders: </label>
+				<label for="rotation">Rotation: </label>
 				<label for="background">Background color: </label>
 				<label for="opacity">Background opacity: </label>
 				<label for="font-size">Font size: </label>

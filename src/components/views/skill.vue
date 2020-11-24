@@ -27,7 +27,7 @@
 			<div class="clickable" @click="viewInfos = true" data-tour="8">Infos</div>
 			<div class="clickable" @click="viewInstructions = true" data-tour="9" v-if="skill.instructions.length > 0">Instructions</div>
 			<div class="skillActions">
-				<i class="fas fa-cog clickable" aria-hidden="true" v-if="Object.keys(skill.settings).length" data-tour="1"/>
+				<i class="fas fa-cog clickable" aria-hidden="true" v-if="Object.keys(skill.settings).length" @click="showSettings(skill)" data-tour="1"/>
 				<i class="fas fa-power-off clickable" aria-hidden="true" v-if="!skill.required" @click="toggle" data-tour="2"/>
 				<i class="fas fa-sync clickable" aria-hidden="true" v-if="skill.active" @click="reloadSkill" data-tour="3"/>
 				<i class="fas fa-arrow-alt-circle-up clickable" aria-hidden="true" v-if="skill.updateAvailable" @click="update" data-tour="4"/>
