@@ -23,15 +23,15 @@
 			<vue-simple-markdown :source="skill.instructions"/>
 		</overlay>
 		<div class="skillBody" v-if="viewSkill">
-			<div class="clickable" @click="viewIntents = true" data-tour="7">Intents</div>
-			<div class="clickable" @click="viewInfos = true" data-tour="8">Infos</div>
-			<div class="clickable" @click="viewInstructions = true" data-tour="9" v-if="skill.instructions.length > 0">Instructions</div>
+			<div class="clickable" @click="$tours['skills'].currentStep !== -1 ? '' : viewIntents = true" data-tour="7">Intents</div>
+			<div class="clickable" @click="$tours['skills'].currentStep !== -1 ? '' : viewInfos = true" data-tour="8">Infos</div>
+			<div class="clickable" @click="$tours['skills'].currentStep !== -1 ? '' : viewInstructions = true" data-tour="9" v-if="skill.instructions.length > 0">Instructions</div>
 			<div class="skillActions">
-				<i class="fas fa-cog clickable" aria-hidden="true" v-if="Object.keys(skill.settings).length" @click="showSettings(skill)" data-tour="1" v-tooltip="'Settings'"/>
-				<i class="fas fa-power-off clickable" aria-hidden="true" v-if="!skill.required" @click="toggle" data-tour="2" v-tooltip="skill.active ? 'Stop' : 'Start'"/>
-				<i class="fas fa-sync clickable" aria-hidden="true" v-if="skill.active" @click="reloadSkill" data-tour="3" v-tooltip="'Reload'"/>
-				<i class="fas fa-arrow-alt-circle-up clickable" aria-hidden="true" v-if="skill.updateAvailable" @click="update" data-tour="4" v-tooltip="'Update'"/>
-				<i class="far fa-times-circle clickable" aria-hidden="true" v-if="!skill.required" @click="remove" data-tour="5" v-tooltip="'Remove'"/>
+				<i class="fas fa-cog clickable" aria-hidden="true" v-if="Object.keys(skill.settings).length" @click="$tours['skills'].currentStep !== -1 ? '' : showSettings(skill)" data-tour="1" v-tooltip="'Settings'"/>
+				<i class="fas fa-power-off clickable" aria-hidden="true" v-if="!skill.required" @click="$tours['skills'].currentStep !== -1 ? '' : toggle" data-tour="2" v-tooltip="skill.active ? 'Stop' : 'Start'"/>
+				<i class="fas fa-sync clickable" aria-hidden="true" v-if="skill.active" @click="$tours['skills'].currentStep !== -1 ? '' : reloadSkill" data-tour="3" v-tooltip="'Reload'"/>
+				<i class="fas fa-arrow-alt-circle-up clickable" aria-hidden="true" v-if="skill.updateAvailable" @click="$tours['skills'].currentStep !== -1 ? '' : update" data-tour="4" v-tooltip="'Update'"/>
+				<i class="far fa-times-circle clickable" aria-hidden="true" v-if="!skill.required" @click="$tours['skills'].currentStep !== -1 ? '' : remove" data-tour="5" v-tooltip="'Remove'"/>
 			</div>
 			<div class="skillStatusAround" />
 			<div class="skillStatus" :class="skill.active ? 'active' : 'disabled'" data-tour="6"/>
