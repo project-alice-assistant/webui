@@ -13,6 +13,7 @@ import VueDialog from 'vuejs-dialog'
 import VueTooltip from 'v-tooltip'
 import VueDraggableResizable from 'vue-draggable-resizable'
 import VueSimpleMarkdown from 'vue-simple-markdown'
+import VueI18n from 'vue-i18n'
 
 import Skill from './components/views/skill'
 import StoreSkill from './components/views/storeSkill'
@@ -34,6 +35,7 @@ Vue.use(VueDialog)
 Vue.use(VueTour)
 Vue.use(VueTooltip)
 Vue.use(VueSimpleMarkdown)
+Vue.use(VueI18n)
 
 Vue.$cookies.config('10y')
 
