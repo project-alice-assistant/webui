@@ -9,7 +9,8 @@ export default new Vuex.Store({
 		mqtt: null,
 		resourceUsage: {},
 		loggedInUser: false,
-		fullScreen: false
+		fullScreen: false,
+		i18n: {}
 	},
 	mutations: {
 		setSettings(state, settings) {
@@ -37,6 +38,9 @@ export default new Vuex.Store({
 		},
 		toggleCinemaMode(state) {
 			state.fullScreen = !state.fullScreen
+		},
+		setI18n(state, obj) {
+			state.i18n = obj
 		}
 	}
 })

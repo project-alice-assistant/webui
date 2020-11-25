@@ -28,7 +28,7 @@ export default {
 		this.connect()
 	},
 	methods: {
-		connect: function () {
+		async connect() {
 			this.$modal.hide('no-alice')
 			this.$modal.show('loading')
 			axios.get(`http://${this.ip}:${this.port}/api/v1.0.1/utils/config/`)
@@ -39,6 +39,7 @@ export default {
 						this.$cookies.set('host', this.ip)
 						this.$cookies.set('apiPort', this.port)
 					}
+					this.loadI18n()
 					this.connectMQTT()
 					this.validateToken()
 				})
@@ -94,6 +95,19 @@ export default {
 					}
 				})
 			}
+		},
+		loadI18n: function() {
+			axios.get(`http://${this.ip}:${this.port}/api/v1.0.1/utils/i18n/`)
+				.then(response => {
+					const i18n = this.$store.state.i18n
+					for (const [lang, data] of Object.entries(response.data['data'])) {
+						i18n.setLocaleMessage(lang, data)
+					}
+					this.$store.commit('setI18n', i18n)
+				})
+				.catch(reason => {
+					console.log('Failed loading i18n: ' + reason)
+				})
 		},
 		onMessage: function (msg) {
 			if (msg.topic === 'projectalice/devices/resourceUsage') {

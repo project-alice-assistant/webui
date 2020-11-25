@@ -68,17 +68,23 @@ window.$ = global.jQuery
 // Workaround to init v-models
 Vue.directive('init', {
 	bind(el, binding, vnode) {
-		let vModel = vnode.data.directives.find(d => d.rawName == 'v-model')
+		let vModel = vnode.data.directives.find(d => d.rawName === 'v-model')
 		if (vModel) {
 			vnode.context[vModel.expression] = binding.value
 		}
 	}
 })
 
+const i18n = new VueI18n({
+	local: 'en',
+	messages: {}
+})
+store.commit('setI18n', i18n)
 //document.addEventListener('contextmenu', event => event.preventDefault())
 
 new Vue({
 	store,
 	router,
+	i18n,
 	render: h => h(App)
 }).$mount('#app')
