@@ -10,7 +10,8 @@ export default new Vuex.Store({
 		resourceUsage: {},
 		loggedInUser: false,
 		fullScreen: false,
-		i18n: {}
+		i18n: {},
+		uiConnected: false
 	},
 	mutations: {
 		setSettings(state, settings) {
@@ -41,6 +42,9 @@ export default new Vuex.Store({
 		},
 		setI18n(state, obj) {
 			state.i18n = obj
+		},
+		uiConnected(state, connected) {
+			state.uiConnected = connected
 		}
 	}
 })

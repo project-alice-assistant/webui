@@ -1,29 +1,22 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import widgets from '../components/views/widgets';
-import skills from '../components/views/skills';
-import scenarios from '../components/views/scenarios';
-import login from '../components/views/login';
-import admin from '../components/views/admin';
+import widgets from '../components/views/widgets'
+import skills from '../components/views/skills'
+import scenarios from '../components/views/scenarios'
+import login from '../components/views/login'
+import admin from '../components/views/admin'
+import connect from '../components/views/connect'
 
 Vue.use(VueRouter)
 
 const routes = [
 	{
-		path: '/',
-		name: 'Home',
-		component: widgets,
+		path: '/connect',
+		name: 'Connect',
+		component: connect,
 		meta: {
-			title: 'widgets'
+			title: 'connect'
 		}
-	},
-	{
-		path: '/home',
-		redirect: '/'
-	},
-	{
-		path: '/widgets',
-		redirect: '/'
 	},
 	{
 		path: '/skills',
@@ -51,6 +44,22 @@ const routes = [
 		component: admin,
 		meta: {
 			title: 'admin'
+		}
+	},
+	{
+		path: '/home',
+		redirect: '/'
+	},
+	{
+		path: '/widgets',
+		redirect: '/'
+	},
+	{
+		path: '*',
+		name: 'Home',
+		component: widgets,
+		meta: {
+			title: 'widgets'
 		}
 	}
 ]

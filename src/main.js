@@ -77,6 +77,8 @@ Vue.directive('init', {
 
 const i18n = new VueI18n({
 	local: 'en',
+	fallbackLocale: 'en',
+	silentFallbackWarn: true,
 	messages: {}
 })
 store.commit('setI18n', i18n)

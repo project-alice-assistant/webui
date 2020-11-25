@@ -29,7 +29,7 @@ export default {
 						this.$cookies.set('username', this.username)
 						this.$cookies.set('apiToken', response.data.apiToken)
 					}
-					this.$router.replace('widgets')
+					this.$router.replace('/')
 				}
 			}).catch(response => {
 				console.log('Connection failed: ' + response)

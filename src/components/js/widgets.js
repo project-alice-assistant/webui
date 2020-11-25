@@ -7,7 +7,7 @@ export default {
 			tabs: {},
 			menuItems: [
 				{
-					name: this.$t('nav.admin'),
+					name: 'edit',
 					icon: 'fas fa-pen-square',
 					isToggle: true,
 					extendedIcon: 'fas fa-times-circle',
