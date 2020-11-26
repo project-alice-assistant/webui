@@ -30,6 +30,12 @@ export default {
 			}
 		)
 	},
+	updated: function() {
+		if (this.follow) {
+			let terminal = this.$el.querySelector('#terminal')
+			terminal.scrollTop = terminal.scrollHeight
+		}
+	},
 	beforeDestroy: function() {
 		this.$store.state.mqtt.unsubscribe('projectalice/devices/resourceUsage')
 		this.unwatch()
