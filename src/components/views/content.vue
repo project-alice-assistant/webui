@@ -1,8 +1,10 @@
 <template>
 	<section id="mainSection">
-		<router-view></router-view>
+		<keep-alive>
+			<router-view/>
+		</keep-alive>
 	</section>
 </template>
 
-<style src="../css/content.css"></style>
-<script src="../js/content.js"></script>
+<style src="../css/content.css"/>
+<script src="../js/content.js"/>

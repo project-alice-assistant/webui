@@ -4,7 +4,7 @@
 		<router-link tag="button" to="/skills" v-if="this.$store.state.loggedInUser">{{ $t('nav.skills') }}</router-link>
 		<router-link tag="button" to="/widgets">{{ $t('nav.myhome') }}</router-link>
 		<router-link tag="button" to="/scenarios" v-if="this.$store.state.loggedInUser && this.$store.state.settings['scenariosActive']">{{ $t('nav.scenarios') }}</router-link>
-		<router-link tag="button" to="/widgets" v-if="this.$store.state.loggedInUser">{{ $t('nav.syslog') }}</router-link>
+		<router-link tag="button" to="/syslog" v-if="this.$store.state.loggedInUser">{{ $t('nav.syslog') }}</router-link>
 		<router-link tag="button" to="/widgets" v-if="this.$store.state.loggedInUser">{{ $t('nav.alicewatch') }}</router-link>
 		<router-link tag="button" to="/widgets" v-if="this.$store.state.settings['devMode'] && this.$store.state.loggedInUser">{{ $t('nav.devmode') }}</router-link>
 		<router-link tag="button" to="/admin" v-if="this.$store.state.loggedInUser">{{ $t('nav.admin') }}</router-link>

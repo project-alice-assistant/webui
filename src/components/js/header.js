@@ -3,11 +3,30 @@ export default {
 	data() {
 		return {
 			title: '',
-			mqtt: null
+			unwatch: {},
+			resources: {
+				cpu: 0,
+				ram: 0,
+				swp: 0
+			}
 		}
 	},
-	mounted: function() {
-		this.mqtt = this.$store.state.mqtt
+	created: function() {
+		let self = this
+		this.unwatch = this.$store.watch(
+			function(state) {
+				return state.mqttMessage
+			},
+			function(msg) {
+				if (msg.topic === 'projectalice/devices/resourceUsage') {
+					self.resources = JSON.parse(msg.payloadString)
+				}
+			}
+		)
+	},
+	beforeDestroy: function() {
+		this.$store.state.mqtt.unsubscribe('projectalice/devices/resourceUsage')
+		this.unwatch()
 	},
 	watch: {
 		$route: {

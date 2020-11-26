@@ -120,13 +120,12 @@ export default {
 			})
 		},
 		onMessage: function (msg) {
-			if (msg.topic === 'projectalice/devices/resourceUsage') {
-				this.$store.commit('setResourceUsage', JSON.parse(msg.payloadString))
-			}
+			this.$store.commit('mqttMessage', msg)
 		},
 		onConnected: function () {
 			console.log('Mqtt connected')
 			this.$store.state.mqtt.subscribe('projectalice/devices/resourceUsage')
+			this.$store.state.mqtt.subscribe('projectalice/logging/syslog')
 		},
 		onConnectionFailed: function (_msg) {
 			console.log('Mqtt connection failed')

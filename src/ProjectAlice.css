@@ -120,8 +120,14 @@
 
 /* ========================= BUILT IN TAGS ======================== */
 
-::-webkit-scrollbar { width: 1em; background-color: var(--accent); }
-::-webkit-scrollbar-thumb { background-color: var(--secondary); }
+::-webkit-scrollbar {
+	width: 1em;
+	background-color: var(--accent);
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: var(--secondary);
+}
 
 html, body {
 	background-color: var(--accent);

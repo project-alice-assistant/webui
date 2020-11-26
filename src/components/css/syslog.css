@@ -1,0 +1,74 @@
+.terminal {
+	display: flex;
+	flex: 1;
+	flex-flow: column;
+	margin: 15px;
+	background-color: var(--accent);
+	border: 2px solid var(--windowBG);
+	box-sizing: border-box;
+	padding: 10px;
+	overflow: hidden;
+	overflow-y: auto;
+	height: 0;
+}
+
+.terminalInput {
+	margin: 15px;
+}
+
+.terminalInput > input {
+	width: 500px;
+	border: 2px solid var(--windowBG);
+	margin-right: 15px;
+}
+
+.log {
+	display: inline-block;
+}
+
+.logLine {
+	display: flex;
+	font-size: 1em;
+	height: 1.5em;
+}
+
+.logInfo {
+	color: var(--text);
+}
+
+.logWarning {
+	color: orange;
+}
+
+.logBlue {
+	color: blue;
+}
+
+.logGrey {
+	color: grey;
+}
+
+.logOrange {
+	color: orange;
+}
+
+.logDefault {
+	color: var(--text);
+}
+
+.logBold {
+	font-weight: 900;
+}
+
+.logDim {
+	font-weight: lighter;
+	font-style: italic;
+}
+
+.logItalic {
+	font-style: italic;
+}
+
+.logUnderlined {
+	text-decoration: underline;
+}

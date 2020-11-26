@@ -7,11 +7,11 @@ export default new Vuex.Store({
 	state: {
 		settings: {},
 		mqtt: null,
-		resourceUsage: {},
 		loggedInUser: false,
 		fullScreen: false,
 		i18n: {},
-		uiConnected: false
+		uiConnected: false,
+		mqttMessage: {}
 	},
 	mutations: {
 		setSettings(state, settings) {
@@ -20,8 +20,8 @@ export default new Vuex.Store({
 		setMqtt(state, client) {
 			state.mqtt = client
 		},
-		setResourceUsage(state, usage) {
-			state.resourceUsage = usage
+		mqttMessage(state, msg) {
+			state.mqttMessage = msg
 		},
 		userLogin(state, user) {
 			state.loggedInUser = user

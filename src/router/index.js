@@ -6,6 +6,7 @@ import scenarios from '../components/views/scenarios'
 import login from '../components/views/login'
 import admin from '../components/views/admin'
 import connect from '../components/views/connect'
+import syslog from '../components/views/syslog';
 
 Vue.use(VueRouter)
 
@@ -37,6 +38,13 @@ const routes = [
 		component: login,
 		meta: {
 			title: 'login'
+		}
+	},
+	{
+		path: '/syslog',
+		component: syslog,
+		meta: {
+			title: 'syslog'
 		}
 	},
 	{
