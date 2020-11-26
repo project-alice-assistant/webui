@@ -24,22 +24,18 @@ export default {
 				this.connectMQTT().then(() => {
 					this.loadI18n().then(() => {
 						this.validateToken().then(() => {
-							self.$router.replace('/').then()
 							self.$store.commit('uiConnected', true)
-							self.connecting = false
+							self.$router.replace('/').then()
 						})
 					}).catch(reason => {
 						console.error(reason)
-						self.connecting = false
 					})
 				}).catch(reason => {
 					console.error(reason)
-					self.connecting = false
 				})
 			}).catch(reason => {
 				console.error(reason)
-				self.connecting = false
-			})
+			}).finally(() => self.connecting = false)
 		},
 		connect() {
 			let self = this

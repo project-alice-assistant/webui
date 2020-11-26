@@ -20,7 +20,7 @@
 					id="remember"
 					width="100"
 					checked-text="Remember"
-					unchecked-text="Don't remember"
+					unchecked-text=""
 					:value="remember"
 					@click="remember = !remember"
 					uncheckedBg="var(--windowBG)"

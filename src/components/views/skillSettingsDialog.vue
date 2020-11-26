@@ -1,7 +1,7 @@
 <!--suppress HtmlFormInputWithoutLabel, HtmlUnknownAttribute -->
 <template>
 	<div class="custom-view-wrapper">
-		<h3>Skill settings</h3>
+		<h3>{{parent.$t('dialogs.titles.skillSettings')}}</h3>
 		<div class="configLayout">
 			<div class="labels">
 				<label :for="settingName" v-for="(settingTemplate, settingName) in options['skill']['settingsTemplate']" v-tooltip="settingTemplate['description']">
@@ -44,8 +44,8 @@
 					/>
 					<VueToggles
 						:id="settingName"
-						checked-text="Yes"
-						unchecked-text="No"
+						:checked-text="parent.$t('tooltips.yes')"
+						:unchecked-text="parent.$t('tooltips.no')"
 						v-if="settingTemplate['dataType'] === 'boolean'"
 						:value="options['skill']['settings'][settingName]"
 						@click="options['skill']['settings'][settingName] = !options['skill']['settings'][settingName]"
@@ -74,8 +74,8 @@
 			</div>
 		</div>
 		<div>
-			<button @click="handleDismiss">Cancel</button>
-			<button class="dg-pull-right" @click="handleConfirm">Confirm</button>
+			<button @click="handleDismiss">{{parent.$t('buttons.cancel')}}</button>
+			<button class="dg-pull-right" @click="handleConfirm">{{parent.$t('buttons.confirm')}}</button>
 		</div>
 	</div>
 </template>
@@ -85,6 +85,11 @@ import VueDialogMixin from 'vuejs-dialog/dist/vuejs-dialog-mixin.min.js'
 
 export default {
 	mixins: [VueDialogMixin],
+	data: function() {
+		return {
+			parent: this.options['parent']
+		}
+	},
 	methods: {
 		handleConfirm() {
 			this.proceed(this.options['skill']['settings'])

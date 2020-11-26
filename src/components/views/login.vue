@@ -2,19 +2,27 @@
 	<div class="centered vcentered">
 		<form class="fullpageForm" v-on:submit.prevent="login">
 			<p>
-				<label for="username">Username</label>
-				<input id="username" v-model="username" type="text" placeholder="Username">
+				<label for="username">{{$t('dialogs.labels.username')}}</label>
+				<input id="username" v-model="username" type="text" :placeholder="$t('dialogs.labels.username')">
 			</p>
 			<p>
-				<label for="pincode">Pin code</label>
+				<label for="pincode">{{$t('dialogs.labels.pinCode')}}</label>
 				<input id="pincode" v-model="pincode" type="password">
 			</p>
 			<p>
-				<label for="rememberMe">Remember me</label>
-				<VueToggles id="rememberMe" checked-text="Yes" unchecked-text="No" :value="rememberMe" @click="rememberMe = !rememberMe" uncheckedBg="var(--windowBG)" checkedBg="var(--windowBG)"/>
+				<label for="rememberMe">{{$t('dialogs.labels.rememberMe')}}</label>
+				<VueToggles
+					id="rememberMe"
+					:checked-text="$t('tooltips.yes')"
+					:unchecked-text="$t('tooltips.no')"
+					:value="rememberMe"
+					@click="rememberMe = !rememberMe"
+					uncheckedBg="var(--windowBG)"
+					checkedBg="var(--windowBG)"
+				/>
 			</p>
 			<p>
-				<button>Login</button>
+				<button>{{$t('buttons.login')}}</button>
 			</p>
 		</form>
 	</div>

@@ -55,7 +55,8 @@ export default {
 			let backup = JSON.parse(JSON.stringify(skill['settings']))
 			const options = {
 				view: 'skillSettingsPromptDialog',
-				skill: skill
+				skill: skill,
+				parent: this
 			}
 
 			this.$dialog.prompt({}, options).then(dialogue => {

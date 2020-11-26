@@ -1,22 +1,22 @@
 <template>
 	<div class="custom-view-wrapper">
-		<h3>Widget options</h3>
+		<h3>{{parent.$t('dialogs.titles.widgetOptions')}}</h3>
 		<div class="configLayout">
 			<div class="labels">
-				<label for="title">Display title: </label>
-				<label for="borders">Borders: </label>
-				<label for="rotation">Rotation: </label>
-				<label for="background">Background color: </label>
-				<label for="opacity">Background opacity: </label>
-				<label for="font-size">Font size: </label>
-				<label for="font-color">Font color: </label>
+				<label for="title">{{parent.$t('dialogs.labels.displayTitle')}}: </label>
+				<label for="borders">{{parent.$t('dialogs.labels.displayBorders')}}: </label>
+				<label for="rotation">{{parent.$t('dialogs.labels.rotation')}}: </label>
+				<label for="background">{{parent.$t('dialogs.labels.backgroundColor')}}: </label>
+				<label for="opacity">{{parent.$t('dialogs.labels.backgroundOpacity')}}: </label>
+				<label for="font-size">{{parent.$t('dialogs.labels.fontSize')}}: </label>
+				<label for="font-color">{{parent.$t('dialogs.labels.fontColor')}}: </label>
 			</div>
 			<div class="inputs">
 				<div class="input">
 					<VueToggles
 						id="title"
-						checked-text="Yes"
-						unchecked-text="No"
+						:checked-text="parent.$t('tooltips.yes')"
+						:unchecked-text="parent.$t('tooltips.no')"
 						:value="options['widget']['params']['title']"
 						@click="options['widget']['params']['title'] = !options['widget']['params']['title']"
 						uncheckedBg="var(--windowBG)"
@@ -26,8 +26,8 @@
 				<div class="input">
 					<VueToggles
 						id="borders"
-						checked-text="Yes"
-						unchecked-text="No"
+						:checked-text="parent.$t('tooltips.yes')"
+						:unchecked-text="parent.$t('tooltips.no')"
 						:value="options['widget']['params']['borders']"
 						@click="options['widget']['params']['borders'] = !options['widget']['params']['borders']"
 						uncheckedBg="var(--windowBG)"
@@ -88,8 +88,8 @@
 			</div>
 		</div>
 		<div>
-			<button @click="handleDismiss">Cancel</button>
-			<button class="dg-pull-right" @click="handleConfirm">Confirm</button>
+			<button @click="handleDismiss">{{parent.$t('buttons.cancel')}}</button>
+			<button class="dg-pull-right" @click="handleConfirm">{{parent.$t('buttons.confirm')}}</button>
 		</div>
 	</div>
 </template>
@@ -99,6 +99,11 @@ import VueDialogMixin from 'vuejs-dialog/dist/vuejs-dialog-mixin.min.js'
 
 export default {
 	mixins: [VueDialogMixin],
+	data: function() {
+		return {
+			parent: this.options['parent']
+		}
+	},
 	methods: {
 		handleConfirm() {
 			this.proceed(this.options['widget'])

@@ -10,14 +10,15 @@ export default {
 			skillsToDownload: [],
 			menuItems: [
 				{
-					name: 'shop',
+					name: this.$t('tooltips.shop'),
 					icon: 'fas fa-download',
 					extendedIcon: 'fas fa-times-circle',
+					extendedName: this.$t('tooltips.close'),
 					isToggle: true,
 					callback: this.toggleShop
 				},
 				{
-					name: 'download',
+					name: this.$t('tooltips.download'),
 					icon: 'fas fa-check-circle',
 					isToggle: true,
 					callback: this.doDownload
@@ -29,7 +30,7 @@ export default {
 					header: {
 						title: 'Your skills'
 					},
-					content: 'This is a skill that is installed on Project Alice.',
+					content: this.$t('tours.skills.data0'),
 					params: {
 						highlight: true,
 						placement: 'right'
@@ -37,49 +38,49 @@ export default {
 				},
 				{
 					target: '[data-tour="1"]',
-					content: 'If the skill has any user settings available, this button will appear. Click it to configure your skill!',
+					content: this.$t('tours.skills.data1'),
 					params: {
 						highlight: true
 					}
 				},
 				{
 					target: '[data-tour="2"]',
-					content: 'You can stop any skill that isn\'t required for Alice to run using this button',
+					content: this.$t('tours.skills.data2'),
 					params: {
 						highlight: true
 					}
 				},
 				{
 					target: '[data-tour="3"]',
-					content: 'You can also reload a skill that isn\'t critical for Alice',
+					content: this.$t('tours.skills.data3'),
 					params: {
 						highlight: true
 					}
 				},
 				{
 					target: '[data-tour="4"]',
-					content: 'You disabled skill auto update? In that case you\'ll still be able to update your skill using this button!',
+					content: this.$t('tours.skills.data4'),
 					params: {
 						highlight: true
 					}
 				},
 				{
 					target: '[data-tour="5"]',
-					content: 'Not using this skill anymore? Well, you can delete it here! Keep in mind you can\'t delete Alice required skills!',
+					content: this.$t('tours.skills.data5'),
 					params: {
 						highlight: true
 					}
 				},
 				{
 					target: '[data-tour="6"]',
-					content: 'This shows the status of the skill.<br/><br/><div style="text-align: left;">Green: All good<br/>Yellow: The skill was disabled<br/>Red: The skill failed starting.</div>',
+					content: this.$t('tours.skills.data6'),
 					params: {
 						highlight: true
 					}
 				},
 				{
 					target: '[data-tour="7"]',
-					content: 'Don\'t know what to say to use this skill? Check here!',
+					content: this.$t('tours.skills.data7'),
 					params: {
 						placement: 'right',
 						highlight: true
@@ -87,7 +88,7 @@ export default {
 				},
 				{
 					target: '[data-tour="8"]',
-					content: 'Get some useful info about the skill, like, who made it, its actual version etc.',
+					content: this.$t('tours.skills.data8'),
 					params: {
 						placement: 'right',
 						highlight: true
@@ -95,7 +96,7 @@ export default {
 				},
 				{
 					target: '[data-tour="9"]',
-					content: 'If the skill developer included some instructions on how to use this skill, you will find them here',
+					content: this.$t('tours.skills.data9'),
 					params: {
 						placement: 'right',
 						highlight: true
@@ -103,7 +104,7 @@ export default {
 				},
 				{
 					target: '[data-tour="10"]',
-					content: 'Need more skills? This is where you can get them!',
+					content: this.$t('tours.skills.data10'),
 					params: {
 						placement: 'left',
 						highlight: true
@@ -124,9 +125,9 @@ export default {
 				author: 'Alice',
 				delayed: false,
 				active: true,
-				description: 'This is a UI tour demo skill',
+				description: this.$t('demoDesc'),
 				icon: 'fas fa-biohazard',
-				instructions: 'This is a demo',
+				instructions: this.$t('demoInstructions'),
 				required: false,
 				settings: {dummy: true},
 				updateAvailable: true,

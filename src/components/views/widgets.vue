@@ -1,6 +1,6 @@
 <template>
 	<div class="container">
-		<overlay :opened="addWidgets" :visible="addWidgets" @closed="addWidgets = false" animate="zoom-in" header="Add widgets">
+		<overlay :opened="addWidgets" :visible="addWidgets" @closed="addWidgets = false" animate="zoom-in" :header="$t('dialogs.titles.addWidgets')">
 			<div v-for="(widgets, skillName) in widgetTemplates" :key="skillName">
 				<div class="skillTemplate">{{ skillName }}</div>
 				<div class="widgetTemplate clickable" v-for="widget in widgets" @click="addWidget(skillName, widget)">

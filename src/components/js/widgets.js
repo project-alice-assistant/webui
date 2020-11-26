@@ -7,11 +7,11 @@ export default {
 			tabs: {},
 			menuItems: [
 				{
-					name: 'edit',
+					name: this.$t('tooltips.edit'),
 					icon: 'fas fa-pen-square',
 					isToggle: true,
 					extendedIcon: 'fas fa-times-circle',
-					extendedName: 'close',
+					extendedName: this.$t('tooltips.close'),
 					onClose: () => {
 						this.removeWidgets = false
 						this.settings = false
@@ -22,35 +22,35 @@ export default {
 					}
 				},
 				{
-					name: 'theater mode',
+					name: this.$t('tooltips.theaterMode'),
 					icon: 'fas fa-person-booth',
 					isToggle: true,
 					callback: this.cinemaMode
 				},
 				{
-					name: 'settings',
+					name: this.$t('tooltips.settings'),
 					icon: 'fas fa-cog',
 					onClick: () => {
 						this.settings = !this.settings
 					}
 				},
 				{
-					name: 'upload preset',
+					name: this.$t('tooltips.uploadPresets'),
 					icon: 'fas fa-file-upload',
 				},
 				{
-					name: 'download preset',
+					name: this.$t('tooltips.downloadPresets'),
 					icon: 'fas fa-file-download',
 				},
 				{
-					name: 'add widget',
+					name: this.$t('tooltips.addWidgets'),
 					icon: 'far fa-plus-square',
 					onClick: () => {
 						this.addWidgets = true
 					}
 				},
 				{
-					name: 'remove widget',
+					name: this.$t('tooltips.removeWidgets'),
 					icon: 'far fa-minus-square',
 					onClick: () => {
 						this.removeWidgets = !this.removeWidgets
@@ -225,7 +225,8 @@ export default {
 			const message = {}
 			const options = {
 				view: 'widgetOptionsPromptDialog',
-				widget: widget
+				widget: widget,
+				parent: this
 			}
 
 			this.$dialog.prompt(message, options).then(dialogue => {
