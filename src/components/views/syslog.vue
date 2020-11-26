@@ -1,13 +1,15 @@
 <template>
 	<div class="container">
-		<actions-menu :menuItems="menuItems" />
-		<div class="terminal" id="terminal">
-			<div class="terminalLine" v-for="log in logs"><div v-html="log"/></div>
-		</div>
-		<div class="terminalInput">
-			<label for="input">{{$t('labels.sendCommand')}} </label>
-			<input id="input" type="text"/>
-			<button>{{$t('buttons.send')}}</button>
+		<div class="syslogContainer">
+			<actions-menu :menuItems="menuItems" />
+			<div class="terminal" id="terminal">
+				<div class="terminalLine" v-for="log in logs"><div v-html="log"/></div>
+			</div>
+			<div class="terminalInput">
+				<label for="input">{{$t('labels.sendCommand')}} </label>
+				<input id="input" type="text"/>
+				<button>{{$t('buttons.send')}}</button>
+			</div>
 		</div>
 	</div>
 </template>

@@ -1,6 +1,17 @@
+.syslogContainer {
+	display: flex;
+	flex-flow: column;
+	box-sizing: border-box;
+	padding: 10px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+}
+
 .terminal {
 	display: flex;
-	flex: 1;
 	flex-flow: column;
 	margin: 15px;
 	background-color: var(--accent);
@@ -9,7 +20,6 @@
 	padding: 10px;
 	overflow: hidden;
 	overflow-y: auto;
-	height: 0;
 }
 
 .terminalInput {
