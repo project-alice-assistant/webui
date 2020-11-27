@@ -43,7 +43,6 @@ export default {
 		)
 	},
 	updated: function() {
-		this.$cookies.set('verbosity', this.verbosity)
 		if (this.follow) {
 			let terminal = this.$el.querySelector('#terminal')
 			terminal.scrollTop = terminal.scrollHeight
@@ -53,5 +52,10 @@ export default {
 		this.$store.state.mqtt.unsubscribe('projectalice/logging/alicewatch')
 		this.unwatch()
 	},
-	methods: {}
+	methods: {
+		setVerbosity: function(add) {
+			this.verbosity = Math.max(0, Math.min(this.verbosity + add, 4))
+			this.$cookies.set('verbosity', this.verbosity)
+		}
+	}
 }

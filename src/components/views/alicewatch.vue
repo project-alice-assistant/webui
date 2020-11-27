@@ -8,8 +8,8 @@
 				<i class="fa-circle" :class="verbosity > 1 ? 'fas yellow' : 'far'" aria-hidden="true"/>
 				<i class="fa-circle" :class="verbosity > 2 ? 'fas yellow' : 'far'" aria-hidden="true"/>
 				<i class="fa-circle" :class="verbosity > 3 ? 'fas yellow' : 'far'" aria-hidden="true"/>
-				<i class="fas fa-minus-circle clickable" aria-hidden="true" v-tooltip="$t('tooltips.decreaseVerbosity')" @click="verbosity > 0 ? verbosity-- : ''"/>
-				<i class="fas fa-plus-circle clickable" aria-hidden="true" v-tooltip="$t('tooltips.increaseVerbosity')" @click="verbosity < 4 ? verbosity++ : ''"/>
+				<i class="fas fa-minus-circle clickable" aria-hidden="true" v-tooltip="$t('tooltips.decreaseVerbosity')" @click="setVerbosity(-1)"/>
+				<i class="fas fa-plus-circle clickable" aria-hidden="true" v-tooltip="$t('tooltips.increaseVerbosity')" @click="setVerbosity(1)"/>
 			</div>
 			<div class="terminal" id="terminal">
 				<div class="logLine" v-for="log in logs">
