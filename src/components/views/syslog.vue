@@ -20,5 +20,5 @@
 	</div>
 </template>
 
-<style src="../css/syslog.css" scoped/>
+<style src="../css/syslog.css"/>
 <script src="../js/syslog.js"/>

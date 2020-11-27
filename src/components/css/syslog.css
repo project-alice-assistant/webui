@@ -43,6 +43,14 @@
 	height: 1.5em;
 }
 
+.logTime {
+	width: 125px;
+}
+
+.logComponent {
+	width: 200px;
+}
+
 .logINFO {
 	color: var(--text);
 }
@@ -94,12 +102,4 @@
 
 .logUnderlined {
 	text-decoration: underline;
-}
-
-.logTime {
-	width: 125px;
-}
-
-.logComponent {
-	width: 200px;
 }

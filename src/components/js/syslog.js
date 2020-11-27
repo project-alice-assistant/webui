@@ -7,12 +7,7 @@ export default {
 			cmd: '',
 			unwatch: {},
 			follow: true,
-			logs: [
-				{time: "07:34:40.749", level: "INFO", msg: "Starting Snips NLU", component: "SnipsNlu"},
-				{time: "07:34:40.997", level: "INFO", msg: "Started in 6.94 seconds", component: "Project Alice"},
-				{time: "07:34:40.997", level: "INFO", msg: "Started in 6.94 seconds", component: "Project Alice"},
-				{time: "07:43:04.921", level: "DEBUG", msg: "Started new thread **heartBeatThread-1606459384**, thread count: 12", component: "ThreadManager"}
-			],
+			logs: [],
 			menuItems: [
 				{
 					name: this.$t('tooltips.lock'),
