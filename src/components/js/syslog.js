@@ -7,7 +7,12 @@ export default {
 			cmd: '',
 			unwatch: {},
 			follow: true,
-			logs: [],
+			logs: [
+				{time: "07:34:40.749", level: "INFO", msg: "Starting Snips NLU", component: "SnipsNlu"},
+				{time: "07:34:40.997", level: "INFO", msg: "Started in 6.94 seconds", component: "Project Alice"},
+				{time: "07:34:40.997", level: "INFO", msg: "Started in 6.94 seconds", component: "Project Alice"},
+				{time: "07:43:04.921", level: "DEBUG", msg: "Started new thread **heartBeatThread-1606459384**, thread count: 12", component: "ThreadManager"}
+			],
 			menuItems: [
 				{
 					name: this.$t('tooltips.lock'),
@@ -28,7 +33,12 @@ export default {
 			},
 			function(msg) {
 				if (msg.topic === 'projectalice/logging/syslog') {
-					self.logs.push(JSON.parse(msg.payloadString).msg)
+					let payload = JSON.parse(msg.payloadString)
+					payload.msg = payload.msg.replace(/\*\*(.*?)\*\*/gi, '<span class="logBold">$1</span>')
+					payload.msg = payload.msg.replace(/--(.*?)--/gi, '<span class="logDim">$1</span>')
+					payload.msg = payload.msg.replace(/__(.*?)__/gi, '<span class="logUnderlined">$1</span>')
+					payload.msg = payload.msg.replace(/!\[(red|green|yellow|blue|grey)]\((.*?)\)/gi, '<span class="$1">$2</span>')
+					self.logs.push(payload)
 				}
 			}
 		)

@@ -43,12 +43,25 @@
 	height: 1.5em;
 }
 
-.logInfo {
+.logINFO {
 	color: var(--text);
 }
 
-.logWarning {
+.logWARNING {
 	color: orange;
+}
+
+.logDEBUG {
+	color: blue;
+}
+
+.logERROR {
+	color: red;
+}
+
+.logCRITICAL {
+	color: red;
+	font-weight: bold;
 }
 
 .logBlue {
@@ -68,12 +81,11 @@
 }
 
 .logBold {
-	font-weight: 900;
+	font-weight: bolder;
 }
 
 .logDim {
-	font-weight: lighter;
-	font-style: italic;
+	color: var(--windowBG);
 }
 
 .logItalic {
@@ -82,4 +94,12 @@
 
 .logUnderlined {
 	text-decoration: underline;
+}
+
+.logTime {
+	width: 125px;
+}
+
+.logComponent {
+	width: 200px;
 }

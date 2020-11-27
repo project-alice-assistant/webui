@@ -3,7 +3,11 @@
 		<div class="syslogContainer">
 			<actions-menu :menuItems="menuItems" />
 			<div class="terminal" id="terminal">
-				<div class="terminalLine" v-for="log in logs"><div v-html="log"/></div>
+				<div class="logLine" v-for="log in logs">
+					<span class="logTime logDim">[{{log.time}}]</span>
+					<span class="logComponent logDim">[{{log.component}}]</span>
+					<span class="logMsg" :class="`log${log.level}`" v-html="log.msg"/>
+				</div>
 			</div>
 			<div class="terminalInput">
 				<form v-on:submit.prevent="sendCmd">
