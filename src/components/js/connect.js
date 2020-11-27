@@ -126,6 +126,7 @@ export default {
 			console.log('Mqtt connected')
 			this.$store.state.mqtt.subscribe('projectalice/devices/resourceUsage')
 			this.$store.state.mqtt.subscribe('projectalice/logging/syslog')
+			this.$store.state.mqtt.subscribe('projectalice/logging/alicewatch')
 		},
 		onConnectionFailed: function (_msg) {
 			console.log('Mqtt connection failed')

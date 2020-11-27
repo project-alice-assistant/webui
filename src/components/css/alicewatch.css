@@ -1,0 +1,16 @@
+.logTime {
+	width: 100px;
+}
+
+.logComponent {
+	width: 150px;
+}
+
+.logVerbosity {
+	font-size: 1.25em;
+	margin: 10px 0 0 15px;
+}
+
+.logVerbosity > i {
+	margin-right: 5px;
+}

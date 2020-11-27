@@ -7,6 +7,7 @@ import login from '../components/views/login'
 import admin from '../components/views/admin'
 import connect from '../components/views/connect'
 import syslog from '../components/views/syslog';
+import alicewatch from '../components/views/alicewatch';
 
 Vue.use(VueRouter)
 
@@ -45,6 +46,13 @@ const routes = [
 		component: syslog,
 		meta: {
 			title: 'syslog'
+		}
+	},
+	{
+		path: '/alicewatch',
+		component: alicewatch,
+		meta: {
+			title: 'alicewatch'
 		}
 	},
 	{

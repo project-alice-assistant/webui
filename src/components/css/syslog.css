@@ -11,6 +11,7 @@
 }
 
 .terminal {
+	font-family: Monaco, monospace;
 	display: flex;
 	flex-flow: column;
 	margin: 15px;
@@ -40,7 +41,6 @@
 .logLine {
 	display: flex;
 	font-size: 1em;
-	height: 1.5em;
 }
 
 .logTime {
@@ -102,4 +102,10 @@
 
 .logUnderlined {
 	text-decoration: underline;
+}
+
+.logSpacer {
+	display: inline-block;
+	min-width: 50px;
+	width: 30px;
 }
