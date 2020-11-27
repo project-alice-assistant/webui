@@ -1,7 +1,10 @@
+import axios from 'axios';
+
 export default {
 	name: 'syslog',
 	data: function() {
 		return {
+			cmd: '',
 			unwatch: {},
 			follow: true,
 			logs: [],
@@ -39,5 +42,20 @@ export default {
 	beforeDestroy: function() {
 		this.$store.state.mqtt.unsubscribe('projectalice/devices/resourceUsage')
 		this.unwatch()
+	},
+	methods: {
+		sendCmd: function() {
+			const data = new FormData
+			data.append('cmd', this.cmd)
+			axios({
+				method: 'post',
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/sysCmd/`,
+				data: data,
+				headers: {
+					'auth': this.$store.state.loggedInUser['token'],
+					'Content-Type': 'multipart/form-data'
+				}
+			})
+		}
 	}
 }

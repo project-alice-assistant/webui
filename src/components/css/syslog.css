@@ -27,7 +27,7 @@
 	margin: 15px;
 }
 
-.terminalInput > input {
+.terminalInput input {
 	width: 500px;
 	border: 2px solid var(--windowBG);
 	margin-right: 15px;

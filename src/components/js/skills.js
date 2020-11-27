@@ -187,7 +187,7 @@ export default {
 				method: 'put',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/installSkills/`,
 				data: this.skillsToDownload,
-				headers: {'auth': this.$store.state.loggedInUser['token'] }
+				headers: {'auth': this.$store.state.loggedInUser['token']}
 			}).then(response => {
 				if ('status' in response.data) {
 					for (const [skillName, status] of Object.entries(response.data.status)) {
