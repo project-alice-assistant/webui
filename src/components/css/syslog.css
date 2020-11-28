@@ -28,8 +28,8 @@
 	margin: 15px;
 }
 
-.terminalInput input {
-	width: 500px;
+.terminalInput form input {
+	width: 50em;
 	border: 2px solid var(--windowBG);
 	margin-right: 15px;
 }
@@ -44,11 +44,11 @@
 }
 
 .logTime {
-	width: 125px;
+	width: 10em;
 }
 
 .logComponent {
-	width: 200px;
+	width: 13em;
 }
 
 .logINFO {
