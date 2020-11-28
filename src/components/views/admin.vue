@@ -14,6 +14,7 @@
 									v-if="settingTemplate['category'].toLowerCase() === category.toLowerCase()"
 									v-tooltip="settingTemplate['description']"
 									:for="settingName"
+									:id="`label_${settingName}`"
 								>
 									{{ settingName }}:
 								</label>
@@ -23,6 +24,7 @@
 									v-for="(settingTemplate, settingName) in $store.state.settingTemplates"
 									v-if="settingTemplate['category'].toLowerCase() === category.toLowerCase()"
 									class="input"
+									:id="`input_${settingName}`"
 								>
 									<input
 										v-if="settingTemplate['dataType'] === 'string' && !settingTemplate['isSensitive']"

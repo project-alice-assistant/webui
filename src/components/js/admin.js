@@ -52,6 +52,31 @@ export default {
 					}
 				}, 1500)
 			)
+		},
+		displayOrHide: function(settingName, settingTemplate) {
+			if (settingTemplate.hasOwnProperty('parent')) {
+				const condition = settingTemplate['parent']['condition']
+				const reqConfig = settingTemplate['parent']['config']
+				const reqValue = settingTemplate['parent']['value']
+
+				if (!this.$store.state.settings.hasOwnProperty(reqConfig)) {
+					document.querySelector(`input_${settingName}`).classList.add('initialHidden')
+					document.querySelector(`label_${settingName}`).classList.add('initialHidden')
+				}
+
+				const parentValue = this.$store.state.settings['reqConfig']
+
+				if ((condition === 'is' && parentValue === reqValue) ||
+					(condition === 'isnot' && parentValue !== reqValue) ||
+					(condition === 'isgreater' && parentValue > reqValue) ||
+					(condition === 'islower' && parentValue < reqValue)) {
+					document.querySelector(`input_${settingName}`).classList.remove('initialHidden')
+					document.querySelector(`label_${settingName}`).classList.remove('initialHidden')
+				} else {
+					document.querySelector(`input_${settingName}`).classList.add('initialHidden')
+					document.querySelector(`label_${settingName}`).classList.add('initialHidden')
+				}
+			}
 		}
 	}
 }

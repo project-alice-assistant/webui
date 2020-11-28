@@ -331,6 +331,10 @@ button:active {
 button:active {
 }
 
+.initialHidden {
+	display: none;
+}
+
 .centered {
 	display: flex;
 	flex: 1;
