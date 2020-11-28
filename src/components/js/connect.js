@@ -40,19 +40,23 @@ export default {
 		connect() {
 			let self = this
 			return new Promise(function(resolve, reject) {
-				axios.get(`http://${self.ip}:${self.port}/api/v1.0.1/utils/config/`)
-					.then(response => {
-						self.$store.commit('setSettings', response.data.config)
-						if (self.remember) {
-							self.$cookies.set('host', self.ip)
-							self.$cookies.set('apiPort', self.port)
-						}
-						resolve()
-					})
-					.catch(reason => {
-						self.ip = ''
-						reject(new Error('Error connecting to Alice ' + reason))
-					})
+				axios({
+					method: 'get',
+					url: `http://${self.ip}:${self.port}/api/v1.0.1/utils/config/`,
+					headers: {'auth': self.$cookies.isKey('apiToken') ? self.$cookies.get('apiToken') : ''}
+				}).then(response => {
+					self.$store.commit('setSettings', response.data.config)
+					self.$store.commit('setSettingTemplates', response.data.templates)
+					self.$store.commit('setSettingCategories', response.data.categories)
+					if (self.remember) {
+						self.$cookies.set('host', self.ip)
+						self.$cookies.set('apiPort', self.port)
+					}
+					resolve()
+				}).catch(reason => {
+					self.ip = ''
+					reject(new Error('Error connecting to Alice ' + reason))
+				})
 			})
 		},
 		connectMQTT() {
@@ -90,7 +94,8 @@ export default {
 						if ('success' in response.data) {
 							self.$store.commit('userLogin', {
 								user: self.$cookies.get('username'),
-								token: self.$cookies.get('apiToken')
+								token: self.$cookies.get('apiToken'),
+								authLevel: response.data.authLevel
 							})
 						} else {
 							self.$cookies.remove('username')

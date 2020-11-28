@@ -3,6 +3,7 @@
 	display: flex;
 	flex: 1;
 	flex-direction: row;
+	min-height: 50px;
 	max-height: 50px;
 	box-sizing: border-box;
 	border-bottom: 2px solid var(--accent);
@@ -38,9 +39,11 @@
 }
 
 .tab_page {
+	position: relative;
 	display: flex;
 	flex: 1;
 	width: 100%;
 	overflow: hidden;
 	box-sizing: border-box;
+	flex-flow: column;
 }

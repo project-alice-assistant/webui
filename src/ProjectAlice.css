@@ -242,15 +242,12 @@ input, select, textarea {
 	outline: none;
 	padding: 5px;
 	width: auto;
-	height: 2.5em;
+	min-width: 200px;
+	height: 2em;
 }
 
 input:hover, textarea:hover {
 	border: dotted 1px;
-}
-
-input[type='text'], input[type='password'], input[type='number'], select, textarea {
-	width: auto;
 }
 
 input[type='color'] {
@@ -262,6 +259,7 @@ input[type='color'] {
 
 textarea {
 	min-height: 200px;
+	min-width: 450px;
 }
 
 input:focus, textarea:focus {
@@ -414,10 +412,18 @@ button:active {
 	margin-right: 1em;
 }
 
+.configLayout > .labels > .textAreaLabel {
+	height: 250px;
+	min-height: 250px;
+	max-height: 250px;
+}
+
 .configLayout > .labels > label {
 	height: 2.5em;
 	display: flex;
 	align-items: center;
+	margin-bottom: 10px;
+	cursor: pointer;
 }
 
 .configLayout > .inputs {
@@ -425,7 +431,20 @@ button:active {
 }
 
 .configLayout > .inputs > .input {
-	height: 2.5em;
+	min-height: 2.5em;
+	display: flex;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
+.configLayout > .inputs > .input > textarea {
+	height: 250px;
+	min-height: 250px;
+	max-height: 250px;
+	box-sizing: border-box;
+}
+
+.configLayout > .inputs > .input > .rangeInput {
 	display: flex;
 	align-items: center;
 }

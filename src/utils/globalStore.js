@@ -6,6 +6,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
 	state: {
 		settings: {},
+		settingTemplates: {},
+		settingCategories: {},
 		mqtt: null,
 		loggedInUser: false,
 		fullScreen: false,
@@ -16,6 +18,12 @@ export default new Vuex.Store({
 	mutations: {
 		setSettings(state, settings) {
 			state.settings = settings
+		},
+		setSettingTemplates(state, templates) {
+			state.settingTemplates = templates
+		},
+		setSettingCategories(state, categories) {
+			state.settingCategories = categories
 		},
 		setMqtt(state, client) {
 			state.mqtt = client

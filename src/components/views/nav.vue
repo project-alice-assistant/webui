@@ -7,7 +7,7 @@
 		<router-link tag="button" to="/syslog" v-if="this.$store.state.loggedInUser">{{ $t('nav.syslog') }}</router-link>
 		<router-link tag="button" to="/alicewatch" v-if="this.$store.state.loggedInUser">{{ $t('nav.alicewatch') }}</router-link>
 		<router-link tag="button" to="/widgets" v-if="this.$store.state.settings['devMode'] && this.$store.state.loggedInUser">{{ $t('nav.devmode') }}</router-link>
-		<router-link tag="button" to="/admin" v-if="this.$store.state.loggedInUser">{{ $t('nav.admin') }}</router-link>
+		<router-link tag="button" to="/admin" v-if="this.$store.state.loggedInUser && this.$store.state.loggedInUser.authLevel === 'admin'">{{ $t('nav.admin') }}</router-link>
 		<router-link tag="button" class="lastItem" to="/login" v-if="!this.$store.state.loggedInUser">{{ $t('nav.login') }}</router-link>
 		<button class="lastItem" v-if="this.$store.state.loggedInUser" @click="logout">{{ $t('nav.logout') }}</button>
 	</nav>

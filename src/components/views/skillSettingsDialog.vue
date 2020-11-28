@@ -4,7 +4,12 @@
 		<h3>{{parent.$t('dialogs.titles.skillSettings')}}</h3>
 		<div class="configLayout">
 			<div class="labels">
-				<label :for="settingName" v-for="(settingTemplate, settingName) in options['skill']['settingsTemplate']" v-tooltip="settingTemplate['description']">
+				<label
+					:for="settingName"
+					v-for="(settingTemplate, settingName) in options['skill']['settingsTemplate']"
+					v-tooltip="settingTemplate['description']"
+					:class="settingTemplate['dataType'] === 'longstring' ? 'textAreaLabel' : ''"
+				>
 					{{ settingName }}:
 				</label>
 			</div>
@@ -63,6 +68,24 @@
 						v-init="options['skill']['settings'][settingName]"
 						:placeholder="settingTemplate['defaultValue']"
 					/>
+					<select
+						v-if="settingTemplate['dataType'] === 'list'"
+						:id="settingName"
+						v-model="options['skill']['settings'][settingName]"
+					>
+						<option
+							v-if="settingTemplate['values'].constructor === Object"
+							v-for="(value, text) in settingTemplate['values']" v-bind:value="value"
+						>
+							{{text}}
+						</option>
+						<option
+							v-if="settingTemplate['values'].constructor === Array"
+							v-for="value in settingTemplate['values']" v-bind:value="value"
+						>
+							{{value}}
+						</option>
+					</select>
 					<textarea
 						:id="settingName"
 						v-if="settingTemplate['dataType'] === 'longstring'"
