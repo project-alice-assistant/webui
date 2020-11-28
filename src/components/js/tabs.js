@@ -17,18 +17,27 @@ export default {
 			this.activeTab = position
 			this.activeTabId = id
 
+			this.$parent.activeTab = position
+
 			if (this.onChange) {
 				this.onChange(id)
 			}
 		},
 		rename: function(wid) {
-			this.renameTab(wid)
-		},
+			if (this.renameTab) {
+				this.renameTab(wid)
+			}
+		}
+		,
 		add: function() {
-			this.addTab()
+			if (this.addTab) {
+				this.addTab()
+			}
 		},
 		remove: function(wid) {
-			this.removeTab(wid)
+			if (this.removeTab) {
+				this.removeTab(wid)
+			}
 		}
 	}
 }

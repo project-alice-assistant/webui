@@ -4,7 +4,7 @@ export default {
 	name: 'admin',
 	data: function() {
 		return {
-			activePageId: 1,
+			activeTab: 0,
 			tabs: {
 				1: {
 					'icon': 'fas fa-cogs',
@@ -77,6 +77,56 @@ export default {
 					document.querySelector(`label_${settingName}`).classList.add('initialHidden')
 				}
 			}
+		},
+		utilityRestart: function() {
+			const icon = document.querySelector('#utilityRestart')
+			icon.classList.add('fa-spin')
+			const self = this
+			axios({
+				method: 'GET',
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/restart/`,
+				headers: {'auth': this.$store.state.loggedInUser['token']},
+			}).then(function() {
+				setTimeout(() =>{
+					icon.classList.add('green')
+					self.$router.replace('/syslog').then()
+				}, 1000)
+			}).catch(function() {
+				setTimeout(() => {
+					icon.classList.add('red')
+				}, 1000)
+			}).finally(() => {
+				setTimeout(() => {
+					icon.classList.remove('fa-spin')
+					icon.classList.remove('red')
+					icon.classList.remove('green')
+				}, 2000)
+			})
+		},
+		utilityReboot: function() {
+			const icon = document.querySelector('#utilityReboot')
+			icon.classList.add('fa-spin')
+			const self = this
+			axios({
+				method: 'GET',
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/reboot/`,
+				headers: {'auth': this.$store.state.loggedInUser['token']},
+			}).then(function() {
+				setTimeout(() =>{
+					icon.classList.add('green')
+					self.$router.replace('/syslog').then()
+				}, 1000)
+			}).catch(function() {
+				setTimeout(() => {
+					icon.classList.add('red')
+				}, 1000)
+			}).finally(() => {
+				setTimeout(() => {
+					icon.classList.remove('fa-spin')
+					icon.classList.remove('red')
+					icon.classList.remove('green')
+				}, 2000)
+			})
 		}
 	}
 }

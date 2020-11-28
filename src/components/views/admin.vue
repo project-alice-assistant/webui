@@ -1,7 +1,7 @@
 <template>
 	<div class="container">
 		<tabs :tabs="tabs"/>
-		<div v-if="activePageId === 1" class="tab_page">
+		<div v-if="activeTab === 0" class="tab_page">
 			<div class="settingsContainer">
 				<div class="settings">
 					<div v-for="category in $store.state.settingCategories" class="settingsCategory">
@@ -111,6 +111,74 @@
 							<i class="far fa-save clickable" aria-hidden="true" v-tooltip="$t('tooltips.save')" @click="save"/>
 						</div>
 					</div>
+				</div>
+			</div>
+		</div>
+		<div v-if="activeTab === 1" class="tab_page">
+			<div class="tileContainer">
+				<div class="utility clickable" @click="utilityRestart">
+					<p class="utilityIcon">
+						<i id="utilityRestart" class="fas fa-redo-alt"/>
+					</p>
+					<p class="utilityName">
+						{{$t('utilities.restart')}}
+					</p>
+				</div>
+				<div class="utility clickable" @click="utilityReboot">
+					<p class="utilityIcon">
+						<i id="utilityReboot" class="fas fa-power-off"/>
+					</p>
+					<p class="utilityName">
+						{{$t('utilities.reboot')}}
+					</p>
+				</div>
+				<div class="utility clickable">
+					<p class="utilityIcon">
+						<i class="fas fa-brain"/>
+					</p>
+					<p class="utilityName">
+						{{$t('utilities.train')}}
+					</p>
+				</div>
+				<div class="utility clickable">
+					<p class="utilityIcon">
+						<i class="fas fa-sync"/>
+					</p>
+					<p class="utilityName">
+						{{$t('utilities.update')}}
+					</p>
+				</div>
+				<div class="utility clickable">
+					<p class="utilityIcon">
+						<i class="fas fa-user-plus"/>
+					</p>
+					<p class="utilityName">
+						{{$t('utilities.addUser')}}
+					</p>
+				</div>
+				<div class="utility clickable">
+					<p class="utilityIcon">
+						<i class="fas fa-comment-medical"/>
+					</p>
+					<p class="utilityName">
+						{{$t('utilities.addWakeword')}}
+					</p>
+				</div>
+				<div class="utility clickable">
+					<p class="utilityIcon">
+						<i class="fas fa-volume-up"/>
+					</p>
+					<p class="utilityName">
+						{{$t('utilities.tuneWakeword')}}
+					</p>
+				</div>
+				<div class="utility clickable">
+					<p class="utilityIcon">
+						<i class="fas fa-bomb"/>
+					</p>
+					<p class="utilityName">
+						{{$t('utilities.wipe')}}
+					</p>
 				</div>
 			</div>
 		</div>

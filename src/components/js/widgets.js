@@ -78,7 +78,7 @@ export default {
 
 		axios({
 			method: 'get',
-			url: `http://${this.$cookies.get('host')}:${this.$cookies.get('apiPort')}/api/v1.0.1/widgets/pages/`,
+			url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/pages/`,
 			headers: {'auth': this.$cookies.get('apiToken')}
 		}).then(response => {
 			if ('pages' in response.data) {

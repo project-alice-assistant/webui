@@ -8,6 +8,7 @@ import admin from '../components/views/admin'
 import connect from '../components/views/connect'
 import syslog from '../components/views/syslog';
 import alicewatch from '../components/views/alicewatch';
+import devmode from '../components/views/devmode';
 
 Vue.use(VueRouter)
 
@@ -60,6 +61,13 @@ const routes = [
 		component: admin,
 		meta: {
 			title: 'admin'
+		}
+	},
+	{
+		path: '/devmode',
+		component: devmode,
+		meta: {
+			title: 'dev mode'
 		}
 	},
 	{
