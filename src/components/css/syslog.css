@@ -11,7 +11,7 @@
 }
 
 .terminal {
-	font-family: Monaco, monospace;
+	font-family: var(--monospace);
 	display: flex;
 	flex-flow: column;
 	margin: 15px;
