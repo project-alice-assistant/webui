@@ -165,6 +165,9 @@ export default {
 					if (response.data['state'] === 4) {
 						icon.classList.remove('fa-spin')
 						icon.classList.add('green')
+						setTimeout(function() {
+							icon.classList.remove('green')
+						}, 2000)
 					} else if (response.data['state'] === 9) {
 						icon.classList.remove('fa-spin')
 						icon.classList.add('red')
