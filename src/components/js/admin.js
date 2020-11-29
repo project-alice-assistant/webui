@@ -110,7 +110,7 @@ export default {
 			axios({
 				method: 'GET',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/reboot/`,
-				headers: {'auth': this.$store.state.loggedInUser['token']},
+				headers: {'auth': this.$store.state.loggedInUser['token']}
 			}).then(function() {
 				setTimeout(() =>{
 					icon.classList.add('green')
@@ -126,6 +126,48 @@ export default {
 					icon.classList.remove('red')
 					icon.classList.remove('green')
 				}, 2000)
+			})
+		},
+		utilityUpdate: function() {
+			const icon = document.querySelector('#utilityUpdate')
+			icon.classList.add('fa-spin')
+			const self = this
+
+			const check = setTimeout(function() {
+				if (self.checkState('projectalice.core.updating') !== 4) {
+					self.check()
+				} else {
+					icon.classList.remove('fa-spin')
+					icon.classList.add('green')
+				}
+			}, 1000)
+
+			axios({
+				method: 'GET',
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/updateAlice/`,
+				headers: {'auth': this.$store.state.loggedInUser['token']}
+			}).then(function() {
+				self.check()
+			}).catch(function() {
+				setTimeout(() => {
+					icon.classList.remove('fa-spin')
+					icon.classList.add('red')
+				}, 1000)
+			})
+		},
+		checkState: function(state) {
+			axios({
+				method: 'GET',
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/state/${state}/`,
+				headers: {'auth': this.$store.state.loggedInUser['token']}
+			}).then(response => {
+				if ('state' in response.data) {
+					return response.data['state']
+				} else {
+					return false
+				}
+			}).catch(() => {
+				return false
 			})
 		}
 	}

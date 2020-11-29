@@ -140,9 +140,9 @@
 						{{$t('utilities.train')}}
 					</p>
 				</div>
-				<div class="utility clickable">
+				<div class="utility clickable" @click="utilityUpdate">
 					<p class="utilityIcon">
-						<i class="fas fa-sync"/>
+						<i id="utilityUpdate" class="fas fa-sync"/>
 					</p>
 					<p class="utilityName">
 						{{$t('utilities.update')}}
