@@ -78,96 +78,105 @@ export default {
 				}
 			}
 		},
-		utilityRestart: function() {
-			const icon = document.querySelector('#utilityRestart')
-			icon.classList.add('fa-spin')
+		utilityRequestAndRedirect: function(id) {
+			const icon = this.startIcon(id)
 			const self = this
+
 			axios({
 				method: 'GET',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/restart/`,
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/${id}/`,
 				headers: {'auth': this.$store.state.loggedInUser['token']},
 			}).then(function() {
 				setTimeout(() =>{
 					icon.classList.add('green')
 					self.$router.replace('/syslog').then()
-				}, 1000)
+				}, 2000)
 			}).catch(function() {
 				setTimeout(() => {
 					icon.classList.add('red')
-				}, 1000)
+				}, 2000)
 			}).finally(() => {
 				setTimeout(() => {
 					icon.classList.remove('fa-spin')
 					icon.classList.remove('red')
 					icon.classList.remove('green')
-				}, 2000)
+				}, 4000)
 			})
 		},
-		utilityReboot: function() {
-			const icon = document.querySelector('#utilityReboot')
-			icon.classList.add('fa-spin')
-			const self = this
-			axios({
-				method: 'GET',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/reboot/`,
-				headers: {'auth': this.$store.state.loggedInUser['token']}
-			}).then(function() {
-				setTimeout(() =>{
-					icon.classList.add('green')
-					self.$router.replace('/syslog').then()
-				}, 1000)
-			}).catch(function() {
-				setTimeout(() => {
-					icon.classList.add('red')
-				}, 1000)
-			}).finally(() => {
-				setTimeout(() => {
-					icon.classList.remove('fa-spin')
-					icon.classList.remove('red')
-					icon.classList.remove('green')
-				}, 2000)
-			})
-		},
-		utilityUpdate: function() {
-			const icon = document.querySelector('#utilityUpdate')
-			icon.classList.add('fa-spin')
+		utilityRequestAndCheck: function(id, state) {
+			const icon = this.startIcon(id)
 			const self = this
 
-			const check = setTimeout(function() {
-				if (self.checkState('projectalice.core.updating') !== 4) {
-					self.check()
+			axios({
+				method: 'GET',
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/${id}/`,
+				headers: {'auth': this.$store.state.loggedInUser['token']}
+			}).then(function() {
+				self.checkState(state, icon)
+			}).catch(function() {
+				setTimeout(() => {
+					icon.classList.remove('fa-spin')
+					icon.classList.add('red')
+				}, 1000)
+			})
+		},
+		utilitySimpleRequest: function(id) {
+			const icon = this.startIcon(id)
+			const self = this
+
+			axios({
+				method: 'GET',
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/${id}/`,
+				headers: {'auth': this.$store.state.loggedInUser['token']}
+			}).then(response => {
+				if ('success' in response.data && response.data['success']) {
+					setTimeout(() => {
+						icon.classList.remove('fa-spin')
+						icon.classList.add('green')
+					}, 2000)
 				} else {
-					icon.classList.remove('fa-spin')
-					icon.classList.add('green')
+					icon.classList.add('red')
 				}
-			}, 1000)
-
-			axios({
-				method: 'GET',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/updateAlice/`,
-				headers: {'auth': this.$store.state.loggedInUser['token']}
-			}).then(function() {
-				self.check()
 			}).catch(function() {
 				setTimeout(() => {
 					icon.classList.remove('fa-spin')
 					icon.classList.add('red')
-				}, 1000)
+				}, 2000)
+			}).finally(() => {
+				setTimeout(() => {
+					icon.classList.remove('fa-spin')
+					icon.classList.remove('red')
+					icon.classList.remove('green')
+				}, 4000)
 			})
 		},
-		checkState: function(state) {
+		startIcon: function(id) {
+			const icon = document.querySelector(`#utility${id.charAt(0).toUpperCase() + id.slice(1)}`)
+			icon.classList.add('fa-spin')
+			return icon
+		},
+		checkState: function(state, icon) {
 			axios({
 				method: 'GET',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/state/${state}/`,
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/state/${state}/`,
 				headers: {'auth': this.$store.state.loggedInUser['token']}
 			}).then(response => {
 				if ('state' in response.data) {
-					return response.data['state']
+					if (response.data['state'] === 4) {
+						icon.classList.remove('fa-spin')
+						icon.classList.add('green')
+					} else if (response.data['state'] === 9) {
+						icon.classList.remove('fa-spin')
+						icon.classList.add('red')
+					} else if (response.data['state'] === 1) {
+						setTimeout(this.checkState(state, icon), 1000)
+					}
 				} else {
-					return false
+					setTimeout(this.checkState(state, icon), 1000)
 				}
 			}).catch(() => {
-				return false
+				icon.classList.remove('fa-spin')
+				icon.classList.add('red')
 			})
 		}
 	}

@@ -116,7 +116,7 @@
 		</div>
 		<div v-if="activeTab === 1" class="tab_page">
 			<div class="tileContainer">
-				<div class="utility clickable" @click="utilityRestart">
+				<div class="utility clickable" @click="utilityRequestAndRedirect('restart')">
 					<p class="utilityIcon">
 						<i id="utilityRestart" class="fas fa-redo-alt"/>
 					</p>
@@ -124,7 +124,7 @@
 						{{$t('utilities.restart')}}
 					</p>
 				</div>
-				<div class="utility clickable" @click="utilityReboot">
+				<div class="utility clickable" @click="utilityRequestAndRedirect('reboot')">
 					<p class="utilityIcon">
 						<i id="utilityReboot" class="fas fa-power-off"/>
 					</p>
@@ -132,15 +132,15 @@
 						{{$t('utilities.reboot')}}
 					</p>
 				</div>
-				<div class="utility clickable">
+				<div class="utility clickable" @click="utilityRequestAndCheck('train', 'projectalice.core.training')">
 					<p class="utilityIcon">
-						<i class="fas fa-brain"/>
+						<i id="utilityTrain" class="fas fa-brain"/>
 					</p>
 					<p class="utilityName">
 						{{$t('utilities.train')}}
 					</p>
 				</div>
-				<div class="utility clickable" @click="utilityUpdate">
+				<div class="utility clickable" @click="utilityRequestAndCheck('update', 'projectalice.core.updating')">
 					<p class="utilityIcon">
 						<i id="utilityUpdate" class="fas fa-sync"/>
 					</p>
@@ -148,33 +148,33 @@
 						{{$t('utilities.update')}}
 					</p>
 				</div>
-				<div class="utility clickable">
+				<div class="utility clickable" @click="utilitySimpleRequest('addUser')">
 					<p class="utilityIcon">
-						<i class="fas fa-user-plus"/>
+						<i id="utilityAddUser" class="fas fa-user-plus"/>
 					</p>
 					<p class="utilityName">
 						{{$t('utilities.addUser')}}
 					</p>
 				</div>
-				<div class="utility clickable">
+				<div class="utility clickable" @click="utilitySimpleRequest('addWakeword')">
 					<p class="utilityIcon">
-						<i class="fas fa-comment-medical"/>
+						<i id="utilityAddWakeword" class="fas fa-comment-medical"/>
 					</p>
 					<p class="utilityName">
 						{{$t('utilities.addWakeword')}}
 					</p>
 				</div>
-				<div class="utility clickable">
+				<div class="utility clickable" @click="utilitySimpleRequest('tuneWakeword')">
 					<p class="utilityIcon">
-						<i class="fas fa-volume-up"/>
+						<i id="utilityTuneWakeword" class="fas fa-volume-up"/>
 					</p>
 					<p class="utilityName">
 						{{$t('utilities.tuneWakeword')}}
 					</p>
 				</div>
-				<div class="utility clickable">
+				<div class="utility clickable" @click="utilityRequestAndRedirect('wipeAll')">
 					<p class="utilityIcon">
-						<i class="fas fa-bomb"/>
+						<i id="utilityWipeAll" class="fas fa-bomb"/>
 					</p>
 					<p class="utilityName">
 						{{$t('utilities.wipe')}}
