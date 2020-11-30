@@ -11,7 +11,7 @@
 								<label
 									v-for="(settingTemplate, settingName) in $store.state.settingTemplates"
 									:class="settingTemplate['dataType'] === 'longstring' ? 'textAreaLabel' : ''"
-									v-if="settingTemplate['category'].toLowerCase() === category.toLowerCase()"
+									v-if="settingTemplate['category'].toLowerCase() === category.toLowerCase() && checkSettingVisibility(settingName)"
 									v-tooltip="settingTemplate['description']"
 									:for="settingName"
 									:id="`label_${settingName}`"
@@ -22,7 +22,7 @@
 							<div class="inputs">
 								<div
 									v-for="(settingTemplate, settingName) in $store.state.settingTemplates"
-									v-if="settingTemplate['category'].toLowerCase() === category.toLowerCase()"
+									v-if="settingTemplate['category'].toLowerCase() === category.toLowerCase() && checkSettingVisibility(settingName)"
 									class="input"
 									:id="`input_${settingName}`"
 								>
