@@ -17,6 +17,7 @@ export default {
 					'position': 1
 				}
 			},
+			storeSkills: [],
 			allValid: false,
 			waiting: false,
 			created: false,
@@ -43,6 +44,18 @@ export default {
 			skillScenarioNodes: ''
 		}
 	},
+	mounted: function() {
+		axios({
+			method: 'get',
+			url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/getStore/`
+		}).then(response => {
+			if ('store' in response.data) {
+				for (const skill of Object.keys(response.data['store'])) {
+					this.storeSkills.push(skill.toLowerCase())
+				}
+			}
+		})
+	},
 	methods: {
 		validateTextInput: function(minLength, maxLength, noSpace, event) {
 			const value = event.target.value
@@ -58,6 +71,16 @@ export default {
 			} else {
 				event.target.classList.add('inputError')
 				event.target.classList.remove('inputValid')
+			}
+
+			if (event.target.id === 'skillName') {
+				if (this.storeSkills.includes(value.toLowerCase())) {
+					this.$refs.skillNameExists.classList.remove('initialHidden')
+					event.target.classList.remove('inputValid')
+					event.target.classList.add('inputError')
+				} else {
+					this.$refs.skillNameExists.classList.add('initialHidden')
+				}
 			}
 
 			this.allValid = document.querySelectorAll('.inputError').length <= 0;
@@ -137,12 +160,12 @@ export default {
 			event.preventDefault()
 			this.setWaiting()
 			const data = new FormData()
-			data.append('skillName', this.skillName)
-			data.append('skillDesc', this.skillDescription)
+			data.append('skillName', this.$refs.skillName.value)
+			data.append('skillDesc', this.$refs.skillDescription.value)
 
 			let self = this
 			axios({
-				method: 'PUT',
+				method: 'POST',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/uploadSkill/`,
 				data: data,
 				headers: {
@@ -152,8 +175,9 @@ export default {
 			}).then(function(response) {
 				if ('success' in response.data) {
 					if (response.data['success']) {
-						self.githubUrl = response.data['url']
 						self.setSuccess()
+						self.githubUrl = response.data['url']
+						self.uploaded = true
 					}
 					else {
 						self.setFailed()

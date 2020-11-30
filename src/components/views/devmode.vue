@@ -25,6 +25,7 @@
 					<div class="inputs longInputs">
 						<div class="input">
 							<input type="text" id="skillName" ref="skillName" class="inputError" @input="validateTextInput(5, 20, true, $event)" :disabled="created">
+							<span style="margin-left: 15px;" ref="skillNameExists" class="red initialHidden">{{$t('devMode.skillAlreadyExists')}}</span>
 						</div>
 						<div class="input">
 							<input type="text" id="skillSpeakableName" ref="skillSpeakableName" class="inputError" @input="validateTextInput(5, 50, false, $event)" :disabled="created">
@@ -41,7 +42,7 @@
 								<option value="game">game</option>
 								<option value="kid">kid</option>
 								<option value="automation">automation</option>
-								<option value="assistance">assistance</option>
+								<option value="assistance" selected>assistance</option>
 								<option value="security">security</option>
 								<option value="planning">planning</option>
 								<option value="shopping">shopping</option>
@@ -171,7 +172,7 @@
 						<div class="input">
 							<button v-if="!created && allValid && !waiting" @click="createSkill">{{$t('buttons.create')}}</button>
 							<button v-if="!waiting" @click="reset">{{$t('buttons.reset')}}</button>
-							<button v-if="created && !waiting" @click="uploadSkill">{{$t('buttons.uploadToGithub')}}</button>
+							<button v-if="created && !uploaded && !waiting" @click="uploadSkill">{{$t('buttons.uploadToGithub')}}</button>
 							<button v-if="created && uploaded && !waiting" @click="checkOnGithub">{{$t('buttons.checkOnGithub')}}</button>
 						</div>
 					</div>
