@@ -1,10 +1,9 @@
 <template>
-	<div class="container">
+	<div class="container flexcolumn">
 		<tabs :tabs="tabs"/>
 		<div v-if="activeTab === 0" class="tab_page">
 			<div class="settingsContainer">
-				<div class="settings">
-					<div v-for="category in $store.state.settingCategories" class="settingsCategory">
+				<div v-for="category in $store.state.settingCategories" class="settingsCategory">
 						<div class="title">{{ category.toUpperCase() }}</div>
 						<div class="configLayout">
 							<div class="labels">
@@ -111,11 +110,10 @@
 							<i class="far fa-save clickable" aria-hidden="true" v-tooltip="$t('tooltips.save')" @click="save"/>
 						</div>
 					</div>
-				</div>
 			</div>
 		</div>
 		<div v-if="activeTab === 1" class="tab_page">
-			<div class="tileContainer">
+			<div class="container flexrow">
 				<div class="utility clickable" @click="utilityRequestAndRedirect('restart')">
 					<p class="utilityIcon">
 						<i id="utilityRestart" class="fas fa-redo-alt"/>

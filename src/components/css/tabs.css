@@ -41,9 +41,9 @@
 .tab_page {
 	position: relative;
 	display: flex;
-	flex: 1;
-	width: 100%;
+	flex: 1 1 0;
 	overflow: hidden;
 	box-sizing: border-box;
 	flex-flow: column;
+	padding: 5px;
 }

@@ -1,5 +1,5 @@
 <template>
-	<div class="container">
+	<div class="container flexcolumn">
 		<div class="syslogContainer">
 			<actions-menu :menuItems="menuItems" />
 			<div class="terminal" id="terminal">

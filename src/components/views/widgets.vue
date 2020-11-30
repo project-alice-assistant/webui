@@ -1,5 +1,5 @@
 <template>
-	<div class="container">
+	<div class="container flexcolumn">
 		<overlay :opened="addWidgets" :visible="addWidgets" @closed="addWidgets = false" animate="zoom-in" :header="$t('dialogs.titles.addWidgets')">
 			<div v-for="(widgets, skillName) in widgetTemplates" :key="skillName">
 				<div class="skillTemplate">{{ skillName }}</div>

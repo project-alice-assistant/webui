@@ -18,7 +18,7 @@ export default {
 				method: 'post',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/login/`,
 				data: data,
-				headers: {'Content-Type': 'multipart/form-data' }
+				headers: {'Content-Type': 'multipart/form-data'}
 			}).then(response => {
 				if ('apiToken' in response.data) {
 					this.$store.commit('userLogin', {

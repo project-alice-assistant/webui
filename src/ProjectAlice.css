@@ -192,31 +192,37 @@ nav {
 	width: 100%;
 	overflow: hidden;
 	position: relative;
+	height: 100%;
 }
 
 .container {
-	display: flex;
-	flex: 1;
-	flex-direction: column;
-	width: 100%;
-	overflow-x: hidden;
-	overflow-y: auto;
-}
-
-.tileContainer {
-	display: flex;
-	flex: 1;
-	flex-wrap: wrap;
-	align-content: flex-start;
-	flex-direction: row;
-	overflow-y: auto;
 	position: absolute;
 	top: 0;
 	left: 0;
 	right: 0;
 	bottom: 0;
+	display: flex;
+	flex: 1;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
 	box-sizing: border-box;
 	padding-bottom: 15px;
+}
+
+.flexrow {
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-content: flex-start;
+}
+
+.flexcolumn {
+	flex-direction: column;
+	align-content: flex-start;
+}
+
+.yscroll {
+	overflow-y: auto;
 }
 
 .clickable {
@@ -407,10 +413,13 @@ button:active {
 }
 
 .configLayout {
+	position: relative;
 	display: flex;
 	flex: 1;
 	flex-direction: row;
 	width: 100%;
+	box-sizing: border-box;
+	padding: 15px;
 }
 
 .configLayout > .labels {
@@ -437,9 +446,32 @@ button:active {
 	flex: 1;
 }
 
+.longInputs input,
+.longInputs select,
+.longInputs textarea
+{
+	min-width: 500px;
+}
+
 .configLayout > .inputs > .input {
 	min-height: 2.5em;
 	display: flex;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
+.configLayout > .inputs > .inputMultiline {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	margin-bottom: 10px;
+}
+
+.configLayout > .inputs > .inputMultiline > .line {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
 	align-items: center;
 	margin-bottom: 10px;
 }
@@ -454,4 +486,12 @@ button:active {
 .configLayout > .inputs > .input > .rangeInput {
 	display: flex;
 	align-items: center;
+}
+
+.inputError {
+	border-color: red;
+}
+
+.inputValid {
+	border-color: green;
 }
