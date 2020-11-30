@@ -56,6 +56,11 @@
 	max-height: 200px;
 	background-color: var(--windowBG);
 	margin: 15px;
+	transition: var(--shortAnimation);
+}
+
+.utility:hover {
+	transform: var(--lightLift);
 }
 
 .utilityIcon {

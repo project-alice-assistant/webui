@@ -14,6 +14,7 @@ import VueTooltip from 'v-tooltip'
 import VueDraggableResizable from 'vue-draggable-resizable'
 import VueSimpleMarkdown from 'vue-simple-markdown'
 import VueI18n from 'vue-i18n'
+import Fit2Box from 'vue-fit2box'
 
 import Skill from './components/views/skill'
 import StoreSkill from './components/views/storeSkill'
@@ -45,6 +46,8 @@ Vue.component('skill', Skill)
 Vue.component('storeSkill', StoreSkill)
 Vue.component('actionsMenu', ActionsMenu)
 Vue.component('tabs', Tabs)
+
+Vue.directive('fit2box', Fit2Box)
 
 import './ProjectAlice.css'
 import './components/css/overrides/vuejsdialog.css'

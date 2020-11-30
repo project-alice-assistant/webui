@@ -1,5 +1,4 @@
 /* ========================== VARIABLES ========================== */
-/* Not used in for example in .console*/
 :root {
 	/* COLOR */
 	--accent: black;
@@ -12,6 +11,10 @@
 	/* FONTS */
 	--normal: 'Orkney', Arial, sans-serif;
 	--monospace: 'Courier New', monospace;
+
+	/* ANIMATION */
+	--shortAnimation: all .15s ease-in-out;
+	--lightLift: translate3d(-2px, -2px, 0px);
 }
 
 /* ============================ FONTS ============================ */
