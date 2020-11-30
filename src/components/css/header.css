@@ -4,11 +4,10 @@
 	margin-left: 1em;
 	align-items: center;
 	display: flex;
-	width: 7.4em;
 }
 
 .aliceStatus {
-	flex-grow: 1;
+	flex: 1;
 }
 
 .updateChannelMarker {
@@ -23,4 +22,21 @@
 	font-weight: 300;
 	align-items: center;
 	display: flex;
+}
+
+.versionInfo {
+	font-size: 0.85em;
+	align-items: center;
+	display: flex;
+	margin-left: 15px;
+}
+
+.channelInfo {
+	font-size: 0.7em;
+	align-items: center;
+	display: flex;
+	margin-left: 15px;
+	text-transform: uppercase;
+	justify-items: right;
+	font-family: var(--lightItalic);
 }

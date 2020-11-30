@@ -10,6 +10,15 @@
 
 	/* FONTS */
 	--normal: 'Orkney', Arial, sans-serif;
+	--light: 'OrkneyLight', Arial, sans-serif;
+	--medium: 'OrkneyMedium', Arial, sans-serif;
+	--bold: 'OrkneyBold', Arial, sans-serif;
+
+	--italic: 'OrkneyItalic', Arial, sans-serif;
+	--lightItalic: 'OrkneyLightItalic', Arial, sans-serif;
+	--mediumItalic: 'OrkneyMediumItalic', Arial, sans-serif;
+	--boldItalic: 'OrkneyBoldItalic', Arial, sans-serif;
+
 	--monospace: 'Courier New', monospace;
 
 	/* ANIMATION */
@@ -19,7 +28,7 @@
 
 /* ============================ FONTS ============================ */
 @font-face {
-	font-family: 'Orkney';
+	font-family: 'OrkneyItalic';
 	src: url('./assets/webfonts/orkney/Orkney-Italic.eot');
 	src: url('./assets/webfonts/orkney/Orkney-Italic.eot?#iefix') format('embedded-opentype'),
 	url('./assets/webfonts/orkney/Orkney-Italic.woff2') format('woff2'),
@@ -32,7 +41,7 @@
 }
 
 @font-face {
-	font-family: 'Orkney';
+	font-family: 'OrkneyMedium';
 	src: url('./assets/webfonts/orkney/Orkney-Medium.eot');
 	src: url('./assets/webfonts/orkney/Orkney-Medium.eot?#iefix') format('embedded-opentype'),
 	url('./assets/webfonts/orkney/Orkney-Medium.woff2') format('woff2'),
@@ -45,7 +54,7 @@
 }
 
 @font-face {
-	font-family: 'Orkney';
+	font-family: 'OrkneyLight';
 	src: url('./assets/webfonts/orkney/Orkney-Light.eot');
 	src: url('./assets/webfonts/orkney/Orkney-Light.eot?#iefix') format('embedded-opentype'),
 	url('./assets/webfonts/orkney/Orkney-Light.woff2') format('woff2'),
@@ -58,7 +67,7 @@
 }
 
 @font-face {
-	font-family: 'Orkney';
+	font-family: 'OrkneyMediumItalic';
 	src: url('./assets/webfonts/orkney/Orkney-MediumItalic.eot');
 	src: url('./assets/webfonts/orkney/Orkney-MediumItalic.eot?#iefix') format('embedded-opentype'),
 	url('./assets/webfonts/orkney/Orkney-MediumItalic.woff2') format('woff2'),
@@ -84,7 +93,7 @@
 }
 
 @font-face {
-	font-family: 'Orkney';
+	font-family: 'OrkneyBold';
 	src: url('./assets/webfonts/orkney/Orkney-Bold.eot');
 	src: url('./assets/webfonts/orkney/Orkney-Bold.eot?#iefix') format('embedded-opentype'),
 	url('./assets/webfonts/orkney/Orkney-Bold.woff2') format('woff2'),
@@ -97,7 +106,7 @@
 }
 
 @font-face {
-	font-family: 'Orkney';
+	font-family: 'OrkneyLightItalic';
 	src: url('./assets/webfonts/orkney/Orkney-LightItalic.eot');
 	src: url('./assets/webfonts/orkney/Orkney-LightItalic.eot?#iefix') format('embedded-opentype'),
 	url('./assets/webfonts/orkney/Orkney-LightItalic.woff2') format('woff2'),
@@ -110,7 +119,7 @@
 }
 
 @font-face {
-	font-family: 'Orkney';
+	font-family: 'OrkneyBoldItalic';
 	src: url('./assets/webfonts/orkney/Orkney-BoldItalic.eot');
 	src: url('./assets/webfonts/orkney/Orkney-BoldItalic.eot?#iefix') format('embedded-opentype'),
 	url('./assets/webfonts/orkney/Orkney-BoldItalic.woff2') format('woff2'),

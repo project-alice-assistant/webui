@@ -22,7 +22,11 @@ export default {
 		}
 	},
 	created: function() {
-		this.verbosity = this.$cookies.get('verbosity') || 1
+		if (this.$cookies.isKey('verbosity')) {
+			this.verbosity = this.$cookies.get('verbosity')
+		} else {
+			this.verbosity = 1
+		}
 
 		let self = this
 		this.unwatch = this.$store.watch(
@@ -55,6 +59,9 @@ export default {
 	methods: {
 		setVerbosity: function(add) {
 			this.verbosity = Math.max(0, Math.min(this.verbosity + add, 4))
+			if (isNaN(this.verbosity)) {
+				this.verbosity = 0
+			}
 			this.$cookies.set('verbosity', this.verbosity)
 		}
 	}
