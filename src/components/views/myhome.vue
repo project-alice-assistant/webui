@@ -1,7 +1,7 @@
 <template>
 	<div class="container flexcolumn">
 		<actions-menu :menuItems="menuItems" v-if="$store.state.loggedInUser"/>
-		<div class="myHomeEditor">
+		<div class="myHomeEditor" :class="{fullscreen: $store.state.fullScreen}">
 			sdfasdf
 		</div>
 	</div>
