@@ -1,0 +1,61 @@
+.connectionStatus {
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	width: 0;
+	height: 0;
+	z-index: 10;
+	border-bottom: 200px solid rgba(255, 0, 0, 0.5);
+	border-left: 200px solid transparent;
+}
+
+.connectionStatus > i {
+	position: relative;
+	left: -100px;
+	top: 100px;
+	animation: wiggle 3s infinite;
+}
+
+.connected {
+	animation-fill-mode: forwards;
+	animation-duration: 5s;
+	animation-name: fade;
+}
+
+.connected > i {
+	animation: beat 5s;
+}
+
+@keyframes wiggle {
+	0% { transform: rotate(0deg); }
+	2% { transform: rotate(-2deg); }
+	4% { transform: rotate(3deg); }
+	6% { transform: rotate(-1deg); }
+	8% { transform: rotate(4deg); }
+	10% { transform: rotate(-2deg); }
+	12% { transform: rotate(1deg); }
+	14% { transform: rotate(-4deg); }
+	16% { transform: rotate(1deg); }
+	18% { transform: rotate(-3deg); }
+	20% { transform: rotate(0deg); }
+	100% { transform: rotate(0deg); }
+}
+
+@keyframes beat {
+	0% { transform: scale(0.95); }
+	10% { transform: scale(1.1); }
+	20% { transform: scale(0.9); }
+	30% { transform: scale(1.05); }
+	40% { transform: scale(0.8); }
+	50% { transform: scale(1.08); }
+	60% { transform: scale(0.87); }
+	70% { transform: scale(1.1); }
+	80% { transform: scale(0.95); }
+	90% { transform: scale(1.1); }
+	100% { transform: scale(1); }
+}
+
+@keyframes fade {
+	0% { opacity: 1; }
+	100% { opacity: 0; }
+}

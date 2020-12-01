@@ -22,7 +22,7 @@
 }
 
 .extended {
-	animation-duration: 1.5s;
+	animation-duration: 1s;
 	animation-name: action-menu-extend;
 }
 
@@ -36,6 +36,6 @@
 		max-width: 62px;
 	}
 	to {
-		max-width: 2000px;
+		max-width: 1000px;
 	}
 }
