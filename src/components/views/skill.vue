@@ -27,11 +27,11 @@
 			<div class="clickable" @click="$tours['skills'].currentStep !== -1 ? '' : viewInfos = true" data-tour="8">{{$t('skill.info')}}</div>
 			<div class="clickable" @click="$tours['skills'].currentStep !== -1 ? '' : viewInstructions = true" data-tour="9" v-if="skill.instructions.length > 0">{{$t('skill.instructions')}}</div>
 			<div class="skillActions">
-				<i class="fas fa-cog clickable" aria-hidden="true" v-if="Object.keys(skill.settings).length" @click="$tours['skills'].currentStep !== -1 ? '' : showSettings(skill)" data-tour="1" v-tooltip="$t('tooltips.settings')"/>
-				<i class="fas fa-power-off clickable" aria-hidden="true" v-if="!skill.required" @click="$tours['skills'].currentStep !== -1 ? '' : toggle" data-tour="2" v-tooltip="skill.active ? $t('tooltips.stop') : $t('tooltips.start')"/>
-				<i class="fas fa-sync clickable" aria-hidden="true" v-if="skill.active" @click="$tours['skills'].currentStep !== -1 ? '' : reloadSkill" data-tour="3" v-tooltip="$t('tooltips.reload')"/>
-				<i class="fas fa-arrow-alt-circle-up clickable" aria-hidden="true" v-if="skill.updateAvailable" @click="$tours['skills'].currentStep !== -1 ? '' : update" data-tour="4" v-tooltip="$t('tooltips.update')"/>
-				<i class="far fa-times-circle clickable" aria-hidden="true" v-if="!skill.required" @click="$tours['skills'].currentStep !== -1 ? '' : remove" data-tour="5" v-tooltip="$t('tooltips.remove')"/>
+				<i class="fas fa-cog clickable" aria-hidden="true" v-if="Object.keys(skill.settings).length" @click="showSettings" data-tour="1" v-tooltip="$t('tooltips.settings')"/>
+				<i class="fas fa-power-off clickable" aria-hidden="true" v-if="!skill.required" @click="toggle" data-tour="2" v-tooltip="skill.active ? $t('tooltips.stop') : $t('tooltips.start')"/>
+				<i class="fas fa-sync clickable" aria-hidden="true" v-if="skill.active" @click="reloadSkill" data-tour="3" v-tooltip="$t('tooltips.reload')"/>
+				<i class="fas fa-arrow-alt-circle-up clickable" aria-hidden="true" v-if="skill.updateAvailable" @click="update" data-tour="4" v-tooltip="$t('tooltips.update')"/>
+				<i class="far fa-times-circle clickable" aria-hidden="true" v-if="!skill.required" @click="remove" data-tour="5" v-tooltip="$t('tooltips.remove')"/>
 			</div>
 			<div class="skillStatusAround" />
 			<div class="skillStatus" :class="skill.active ? 'active' : 'disabled'" data-tour="6"/>

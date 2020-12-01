@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export default {
 	name: 'skill',
-	data: function() {
+	data: function () {
 		return {
 			viewIntents: false,
 			viewInfos: false,
@@ -15,47 +15,54 @@ export default {
 		'index' //only first skill gets tour marking
 	],
 	methods: {
-		reloadSkill: function() {
+		reloadSkill: function () {
+			if (this.$tours['skills'].currentStep !== -1) return
 			axios({
 				method: 'get',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.skill.name}/reload/`,
-				headers: {'auth': this.$store.state.loggedInUser['token'] }
+				headers: {'auth': this.$store.state.loggedInUser['token']}
 			}).then(response => {
 				if ('skill' in response.data) {
-					this.skill = response.data.skill
+					this.$parent.updateSkillData(response.data.skill)
 				}
 			})
 		},
-		toggle: function() {
+		toggle: function () {
+			if (this.$tours['skills'].currentStep !== -1) return
 			axios({
 				method: 'get',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.skill.name}/toggleActiveState/`,
-				headers: {'auth': this.$store.state.loggedInUser['token'] }
+				headers: {'auth': this.$store.state.loggedInUser['token']}
 			}).then(() => (this.skill.active = !this.skill.active))
 
 		},
-		update: function() {
+		update: function () {
+			if (this.$tours['skills'].currentStep !== -1) return
 			axios({
 				method: 'get',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.skill.name}/checkUpdate/`,
-				headers: {'auth': this.$store.state.loggedInUser['token'] }
-			}).then(() => {})
+				headers: {'auth': this.$store.state.loggedInUser['token']}
+			}).then(() => {
+			})
 		},
-		remove: function() {
+		remove: function () {
+			if (this.$tours['skills'].currentStep !== -1) return
 			axios({
 				method: 'delete',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.skill.name}/`,
-				headers: {'auth': this.$store.state.loggedInUser['token'] }
+				headers: {'auth': this.$store.state.loggedInUser['token']}
 			}).then(() => {
 				this.$destroy()
 				this.$el.parentNode.removeChild(this.$el)
 			})
 		},
-		showSettings: function(skill) {
-			let backup = JSON.parse(JSON.stringify(skill['settings']))
+		showSettings: function () {
+			if (this.$tours['skills'].currentStep !== -1) return
+
+			let backup = JSON.parse(JSON.stringify(this.skill['settings']))
 			const options = {
 				view: 'skillSettingsPromptDialog',
-				skill: skill,
+				skill: this.skill,
 				parent: this
 			}
 
@@ -68,8 +75,11 @@ export default {
 						'content-type': 'application/json'
 					},
 					data: JSON.stringify(dialogue.data)
-				}).then(() => backup = {})
-			}).catch(() => skill['settings'] = backup)
+				}).then(() => {
+					backup = {}
+					this.$parent.updateSkillData(this.skill)
+				})
+			}).catch(() => this.skill['settings'] = backup)
 		}
 	}
 }

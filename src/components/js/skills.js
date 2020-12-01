@@ -111,13 +111,13 @@ export default {
 					}
 				}
 			],
-			tourCallbacks : {
+			tourCallbacks: {
 				onSkip: this.finishTour,
 				onFinish: this.finishTour
 			}
 		}
 	},
-	mounted: function() {
+	mounted: function () {
 		if (!this.$cookies.isKey('skillsTourCompleted')) {
 			// Add a dummy skill for function tour
 			this.skills.push({
@@ -141,26 +141,35 @@ export default {
 			this.fetchSkills()
 		}
 
-		setInterval(this.reloadStoreSkills, 5*60*1000)
+		setInterval(this.reloadStoreSkills, 5 * 60 * 1000)
 		this.reloadStoreSkills()
 	},
 	methods: {
-		fetchSkills: function() {
+		updateSkillData(skillData) {
+			for (const [index, skill] of this.skills.entries()) {
+				if (skill.name === skillData.name) {
+					this.skills[index] = skillData
+					return
+				}
+			}
+		},
+		fetchSkills: function () {
 			axios({
 				method: 'get',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/`,
-				headers: {'auth': this.$store.state.loggedInUser['token'] }
+				headers: {'auth': this.$store.state.loggedInUser['token']}
 			}).then(response => {
 				if ('data' in response.data) {
 					this.skills = response.data.data
 				}
 			})
 		},
-		finishTour: function() {
+		finishTour: function () {
 			this.$cookies.set('skillsTourCompleted', 1)
 			this.fetchSkills()
 		},
-		toggleShop: function() {
+		toggleShop: function () {
+			if (this.$tours['skills'].currentStep !== -1) return
 			this.shopOpen = !this.shopOpen
 		},
 		reloadStoreSkills: function () {
@@ -179,7 +188,7 @@ export default {
 		removeSkillToDownload(skillName) {
 			this.skillsToDownload = this.skillsToDownload.filter(e => e !== skillName)
 		},
-		doDownload: function() {
+		doDownload: function () {
 			if (this.skillsToDownload.length <= 0) {
 				return
 			}
