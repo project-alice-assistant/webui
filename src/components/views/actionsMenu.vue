@@ -1,5 +1,5 @@
 <template>
-	<div class="menu" :class="{extended: isExtended}">
+	<div class="menu" :class="{extended: isExtended, cinemaMode: $store.state.fullScreen}">
 		<i :class="!isExtended ? item.icon : item.extendedIcon || item.icon"
 			 class="menuButton clickable"
 			 aria-hidden="true"
