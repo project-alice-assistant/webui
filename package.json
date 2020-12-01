@@ -16,7 +16,6 @@
 		"v-tooltip": "^2.0.3",
 		"vue": "^2.6.11",
 		"vue-axios": "^3.1.3",
-		"vue-cookies": "^1.7.4",
 		"vue-draggable-resizable": "^2.2.0",
 		"vue-i18n": "^8.22.2",
 		"vue-js-modal": "^2.0.0-rc.6",

@@ -12,8 +12,8 @@ export default {
 		}
 	},
 	created: function () {
-		this.ip = this.$cookies.isKey('host') ? this.$cookies.get('host') : '127.0.0.1'
-		this.port = this.$cookies.isKey('apiPort') ? this.$cookies.get('apiPort') : 5001
+		this.ip = localStorage.getItem('host') || '127.0.0.1'
+		this.port = localStorage.getItem('apiPort') || 5001
 		this.doConnect()
 	},
 	methods: {
@@ -43,14 +43,14 @@ export default {
 				axios({
 					method: 'get',
 					url: `http://${self.ip}:${self.port}/api/v1.0.1/utils/config/`,
-					headers: {'auth': self.$cookies.isKey('apiToken') ? self.$cookies.get('apiToken') : ''}
+					headers: {'auth': localStorage.getItem('apiToken')}
 				}).then(response => {
 					self.$store.commit('setSettings', response.data.config)
 					self.$store.commit('setSettingTemplates', response.data.templates)
 					self.$store.commit('setSettingCategories', response.data.categories)
 					if (self.remember) {
-						self.$cookies.set('host', self.ip)
-						self.$cookies.set('apiPort', self.port)
+						localStorage.setItem('host', self.ip)
+						localStorage.setItem('apiPort', self.port)
 					}
 					resolve()
 				}).catch(reason => {
@@ -85,21 +85,21 @@ export default {
 		validateToken() {
 			let self = this
 			return new Promise(function(resolve, reject) {
-				if (self.$cookies.isKey('username') && self.$cookies.isKey('apiToken')) {
+				if (localStorage.getItem('apiToken') && localStorage.getItem('username')) {
 					axios({
 						method: 'post',
 						url: `http://${self.ip}:${self.port}/api/v1.0.1/login/checkToken/`,
-						headers: {'auth': self.$cookies.get('apiToken')}
+						headers: {'auth': localStorage.getItem('apiToken')}
 					}).then(response => {
 						if ('success' in response.data) {
 							self.$store.commit('userLogin', {
-								user: self.$cookies.get('username'),
-								token: self.$cookies.get('apiToken'),
+								user: localStorage.getItem('username'),
+								token: localStorage.getItem('apiToken'),
 								authLevel: response.data.authLevel
 							})
 						} else {
-							self.$cookies.remove('username')
-							self.$cookies.remove('apiToken')
+							localStorage.removeItem('username')
+							localStorage.removeItem('apiToken')
 						}
 					}).finally(() => resolve())
 				} else {

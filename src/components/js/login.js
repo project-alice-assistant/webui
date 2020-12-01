@@ -26,10 +26,9 @@ export default {
 						token: response.data.apiToken,
 						authLevel: response.data.authLevel
 					})
-					console.log(this.$store.state.loggedInUser.authLevel)
 					if (this.rememberMe) {
-						this.$cookies.set('username', this.username)
-						this.$cookies.set('apiToken', response.data.apiToken)
+						localStorage.setItem('username', this.username)
+						localStorage.setItem('apiToken', response.data.apiToken)
 					}
 
 					axios({
@@ -38,7 +37,7 @@ export default {
 						headers: {'auth': response.data.apiToken }
 					}).then(response => {
 						this.$store.commit('setSettings', response.data.config)
-						self.$store.commit('setSettingTemplates', response.data.templates)
+						this.$store.commit('setSettingTemplates', response.data.templates)
 						this.$store.commit('setSettingCategories', response.data.categories)
 					})
 

@@ -118,7 +118,7 @@ export default {
 		}
 	},
 	mounted: function () {
-		if (!this.$cookies.isKey('skillsTourCompleted')) {
+		if (!localStorage.getItem('skillsTourCompleted')) {
 			// Add a dummy skill for function tour
 			this.skills.push({
 				name: 'ProjectAliceDemo',
@@ -165,7 +165,7 @@ export default {
 			})
 		},
 		finishTour: function () {
-			this.$cookies.set('skillsTourCompleted', 1)
+			localStorage.setItem('skillsTourCompleted', true)
 			this.fetchSkills()
 		},
 		toggleShop: function () {

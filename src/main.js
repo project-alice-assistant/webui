@@ -4,7 +4,6 @@ import router from './router'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import store from './utils/globalStore'
-import VueCookies from 'vue-cookies'
 import VueToggles from 'vue-toggles'
 import VModal from 'vue-js-modal'
 import VueTour from 'vue-tour'
@@ -30,7 +29,6 @@ import 'vue-simple-markdown/dist/vue-simple-markdown.css'
 Vue.config.productionTip = false
 
 Vue.use(VueAxios, axios)
-Vue.use(VueCookies)
 Vue.use(VModal)
 Vue.use(Overlay)
 Vue.use(VueDialog)
@@ -38,8 +36,6 @@ Vue.use(VueTour)
 Vue.use(VueTooltip)
 Vue.use(VueSimpleMarkdown)
 Vue.use(VueI18n)
-
-Vue.$cookies.config('10y')
 
 Vue.component('VueToggles', VueToggles)
 Vue.component('vue-draggable-resizable', VueDraggableResizable)

@@ -22,11 +22,8 @@ export default {
 		}
 	},
 	created: function() {
-		if (this.$cookies.isKey('verbosity')) {
-			this.verbosity = parseInt(this.$cookies.get('verbosity'))
-		} else {
-			this.verbosity = 1
-		}
+		let verbosity = localStorage.getItem('alicewatchVerbosity') || 1
+		this.verbosity = parseInt(verbosity)
 
 		let self = this
 		this.unwatch = this.$store.watch(
@@ -62,7 +59,7 @@ export default {
 			if (isNaN(this.verbosity)) {
 				this.verbosity = 0
 			}
-			this.$cookies.set('verbosity', this.verbosity)
+			localStorage.setItem('alicewatchVerbosity', this.verbosity)
 		}
 	}
 }

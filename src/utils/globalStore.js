@@ -36,17 +36,20 @@ export default new Vuex.Store({
 		},
 		userLogout(state) {
 			state.loggedInUser = {}
-			Vue.$cookies.remove('username')
-			Vue.$cookies.remove('apiToken')
+			localStorage.removeItem('username')
+			localStorage.removeItem('apiToken')
 		},
 		startCinemaMode(state) {
 			state.fullScreen = true
+			localStorage.setItem('fullscreen', state.fullScreen)
 		},
 		stopCinemaMode(state) {
 			state.fullScreen = false
+			localStorage.setItem('fullscreen', state.fullScreen)
 		},
 		toggleCinemaMode(state) {
 			state.fullScreen = !state.fullScreen
+			localStorage.setItem('fullscreen', state.fullScreen)
 		},
 		setI18n(state, obj) {
 			state.i18n = obj
