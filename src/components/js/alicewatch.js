@@ -23,7 +23,7 @@ export default {
 	},
 	created: function() {
 		if (this.$cookies.isKey('verbosity')) {
-			this.verbosity = this.$cookies.get('verbosity')
+			this.verbosity = parseInt(this.$cookies.get('verbosity'))
 		} else {
 			this.verbosity = 1
 		}
