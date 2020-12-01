@@ -33,11 +33,8 @@ export default {
 				return true
 			}
 		},
-		save: function() {
-			const savers = document.querySelectorAll('.fa-save')
-			for (const saver of savers) {
-				saver.classList = 'fas fa-spinner fa-spin'
-			}
+		save: function(event) {
+			event.target['data-success'] = false
 			axios({
 				method: 'PATCH',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/config/`,
@@ -47,24 +44,8 @@ export default {
 				},
 				data: this.$store.state.settings
 			}).then(function() {
-				setTimeout(function(){
-					for (const saver of savers) {
-						saver.classList = 'fas fa-check'
-					}
-				}, 500)
-			}).catch(function() {
-				setTimeout(function(){
-					for (const saver of savers) {
-						saver.classList = 'fas fa-times'
-					}
-				}, 500)
-			}).finally(
-				setTimeout(function(){
-					for (const saver of savers) {
-						saver.classList = 'far fa-save clickable'
-					}
-				}, 1500)
-			)
+				event.target['data-success'] = true
+			})
 		},
 		utilityRequestAndRedirect: function(id) {
 			const icon = this.startIcon(id)

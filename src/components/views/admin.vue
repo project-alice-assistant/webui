@@ -107,7 +107,7 @@
 							</div>
 						</div>
 						<div>
-							<i class="far fa-save clickable" aria-hidden="true" v-tooltip="$t('tooltips.save')" @click="save"/>
+							<reactive-icon data-success="false" icon="far fa-save" tooltip="tooltips.save" :onClick="save" :timing="[1, 2]"/>
 						</div>
 					</div>
 			</div>

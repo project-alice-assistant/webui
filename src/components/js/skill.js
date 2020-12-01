@@ -47,14 +47,21 @@ export default {
 		},
 		remove: function () {
 			if (this.$tours['skills'].currentStep !== -1) return
-			axios({
-				method: 'delete',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.skill.name}/`,
-				headers: {'auth': this.$store.state.loggedInUser['token']}
-			}).then(() => {
-				this.$destroy()
-				this.$el.parentNode.removeChild(this.$el)
-			})
+
+			let self = this
+			this.$dialog
+				.confirm(this.$t('dialogs.titles.confirmSkillDeletion'), {okText: this.$t('dialogs.labels.yes'), cancelText: this.$t('dialogs.labels.cancel')})
+				.then(function() {
+					axios({
+						method: 'delete',
+						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/skills/${self.skill.name}/`,
+						headers: {'auth': self.$store.state.loggedInUser['token']}
+					}).then(() => {
+						self.$el.parentNode.removeChild(self.$el)
+						self.$destroy()
+					})
+				})
+				.catch()
 		},
 		showSettings: function () {
 			if (this.$tours['skills'].currentStep !== -1) return
