@@ -334,6 +334,7 @@ button {
 	outline: none;
 	min-width: 100px;
 	text-transform: uppercase;
+	overflow: hidden;
 }
 
 button:hover {

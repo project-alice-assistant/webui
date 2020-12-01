@@ -32,7 +32,7 @@ export default {
 		$route: {
 			immediate: true,
 			handler(to, from) {
-				this.title = to.meta.title || 'Home'
+				this.title = this.$t(to.meta.title) || 'Home'
 				document.title = `Project Alice - ${this.title.charAt(0).toUpperCase() + this.title.slice(1)}`
 			}
 		}

@@ -9,6 +9,7 @@ import connect from '../components/views/connect'
 import syslog from '../components/views/syslog';
 import alicewatch from '../components/views/alicewatch';
 import devmode from '../components/views/devmode';
+import myhome from '../components/views/myhome';
 
 Vue.use(VueRouter)
 
@@ -25,65 +26,64 @@ const routes = [
 		path: '/skills',
 		component: skills,
 		meta: {
-			title: 'skills'
+			title: 'nav.skills'
 		}
 	},
 	{
 		path: '/scenarios',
 		component: scenarios,
 		meta: {
-			title: 'scenarios'
+			title: 'nav.scenarios'
 		}
 	},
 	{
 		path: '/login',
 		component: login,
 		meta: {
-			title: 'login'
+			title: 'nav.login'
 		}
 	},
 	{
 		path: '/syslog',
 		component: syslog,
 		meta: {
-			title: 'syslog'
+			title: 'nav.syslog'
 		}
 	},
 	{
 		path: '/alicewatch',
 		component: alicewatch,
 		meta: {
-			title: 'alicewatch'
+			title: 'nav.alicewatch'
 		}
 	},
 	{
 		path: '/admin',
 		component: admin,
 		meta: {
-			title: 'admin'
+			title: 'nav.admin'
 		}
 	},
 	{
 		path: '/devmode',
 		component: devmode,
 		meta: {
-			title: 'dev mode'
+			title: 'nav.devmode'
 		}
 	},
 	{
-		path: '/home',
-		redirect: '/'
-	},
-	{
-		path: '/widgets',
-		redirect: '/'
+		path: '/myhome',
+		component: myhome,
+		meta: {
+			title: 'nav.myhome'
+		}
 	},
 	{
 		path: '*',
 		name: 'Home',
 		component: widgets,
 		meta: {
-			title: 'widgets'
+			title: 'nav.widgets'
 		}
 	}
 ]
