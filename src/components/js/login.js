@@ -42,6 +42,15 @@ export default {
 					})
 
 					this.$router.replace('/').then()
+				} else {
+					this.username = ''
+					this.pincode = ''
+
+					let self = this
+					this.$refs.form.classList.add('failed')
+					setTimeout(function() {
+						self.$refs.form.classList.remove('failed')
+					}, 2000)
 				}
 			}).catch(response => {
 				console.log('Connection failed: ' + response)

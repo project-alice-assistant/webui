@@ -1,6 +1,6 @@
 <template>
 	<div class="centered vcentered">
-		<form class="fullpageForm" v-on:submit.prevent="login">
+		<form ref="form" class="fullpageForm" v-on:submit.prevent="login">
 			<p>
 				<label for="username">{{$t('dialogs.labels.username')}}</label>
 				<input id="username" v-model="username" type="text" :placeholder="$t('dialogs.labels.username')">

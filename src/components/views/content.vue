@@ -3,7 +3,7 @@
 		<keep-alive>
 			<router-view/>
 		</keep-alive>
-		<div class="connectionStatus" :class="{initialHidden: connected, connected: reconnected}">
+		<div class="connectionStatus" :class="{connected: reconnected}" v-if="!connected">
 			<i class="fas fa-5x" aria-hidden="true" :class="{'fa-heart-broken': !connected && !reconnected, 'fa-heartbeat': connected || reconnected}"/>
 		</div>
 	</section>
