@@ -1,4 +1,5 @@
-import htmlFormatter from '../../utils/htmlFormatter'
+import htmlFormatter from '@/utils/htmlFormatter'
+import * as C from '@/utils/constants'
 
 export default {
 	name: 'alicewatch',
@@ -30,7 +31,7 @@ export default {
 				return state.mqttMessage
 			},
 			function(msg) {
-				if (msg.topic === 'projectalice/logging/alicewatch') {
+				if (msg.topic === C.ALICE_WATCH_TOPIC) {
 					let payload = JSON.parse(msg.payloadString)
 					if (payload.verbosity > self.verbosity) {
 						return
@@ -49,7 +50,7 @@ export default {
 		}
 	},
 	beforeDestroy: function() {
-		this.$store.state.mqtt.unsubscribe('projectalice/logging/alicewatch')
+		this.$store.state.mqtt.unsubscribe(C.ALICE_WATCH_TOPIC)
 		this.unwatch()
 	},
 	methods: {

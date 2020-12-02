@@ -1,5 +1,6 @@
 import axios from 'axios'
-import htmlFormatter from '../../utils/htmlFormatter'
+import htmlFormatter from '@/utils/htmlFormatter'
+import * as C from '@/utils/constants'
 
 export default {
 	name: 'syslog',
@@ -28,7 +29,7 @@ export default {
 				return state.mqttMessage
 			},
 			function(msg) {
-				if (msg.topic === 'projectalice/logging/syslog') {
+				if (msg.topic === C.SYSLOG_TOPIC) {
 					let payload = JSON.parse(msg.payloadString)
 					payload.msg = htmlFormatter(payload.msg)
 					self.logs.push(payload)
@@ -43,7 +44,7 @@ export default {
 		}
 	},
 	beforeDestroy: function() {
-		this.$store.state.mqtt.unsubscribe('projectalice/devices/resourceUsage')
+		this.$store.state.mqtt.unsubscribe(C.SYSLOG_TOPIC)
 		this.unwatch()
 	},
 	methods: {

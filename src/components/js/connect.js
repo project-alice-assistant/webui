@@ -1,5 +1,6 @@
-import axios from 'axios';
-import Paho from 'paho-mqtt';
+import axios from 'axios'
+import Paho from 'paho-mqtt'
+import * as C from '@/utils/constants'
 
 export default {
 	name: 'connect',
@@ -129,11 +130,10 @@ export default {
 		},
 		onConnected: function () {
 			console.log('Mqtt connected')
-			this.$store.state.mqtt.subscribe('projectalice/devices/resourceUsage')
-			this.$store.state.mqtt.subscribe('projectalice/logging/syslog')
-			this.$store.state.mqtt.subscribe('projectalice/logging/alicewatch')
-			this.$store.state.mqtt.subscribe('projectalice/logging/alicewatch')
-			this.$store.state.mqtt.subscribe('projectalice/devices/coreHeartbeat')
+			this.$store.state.mqtt.subscribe(C.RESOURCE_USAGE_TOPIC)
+			this.$store.state.mqtt.subscribe(C.CORE_HEARTBEAT_TOPIC)
+			this.$store.state.mqtt.subscribe(C.ALICE_WATCH_TOPIC)
+			this.$store.state.mqtt.subscribe(C.SYSLOG_TOPIC)
 		},
 		onConnectionFailed: function (_msg) {
 			console.log('Mqtt connection failed')

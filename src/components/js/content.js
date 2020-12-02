@@ -1,3 +1,5 @@
+import * as C from '@/utils/constants'
+
 export default {
 	name: 'pa-content',
 	data: function() {
@@ -14,7 +16,7 @@ export default {
 				return state.mqttMessage
 			},
 			function(msg) {
-				if (msg.topic === 'projectalice/devices/coreHeartbeat') {
+				if (msg.topic === C.CORE_HEARTBEAT_TOPIC) {
 					if (self.reconnected) return
 
 					if (self.checkHeartbeat !== null) {
@@ -40,7 +42,7 @@ export default {
 		)
 	},
 	beforeDestroy: function() {
-		this.$store.state.mqtt.unsubscribe('projectalice/devices/coreHeartbeat')
+		this.$store.state.mqtt.unsubscribe(C.CORE_HEARTBEAT_TOPIC)
 		this.unwatch()
 	}
 }

@@ -1,3 +1,5 @@
+import * as C from '@/utils/constants'
+
 export default {
 	name: 'pa-header',
 	data() {
@@ -18,14 +20,14 @@ export default {
 				return state.mqttMessage
 			},
 			function(msg) {
-				if (msg.topic === 'projectalice/devices/resourceUsage') {
+				if (msg.topic === C.RESOURCE_USAGE_TOPIC) {
 					self.resources = JSON.parse(msg.payloadString)
 				}
 			}
 		)
 	},
 	beforeDestroy: function() {
-		this.$store.state.mqtt.unsubscribe('projectalice/devices/resourceUsage')
+		this.$store.state.mqtt.unsubscribe(C.RESOURCE_USAGE_TOPIC)
 		this.unwatch()
 	},
 	watch: {

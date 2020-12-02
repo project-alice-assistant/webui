@@ -2,7 +2,9 @@ export default {
 	name: 'actionsMenu',
 	data: function() {
 		return {
-			isExtended: false
+			isExtended: false,
+			extend: false,
+			retract: false
 		}
 	},
 	props: [
@@ -14,8 +16,12 @@ export default {
 
 			if (!this.isExtended && item.hasOwnProperty('onClose')) {
 				item['onClose']()
+				this.extend = false
+				this.retract = true
 			} else if (this.isExtended && item.hasOwnProperty('onOpen')) {
 				item['onOpen']()
+				this.retract = false
+				this.extend = true
 			}
 		},
 		handleClick: function(item) {
@@ -28,6 +34,10 @@ export default {
 			if (item.hasOwnProperty('callback')) {
 				item.callback(item)
 			}
+		},
+		animationEnd: function() {
+			this.extend = false
+			this.retract = false
 		}
 	}
 }
