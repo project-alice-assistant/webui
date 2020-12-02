@@ -9,8 +9,12 @@ export default {
 		paConnect
 	},
 	mounted: function() {
-		if (localStorage.getItem('fullscreen') === true) {
+		if (localStorage.getItem('fullscreen') === 'true') {
 			this.$store.commit('startCinemaMode')
+		}
+
+		if (localStorage.getItem('minimized') === 'true') {
+			this.$store.commit('startMinimized')
 		}
 
 		if (!this.$store.state.uiConnected) {

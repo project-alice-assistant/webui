@@ -185,15 +185,6 @@ header {
 	overflow: hidden;
 }
 
-nav {
-	background-color: var(--mainBG);
-	display: flex;
-	margin-right: 2px;
-	padding: 0;
-	width: 10em;
-	flex-direction: column;
-}
-
 #mainSection {
 	background-color: var(--mainBG);
 	display: flex;
@@ -303,44 +294,27 @@ input:focus, textarea:focus {
 
 
 /* ========================== NAVIGATION ========================= */
-.button {
-	align-items: center;
-	background-color: var(--secondary);
-	border: none;
-	box-sizing: content-box;
-	color: var(--text);
-	display: flex;
-	flex-basis: 0;
-	flex-grow: 0;
-	font-family: var(--normal);
-	font-size: 1.5em;
-	height: 5em;
-	justify-content: center;
-	margin: .1em;
-	overflow: hidden;
-	text-align: center;
-}
-
 button {
 	background-color: var(--secondary);
 	border: none;
 	box-sizing: content-box;
 	color: var(--text);
-	font-family: var(--normal);
-	font-size: 1em;
+	font: 1em var(--normal);
 	height: 3em;
-	margin: 2px 2px 0 2px;
+	margin: 2px;
 	text-align: center;
 	outline: none;
-	min-width: 100px;
 	text-transform: uppercase;
 	overflow: hidden;
+	border-radius: unset;
+	min-width: 100px;
+	padding: 0;
+	cursor: pointer;
 }
 
 button:hover {
 	background-color: var(--accent);
 	color: var(--hover);
-	cursor: pointer;
 }
 
 button:active {

@@ -11,6 +11,7 @@ export default new Vuex.Store({
 		mqtt: null,
 		loggedInUser: false,
 		fullScreen: false,
+		minimized: false,
 		i18n: {},
 		uiConnected: false,
 		mqttMessage: {}
@@ -50,6 +51,18 @@ export default new Vuex.Store({
 		toggleCinemaMode(state) {
 			state.fullScreen = !state.fullScreen
 			localStorage.setItem('fullscreen', state.fullScreen)
+		},
+		startMinimized(state) {
+			state.minimized = true
+			localStorage.setItem('minimized', state.minimized)
+		},
+		stopMinimized(state) {
+			state.minimized = false
+			localStorage.setItem('minimized', state.minimized)
+		},
+		toggleMinimized(state) {
+			state.minimized = !state.minimized
+			localStorage.setItem('minimized', state.minimized)
 		},
 		setI18n(state, obj) {
 			state.i18n = obj

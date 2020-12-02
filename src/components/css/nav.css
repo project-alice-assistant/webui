@@ -1,9 +1,75 @@
-.lastItem {
-	margin-top: auto;
-	margin-bottom: 2px;
+nav {
+	display: flex;
+	width: 150px;
+	flex-direction: column;
+	background-color: var(--mainBG);
+	margin-right: 2px;
+	box-sizing: border-box;
+	padding: 0 2px 2px 2px;
+}
+
+nav.collapsed {
+	display: none;
 }
 
 button {
-	padding-left: 20px;
+	margin: 2px 0 0;
+	width: 100%;
+	min-width: 100%;
+	max-width: 100%;
+	height: 46px;
+	max-height: 46px;
+	min-height: 46px;
 	text-align: left;
+	box-sizing: border-box;
+	padding-left: 15px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.lastItem {
+	margin-top: auto;
+}
+
+nav.minimized {
+	width: 50px;
+}
+
+button.minimized {
+	display: flex;
+	width: 100%;
+	min-width: 100%;
+	max-width: 100%;
+	height: 46px;
+	min-height: 46px;
+	max-height: 46px;
+	padding: 0;
+	font-size: 1.5em;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+}
+
+.retract {
+	animation-name: changeSize;
+	animation-duration: 0.25s;
+	animation-fill-mode: backwards;
+	animation-timing-function: ease;
+}
+
+.extend {
+	animation-name: changeSize;
+	animation-duration: 0.25s;
+	animation-fill-mode: forwards;
+	animation-direction: reverse;
+	animation-timing-function: ease;
+}
+
+@keyframes changeSize {
+	from {
+		width: 150px;
+	}
+	to {
+		width: 50px;
+	}
 }
