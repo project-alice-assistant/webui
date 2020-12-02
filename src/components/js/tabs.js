@@ -2,7 +2,8 @@ export default {
 	name: 'tabs',
 	data: function() {
 		return {
-			activeTab: 0
+			activeTab: 0,
+			activeId: 1
 		}
 	},
 	props: [
@@ -15,13 +16,24 @@ export default {
 	methods: {
 		handleClick: function(position, id) {
 			this.activeTab = position
-			this.activeTabId = id
 
 			this.$parent.activeTab = position
 
 			if (this.onChange) {
 				this.onChange(id)
 			}
+
+			if (this.tabs[id].hasOwnProperty('onChangeTo')) {
+				// noinspection JSUnresolvedFunction
+				this.tabs[id].onChangeTo()
+			}
+
+			if (this.tabs[this.activeId].hasOwnProperty('onLeaveFrom')) {
+				// noinspection JSUnresolvedFunction
+				this.tabs[this.activeId].onLeaveFrom()
+			}
+
+			this.activeId = id
 		},
 		rename: function(wid) {
 			if (this.renameTab) {
