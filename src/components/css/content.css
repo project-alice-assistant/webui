@@ -17,9 +17,10 @@
 }
 
 .connected {
-	animation-fill-mode: forwards;
 	animation-duration: 5s;
+	animation-fill-mode: forwards;
 	animation-name: fade;
+	border-bottom: 200px solid rgba(0, 255, 0, 0.5);
 }
 
 .connected > i {

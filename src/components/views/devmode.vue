@@ -180,9 +180,6 @@
 			</form>
 		</div>
 		<div v-if="activeTab === 1" class="tab_page yscroll">
-			<div v-for="skill in skills" :key="skill.name" :skill="skill">
-				{{skill.name}}
-			</div>
 		</div>
 	</div>
 </template>

@@ -70,9 +70,11 @@ export default {
 	},
 	created: function() {
 		let self = this;
-		document.addEventListener('keypress', function(event) {
+		document.addEventListener('keyup', function (event) {
 			if (event.key === 'Enter') {
-				self.$store.commit('stopCinemaMode')
+				if (self.$store.state.fullScreen) {
+					self.$store.commit('stopCinemaMode')
+				}
 			}
 		})
 
