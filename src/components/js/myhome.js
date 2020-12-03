@@ -33,7 +33,10 @@ export default {
 			addingLocation: false,
 			newLocationName: '',
 			locationsEditMode: false,
-			devicesEditMode: false
+			devicesEditMode: false,
+			locations: {},
+			constructions: {},
+			furnitures: {}
 		}
 	},
 	created: function() {
@@ -53,10 +56,10 @@ export default {
 			url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/`,
 			headers: {'auth': localStorage.getItem('apiToken')}
 		}).then(response => {
-			if ('pages' in response.data) {
-				this.tabs = response.data.pages
-				this.fetchWidgetTemplates()
-				this.fetchWidgetInstances()
+			if ('data' in response.data) {
+				this.locations = response.data.data.locations
+				this.constructions = response.data.data.constructions
+				this.furnitures = response.data.data.furnitures
 			}
 		})
 	},
@@ -97,6 +100,32 @@ export default {
 					self.addingLocation = false
 					self.newLocationName = ''
 				})
+		},
+		handleClick: function (event) {
+			if (this.addingLocation) {
+				const data = {
+					name: this.newLocationName,
+					parentLocation: 0,
+					x: event['layerX'],
+					y: event['layerY'],
+					z: 0
+				}
+
+				this.addingLocation = false
+				this.newLocationName = ''
+
+				axios({
+					method: 'put',
+					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/`,
+					data: data,
+					headers: {
+						'auth': localStorage.getItem('apiToken'),
+						'content-type': 'application/json'
+					}
+				}).then(response => {
+					console.log('bingo')
+				})
+			}
 		}
 	}
 }

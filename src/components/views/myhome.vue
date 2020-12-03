@@ -10,10 +10,14 @@
 			<i v-tooltip="$t('tooltips.manageFurniture')" aria-hidden="true" class="fas fa-couch fa-2x fa-fw clickable"/>
 		</div>
 		<div class="myHomeEditor" :class="{fullscreen: $store.state.fullScreen}">
-			<div :class="{
-				locationsEditMode: locationsEditMode,
-				addLocation: addingLocation
-			}" class="floorPlan">
+			<div
+				:class="{
+					locationsEditMode: locationsEditMode,
+					addLocation: addingLocation
+				}"
+				class="floorPlan"
+				@click="handleClick"
+			>
 			</div>
 		</div>
 	</div>
