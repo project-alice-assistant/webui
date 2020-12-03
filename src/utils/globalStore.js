@@ -12,7 +12,6 @@ export default new Vuex.Store({
 		loggedInUser: false,
 		fullScreen: false,
 		minimized: false,
-		i18n: {},
 		uiConnected: false,
 		mqttMessage: {}
 	},
@@ -63,9 +62,6 @@ export default new Vuex.Store({
 		toggleMinimized(state) {
 			state.minimized = !state.minimized
 			localStorage.setItem('minimized', state.minimized)
-		},
-		setI18n(state, obj) {
-			state.i18n = obj
 		},
 		uiConnected(state, connected) {
 			state.uiConnected = connected

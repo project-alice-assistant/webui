@@ -34,6 +34,7 @@ export default {
 			}
 		},
 		save: function(event) {
+			let self = this
 			event.target['data-success'] = false
 			axios({
 				method: 'PATCH',
@@ -43,8 +44,9 @@ export default {
 					'content-type': 'application/json'
 				},
 				data: this.$store.state.settings
-			}).then(function() {
+			}).then(function () {
 				event.target['data-success'] = true
+				self.$i18n.locale = self.$store.state.settings['activeLanguage']
 			})
 		},
 		utilityRequestAndRedirect: function(id) {

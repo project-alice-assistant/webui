@@ -25,6 +25,16 @@ import 'vuejs-dialog/dist/vuejs-dialog.min.css'
 import 'vue-tour/dist/vue-tour.css'
 import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
 import 'vue-simple-markdown/dist/vue-simple-markdown.css'
+import './ProjectAlice.css'
+import './components/css/overrides/vuejsdialog.css'
+import './components/css/overrides/vuetour.css'
+import './components/css/overrides/tooltips.css'
+import './components/css/overrides/overlay.css'
+import './components/css/overrides/vue-simple-markdown.css'
+
+import faIconOption from './components/views/fontawesomePromptDialog'
+import widgetOption from './components/views/widgetOptionsDialog'
+import skillSettings from './components/views/skillSettingsDialog'
 
 Vue.config.productionTip = false
 
@@ -47,16 +57,6 @@ Vue.component('reactive-icon', ReactiveIcon)
 
 Vue.directive('fit2box', Fit2Box)
 
-import './ProjectAlice.css'
-import './components/css/overrides/vuejsdialog.css'
-import './components/css/overrides/vuetour.css'
-import './components/css/overrides/tooltips.css'
-import './components/css/overrides/overlay.css'
-import './components/css/overrides/vue-simple-markdown.css'
-
-import faIconOption from './components/views/fontawesomePromptDialog'
-import widgetOption from './components/views/widgetOptionsDialog'
-import skillSettings from './components/views/skillSettingsDialog'
 Vue.dialog.registerComponent('fontawesomePromptDialog', faIconOption)
 Vue.dialog.registerComponent('widgetOptionsPromptDialog', widgetOption)
 Vue.dialog.registerComponent('skillSettingsPromptDialog', skillSettings)
@@ -79,10 +79,8 @@ Vue.directive('init', {
 const i18n = new VueI18n({
 	local: 'en',
 	fallbackLocale: 'en',
-	silentFallbackWarn: true,
 	messages: {}
 })
-store.commit('setI18n', i18n)
 //document.addEventListener('contextmenu', event => event.preventDefault())
 
 new Vue({

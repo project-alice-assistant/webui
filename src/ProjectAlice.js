@@ -9,6 +9,8 @@ export default {
 		paConnect
 	},
 	mounted: function() {
+		this.$i18n.locale = 'en'
+
 		if (localStorage.getItem('fullscreen') === 'true') {
 			this.$store.commit('startCinemaMode')
 		}

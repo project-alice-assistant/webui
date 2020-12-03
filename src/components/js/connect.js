@@ -113,11 +113,9 @@ export default {
 			return new Promise(function(resolve, reject) {
 				axios.get(`http://${self.ip}:${self.port}/api/v1.0.1/utils/i18n/`)
 					.then(response => {
-						const i18n = self.$store.state.i18n
 						for (const [lang, data] of Object.entries(response.data['data'])) {
-							i18n.setLocaleMessage(lang, data)
+							self.$i18n.setLocaleMessage(lang, data)
 						}
-						self.$store.commit('setI18n', i18n)
 						resolve()
 					})
 					.catch(reason => {
