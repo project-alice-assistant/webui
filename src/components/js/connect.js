@@ -116,6 +116,7 @@ export default {
 						for (const [lang, data] of Object.entries(response.data['data'])) {
 							self.$i18n.setLocaleMessage(lang, data)
 						}
+						self.$i18n.locale = self.$store.state.settings['activeLanguage']
 						resolve()
 					})
 					.catch(reason => {

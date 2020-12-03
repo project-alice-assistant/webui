@@ -81,6 +81,7 @@ const i18n = new VueI18n({
 	fallbackLocale: 'en',
 	messages: {}
 })
+
 //document.addEventListener('contextmenu', event => event.preventDefault())
 
 new Vue({
