@@ -9,11 +9,12 @@
 }
 
 .childLocation {
-	position: relative;
+	position: absolute;
 }
 
 .locationName {
 	max-height: 30%;
 	text-align: center;
-	width: 95%;
+	text-shadow: 2px 2px 2px var(--accent);
+	width: 90%;
 }

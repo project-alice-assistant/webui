@@ -32,12 +32,16 @@ export default {
 				}
 			],
 			addingLocation: false,
+			paintingFloors: false,
 			newLocationName: '',
 			locationsEditMode: false,
 			devicesEditMode: false,
 			locations: {},
 			constructions: {},
-			furnitures: {}
+			furnitures: {},
+			floorTiles: [],
+			activeFloorTile: '',
+			zoomLevel: 1.0
 		}
 	},
 	created: function() {
@@ -51,6 +55,24 @@ export default {
 				}
 			} else if (event.key === 'Escape') {
 				self.addingLocation = false
+			}
+		})
+
+		document.addEventListener('wheel', function (event) {
+			if (event.deltaY > 1) {
+				self.zoomLevel = Math.max(self.zoomLevel - 0.05, 0.1)
+			} else {
+				self.zoomLevel = Math.min(self.zoomLevel + 0.05, 1.0)
+			}
+		})
+
+		axios({
+			method: 'get',
+			url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/floors/`,
+			headers: {'auth': localStorage.getItem('apiToken')}
+		}).then(response => {
+			if ('data' in response.data) {
+				this.floorTiles = response.data.data
 			}
 		})
 
@@ -84,6 +106,7 @@ export default {
 		},
 		addLocationDialog: function () {
 			if (this.addingLocation) return
+			this.paintingFloors = false
 
 			let self = this
 			this.$dialog
@@ -119,7 +142,7 @@ export default {
 				}
 
 				if (!event.target.className.includes('floorPlan')) {
-					data.parentLocation = event.target['id']
+					data.parentLocation = parseInt(event.target['id'])
 					data.settings.x = event.target['offsetX']
 					data.settings.y = event.target['offsetY']
 				}

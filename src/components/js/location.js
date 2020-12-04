@@ -4,6 +4,7 @@ export default {
 	name: 'location',
 	props: [
 		'location',
+		'locations',
 		'myHome'
 	],
 	methods: {
@@ -27,6 +28,14 @@ export default {
 			}).then(response => {
 			})
 		},
+		stopPropagation: function (event) {
+			event.stopPropagation()
+		},
+		handleClick: function (event) {
+			if (!this.myHome.paintingFloors || this.myHome.activeFloorTile === '') return
+			this.myHome.locations[this.location.id].settings['t'] = this.myHome.activeFloorTile
+			this.save()
+		},
 		savePosition: function (x, y) {
 			x = Math.ceil(x / 5) * 5
 			y = Math.ceil(y / 5) * 5
@@ -48,7 +57,7 @@ export default {
 			this.save()
 		},
 		rename: function () {
-			if (!this.myHome.locationsEditMode) return
+			if (!this.myHome.locationsEditMode || this.myHome.addingLocation || this.myHome.paintingFloors) return
 
 			let self = this
 			this.$dialog
