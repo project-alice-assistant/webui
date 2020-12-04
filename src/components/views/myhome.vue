@@ -18,6 +18,13 @@
 				class="floorPlan"
 				@click="handleClick"
 			>
+				<location
+					v-for="location in locations"
+					v-if="location.parentLocation === 0"
+					:key="location.id"
+					:location="location"
+					:myHome="me"
+				/>
 			</div>
 		</div>
 	</div>

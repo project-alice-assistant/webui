@@ -177,7 +177,10 @@ export default {
 					x: x,
 					y: y
 				},
-				headers: {'auth': localStorage.getItem('apiToken')}
+				headers: {
+					'auth': localStorage.getItem('apiToken'),
+					'content-type': 'application/json'
+				}
 			}).then(response => {
 				if ('success' in response.data && response.data.success) {
 					let widget = this.widgetInstances[widgetId]
@@ -207,7 +210,10 @@ export default {
 					w: w,
 					h: h
 				},
-				headers: {'auth': localStorage.getItem('apiToken')}
+				headers: {
+					'auth': localStorage.getItem('apiToken'),
+					'content-type': 'application/json'
+				}
 			}).then(response => {
 				if ('success' in response.data && response.data.success) {
 					let widget = this.widgetInstances[widgetId]
@@ -364,7 +370,10 @@ export default {
 					method: 'PATCH',
 					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/widgets/pages/${id}/`,
 					data: {newIcon: icon},
-					headers: {'auth': localStorage.getItem('apiToken')}
+					headers: {
+						'auth': localStorage.getItem('apiToken'),
+						'content-type': 'application/json'
+					}
 				}).then(response => {
 					if ('success' in response.data && response.data.success) {
 						this.tabs[id].icon = icon

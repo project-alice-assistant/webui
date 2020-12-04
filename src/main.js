@@ -20,6 +20,7 @@ import StoreSkill from './components/views/storeSkill'
 import ActionsMenu from './components/views/actionsMenu'
 import Tabs from './components/views/tabs'
 import ReactiveIcon from './components/views/reactiveIcon'
+import Location from './components/views/location'
 
 import 'vuejs-dialog/dist/vuejs-dialog.min.css'
 import 'vue-tour/dist/vue-tour.css'
@@ -54,6 +55,7 @@ Vue.component('storeSkill', StoreSkill)
 Vue.component('actionsMenu', ActionsMenu)
 Vue.component('tabs', Tabs)
 Vue.component('reactive-icon', ReactiveIcon)
+Vue.component('location', Location)
 
 Vue.directive('fit2box', Fit2Box)
 

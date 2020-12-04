@@ -4,6 +4,7 @@ export default {
 	name: 'myhome',
 	data: function () {
 		return {
+			me: '',
 			menuItems: [
 				{
 					name: this.$t('tooltips.edit'),
@@ -40,6 +41,8 @@ export default {
 		}
 	},
 	created: function() {
+		this.me = this
+
 		let self = this;
 		document.addEventListener('keyup', function (event) {
 			if (event.key === 'Enter') {
@@ -103,17 +106,28 @@ export default {
 		},
 		handleClick: function (event) {
 			if (this.addingLocation) {
+				event.preventDefault()
+
 				const data = {
 					name: this.newLocationName,
 					parentLocation: 0,
-					x: event['layerX'],
-					y: event['layerY'],
-					z: 0
+					settings: {
+						x: event['layerX'],
+						y: event['layerY'],
+						z: 0
+					}
+				}
+
+				if (!event.target.className.includes('floorPlan')) {
+					data.parentLocation = event.target['id']
+					data.settings.x = event.target['offsetX']
+					data.settings.y = event.target['offsetY']
 				}
 
 				this.addingLocation = false
 				this.newLocationName = ''
 
+				console.log(data)
 				axios({
 					method: 'put',
 					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/`,
@@ -123,7 +137,11 @@ export default {
 						'content-type': 'application/json'
 					}
 				}).then(response => {
-					console.log('bingo')
+					if ('location' in response.data) {
+						console.log(response.data)
+						let loc = response.data['location']
+						this.$set(this.locations, loc.id, loc)
+					}
 				})
 			}
 		}
