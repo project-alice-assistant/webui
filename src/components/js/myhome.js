@@ -41,7 +41,8 @@ export default {
 			furnitures: {},
 			floorTiles: [],
 			activeFloorTile: '',
-			zoomLevel: 1.0
+			zoomLevel: 1.0,
+			newLocation: {}
 		}
 	},
 	created: function() {
@@ -62,7 +63,7 @@ export default {
 			if (event.deltaY > 1) {
 				self.zoomLevel = Math.max(self.zoomLevel - 0.05, 0.1)
 			} else {
-				self.zoomLevel = Math.min(self.zoomLevel + 0.05, 1.0)
+				self.zoomLevel = Math.min(self.zoomLevel + 0.05, 3.0)
 			}
 		})
 
@@ -127,6 +128,13 @@ export default {
 					self.newLocationName = ''
 				})
 		},
+		mouseDown: function (event) {
+			if (this.addingLocation) {
+				event.preventDefault()
+				this.newLocation.tx = event.offsetX
+				this.newLocation.ty = event.offsetY
+			}
+		},
 		handleClick: function (event) {
 			if (this.addingLocation) {
 				event.preventDefault()
@@ -140,6 +148,26 @@ export default {
 						z: 0
 					}
 				}
+
+				if (this.newLocation.hasOwnProperty('tx')) {
+
+					if (this.newLocation.tx < event['layerX']) {
+						data.settings.x = this.newLocation.tx
+						data.settings.w = event['layerX'] - data.settings.x
+					} else {
+						data.settings.x = event['layerX']
+						data.settings.w = this.newLocation.tx - data.settings.x
+					}
+					if (this.newLocation.ty < event['layerY']) {
+						data.settings.y = this.newLocation.ty
+						data.settings.h = event['layerY'] - data.settings.y
+					} else {
+						data.settings.y = event['layerY']
+						data.settings.h = this.newLocation.tx - data.settings.y
+					}
+				}
+
+				this.newLocation = {}
 
 				if (!event.target.className.includes('floorPlan')) {
 					data.parentLocation = parseInt(event.target['id'])

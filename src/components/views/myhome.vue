@@ -29,6 +29,7 @@
 				}"
 				class="floorPlan"
 				@click="handleClick"
+				@mousedown="mouseDown"
 			>
 				<location
 					v-for="location in locations"
