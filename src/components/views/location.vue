@@ -1,7 +1,11 @@
 <template>
 	<vue-draggable-resizable
 		:id="location.id"
-		:class="{childLocation: location.parentLocation !== 0}"
+		:class="{
+			childLocation: location.parentLocation !== 0,
+			painting: myHome.paintingFloors,
+			clickable: myHome.settingLocations
+		}"
 		:active="!myHome.addingLocation"
 		:draggable="myHome.locationsEditMode && !myHome.addingLocation"
 		:onDragStart="stopPropagation"
@@ -35,8 +39,16 @@
 			:location="loc"
 			:myHome="myHome"
 		/>
+		<div v-if="myHome.deletingLocations" class="widgetTool deleter" @click="deleteMe">
+			<i aria-hidden="true" class="far fa-trash-alt clickable"/>
+		</div>
+		<div v-if="myHome.settingLocations" class="widgetTool zindexer">
+			<i aria-hidden="true" class="fas fa-level-up-alt clickable"/>
+			<i aria-hidden="true" class="fas fa-level-down-alt clickable"/>
+		</div>
 	</vue-draggable-resizable>
 </template>
 
 <style scoped src="../css/location.css"/>
+<style scoped src="../css/widgets.css"/>
 <script src="../js/location.js"/>

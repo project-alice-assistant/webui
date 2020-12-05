@@ -33,6 +33,8 @@ export default {
 			],
 			addingLocation: false,
 			paintingFloors: false,
+			deletingLocations: false,
+			settingLocations: false,
 			newLocationName: '',
 			locationsEditMode: false,
 			devicesEditMode: false,
@@ -113,9 +115,40 @@ export default {
 			this.devicesEditMode = false
 			this.locationsEditMode = false
 		},
+		togglePaintingMode: function () {
+			this.paintingFloors = !this.paintingFloors
+			this.addingLocation = false
+			this.deletingLocations = false
+			this.settingLocations = false
+		},
+		toggleLocationSettings: function () {
+			this.settingLocations = !this.settingLocations
+			this.addingLocation = false
+			this.deletingLocations = false
+			this.paintingFloors = false
+		},
+		deleteLocations: function () {
+			this.deletingLocations = !this.deletingLocations
+			this.paintingFloors = false
+			this.addingLocation = false
+			this.settingLocations = false
+		},
+		deleteLocation: function (locId) {
+			axios({
+				method: 'delete',
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/${locId}/`,
+				headers: {'auth': localStorage.getItem('apiToken')}
+			}).then(response => {
+				if ('success' in response.data && response.data.success) {
+					this.$delete(this.locations, locId)
+				}
+			})
+		},
 		addLocationDialog: function () {
 			if (this.addingLocation) return
 			this.paintingFloors = false
+			this.deletingLocations = false
+			this.settingLocations = false
 
 			let self = this
 			this.$dialog
@@ -172,8 +205,8 @@ export default {
 					settings: {
 						x: Math.ceil(this.areaSelectorStartX / 5) * 5,
 						y: Math.ceil(this.areaSelectorStartY / 5) * 5,
-						w: Math.ceil(this.areaSelectorW / 5) * 5 || 50,
-						h: Math.ceil(this.areaSelectorH / 5) * 5 || 50,
+						w: Math.ceil(this.areaSelectorW / 5) * 5 || 150,
+						h: Math.ceil(this.areaSelectorH / 5) * 5 || 150,
 						z: 0
 					}
 				}

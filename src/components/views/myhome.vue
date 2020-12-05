@@ -4,14 +4,18 @@
 		<div v-if="locationsEditMode" class="tools manageLocations">
 			<i v-tooltip="$t('tooltips.addLocations')" :class="{clickable: !addingLocation, yellow: addingLocation}"
 				 aria-hidden="true" class="fas fa-plus-circle fa-2x fa-fw" @click="addLocationDialog"/>
-			<i v-tooltip="$t('tooltips.removeLocations')" aria-hidden="true" class="fas fa-trash-alt fa-2x fa-fw clickable"/>
+			<i v-tooltip="$t('tooltips.removeLocations')" :class="{clickable: !deletingLocations, yellow: deletingLocations}"
+				 aria-hidden="true" class="fas fa-trash-alt fa-2x fa-fw" @click="deleteLocations"/>
+			<i v-tooltip="$t('tooltips.settings')" :class="{clickable: !settingLocations, yellow: settingLocations}"
+				 aria-hidden="true" class="fas fa-cogs fa-2x fa-fw" @click="toggleLocationSettings"/>
 			<i v-tooltip="$t('tooltips.paintFloors')" aria-hidden="true" class="fas fa-paint-roller fa-2x fa-fw clickable"
-				 @click="paintingFloors = !paintingFloors"/>
+				 @click="togglePaintingMode"/>
 			<i v-tooltip="$t('tooltips.buildMode')" aria-hidden="true" class="fas fa-hard-hat fa-2x fa-fw clickable"/>
 			<i v-tooltip="$t('tooltips.manageFurniture')" aria-hidden="true" class="fas fa-couch fa-2x fa-fw clickable"/>
 		</div>
 		<div v-if="locationsEditMode && paintingFloors" class="tools paintFloors">
 			<img
+				alt="unknown"
 				v-for="imageId in floorTiles"
 				:key="imageId"
 				:class="{selected: imageId === activeFloorTile}"
@@ -37,7 +41,7 @@
 					@mouseup="handleClick"
 				>
 					<div
-						v-if="clicked"
+						v-if="addingLocation && clicked"
 						ref="areaSelector"
 						:style="`top: ${areaSelectorY}px; left: ${areaSelectorX}px; width: ${areaSelectorW}px; height: ${areaSelectorH}px`"
 						class="areaSelector"

@@ -17,7 +17,7 @@
 }
 
 .reactiveLayer {
-	cursor: pointer;
+	cursor: crosshair;
 	flex: 1;
 	height: 100%;
 	position: absolute;
@@ -125,5 +125,5 @@
 }
 
 .addLocation {
-	cursor: cell;
+	cursor: crosshair;
 }

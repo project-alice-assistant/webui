@@ -70,10 +70,14 @@ export default {
 					cancelText: this.$t('buttons.cancel')
 				})
 				.then(function (dialogue) {
-					self.myHome.locations[self.location.id].name = dialogue.data
+					self.location.name = dialogue.data
+					self.$set(self.myHome.locations, self.location.id, self.location)
 					self.$forceUpdate()
 					self.save()
 				})
+		},
+		deleteMe: function () {
+			this.myHome.deleteLocation(this.location.id)
 		}
 	}
 }
