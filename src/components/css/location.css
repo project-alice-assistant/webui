@@ -8,16 +8,22 @@
 	width: 100%;
 }
 
+.location:hover {
+	border: 2px solid yellow;
+	box-sizing: border-box;
+}
+
 .painting {
 	cursor: cell;
 }
 
 .childLocation {
-	position: absolute;
+	position: relative;
 }
 
 .locationName {
 	max-height: 30%;
+	position: absolute;
 	text-align: center;
 	text-shadow: 2px 2px 2px var(--accent);
 	width: 90%;
