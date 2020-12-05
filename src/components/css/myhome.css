@@ -1,11 +1,34 @@
 .myHomeEditor {
+	align-items: center;
 	background-color: var(--mainBG);
 	bottom: 10px;
 	display: flex;
+	justify-content: center;
+	justify-items: center;
 	left: 10px;
+	overflow: hidden;
 	position: absolute;
 	right: 10px;
 	top: 10px;
+}
+
+.editMode {
+	border: 1px solid var(--windowBG);
+}
+
+.reactiveLayer {
+	cursor: pointer;
+	flex: 1;
+	height: 100%;
+	position: absolute;
+	width: 100%;
+	z-index: 40;
+}
+
+.areaSelector {
+	background-color: var(--windowBG);
+	position: absolute;
+	z-index: 50;
 }
 
 .fullscreen {
@@ -21,8 +44,10 @@
 	background: var(--mainBG);
 	cursor: default;
 	flex: 1;
-	height: 100%;
-	width: 100%;
+	height: 100000px;
+	min-height: 100000px;
+	min-width: 100000px;
+	width: 100000px;
 }
 
 .tools {
@@ -97,7 +122,6 @@
 
 .locationsEditMode {
 	background: var(--mainBG) url('../../assets/images/grid.png');
-	border: 1px solid var(--windowBG);
 }
 
 .addLocation {

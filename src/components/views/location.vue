@@ -19,7 +19,7 @@
 		classNameActive="nothingtoseehere"
 		@dragstop="savePosition"
 		@resizestop="saveSize"
-		:style="`background: url('http://${$store.state.settings['aliceIp']}:${$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/floors/${location.settings['t']}.png'); background-color: var(--windowBG)`"
+		:style="`background: url('http://${$store.state.settings['aliceIp']}:${$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/floors/${location.settings['t'] || 'floor-80'}.png'); background-color: var(--windowBG)`"
 		@activated="handleClick"
 	>
 		<span

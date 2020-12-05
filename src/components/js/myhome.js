@@ -42,12 +42,17 @@ export default {
 			floorTiles: [],
 			activeFloorTile: '',
 			zoomLevel: 1.0,
-			newLocation: {}
+			areaSelectorX: 0,
+			areaSelectorY: 0,
+			areaSelectorStartX: 0,
+			areaSelectorStartY: 0,
+			areaSelectorW: 0,
+			areaSelectorH: 0,
+			clicked: false
 		}
 	},
 	created: function() {
 		this.me = this
-
 		let self = this;
 		document.addEventListener('keyup', function (event) {
 			if (event.key === 'Enter') {
@@ -88,6 +93,9 @@ export default {
 				this.furnitures = response.data.data.furnitures
 			}
 		})
+	},
+	mounted: function () {
+		this.areaSelector = this.$refs.areaSelector
 	},
 	methods: {
 		cinemaMode: function () {
@@ -130,12 +138,31 @@ export default {
 		},
 		mouseDown: function (event) {
 			if (this.addingLocation) {
-				event.preventDefault()
-				this.newLocation.tx = event.offsetX
-				this.newLocation.ty = event.offsetY
+				this.clicked = true
+				this.areaSelectorStartX = event.offsetX
+				this.areaSelectorStartY = event.offsetY
+				this.drawSelectionArea(this.areaSelectorStartX, this.areaSelectorStartY)
 			}
 		},
+		mouseMove: function (event) {
+			if (this.addingLocation) {
+				if (!this.clicked) return
+				this.drawSelectionArea(event.offsetX, event.offsetY)
+			}
+		},
+		drawSelectionArea: function (movedX, movedY) {
+			let x = Math.min(this.areaSelectorStartX, movedX)
+			let x2 = Math.max(this.areaSelectorStartX, movedX)
+			let y = Math.min(this.areaSelectorStartY, movedY)
+			let y2 = Math.max(this.areaSelectorStartY, movedY)
+
+			this.areaSelectorX = x
+			this.areaSelectorY = y
+			this.areaSelectorW = x2 - x
+			this.areaSelectorH = y2 - y
+		},
 		handleClick: function (event) {
+			this.clicked = false
 			if (this.addingLocation) {
 				event.preventDefault()
 
@@ -143,42 +170,31 @@ export default {
 					name: this.newLocationName,
 					parentLocation: 0,
 					settings: {
-						x: event['layerX'],
-						y: event['layerY'],
+						x: Math.ceil(this.areaSelectorStartX / 5) * 5,
+						y: Math.ceil(this.areaSelectorStartY / 5) * 5,
+						w: Math.ceil(this.areaSelectorW / 5) * 5 || 50,
+						h: Math.ceil(this.areaSelectorH / 5) * 5 || 50,
 						z: 0
 					}
 				}
 
-				if (this.newLocation.hasOwnProperty('tx')) {
+				// TODO parenting, fuck this shit
+				// if (!event.target.className.includes('floorPlan')) {
+				// 	data.parentLocation = parseInt(event.target['id'] || 0)
+				// 	data.settings.x = event.target['offsetX']
+				// 	data.settings.y = event.target['offsetY']
+				// }
 
-					if (this.newLocation.tx < event['layerX']) {
-						data.settings.x = this.newLocation.tx
-						data.settings.w = event['layerX'] - data.settings.x
-					} else {
-						data.settings.x = event['layerX']
-						data.settings.w = this.newLocation.tx - data.settings.x
-					}
-					if (this.newLocation.ty < event['layerY']) {
-						data.settings.y = this.newLocation.ty
-						data.settings.h = event['layerY'] - data.settings.y
-					} else {
-						data.settings.y = event['layerY']
-						data.settings.h = this.newLocation.tx - data.settings.y
-					}
-				}
-
-				this.newLocation = {}
-
-				if (!event.target.className.includes('floorPlan')) {
-					data.parentLocation = parseInt(event.target['id'])
-					data.settings.x = event.target['offsetX']
-					data.settings.y = event.target['offsetY']
-				}
-
-				this.addingLocation = false
+				this.areaSelectorX = 0
+				this.areaSelectorY = 0
+				this.areaSelectorStartX = 0
+				this.areaSelectorStartY = 0
+				this.areaSelectorW = 0
+				this.areaSelectorH = 0
 				this.newLocationName = ''
 
-				console.log(data)
+				this.addingLocation = false
+
 				axios({
 					method: 'put',
 					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/`,
@@ -189,7 +205,6 @@ export default {
 					}
 				}).then(response => {
 					if ('location' in response.data) {
-						console.log(response.data)
 						let loc = response.data['location']
 						this.$set(this.locations, loc.id, loc)
 					}

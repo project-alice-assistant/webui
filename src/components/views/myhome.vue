@@ -20,7 +20,7 @@
 				@click="activeFloorTile === imageId ? activeFloorTile = '' : activeFloorTile = imageId"
 			/>
 		</div>
-		<div class="myHomeEditor" :class="{fullscreen: $store.state.fullScreen}">
+		<div :class="{fullscreen: $store.state.fullScreen, editMode: locationsEditMode}" class="myHomeEditor">
 			<div
 				:style="`transform: scale(${zoomLevel})`"
 				:class="{
@@ -28,9 +28,21 @@
 					addLocation: addingLocation
 				}"
 				class="floorPlan"
-				@click="handleClick"
-				@mousedown="mouseDown"
 			>
+				<div
+					v-if="addingLocation"
+					class="reactiveLayer"
+					@mousedown="mouseDown"
+					@mousemove="mouseMove"
+					@mouseup="handleClick"
+				>
+					<div
+						v-if="clicked"
+						ref="areaSelector"
+						:style="`top: ${areaSelectorY}px; left: ${areaSelectorX}px; width: ${areaSelectorW}px; height: ${areaSelectorH}px`"
+						class="areaSelector"
+					/>
+				</div>
 				<location
 					v-for="location in locations"
 					v-if="location.parentLocation === 0"
