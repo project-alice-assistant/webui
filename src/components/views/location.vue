@@ -6,7 +6,7 @@
 		:class="{
 			childLocation: location.parentLocation !== 0,
 			painting: myHome.paintingFloors,
-			clickable: myHome.settingLocations
+			clickable: myHome.locationsEditMode && !myHome.addingLocation && !myHome.paintingFloors
 		}"
 		class="location"
 		@click="handleClick"

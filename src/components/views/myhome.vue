@@ -8,7 +8,8 @@
 				 aria-hidden="true" class="fas fa-trash-alt fa-2x fa-fw" @click="deleteLocations"/>
 			<i v-tooltip="$t('tooltips.settings')" :class="{clickable: !settingLocations, yellow: settingLocations}"
 				 aria-hidden="true" class="fas fa-cogs fa-2x fa-fw" @click="toggleLocationSettings"/>
-			<i v-tooltip="$t('tooltips.paintFloors')" aria-hidden="true" class="fas fa-paint-roller fa-2x fa-fw clickable"
+			<i v-tooltip="$t('tooltips.paintFloors')" :class="{yellow: paintingFloors}" aria-hidden="true"
+				 class="fas fa-paint-roller fa-2x fa-fw clickable"
 				 @click="togglePaintingMode"/>
 			<i v-tooltip="$t('tooltips.buildMode')" aria-hidden="true" class="fas fa-hard-hat fa-2x fa-fw clickable"/>
 			<i v-tooltip="$t('tooltips.manageFurniture')" aria-hidden="true" class="fas fa-couch fa-2x fa-fw clickable"/>

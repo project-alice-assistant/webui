@@ -48,6 +48,7 @@ export default {
 			})
 		},
 		handleClick: function (event) {
+			event.stopPropagation()
 			if (this.myHome.paintingFloors && this.myHome.activeFloorTile !== '') {
 				this.myHome.locations[this.location.id].settings['t'] = this.myHome.activeFloorTile
 				this.save()

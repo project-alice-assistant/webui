@@ -118,32 +118,19 @@ export default {
 	mounted: function () {
 		this.areaSelector = this.$refs.areaSelector
 
-		this.moveable.on('drag', ({
-																target,
-																transform,
-																left,
-																top,
-																right,
-																bottom,
-																beforeDelta,
-																beforeDist,
-																delta,
-																dist,
-																clientX,
-																clientY
-															}) => {
+		this.moveable.on('drag', ({target, left, top}) => {
 			this.moveable.props.handleDrag(target, left, top)
 		}).on('dragEnd', ({target, isDrag, clientX, clientY}) => {
 			this.moveable.props.savePosition(target)
 		})
 
-		this.moveable.on('resize', ({target, width, height, dist, delta, clientX, clientY}) => {
+		this.moveable.on('resize', ({target, width, height}) => {
 			this.moveable.props.handleResize(target, width, height)
-		}).on('resizeEnd', ({target, isDrag, clientX, clientY}) => {
+		}).on('resizeEnd', ({target}) => {
 			this.moveable.props.saveSize(target)
 		})
 
-		this.moveable.on('rotate', ({target, beforeDelta, delta, dist, transform, clientX, clientY}) => {
+		this.moveable.on('rotate', ({target, dist, transform}) => {
 			this.moveable.props.handleRotate(target, dist, transform)
 		}).on('rotateEnd', ({target, isDrag, clientX, clientY}) => {
 			this.moveable.props.saveRotation()
@@ -301,7 +288,7 @@ export default {
 	watch: {
 		$route: {
 			immediate: true,
-			handler(to, from) {
+			handler(to) {
 				if (to.path !== '/myhome') {
 					this.moveable.target = null
 				}
