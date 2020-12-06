@@ -2,15 +2,8 @@
 	align-items: center;
 	background-color: var(--windowBG);
 	display: flex;
-	height: 100%;
 	justify-content: center;
 	position: absolute;
-	width: 100%;
-}
-
-.location:hover {
-	border: 2px solid yellow;
-	box-sizing: border-box;
 }
 
 .painting {

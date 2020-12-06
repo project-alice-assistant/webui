@@ -1,0 +1,16 @@
+.moveable-control-box {
+}
+
+.moveable-line {
+	background: var(--text) !important;
+}
+
+.moveable-control {
+	background: var(--text) !important;
+}
+
+.moveable-line.moveable-rotation-line .moveable-control {
+	background: var(--text) !important;
+	border-color: var(--text) !important;
+	cursor: alias;
+}

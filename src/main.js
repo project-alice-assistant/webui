@@ -14,6 +14,7 @@ import VueDraggableResizable from 'vue-draggable-resizable'
 import VueSimpleMarkdown from 'vue-simple-markdown'
 import VueI18n from 'vue-i18n'
 import Fit2Box from 'vue-fit2box'
+import VueMoveable from 'vue-moveable'
 
 import Skill from './components/views/skill'
 import StoreSkill from './components/views/storeSkill'
@@ -32,6 +33,7 @@ import './components/css/overrides/vuetour.css'
 import './components/css/overrides/tooltips.css'
 import './components/css/overrides/overlay.css'
 import './components/css/overrides/vue-simple-markdown.css'
+import './components/css/overrides/vuemovable.css'
 
 import faIconOption from './components/views/fontawesomePromptDialog'
 import widgetOption from './components/views/widgetOptionsDialog'
@@ -50,6 +52,7 @@ Vue.use(VueI18n)
 
 Vue.component('VueToggles', VueToggles)
 Vue.component('vue-draggable-resizable', VueDraggableResizable)
+Vue.component('Moveable', VueMoveable)
 Vue.component('skill', Skill)
 Vue.component('storeSkill', StoreSkill)
 Vue.component('actionsMenu', ActionsMenu)

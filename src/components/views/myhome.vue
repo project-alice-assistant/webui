@@ -32,6 +32,7 @@
 					addLocation: addingLocation
 				}"
 				class="floorPlan"
+				@click="floorPlanClick"
 			>
 				<div
 					v-if="addingLocation"
