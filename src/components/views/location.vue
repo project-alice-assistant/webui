@@ -1,6 +1,6 @@
 <template>
 	<div
-		:id="location.id"
+		:id="`loc_${location.id}`"
 		:ref="location.id"
 		:style="computeCustomStyle()"
 		:class="{
@@ -16,6 +16,14 @@
 			:class="{clickable: myHome.locationsEditMode && !myHome.addingLocation && !myHome.paintingFloors}"
 			class="locationName"
 			@click="rename"
+		/>
+		<location
+			v-for="loc in locations"
+			v-if="loc.parentLocation === location.id"
+			:key="loc.id"
+			:location="loc"
+			:locations="locations"
+			:myHome="myHome"
 		/>
 		<div v-if="myHome.deletingLocations" class="widgetTool deleter" @click="deleteMe">
 			<i aria-hidden="true" class="far fa-trash-alt clickable"/>

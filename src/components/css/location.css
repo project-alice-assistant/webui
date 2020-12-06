@@ -1,8 +1,10 @@
 .location {
 	align-items: center;
 	background-color: var(--windowBG);
+	box-sizing: border-box;
 	display: flex;
 	justify-content: center;
+	pointer-events: all;
 	position: absolute;
 }
 
@@ -20,4 +22,12 @@
 	text-align: center;
 	text-shadow: 2px 2px 2px var(--accent);
 	width: 90%;
+}
+
+.dragging {
+	z-index: 100;
+}
+
+.droppable {
+	border: 5px dashed var(--accent);
 }

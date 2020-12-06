@@ -68,7 +68,8 @@ export default {
 			areaSelectorStartY: 0,
 			areaSelectorW: 0,
 			areaSelectorH: 0,
-			clicked: false
+			clicked: false,
+			dragging: false
 		}
 	},
 	created: function() {
@@ -118,14 +119,19 @@ export default {
 	mounted: function () {
 		this.areaSelector = this.$refs.areaSelector
 
-		this.moveable.on('drag', ({target, left, top}) => {
-			this.moveable.props.handleDrag(target, left, top)
+		this.moveable.on('dragStart', ({target}) => {
+			this.dragging = true
+			target.classList.add('dragging')
+		}).on('drag', ({target, left, top, clientX, clientY}) => {
+			this.moveable.props.handleDrag(target, left, top, clientX, clientY)
 		}).on('dragEnd', ({target, isDrag, clientX, clientY}) => {
+			this.dragging = false
+			target.classList.remove('dragging')
 			this.moveable.props.savePosition(target)
 		})
 
-		this.moveable.on('resize', ({target, width, height}) => {
-			this.moveable.props.handleResize(target, width, height)
+		this.moveable.on('resize', ({target, width, height, delta, direction}) => {
+			this.moveable.props.handleResize(target, width, height, delta, direction)
 		}).on('resizeEnd', ({target}) => {
 			this.moveable.props.saveSize(target)
 		})
@@ -154,12 +160,14 @@ export default {
 		},
 		togglePaintingMode: function () {
 			this.paintingFloors = !this.paintingFloors
+			this.moveable.target = null
 			this.addingLocation = false
 			this.deletingLocations = false
 			this.settingLocations = false
 		},
 		toggleLocationSettings: function () {
 			this.settingLocations = !this.settingLocations
+			this.moveable.target = null
 			this.addingLocation = false
 			this.deletingLocations = false
 			this.paintingFloors = false
@@ -169,6 +177,7 @@ export default {
 		},
 		deleteLocations: function () {
 			this.deletingLocations = !this.deletingLocations
+			this.moveable.target = null
 			this.paintingFloors = false
 			this.addingLocation = false
 			this.settingLocations = false
@@ -186,6 +195,7 @@ export default {
 		},
 		addLocationDialog: function () {
 			if (this.addingLocation) return
+			this.moveable.target = null
 			this.paintingFloors = false
 			this.deletingLocations = false
 			this.settingLocations = false
@@ -238,6 +248,7 @@ export default {
 			this.clicked = false
 			if (this.addingLocation) {
 				event.preventDefault()
+				event.stopPropagation()
 
 				const data = {
 					name: this.newLocationName,
@@ -250,13 +261,6 @@ export default {
 						z: 0
 					}
 				}
-
-				// TODO parenting, fuck this shit
-				// if (!event.target.className.includes('floorPlan')) {
-				// 	data.parentLocation = parseInt(event.target['id'] || 0)
-				// 	data.settings.x = event.target['offsetX']
-				// 	data.settings.y = event.target['offsetY']
-				// }
 
 				this.areaSelectorX = 0
 				this.areaSelectorY = 0

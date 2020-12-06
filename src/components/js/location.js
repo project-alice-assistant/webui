@@ -4,8 +4,7 @@ export default {
 	name: 'location',
 	data: function () {
 		return {
-			rotationDelta: 0,
-			selected: false
+			rotationDelta: 0
 		}
 	},
 	props: [
@@ -49,12 +48,27 @@ export default {
 		},
 		handleClick: function (event) {
 			event.stopPropagation()
+			document.querySelectorAll('.droppable').forEach(el => {
+				el.classList.remove('droppable')
+			})
 			if (this.myHome.paintingFloors && this.myHome.activeFloorTile !== '') {
 				this.myHome.locations[this.location.id].settings['t'] = this.myHome.activeFloorTile
 				this.save()
+			} else if (this.myHome.addingLocation) {
+
 			} else if (!this.myHome.paintingFloors && this.myHome.locationsEditMode) {
 				this.myHome.moveable.target = event.target
 				this.myHome.moveable.props = this
+
+				/*if (this.location.parentLocation !== 0) {
+					const parent = document.querySelector(`#loc_${this.location.parentLocation}`)
+					this.myHome.moveable.bounds = {
+						top: parent.style.top,
+						left: parent.style.left,
+						bottom: parent.style.bottom,
+						right: parent.style.right
+					}
+				}*/
 
 				let self = this
 				let locations = Array.from(document.querySelectorAll('.location'))
@@ -92,11 +106,40 @@ export default {
 			event.stopPropagation()
 			this.myHome.deleteLocation(this.location.id)
 		},
-		handleDrag: function (target, left, top) {
+		handleDrag: function (target, left, top, clientX, clientY) {
+			const elemBelow = document.elementsFromPoint(clientX, clientY)
+			let found = false
+			elemBelow.forEach(el => {
+				if (el.classList.contains('location')) {
+					if (el === this.$el && parseInt(el.id) !== this.location.parentLocation) return false
+					found = true
+					document.querySelectorAll('.droppable').forEach(el2 => {
+						el2.classList.remove('droppable')
+					})
+					el.classList.add('droppable')
+
+					return true
+				}
+			})
+
+			if (!found) {
+				document.querySelectorAll('.droppable').forEach(el => {
+					el.classList.remove('droppable')
+				})
+			}
+
 			target.style.left = `${left}px`
 			target.style.top = `${top}px`
 		},
-		handleResize(target, width, height) {
+		handleResize(target, width, height, delta, direction) {
+			if (direction[0] === -1) {
+				let posX = parseInt(target.style.left.slice(0, -2)) - delta[0]
+				target.style.left = `${posX}px`
+			}
+			if (direction[1] === -1) {
+				let posY = parseInt(target.style.top.slice(0, -2)) - delta[1]
+				target.style.top = `${posY}px`
+			}
 			target.style.width = `${width}px`
 			target.style.height = `${height}px`
 		},
@@ -105,11 +148,23 @@ export default {
 			target.style.transform = transform
 		},
 		savePosition: function (target) {
-			this.locations[this.location.id].settings['x'] = parseInt(target.style.left)
-			this.locations[this.location.id].settings['y'] = parseInt(target.style.top)
+			const droppedIn = document.querySelector('.droppable')
+
+			if (!droppedIn) {
+				this.locations[this.location.id].settings['x'] = parseInt(target.style.left)
+				this.locations[this.location.id].settings['y'] = parseInt(target.style.top)
+			} else {
+				this.locations[this.location.id].parentLocation = parseInt(droppedIn.id)
+				this.locations[this.location.id].settings['x'] = parseInt(target.style.left) - parseInt(droppedIn.style.left)
+				this.locations[this.location.id].settings['y'] = parseInt(target.style.top) - parseInt(droppedIn.style.top)
+				this.locations[this.location.id].settings['z'] = 10
+			}
+
 			this.save()
 		},
 		saveSize: function (target) {
+			this.locations[this.location.id].settings['x'] = parseInt(target.style.left)
+			this.locations[this.location.id].settings['y'] = parseInt(target.style.top)
 			this.locations[this.location.id].settings['w'] = parseInt(target.style.width)
 			this.locations[this.location.id].settings['h'] = parseInt(target.style.height)
 			this.save()
