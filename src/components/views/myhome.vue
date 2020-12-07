@@ -8,13 +8,13 @@
 				 aria-hidden="true" class="fas fa-trash-alt fa-2x fa-fw" @click="deleteLocations"/>
 			<i v-tooltip="$t('tooltips.settings')" :class="{clickable: !settingLocations, yellow: settingLocations}"
 				 aria-hidden="true" class="fas fa-cogs fa-2x fa-fw" @click="toggleLocationSettings"/>
-			<i v-tooltip="$t('tooltips.paintFloors')" :class="{yellow: paintingFloors}" aria-hidden="true"
-				 class="fas fa-paint-roller fa-2x fa-fw clickable"
-				 @click="togglePaintingMode"/>
+			<i v-tooltip="$t('tooltips.paintFloors')" :class="{yellow: paintingFloors}"
+				 aria-hidden="true" class="fas fa-paint-roller fa-2x fa-fw clickable" @click="togglePaintingMode"/>
 			<i v-tooltip="$t('tooltips.buildMode')" aria-hidden="true" class="fas fa-hard-hat fa-2x fa-fw clickable"/>
-			<i v-tooltip="$t('tooltips.manageFurniture')" aria-hidden="true" class="fas fa-couch fa-2x fa-fw clickable"/>
+			<i v-tooltip="$t('tooltips.manageFurniture')" :class="{yellow: placingFurniture}"
+				 aria-hidden="true" class="fas fa-couch fa-2x fa-fw clickable" @click="toggleFurnitureMode"/>
 		</div>
-		<div v-if="locationsEditMode && paintingFloors" class="tools paintFloors">
+		<div v-if="locationsEditMode && paintingFloors" class="tools sideTools paintFloors">
 			<img
 				alt="unknown"
 				v-for="imageId in floorTiles"
@@ -23,6 +23,17 @@
 				:src="`http://${$store.state.settings['aliceIp']}:${$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/floors/${imageId}.png`"
 				class="clickable"
 				@click="activeFloorTile === imageId ? activeFloorTile = '' : activeFloorTile = imageId"
+			/>
+		</div>
+		<div v-if="locationsEditMode && placingFurniture" class="tools sideTools placeFurniture">
+			<img
+				v-for="furnitureId in furnitureTiles"
+				:key="furnitureId"
+				:class="{selected: furnitureId === activeFurnitureTile}"
+				:src="`http://${$store.state.settings['aliceIp']}:${$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/furniture/${furnitureId}.png`"
+				alt="unknown"
+				class="clickable"
+				@click="activeFurnitureTile === furnitureId ? activeFurnitureTile = '' : activeFurnitureTile = furnitureId"
 			/>
 		</div>
 		<div :class="{fullscreen: $store.state.fullScreen, editMode: locationsEditMode}" class="myHomeEditor">

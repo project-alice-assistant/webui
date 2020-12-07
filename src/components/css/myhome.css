@@ -82,7 +82,7 @@
 	top: 120px;
 }
 
-.paintFloors {
+.sideTools {
 	border-bottom-left-radius: 10px;
 	border-bottom-right-radius: 10px;
 	border-top-left-radius: 10px;
@@ -96,24 +96,36 @@
 	overflow: hidden;
 	padding: 10px;
 	position: fixed;
-	right: 61px;
-	top: 230px;
 	transition: all 0.5s ease-in-out;
 	width: 75px;
 }
 
-.paintFloors:hover {
+.sideTools:hover {
 	max-width: 600px;
 	overflow-y: auto;
 	width: 600px;
 }
 
-.paintFloors > img {
+.sideTools > img {
 	box-sizing: border-box;
 	display: inline-block;
 	height: 50px;
 	margin: 2px;
 	width: 50px;
+}
+
+.sideTools > img:hover {
+	border: 2px solid var(--text)
+}
+
+.paintFloors {
+	right: 61px;
+	top: 275px;
+}
+
+.placeFurniture {
+	right: 61px;
+	top: 375px;
 }
 
 .selected {

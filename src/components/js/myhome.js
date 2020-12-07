@@ -37,6 +37,7 @@ export default {
 			paintingFloors: false,
 			deletingLocations: false,
 			settingLocations: false,
+			placingFurniture: false,
 			newLocationName: '',
 			locationsEditMode: false,
 			devicesEditMode: false,
@@ -44,7 +45,9 @@ export default {
 			constructions: {},
 			furnitures: {},
 			floorTiles: [],
+			furnitureTiles: [],
 			activeFloorTile: '',
+			activeFurnitureTile: '',
 			zoomLevel: 1.0,
 			areaSelectorX: 0,
 			areaSelectorY: 0,
@@ -66,6 +69,18 @@ export default {
 				}
 			} else if (event.key === 'Escape') {
 				self.addingLocation = false
+			} else if (event.key === 'Control') {
+				if (self.moveable != null) {
+					self.moveable.snapThreshold = 15
+				}
+			}
+		})
+
+		document.addEventListener('keydown', function (event) {
+			if (event.key === 'Control') {
+				if (self.moveable != null) {
+					self.moveable.snapThreshold = 1
+				}
 			}
 		})
 
@@ -85,6 +100,16 @@ export default {
 		}).then(response => {
 			if ('data' in response.data) {
 				this.floorTiles = response.data.data
+			}
+		})
+
+		axios({
+			method: 'get',
+			url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/furniture/`,
+			headers: {'auth': localStorage.getItem('apiToken')}
+		}).then(response => {
+			if ('data' in response.data) {
+				this.furnitureTiles = response.data.data
 			}
 		})
 
@@ -116,11 +141,10 @@ export default {
 				isDisplaySnapDigit: true,
 				snapCenter: true,
 				snapGap: false,
-				snapThreshold: 5,
-				throttleDrag: 5,
-				throttleResize: 5,
-				throttleRotate: 1,
-				throttleSnap: 5,
+				snapThreshold: 15,
+				throttleDrag: 1,
+				throttleResize: 1,
+				throttleRotate: 5,
 				scalable: false,
 				keepRatio: false,
 				edge: false,
@@ -171,9 +195,19 @@ export default {
 			this.addingLocation = false
 			this.deletingLocations = false
 			this.settingLocations = false
+			this.placingFurniture = false
 		},
 		toggleLocationSettings: function () {
 			this.settingLocations = !this.settingLocations
+			this.moveable.target = null
+			this.addingLocation = false
+			this.deletingLocations = false
+			this.placingFurniture = false
+			this.paintingFloors = false
+		},
+		toggleFurnitureMode: function () {
+			this.placingFurniture = !this.placingFurniture
+			this.settingLocations = false
 			this.moveable.target = null
 			this.addingLocation = false
 			this.deletingLocations = false
@@ -191,6 +225,7 @@ export default {
 			this.paintingFloors = false
 			this.addingLocation = false
 			this.settingLocations = false
+			this.placingFurniture = false
 		},
 		deleteLocation: function (locId) {
 			axios({
@@ -209,6 +244,7 @@ export default {
 			this.paintingFloors = false
 			this.deletingLocations = false
 			this.settingLocations = false
+			this.placingFurniture = false
 
 			let self = this
 			this.$dialog
@@ -264,10 +300,10 @@ export default {
 					name: this.newLocationName,
 					parentLocation: 0,
 					settings: {
-						x: Math.ceil(this.areaSelectorStartX / 5) * 5,
-						y: Math.ceil(this.areaSelectorStartY / 5) * 5,
-						w: Math.ceil(this.areaSelectorW / 5) * 5 || 150,
-						h: Math.ceil(this.areaSelectorH / 5) * 5 || 150,
+						x: this.areaSelectorStartX,
+						y: this.areaSelectorStartY,
+						w: this.areaSelectorW || 150,
+						h: this.areaSelectorH || 150,
 						z: 0
 					}
 				}
