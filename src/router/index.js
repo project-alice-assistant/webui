@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import widgets from '../components/views/widgets'
 import skills from '../components/views/skills'
 import scenarios from '../components/views/scenarios'
 import login from '../components/views/login'
@@ -81,7 +80,7 @@ const routes = [
 	{
 		path: '*',
 		name: 'Home',
-		component: widgets,
+		component: myhome,
 		meta: {
 			title: 'nav.widgets'
 		}

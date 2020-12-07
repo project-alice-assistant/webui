@@ -4,19 +4,12 @@
 		:ref="location.id"
 		:style="computeCustomStyle()"
 		:class="{
-			childLocation: location.parentLocation !== 0,
 			painting: myHome.paintingFloors,
 			clickable: myHome.locationsEditMode && !myHome.addingLocation && !myHome.paintingFloors
 		}"
 		class="location"
 		@click="handleClick"
 	>
-		<span
-			v-fit2box="location.name"
-			:class="{clickable: myHome.locationsEditMode && !myHome.addingLocation && !myHome.paintingFloors}"
-			class="locationName"
-			@click="rename"
-		/>
 		<location
 			v-for="loc in locations"
 			v-if="loc.parentLocation === location.id"
@@ -24,6 +17,12 @@
 			:location="loc"
 			:locations="locations"
 			:myHome="myHome"
+		/>
+		<span
+			v-fit2box="location.name"
+			:class="{clickable: myHome.locationsEditMode && !myHome.addingLocation && !myHome.paintingFloors}"
+			class="locationName"
+			@click="rename"
 		/>
 		<div v-if="myHome.deletingLocations" class="widgetTool deleter" @click="deleteMe">
 			<i aria-hidden="true" class="far fa-trash-alt clickable"/>

@@ -4,7 +4,6 @@
 	box-sizing: border-box;
 	display: flex;
 	justify-content: center;
-	pointer-events: all;
 	position: absolute;
 }
 
@@ -12,16 +11,12 @@
 	cursor: cell;
 }
 
-.childLocation {
-	position: relative;
-}
-
 .locationName {
 	max-height: 30%;
 	position: absolute;
 	text-align: center;
 	text-shadow: 2px 2px 2px var(--accent);
-	width: 90%;
+	width: 50%;
 }
 
 .dragging {

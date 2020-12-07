@@ -32,23 +32,7 @@ export default {
 					callback: this.setDevicesEditMode
 				}
 			],
-			moveable: new Moveable(document.body, {
-				draggable: true,
-				resizable: true,
-				rotatable: true,
-				snappable: true,
-				isDisplaySnapDigit: true,
-				snapCenter: true,
-				snapGap: false,
-				snapThreshold: 5,
-				throttleDrag: 5,
-				throttleResize: 5,
-				throttleRotate: 1,
-				scalable: false,
-				keepRatio: false,
-				edge: false,
-				origin: false
-			}),
+			moveable: new Moveable(),
 			addingLocation: false,
 			paintingFloors: false,
 			deletingLocations: false,
@@ -118,31 +102,54 @@ export default {
 	},
 	mounted: function () {
 		this.areaSelector = this.$refs.areaSelector
-
-		this.moveable.on('dragStart', ({target}) => {
-			this.dragging = true
-			target.classList.add('dragging')
-		}).on('drag', ({target, left, top, clientX, clientY}) => {
-			this.moveable.props.handleDrag(target, left, top, clientX, clientY)
-		}).on('dragEnd', ({target, isDrag, clientX, clientY}) => {
-			this.dragging = false
-			target.classList.remove('dragging')
-			this.moveable.props.savePosition(target)
-		})
-
-		this.moveable.on('resize', ({target, width, height, delta, direction}) => {
-			this.moveable.props.handleResize(target, width, height, delta, direction)
-		}).on('resizeEnd', ({target}) => {
-			this.moveable.props.saveSize(target)
-		})
-
-		this.moveable.on('rotate', ({target, dist, transform}) => {
-			this.moveable.props.handleRotate(target, dist, transform)
-		}).on('rotateEnd', ({target, isDrag, clientX, clientY}) => {
-			this.moveable.props.saveRotation()
-		})
 	},
 	methods: {
+		newMoveable: function (target, prop) {
+			this.moveable.target = null
+			this.moveable = new Moveable(document.body, {
+				target: target,
+				props: prop,
+				draggable: true,
+				resizable: true,
+				rotatable: true,
+				snappable: true,
+				isDisplaySnapDigit: true,
+				snapCenter: true,
+				snapGap: false,
+				snapThreshold: 5,
+				throttleDrag: 5,
+				throttleResize: 5,
+				throttleRotate: 1,
+				throttleSnap: 5,
+				scalable: false,
+				keepRatio: false,
+				edge: false,
+				origin: false
+			})
+
+			this.moveable.on('dragStart', ({target, clientX, clientY}) => {
+				this.dragging = true
+				this.moveable.props.startDrag(target, clientX, clientY)
+			}).on('drag', ({target, left, top, clientX, clientY}) => {
+				this.moveable.props.handleDrag(target, left, top, clientX, clientY)
+			}).on('dragEnd', ({target, isDrag, clientX, clientY}) => {
+				this.dragging = false
+				this.moveable.props.savePosition(target)
+				this.$forceUpdate()
+			})
+
+			this.moveable.on('resize', ({target, width, height, delta, direction}) => {
+				this.moveable.props.handleResize(target, width, height, delta, direction)
+			}).on('resizeEnd', ({target}) => {
+				this.moveable.props.saveSize(target)
+			})
+
+			this.moveable.on('rotate', ({target, dist, transform}) => {
+				this.moveable.props.handleRotate(target, dist, transform)
+			}).on('rotateEnd', ({}) => {
+				this.moveable.props.saveRotation()
+			})
+		},
 		cinemaMode: function () {
 			this.$store.commit('toggleCinemaMode')
 		},
@@ -174,6 +181,9 @@ export default {
 		},
 		floorPlanClick: function () {
 			this.moveable.target = null
+			document.querySelectorAll('.droppable').forEach(el => {
+				el.classList.remove('droppable')
+			})
 		},
 		deleteLocations: function () {
 			this.deletingLocations = !this.deletingLocations
