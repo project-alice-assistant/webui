@@ -1,24 +1,69 @@
 import axios from 'axios'
+import Moveable from 'moveable'
 
 export default {
 	name: 'location',
 	data: function () {
 		return {
 			rotationDelta: 0,
-			dragStartX: 0,
-			dragStartY: 0
+			moveable: new Moveable()
 		}
 	},
 	props: [
 		'location',
 		'locations',
+		'furnitures',
 		'myHome'
 	],
 	methods: {
-		computeCustomStyle: function () {
-			let style = ''
+		newMoveable: function (target, prop) {
+			this.moveable.target = null
+			this.moveable = new Moveable(document.body, {
+				target: target,
+				props: prop,
+				container: this.$el,
+				draggable: true,
+				resizable: true,
+				rotatable: true,
+				snappable: true,
+				isDisplaySnapDigit: true,
+				snapCenter: true,
+				snapGap: false,
+				snapThreshold: 15,
+				throttleDrag: 1,
+				throttleResize: 1,
+				throttleRotate: 5,
+				scalable: false,
+				keepRatio: false,
+				edge: false,
+				origin: false
+			})
 
-			style += `left:${this.location['settings']['x']}px;`
+			this.moveable.on('dragStart', ({target}) => {
+				this.dragging = true
+				this.moveable.props.startDrag(target)
+			}).on('drag', ({target, left, top}) => {
+				this.moveable.props.handleDrag(target, left, top)
+			}).on('dragEnd', ({target, isDrag, clientX, clientY}) => {
+				this.dragging = false
+				this.moveable.props.savePosition(target)
+				this.$forceUpdate()
+			})
+
+			this.moveable.on('resize', ({target, width, height, delta, direction}) => {
+				this.moveable.props.handleResize(target, width, height, delta, direction)
+			}).on('resizeEnd', ({target}) => {
+				this.moveable.props.saveSize(target)
+			})
+
+			this.moveable.on('rotate', ({target, dist, transform}) => {
+				this.moveable.props.handleRotate(target, dist, transform)
+			}).on('rotateEnd', ({}) => {
+				this.moveable.props.saveRotation()
+			})
+		},
+		computeCustomStyle: function () {
+			let style = `left:${this.location['settings']['x']}px;`
 			style += `top:${this.location['settings']['y']}px;`
 			style += `width:${this.location['settings']['w']}px;`
 			style += `height:${this.location['settings']['h']}px;`
@@ -58,6 +103,36 @@ export default {
 				this.save()
 			} else if (this.myHome.addingLocation) {
 
+			} else if (this.myHome.placingFurniture) {
+				if (this.myHome.activeFurnitureTile === '') return
+
+				const data = {
+					parentLocation: this.location.id,
+					settings: {
+						x: 0,
+						y: 0,
+						w: 50,
+						h: 50,
+						z: 0,
+						r: 0,
+						t: this.myHome.activeFurnitureTile
+					}
+				}
+
+				axios({
+					method: 'put',
+					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/furniture/`,
+					data: data,
+					headers: {
+						'auth': localStorage.getItem('apiToken'),
+						'content-type': 'application/json'
+					}
+				}).then(response => {
+					if ('furniture' in response.data) {
+						let furniture = response.data['furniture']
+						this.myHome.$set(this.myHome.furnitures, furniture.id, furniture)
+					}
+				})
 			} else if (!this.myHome.paintingFloors && this.myHome.locationsEditMode) {
 				this.myHome.newMoveable(event.target, this)
 
@@ -82,10 +157,8 @@ export default {
 				this.myHome.moveable.elementGuidelines = locations
 			}
 		},
-		startDrag: function (target, clientX, clientY) {
+		startDrag: function (target) {
 			target.classList.add('dragging')
-			this.dragStartX = clientX
-			this.dragStartY = clientY
 		},
 		rename: function (event) {
 			if (!this.myHome.locationsEditMode || this.myHome.addingLocation || this.myHome.paintingFloors) return

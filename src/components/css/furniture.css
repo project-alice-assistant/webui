@@ -1,0 +1,11 @@
+.furniture {
+	align-items: center;
+	box-sizing: border-box;
+	display: flex;
+	justify-content: center;
+	position: absolute;
+}
+
+.dragging {
+	z-index: 100;
+}

@@ -21,6 +21,7 @@ import ActionsMenu from './components/views/actionsMenu'
 import Tabs from './components/views/tabs'
 import ReactiveIcon from './components/views/reactiveIcon'
 import Location from './components/views/location'
+import Furniture from './components/views/furniture'
 
 import 'vuejs-dialog/dist/vuejs-dialog.min.css'
 import 'vue-tour/dist/vue-tour.css'
@@ -57,6 +58,7 @@ Vue.component('actionsMenu', ActionsMenu)
 Vue.component('tabs', Tabs)
 Vue.component('reactive-icon', ReactiveIcon)
 Vue.component('location', Location)
+Vue.component('furniture', Furniture)
 
 Vue.directive('fit2box', Fit2Box)
 

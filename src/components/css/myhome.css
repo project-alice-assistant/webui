@@ -47,6 +47,7 @@
 	height: 100000px;
 	min-height: 100000px;
 	min-width: 100000px;
+	position: relative;
 	width: 100000px;
 }
 

@@ -105,7 +105,7 @@ export default {
 
 		axios({
 			method: 'get',
-			url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/furniture/`,
+			url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/furniture/tiles/`,
 			headers: {'auth': localStorage.getItem('apiToken')}
 		}).then(response => {
 			if ('data' in response.data) {
@@ -133,6 +133,8 @@ export default {
 			this.moveable.target = null
 			this.moveable = new Moveable(document.body, {
 				target: target,
+				container: this.$refs.floorPlan,
+				rootContainer: document.querySelector('.container'),
 				props: prop,
 				draggable: true,
 				resizable: true,
@@ -151,9 +153,9 @@ export default {
 				origin: false
 			})
 
-			this.moveable.on('dragStart', ({target, clientX, clientY}) => {
+			this.moveable.on('dragStart', ({target}) => {
 				this.dragging = true
-				this.moveable.props.startDrag(target, clientX, clientY)
+				this.moveable.props.startDrag(target)
 			}).on('drag', ({target, left, top, clientX, clientY}) => {
 				this.moveable.props.handleDrag(target, left, top, clientX, clientY)
 			}).on('dragEnd', ({target, isDrag, clientX, clientY}) => {
@@ -333,6 +335,34 @@ export default {
 					}
 				})
 			}
+		},
+		addFurniture: function (parentId, x, y) {
+			const data = {
+				parentLocation: 0,
+				settings: {
+					'x': x,
+					'y': y,
+					'z': 0,
+					'w': 25,
+					'h': 25,
+					'r': 0,
+					't': this.activeFurnitureTile
+				}
+			}
+			axios({
+				method: 'put',
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/furniture/`,
+				data: data,
+				headers: {
+					'auth': localStorage.getItem('apiToken'),
+					'content-type': 'application/json'
+				}
+			}).then(response => {
+				if ('location' in response.data) {
+					let loc = response.data['location']
+					this.$set(this.locations, loc.id, loc)
+				}
+			})
 		}
 	},
 	watch: {

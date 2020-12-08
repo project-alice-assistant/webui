@@ -1,7 +1,6 @@
 <template>
 	<div
 		:id="`loc_${location.id}`"
-		:ref="location.id"
 		:style="computeCustomStyle()"
 		:class="{
 			painting: myHome.paintingFloors,
@@ -13,9 +12,18 @@
 		<location
 			v-for="loc in locations"
 			v-if="loc.parentLocation === location.id"
-			:key="loc.id"
+			:key="`loc_${loc.id}`"
 			:location="loc"
 			:locations="locations"
+			:myHome="myHome"
+		/>
+		<furniture
+			v-for="fur in furnitures"
+			v-if="fur.parentLocation === location.id"
+			:key="`fur_${fur.id}`"
+			:class="{clickable: myHome.locationsEditMode && !myHome.addingLocation && !myHome.paintingFloors}"
+			:furniture="fur"
+			:location="location"
 			:myHome="myHome"
 		/>
 		<span

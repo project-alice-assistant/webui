@@ -30,7 +30,7 @@
 				v-for="furnitureId in furnitureTiles"
 				:key="furnitureId"
 				:class="{selected: furnitureId === activeFurnitureTile}"
-				:src="`http://${$store.state.settings['aliceIp']}:${$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/furniture/${furnitureId}.png`"
+				:src="`http://${$store.state.settings['aliceIp']}:${$store.state.settings['apiPort']}/api/v1.0.1/myHome/furniture/${furnitureId}.png`"
 				alt="unknown"
 				class="clickable"
 				@click="activeFurnitureTile === furnitureId ? activeFurnitureTile = '' : activeFurnitureTile = furnitureId"
@@ -43,6 +43,7 @@
 					locationsEditMode: locationsEditMode,
 					addLocation: addingLocation
 				}"
+				ref="floorPlan"
 				class="floorPlan"
 				@click="floorPlanClick"
 			>
@@ -66,6 +67,7 @@
 					:key="location.id"
 					:location="location"
 					:locations="locations"
+					:furnitures="furnitures"
 					:myHome="me"
 				/>
 			</div>
