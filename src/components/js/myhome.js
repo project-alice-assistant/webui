@@ -90,7 +90,7 @@ export default {
 			} else {
 				self.zoomLevel = Math.min(self.zoomLevel + 0.05, 3.0)
 			}
-			this.removeMoveableControls()
+			self.removeMoveableControls()
 		})
 
 		axios({
