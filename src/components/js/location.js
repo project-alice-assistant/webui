@@ -17,7 +17,6 @@ export default {
 	],
 	methods: {
 		newMoveable: function (target, prop) {
-			this.moveable.target = null
 			this.moveable = new Moveable(document.body, {
 				target: target,
 				props: prop,
@@ -38,6 +37,8 @@ export default {
 				edge: false,
 				origin: false
 			})
+
+			this.moveable.destroy()
 
 			this.moveable.on('dragStart', ({target}) => {
 				this.dragging = true

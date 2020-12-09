@@ -90,7 +90,7 @@ export default {
 			} else {
 				self.zoomLevel = Math.min(self.zoomLevel + 0.05, 3.0)
 			}
-			self.moveable.target = null
+			this.removeMoveableControls()
 		})
 
 		axios({
@@ -129,8 +129,15 @@ export default {
 		this.areaSelector = this.$refs.areaSelector
 	},
 	methods: {
-		newMoveable: function (target, prop) {
+		removeMoveableControls: function () {
 			this.moveable.target = null
+			const controls = document.querySelector('.moveable-control-box')
+			if (controls) {
+				controls.outerHTML = ''
+			}
+		},
+		newMoveable: function (target, prop) {
+			this.removeMoveableControls()
 			this.moveable = new Moveable(document.body, {
 				target: target,
 				props: prop,
@@ -191,7 +198,7 @@ export default {
 		},
 		togglePaintingMode: function () {
 			this.paintingFloors = !this.paintingFloors
-			this.moveable.target = null
+			this.removeMoveableControls()
 			this.addingLocation = false
 			this.deletingLocations = false
 			this.settingLocations = false
@@ -199,7 +206,7 @@ export default {
 		},
 		toggleLocationSettings: function () {
 			this.settingLocations = !this.settingLocations
-			this.moveable.target = null
+			this.removeMoveableControls()
 			this.addingLocation = false
 			this.deletingLocations = false
 			this.placingFurniture = false
@@ -208,20 +215,20 @@ export default {
 		toggleFurnitureMode: function () {
 			this.placingFurniture = !this.placingFurniture
 			this.settingLocations = false
-			this.moveable.target = null
+			this.removeMoveableControls()
 			this.addingLocation = false
 			this.deletingLocations = false
 			this.paintingFloors = false
 		},
 		floorPlanClick: function () {
-			this.moveable.target = null
+			this.removeMoveableControls()
 			document.querySelectorAll('.droppable').forEach(el => {
 				el.classList.remove('droppable')
 			})
 		},
 		deleteLocations: function () {
 			this.deletingLocations = !this.deletingLocations
-			this.moveable.target = null
+			this.removeMoveableControls()
 			this.paintingFloors = false
 			this.addingLocation = false
 			this.settingLocations = false
@@ -240,7 +247,7 @@ export default {
 		},
 		addLocationDialog: function () {
 			if (this.addingLocation) return
-			this.moveable.target = null
+			this.removeMoveableControls()
 			this.paintingFloors = false
 			this.deletingLocations = false
 			this.settingLocations = false
@@ -257,8 +264,18 @@ export default {
 					cancelText: this.$t('buttons.cancel')
 				})
 				.then(function (dialogue) {
-					self.addingLocation = true
-					self.newLocationName = dialogue.data
+					axios({
+						method: 'get',
+						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/${dialogue.data}/`,
+						headers: {'auth': localStorage.getItem('apiToken')}
+					}).then(response => {
+						if ('location' in response.data) {
+							self.$dialog.alert(self.$t('dialogs.bodies.locationNameOrSynonymAlreadyExist')).then()
+						} else {
+							self.addingLocation = true
+							self.newLocationName = dialogue.data
+						}
+					})
 				})
 				.catch(function () {
 					self.addingLocation = false
@@ -280,6 +297,7 @@ export default {
 			}
 		},
 		drawSelectionArea: function (movedX, movedY) {
+
 			let x = Math.min(this.areaSelectorStartX, movedX)
 			let x2 = Math.max(this.areaSelectorStartX, movedX)
 			let y = Math.min(this.areaSelectorStartY, movedY)
@@ -368,7 +386,7 @@ export default {
 			immediate: true,
 			handler(to) {
 				if (to.path !== '/myhome') {
-					this.moveable.target = null
+					this.removeMoveableControls()
 				}
 			}
 		}
