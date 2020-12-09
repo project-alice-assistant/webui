@@ -136,6 +136,11 @@ export default {
 				controls.outerHTML = ''
 			}
 		},
+		removeDroppable: function () {
+			document.querySelectorAll('.droppable').forEach(el => {
+				el.classList.remove('droppable')
+			})
+		},
 		newMoveable: function (target, prop) {
 			this.removeMoveableControls()
 			this.moveable = new Moveable(document.body, {
@@ -195,6 +200,14 @@ export default {
 		closeEditor: function () {
 			this.devicesEditMode = false
 			this.locationsEditMode = false
+
+			this.removeMoveableControls()
+			this.removeDroppable()
+			this.paintingFloors = false
+			this.addingLocation = false
+			this.deletingLocations = false
+			this.settingLocations = false
+			this.placingFurniture = false
 		},
 		togglePaintingMode: function () {
 			this.paintingFloors = !this.paintingFloors
@@ -222,9 +235,6 @@ export default {
 		},
 		floorPlanClick: function () {
 			this.removeMoveableControls()
-			document.querySelectorAll('.droppable').forEach(el => {
-				el.classList.remove('droppable')
-			})
 		},
 		deleteLocations: function () {
 			this.deletingLocations = !this.deletingLocations
@@ -297,7 +307,6 @@ export default {
 			}
 		},
 		drawSelectionArea: function (movedX, movedY) {
-
 			let x = Math.min(this.areaSelectorStartX, movedX)
 			let x2 = Math.max(this.areaSelectorStartX, movedX)
 			let y = Math.min(this.areaSelectorStartY, movedY)
