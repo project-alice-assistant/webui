@@ -133,8 +133,6 @@ export default {
 			this.moveable.target = null
 			this.moveable = new Moveable(document.body, {
 				target: target,
-				container: this.$refs.floorPlan,
-				rootContainer: document.querySelector('.container'),
 				props: prop,
 				draggable: true,
 				resizable: true,
