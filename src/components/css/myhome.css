@@ -42,7 +42,7 @@
 
 .floorPlan {
 	background: var(--mainBG);
-	border: 1px solid var(--windowBG)
+	border: 1px solid var(--windowBG);
 	box-sizing: border-box;
 	cursor: grab;
 	flex: 1;
