@@ -42,13 +42,19 @@
 
 .floorPlan {
 	background: var(--mainBG);
-	cursor: default;
+	border: 1px solid var(--windowBG)
+	box-sizing: border-box;
+	cursor: grab;
 	flex: 1;
 	height: 100000px;
 	min-height: 100000px;
 	min-width: 100000px;
 	position: relative;
 	width: 100000px;
+}
+
+.grabbed {
+	cursor: grabbing;
 }
 
 .tools {

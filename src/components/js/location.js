@@ -134,7 +134,7 @@ export default {
 						this.myHome.$set(this.myHome.furnitures, furniture.id, furniture)
 					}
 				})
-			} else if (!this.myHome.paintingFloors && this.myHome.locationsEditMode) {
+			} else if (!this.myHome.settingLocations && !this.myHome.deletingLocations && !this.myHome.paintingFloors && this.myHome.locationsEditMode) {
 				this.myHome.newMoveable(event.target, this)
 
 				if (this.location.parentLocation !== 0) {

@@ -56,7 +56,12 @@ export default {
 			areaSelectorW: 0,
 			areaSelectorH: 0,
 			clicked: false,
-			dragging: false
+			dragging: false,
+			draggingPlan: false,
+			draggingPlanStartX: 0,
+			draggingPlanStartY: 0,
+			floorPlanX: 0,
+			floorPlanY: 0
 		}
 	},
 	created: function() {
@@ -90,6 +95,7 @@ export default {
 			} else {
 				self.zoomLevel = Math.min(self.zoomLevel + 0.05, 3.0)
 			}
+
 			self.removeMoveableControls()
 		})
 
@@ -144,6 +150,7 @@ export default {
 		newMoveable: function (target, prop) {
 			this.removeMoveableControls()
 			this.moveable = new Moveable(document.body, {
+				rootContainer: this.$refs.floorPlan,
 				target: target,
 				props: prop,
 				draggable: true,
@@ -298,12 +305,23 @@ export default {
 				this.areaSelectorStartX = event.offsetX
 				this.areaSelectorStartY = event.offsetY
 				this.drawSelectionArea(this.areaSelectorStartX, this.areaSelectorStartY)
+			} else if (event.target.classList.contains('floorPlan')) {
+				event.target.classList.add('grabbed')
+				this.draggingPlan = true
+				this.draggingPlanStartX = event.clientX
+				this.draggingPlanStartY = event.clientY
 			}
 		},
 		mouseMove: function (event) {
 			if (this.addingLocation) {
 				if (!this.clicked) return
 				this.drawSelectionArea(event.offsetX, event.offsetY)
+			} else if (this.draggingPlan) {
+				this.floorPlanX += event.clientX - this.draggingPlanStartX
+				this.floorPlanY += event.clientY - this.draggingPlanStartY
+
+				this.draggingPlanStartX = event.clientX
+				this.draggingPlanStartY = event.clientY
 			}
 		},
 		drawSelectionArea: function (movedX, movedY) {
@@ -359,6 +377,9 @@ export default {
 						this.$set(this.locations, loc.id, loc)
 					}
 				})
+			} else if (this.draggingPlan) {
+				event.target.classList.remove('grabbed')
+				this.draggingPlan = false
 			}
 		},
 		addFurniture: function (parentId, x, y) {

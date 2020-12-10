@@ -38,7 +38,11 @@
 		</div>
 		<div :class="{fullscreen: $store.state.fullScreen, editMode: locationsEditMode}" class="myHomeEditor">
 			<div
-				:style="`transform: scale(${zoomLevel})`"
+				:style="`
+					transform: scale(${zoomLevel});
+					left:${floorPlanX}px;
+					top:${floorPlanY}px;
+				`"
 				:class="{
 					locationsEditMode: locationsEditMode,
 					addLocation: addingLocation
@@ -46,6 +50,9 @@
 				ref="floorPlan"
 				class="floorPlan"
 				@click="floorPlanClick"
+				@mousedown="mouseDown"
+				@mousemove="mouseMove"
+				@mouseup="handleClick"
 			>
 				<div
 					v-if="addingLocation"

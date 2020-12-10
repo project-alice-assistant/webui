@@ -2,6 +2,7 @@
 	align-items: center;
 	background-color: var(--windowBG);
 	box-sizing: border-box;
+	cursor: default;
 	display: flex;
 	justify-content: center;
 	position: absolute;
