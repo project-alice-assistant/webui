@@ -21,6 +21,7 @@ import ActionsMenu from './components/views/actionsMenu'
 import Tabs from './components/views/tabs'
 import ReactiveIcon from './components/views/reactiveIcon'
 import Location from './components/views/location'
+import Furniture from './components/views/furniture'
 
 import 'vuejs-dialog/dist/vuejs-dialog.min.css'
 import 'vue-tour/dist/vue-tour.css'
@@ -32,6 +33,7 @@ import './components/css/overrides/vuetour.css'
 import './components/css/overrides/tooltips.css'
 import './components/css/overrides/overlay.css'
 import './components/css/overrides/vue-simple-markdown.css'
+import './components/css/overrides/vuemovable.css'
 
 import faIconOption from './components/views/fontawesomePromptDialog'
 import widgetOption from './components/views/widgetOptionsDialog'
@@ -58,6 +60,7 @@ Vue.component('tabs', Tabs)
 Vue.component('reactive-icon', ReactiveIcon)
 Vue.component('location', Location)
 Vue.component('dialogView', dialogView)
+Vue.component('furniture', Furniture)
 
 Vue.directive('fit2box', Fit2Box)
 

@@ -1,42 +1,47 @@
 <template>
-	<vue-draggable-resizable
-		:id="location.id"
-		:class="{childLocation: location.parentLocation !== 0}"
-		:active="!myHome.addingLocation"
-		:draggable="myHome.locationsEditMode && !myHome.addingLocation"
-		:onDragStart="stopPropagation"
-		:grid="[5, 5]"
-		:h="parseInt(location.settings['h'])"
-		:min-height="50"
-		:min-width="50"
-		:parent="true"
-		:w="parseInt(location.settings['w'])"
-		:x="location['settings']['x']"
-		:y="location.settings['y']"
-		:z="location.settings['z']"
-		class-name="location"
-		:resizable="myHome.locationsEditMode && !myHome.addingLocation"
-		classNameActive="nothingtoseehere"
-		@dragstop="savePosition"
-		@resizestop="saveSize"
-		:style="`background: url('http://${$store.state.settings['aliceIp']}:${$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/floors/${location.settings['t']}.png'); background-color: var(--windowBG)`"
-		@activated="handleClick"
+	<div
+		:id="`loc_${location.id}`"
+		:style="computeCustomStyle()"
+		:class="{
+			painting: myHome.paintingFloors,
+			clickable: myHome.locationsEditMode && !myHome.addingLocation && !myHome.paintingFloors
+		}"
+		class="location"
+		@click="handleClick"
 	>
+		<location
+			v-for="loc in locations"
+			v-if="loc.parentLocation === location.id"
+			:key="`loc_${loc.id}`"
+			:location="loc"
+			:locations="locations"
+			:myHome="myHome"
+		/>
+		<furniture
+			v-for="fur in furnitures"
+			v-if="fur.parentLocation === location.id"
+			:key="`fur_${fur.id}`"
+			:class="{clickable: myHome.locationsEditMode && !myHome.addingLocation && !myHome.paintingFloors}"
+			:furniture="fur"
+			:location="location"
+			:myHome="myHome"
+		/>
 		<span
 			v-fit2box="location.name"
 			:class="{clickable: myHome.locationsEditMode && !myHome.addingLocation && !myHome.paintingFloors}"
 			class="locationName"
 			@click="rename"
 		/>
-		<location
-			v-for="loc in myHome.locations"
-			v-if="loc.parentLocation === location.id"
-			:key="loc.id"
-			:location="loc"
-			:myHome="myHome"
-		/>
-	</vue-draggable-resizable>
+		<div v-if="myHome.deletingLocations" class="widgetTool deleter" @click="deleteMe">
+			<i aria-hidden="true" class="far fa-trash-alt clickable"/>
+		</div>
+		<div v-if="myHome.settingLocations" class="widgetTool zindexer">
+			<i aria-hidden="true" class="fas fa-level-up-alt clickable"/>
+			<i aria-hidden="true" class="fas fa-level-down-alt clickable"/>
+		</div>
+	</div>
 </template>
 
 <style scoped src="../css/location.css"/>
+<style scoped src="../css/widgets.css"/>
 <script src="../js/location.js"/>

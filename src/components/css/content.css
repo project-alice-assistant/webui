@@ -1,12 +1,12 @@
 .connectionStatus {
-	position: fixed;
-	bottom: 0;
-	right: 0;
-	width: 0;
-	height: 0;
-	z-index: 10;
 	border-bottom: 200px solid rgba(255, 0, 0, 0.5);
 	border-left: 200px solid transparent;
+	bottom: 0;
+	height: 0;
+	position: fixed;
+	right: 0;
+	width: 0;
+	z-index: 100000;
 }
 
 .connectionStatus > i {

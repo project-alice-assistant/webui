@@ -1,20 +1,29 @@
 .location {
 	align-items: center;
 	background-color: var(--windowBG);
+	box-sizing: border-box;
 	display: flex;
-	height: 100%;
 	justify-content: center;
 	position: absolute;
-	width: 100%;
 }
 
-.childLocation {
-	position: absolute;
+.painting {
+	cursor: cell;
 }
 
 .locationName {
 	max-height: 30%;
+	max-width: 90%;
+	min-width: 15%;
+	position: absolute;
 	text-align: center;
 	text-shadow: 2px 2px 2px var(--accent);
-	width: 90%;
+}
+
+.dragging {
+	z-index: 100;
+}
+
+.droppable {
+	border: 5px dashed var(--accent);
 }

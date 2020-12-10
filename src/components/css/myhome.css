@@ -1,11 +1,34 @@
 .myHomeEditor {
+	align-items: center;
 	background-color: var(--mainBG);
 	bottom: 10px;
 	display: flex;
+	justify-content: center;
+	justify-items: center;
 	left: 10px;
+	overflow: hidden;
 	position: absolute;
 	right: 10px;
 	top: 10px;
+}
+
+.editMode {
+	border: 1px solid var(--windowBG);
+}
+
+.reactiveLayer {
+	cursor: crosshair;
+	flex: 1;
+	height: 100%;
+	position: absolute;
+	width: 100%;
+	z-index: 40;
+}
+
+.areaSelector {
+	background-color: var(--windowBG);
+	position: absolute;
+	z-index: 50;
 }
 
 .fullscreen {
@@ -21,8 +44,11 @@
 	background: var(--mainBG);
 	cursor: default;
 	flex: 1;
-	height: 100%;
-	width: 100%;
+	height: 100000px;
+	min-height: 100000px;
+	min-width: 100000px;
+	position: relative;
+	width: 100000px;
 }
 
 .tools {
@@ -57,7 +83,7 @@
 	top: 120px;
 }
 
-.paintFloors {
+.sideTools {
 	border-bottom-left-radius: 10px;
 	border-bottom-right-radius: 10px;
 	border-top-left-radius: 10px;
@@ -71,24 +97,36 @@
 	overflow: hidden;
 	padding: 10px;
 	position: fixed;
-	right: 61px;
-	top: 230px;
 	transition: all 0.5s ease-in-out;
 	width: 75px;
 }
 
-.paintFloors:hover {
+.sideTools:hover {
 	max-width: 600px;
 	overflow-y: auto;
 	width: 600px;
 }
 
-.paintFloors > img {
+.sideTools > img {
 	box-sizing: border-box;
 	display: inline-block;
 	height: 50px;
 	margin: 2px;
 	width: 50px;
+}
+
+.sideTools > img:hover {
+	border: 2px solid var(--text)
+}
+
+.paintFloors {
+	right: 61px;
+	top: 275px;
+}
+
+.placeFurniture {
+	right: 61px;
+	top: 375px;
 }
 
 .selected {
@@ -97,9 +135,8 @@
 
 .locationsEditMode {
 	background: var(--mainBG) url('../../assets/images/grid.png');
-	border: 1px solid var(--windowBG);
 }
 
 .addLocation {
-	cursor: cell;
+	cursor: crosshair;
 }

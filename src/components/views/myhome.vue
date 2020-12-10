@@ -4,14 +4,19 @@
 		<div v-if="locationsEditMode" class="tools manageLocations">
 			<i v-tooltip="$t('tooltips.addLocations')" :class="{clickable: !addingLocation, yellow: addingLocation}"
 				 aria-hidden="true" class="fas fa-plus-circle fa-2x fa-fw" @click="addLocationDialog"/>
-			<i v-tooltip="$t('tooltips.removeLocations')" aria-hidden="true" class="fas fa-trash-alt fa-2x fa-fw clickable"/>
-			<i v-tooltip="$t('tooltips.paintFloors')" aria-hidden="true" class="fas fa-paint-roller fa-2x fa-fw clickable"
-				 @click="paintingFloors = !paintingFloors"/>
+			<i v-tooltip="$t('tooltips.removeLocations')" :class="{clickable: !deletingLocations, yellow: deletingLocations}"
+				 aria-hidden="true" class="fas fa-trash-alt fa-2x fa-fw" @click="deleteLocations"/>
+			<i v-tooltip="$t('tooltips.settings')" :class="{clickable: !settingLocations, yellow: settingLocations}"
+				 aria-hidden="true" class="fas fa-cogs fa-2x fa-fw" @click="toggleLocationSettings"/>
+			<i v-tooltip="$t('tooltips.paintFloors')" :class="{yellow: paintingFloors}"
+				 aria-hidden="true" class="fas fa-paint-roller fa-2x fa-fw clickable" @click="togglePaintingMode"/>
 			<i v-tooltip="$t('tooltips.buildMode')" aria-hidden="true" class="fas fa-hard-hat fa-2x fa-fw clickable"/>
-			<i v-tooltip="$t('tooltips.manageFurniture')" aria-hidden="true" class="fas fa-couch fa-2x fa-fw clickable"/>
+			<i v-tooltip="$t('tooltips.manageFurniture')" :class="{yellow: placingFurniture}"
+				 aria-hidden="true" class="fas fa-couch fa-2x fa-fw clickable" @click="toggleFurnitureMode"/>
 		</div>
-		<div v-if="locationsEditMode && paintingFloors" class="tools paintFloors">
+		<div v-if="locationsEditMode && paintingFloors" class="tools sideTools paintFloors">
 			<img
+				alt="unknown"
 				v-for="imageId in floorTiles"
 				:key="imageId"
 				:class="{selected: imageId === activeFloorTile}"
@@ -20,23 +25,49 @@
 				@click="activeFloorTile === imageId ? activeFloorTile = '' : activeFloorTile = imageId"
 			/>
 		</div>
-		<div class="myHomeEditor" :class="{fullscreen: $store.state.fullScreen}">
+		<div v-if="locationsEditMode && placingFurniture" class="tools sideTools placeFurniture">
+			<img
+				v-for="furnitureId in furnitureTiles"
+				:key="furnitureId"
+				:class="{selected: furnitureId === activeFurnitureTile}"
+				:src="`http://${$store.state.settings['aliceIp']}:${$store.state.settings['apiPort']}/api/v1.0.1/myHome/furniture/${furnitureId}.png`"
+				alt="unknown"
+				class="clickable"
+				@click="activeFurnitureTile === furnitureId ? activeFurnitureTile = '' : activeFurnitureTile = furnitureId"
+			/>
+		</div>
+		<div :class="{fullscreen: $store.state.fullScreen, editMode: locationsEditMode}" class="myHomeEditor">
 			<div
 				:style="`transform: scale(${zoomLevel})`"
 				:class="{
 					locationsEditMode: locationsEditMode,
 					addLocation: addingLocation
 				}"
+				ref="floorPlan"
 				class="floorPlan"
-				@click="handleClick"
-				@mousedown="mouseDown"
+				@click="floorPlanClick"
 			>
+				<div
+					v-if="addingLocation"
+					class="reactiveLayer"
+					@mousedown="mouseDown"
+					@mousemove="mouseMove"
+					@mouseup="handleClick"
+				>
+					<div
+						v-if="addingLocation && clicked"
+						ref="areaSelector"
+						:style="`top: ${areaSelectorY}px; left: ${areaSelectorX}px; width: ${areaSelectorW}px; height: ${areaSelectorH}px`"
+						class="areaSelector"
+					/>
+				</div>
 				<location
 					v-for="location in locations"
 					v-if="location.parentLocation === 0"
 					:key="location.id"
 					:location="location"
 					:locations="locations"
+					:furnitures="furnitures"
 					:myHome="me"
 				/>
 			</div>
