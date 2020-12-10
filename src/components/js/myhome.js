@@ -136,10 +136,14 @@ export default {
 	},
 	methods: {
 		removeMoveableControls: function () {
-			this.moveable.target = null
-			const controls = document.querySelector('.moveable-control-box')
-			if (controls) {
-				controls.outerHTML = ''
+			try {
+
+				this.moveable.destroy()
+				const controls = document.querySelector('.moveable-control-box')
+				if (controls) {
+					controls.outerHTML = ''
+				}
+			} catch {
 			}
 		},
 		removeDroppable: function () {
