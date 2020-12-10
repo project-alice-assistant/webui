@@ -40,6 +40,10 @@
 			<button v-if="!$store.state.minimized">{{ $t('nav.admin') }}</button>
 			<button class="minimized" v-else><i class="fas fa-tools" aria-hidden="true"/></button>
 		</router-link>
+		<router-link to="/dialogView" v-if="this.$store.state.loggedInUser && this.$store.state.loggedInUser.authLevel === 'admin'">
+			<button v-if="!$store.state.minimized">TALK</button>
+			<button class="minimized" v-else><i class="fas fa-users" aria-hidden="true"/></button>
+		</router-link>
 		<a class="nav-link" @click="minimize" v-if="!this.$store.state.minimized">
 			<button>{{ $t('buttons.minimize') }}</button>
 		</a>
