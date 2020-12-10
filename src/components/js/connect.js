@@ -133,6 +133,12 @@ export default {
 			this.$store.state.mqtt.subscribe(C.CORE_HEARTBEAT_TOPIC)
 			this.$store.state.mqtt.subscribe(C.ALICE_WATCH_TOPIC)
 			this.$store.state.mqtt.subscribe(C.SYSLOG_TOPIC)
+			this.$store.state.mqtt.subscribe(C.SESSION_ENDED_TOPIC)
+			this.$store.state.mqtt.subscribe(C.NLU_QUERY_TOPIC)
+			this.$store.state.mqtt.subscribe(C.SAY_TOPIC)
+			this.$store.state.mqtt.subscribe(C.HOTWORD_TOPIC)
+			this.$store.state.mqtt.subscribe(C.ASR_PART_TOPIC)
+			this.$store.state.mqtt.subscribe(C.ASR_TOPIC)
 		},
 		onConnectionFailed: function (_msg) {
 			console.log('Mqtt connection failed')

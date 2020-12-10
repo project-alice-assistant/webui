@@ -38,6 +38,7 @@ import './components/css/overrides/vuemovable.css'
 import faIconOption from './components/views/fontawesomePromptDialog'
 import widgetOption from './components/views/widgetOptionsDialog'
 import skillSettings from './components/views/skillSettingsDialog'
+import dialogView from "./components/js/dialogView";
 
 Vue.config.productionTip = false
 
@@ -58,6 +59,7 @@ Vue.component('actionsMenu', ActionsMenu)
 Vue.component('tabs', Tabs)
 Vue.component('reactive-icon', ReactiveIcon)
 Vue.component('location', Location)
+Vue.component('dialogView', dialogView)
 Vue.component('furniture', Furniture)
 
 Vue.directive('fit2box', Fit2Box)

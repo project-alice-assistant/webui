@@ -9,6 +9,7 @@ import syslog from '../components/views/syslog';
 import alicewatch from '../components/views/alicewatch';
 import devmode from '../components/views/devmode';
 import myhome from '../components/views/myhome';
+import dialogView from "../components/views/dialogView";
 
 Vue.use(VueRouter)
 
@@ -75,6 +76,13 @@ const routes = [
 		component: myhome,
 		meta: {
 			title: 'nav.myhome'
+		}
+	},
+	{
+		path: '/dialogView',
+		component: dialogView,
+		meta: {
+			title: 'nav.dialogView'
 		}
 	},
 	{
