@@ -98,10 +98,10 @@ export default {
 				if (this.location.parentLocation !== 0) {
 					const parent = document.querySelector(`#loc_${this.location.parentLocation}`)
 					this.myHome.moveable.bounds = {
-						top: parent.style.top,
-						left: parent.style.left,
-						bottom: parent.style.bottom,
-						right: parent.style.right
+						top: parent.style.bottom,
+						left: parent.style.right,
+						bottom: parent.style.bottom + parent.style.height,
+						right: parent.style.left + parent.style.width
 					}
 				}
 
@@ -186,7 +186,7 @@ export default {
 			target.style.transform = transform
 		},
 		savePosition: function (target) {
-			if (this.targetParentLocation === 0) {
+			if (this.targetParentLocation === 0 || this.location.parentLocation !== 0) {
 				this.locations[this.location.id].settings['x'] = parseInt(target.style.left.substring(-2))
 				this.locations[this.location.id].settings['y'] = parseInt(target.style.top.substring(-2))
 			} else {
@@ -194,13 +194,13 @@ export default {
 				this.locations[this.location.id].parentLocation = this.targetParentLocation
 				this.locations[this.location.id].settings['x'] = parseInt(target.style.left.substring(-2)) - parseInt(droppedIn.style.left.substring(-2))
 				this.locations[this.location.id].settings['y'] = parseInt(target.style.top.substring(-2)) - parseInt(droppedIn.style.top.substring(-2))
-				this.locations[this.location.id].settings['z'] = 1
+				this.locations[this.location.id].settings['z'] = 10
 				this.targetParentLocation = 0
 			}
 
 			this.myHome.removeDroppable()
 			target.classList.remove('dragging')
-			//this.save()
+			this.save()
 		},
 		saveSize: function (target) {
 			this.locations[this.location.id].settings['x'] = parseInt(target.style.left.substring(-2))
