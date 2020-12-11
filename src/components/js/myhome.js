@@ -96,7 +96,7 @@ export default {
 				self.zoomLevel = Math.min(self.zoomLevel + 0.05, 3.0)
 			}
 
-			self.removeMoveableControls()
+			self.destroyMoveable()
 		})
 
 		axios({
@@ -135,14 +135,9 @@ export default {
 		this.areaSelector = this.$refs.areaSelector
 	},
 	methods: {
-		removeMoveableControls: function () {
+		destroyMoveable: function () {
 			try {
-
 				this.moveable.destroy()
-				const controls = document.querySelector('.moveable-control-box')
-				if (controls) {
-					controls.outerHTML = ''
-				}
 			} catch {
 			}
 		},
@@ -152,9 +147,12 @@ export default {
 			})
 		},
 		newMoveable: function (target, prop) {
-			this.removeMoveableControls()
-			this.moveable = new Moveable(document.body, {
-				rootContainer: this.$refs.floorPlan,
+			this.destroyMoveable()
+			let container = document.querySelector('.floorPlan')
+			if (prop.location.parentLocation !== 0) {
+				container = document.querySelector(`#loc_${prop.location.parentLocation}`)
+			}
+			this.moveable = new Moveable(container, {
 				target: target,
 				props: prop,
 				draggable: true,
@@ -181,8 +179,6 @@ export default {
 				this.moveable.props.handleDrag(target, left, top, clientX, clientY)
 			}).on('dragEnd', ({target, isDrag, clientX, clientY}) => {
 				this.dragging = false
-				this.moveable.props.savePosition(target)
-				this.$forceUpdate()
 			})
 
 			this.moveable.on('resize', ({target, width, height, delta, direction}) => {
@@ -212,7 +208,7 @@ export default {
 			this.devicesEditMode = false
 			this.locationsEditMode = false
 
-			this.removeMoveableControls()
+			this.destroyMoveable()
 			this.removeDroppable()
 			this.paintingFloors = false
 			this.addingLocation = false
@@ -222,7 +218,7 @@ export default {
 		},
 		togglePaintingMode: function () {
 			this.paintingFloors = !this.paintingFloors
-			this.removeMoveableControls()
+			this.destroyMoveable()
 			this.addingLocation = false
 			this.deletingLocations = false
 			this.settingLocations = false
@@ -230,7 +226,7 @@ export default {
 		},
 		toggleLocationSettings: function () {
 			this.settingLocations = !this.settingLocations
-			this.removeMoveableControls()
+			this.destroyMoveable()
 			this.addingLocation = false
 			this.deletingLocations = false
 			this.placingFurniture = false
@@ -239,17 +235,17 @@ export default {
 		toggleFurnitureMode: function () {
 			this.placingFurniture = !this.placingFurniture
 			this.settingLocations = false
-			this.removeMoveableControls()
+			this.destroyMoveable()
 			this.addingLocation = false
 			this.deletingLocations = false
 			this.paintingFloors = false
 		},
 		floorPlanClick: function () {
-			this.removeMoveableControls()
+			this.destroyMoveable()
 		},
 		deleteLocations: function () {
 			this.deletingLocations = !this.deletingLocations
-			this.removeMoveableControls()
+			this.destroyMoveable()
 			this.paintingFloors = false
 			this.addingLocation = false
 			this.settingLocations = false
@@ -268,7 +264,7 @@ export default {
 		},
 		addLocationDialog: function () {
 			if (this.addingLocation) return
-			this.removeMoveableControls()
+			this.destroyMoveable()
 			this.paintingFloors = false
 			this.deletingLocations = false
 			this.settingLocations = false
@@ -420,7 +416,7 @@ export default {
 			immediate: true,
 			handler(to) {
 				if (to.path !== '/myhome') {
-					this.removeMoveableControls()
+					this.destroyMoveable()
 				}
 			}
 		}
