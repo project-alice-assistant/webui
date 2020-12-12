@@ -43,7 +43,7 @@ export default {
 					//setTimeout(()=>{ self.msgs.shift(); }, 20000);
 				}
 				if ([C.ASR_TOPIC, C.ASR_PART_TOPIC].includes(msg.topic)) {
-					self.currentSpeech = msg;
+					self.currentSpeech = msg
 				}
 				if (C.NLU_QUERY_TOPIC === msg.topic) {
 					self.currentSpeech = undefined
