@@ -13,7 +13,6 @@
 	<div v-if="msg.topic === 'hermes/asr/partialTextCaptured'" class="userSpeech male extend">
 		{{ JSON.parse(msg.payloadString)['text'] }} ...
 	</div>
-
 </div>
 </template>
 

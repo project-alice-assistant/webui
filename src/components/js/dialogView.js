@@ -1,11 +1,13 @@
 import axios from 'axios'
 import * as C from '@/utils/constants'
-import SpeechBubble from "@/components/views/speechBubble";
+import SpeechBubble from '@/components/views/speechBubble'
 
 export default {
 	name: 'dialogView',
-	components: { SpeechBubble },
-	data: function() {
+	components: {
+		SpeechBubble
+	},
+	data: function () {
 		return {
 			cmd: '',
 			unwatch: {},
@@ -32,19 +34,19 @@ export default {
 				return state.mqttMessage
 			},
 			function(msg) {
-				if(C.SESSION_ENDED_TOPIC == msg.topic){
-					self.currentSession = undefined;
+				if (C.SESSION_ENDED_TOPIC === msg.topic) {
+					self.currentSession = undefined
 				}
 				if ([C.NLU_QUERY_TOPIC, C.SAY_TOPIC, C.SESSION_ENDED_TOPIC].includes(msg.topic)) {
 					self.msgs.push(msg)
 					//start timer to remove from memory
 					//setTimeout(()=>{ self.msgs.shift(); }, 20000);
 				}
-				if([C.ASR_TOPIC, C.ASR_PART_TOPIC].includes(msg.topic)){
+				if ([C.ASR_TOPIC, C.ASR_PART_TOPIC].includes(msg.topic)) {
 					self.currentSpeech = msg;
 				}
-				if(C.NLU_QUERY_TOPIC == msg.topic){
-					self.currentSpeech = undefined;
+				if (C.NLU_QUERY_TOPIC === msg.topic) {
+					self.currentSpeech = undefined
 				}
 			}
 		)
@@ -61,14 +63,13 @@ export default {
 	},
 	methods: {
 		sendQuery: function() {
-			if( this.say == ''){
-				return;
-			}
+			if (this.say === '') return
+
 			const data = new FormData
 			data.append('query', this.say)
-			data.append( 'siteId', 'Test')
+			data.append('siteId', 'Test')
 			//if no session is available start new one
-			if(this.currentSession == undefined) {
+			if (this.currentSession === undefined) {
 				axios({
 					method: 'post',
 					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/dialog/process/`,
@@ -79,7 +80,7 @@ export default {
 					}
 				}).then(response => {
 					if ('sessionId' in response.data) {
-						this.currentSession = response.data.sessionId;
+						this.currentSession = response.data.sessionId
 					}
 				})
 			} else {
@@ -95,7 +96,7 @@ export default {
 					}
 				})
 			}
-			this.say = '';
+			this.say = ''
 		}
 	}
 }
