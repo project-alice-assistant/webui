@@ -75,20 +75,18 @@ export default {
 			} else if (event.key === 'Escape') {
 				self.addingLocation = false
 			} else if (event.key === 'Control') {
-				if (self.moveable != null) {
-					self.moveable.setState({
-						snapThreshold: 15
-					})
+				try {
+					self.moveable.snapThreshold = 15
+				} catch {
 				}
 			}
 		})
 
 		document.addEventListener('keydown', function (event) {
 			if (event.key === 'Control') {
-				if (self.moveable != null) {
-					self.moveable.setState({
-						snapThreshold: 1
-					})
+				try {
+					self.moveable.snapThreshold = 1
+				} catch {
 				}
 			}
 		})
@@ -263,6 +261,17 @@ export default {
 			}).then(response => {
 				if ('success' in response.data && response.data.success) {
 					this.$delete(this.locations, locId)
+				}
+			})
+		},
+		deleteFurniture: function (furId) {
+			axios({
+				method: 'delete',
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/furniture/${furId}/`,
+				headers: {'auth': localStorage.getItem('apiToken')}
+			}).then(response => {
+				if ('success' in response.data && response.data.success) {
+					this.$delete(this.furnitures, furId)
 				}
 			})
 		},

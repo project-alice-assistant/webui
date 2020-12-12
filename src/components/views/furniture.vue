@@ -3,7 +3,7 @@
 		:id="`fur_${furniture.id}`"
 		:ref="furniture.id"
 		:class="{
-			clickable: myHome.locationsEditMode && !myHome.addingLocation && !myHome.paintingFloors
+			clickable: myHome.placingFurniture
 		}"
 		:style="computeCustomStyle()"
 		class="furniture"

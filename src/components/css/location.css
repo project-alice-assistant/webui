@@ -19,6 +19,7 @@
 	position: absolute;
 	text-align: center;
 	text-shadow: 2px 2px 2px var(--accent);
+	z-index: 0;
 }
 
 .dragging {

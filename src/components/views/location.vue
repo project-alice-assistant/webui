@@ -23,7 +23,6 @@
 			:key="`fur_${fur.id}`"
 			:class="{clickable: myHome.locationsEditMode && !myHome.addingLocation && !myHome.paintingFloors}"
 			:furniture="fur"
-			:location="location"
 			:myHome="myHome"
 		/>
 		<span

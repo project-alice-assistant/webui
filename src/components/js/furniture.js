@@ -9,7 +9,6 @@ export default {
 	},
 	props: [
 		'furniture',
-		'location',
 		'myHome'
 	],
 	methods: {
@@ -43,18 +42,17 @@ export default {
 		},
 		handleClick: function (event) {
 			event.stopPropagation()
-			document.querySelectorAll('.droppable').forEach(el => {
-				el.classList.remove('droppable')
-			})
+			this.myHome.removeDroppable()
+
 			if (this.myHome.placingFurniture) {
 				this.$parent.newMoveable(event.target, this)
 
 				const parent = document.querySelector(`#loc_${this.furniture.parentLocation}`)
 				this.$parent.moveable.bounds = {
-					top: parent.style.top,
-					left: parent.style.left,
-					bottom: parent.style.bottom,
-					right: parent.style.right
+					top: 0,
+					left: 0,
+					bottom: parseInt(parent.style.height.substring(-2)),
+					right: parseInt(parent.style.width.substring(-2))
 				}
 
 				let self = this
@@ -73,7 +71,7 @@ export default {
 		},
 		deleteMe: function (event) {
 			event.stopPropagation()
-			this.myHome.deleteLocation(this.location.id)
+			this.myHome.deleteFurniture(this.furniture.id)
 		},
 		handleDrag: function (target, left, top) {
 			target.style.left = `${left}px`

@@ -17,6 +17,57 @@ export default {
 		'myHome'
 	],
 	methods: {
+		destroyMoveable: function () {
+			try {
+				this.moveable.destroy()
+			} catch {
+			}
+		},
+		newMoveable: function (target, prop) {
+			this.destroyMoveable()
+			let container = document.querySelector(`#loc_${prop.furniture.parentLocation}`)
+			this.moveable = new Moveable(container, {
+				target: target,
+				dragArea: true,
+				props: prop,
+				draggable: true,
+				resizable: true,
+				rotatable: true,
+				snappable: true,
+				isDisplaySnapDigit: true,
+				snapCenter: true,
+				snapGap: false,
+				snapThreshold: 10,
+				throttleDrag: 1,
+				throttleResize: 1,
+				throttleRotate: 5,
+				scalable: false,
+				keepRatio: false,
+				edge: false,
+				origin: false
+			})
+
+			this.moveable.on('dragStart', ({target}) => {
+				this.dragging = true
+				this.moveable.props.startDrag(target)
+			}).on('drag', ({target, left, top, clientX, clientY}) => {
+				this.moveable.props.handleDrag(target, left, top, clientX, clientY)
+			}).on('dragEnd', ({target, isDrag, clientX, clientY}) => {
+				this.dragging = false
+			})
+
+			this.moveable.on('resize', ({target, width, height, delta, direction}) => {
+				this.moveable.props.handleResize(target, width, height, delta, direction)
+			}).on('resizeEnd', ({target}) => {
+				this.moveable.props.saveSize(target)
+			})
+
+			this.moveable.on('rotate', ({target, dist, transform}) => {
+				this.moveable.props.handleRotate(target, dist, transform)
+			}).on('rotateEnd', ({}) => {
+				this.moveable.props.saveRotation()
+			})
+		},
 		computeCustomStyle: function () {
 			let style = `left:${this.location['settings']['x']}px;`
 			style += `top:${this.location['settings']['y']}px;`
@@ -60,11 +111,12 @@ export default {
 			} else if (this.myHome.placingFurniture) {
 				if (this.myHome.activeFurnitureTile === '') return
 
+				console.log(event)
 				const data = {
 					parentLocation: this.location.id,
 					settings: {
-						x: 0,
-						y: 0,
+						x: event.layerX,
+						y: event.layerY,
 						w: 50,
 						h: 50,
 						z: 0,
@@ -164,23 +216,6 @@ export default {
 			target.style.left = `${left}px`
 			target.style.top = `${top}px`
 		},
-		checkBoundaries: function (target) {
-			return true
-			if (this.location.parentLocation !== 0) {
-				const parent = document.querySelector(`#loc_${this.location.parentLocation}`)
-				const parentXMin = parseInt(parent.style.left.substring(-2))
-				const parentYMin = parseInt(parent.style.left.substring(-2))
-				const parentXMax = parentXMin + parseInt(parent.style.width.substring(-2))
-				const parentYMax = parentYMin + parseInt(parent.style.height.substring(-2))
-
-				if ((left + parentXMin < parentXMin) || (left + parentXMin + parseInt(target.style.width.substring(-2)) > parentXMax) || (top + parentYMin < parentYMin) || (top + parentYMin + parseInt(target.style.height.substring(-2)) > parentYMax)) {
-					return false
-				}
-
-				return true
-			}
-			return true
-		},
 		handleResize(target, width, height, delta, direction) {
 			if (direction[0] === -1) {
 				let posX = parseInt(target.style.left.slice(0, -2)) - delta[0]
@@ -206,7 +241,7 @@ export default {
 				this.locations[this.location.id].parentLocation = this.targetParentLocation
 				this.locations[this.location.id].settings['x'] = parseInt(target.style.left.substring(-2)) - parseInt(droppedIn.style.left.substring(-2))
 				this.locations[this.location.id].settings['y'] = parseInt(target.style.top.substring(-2)) - parseInt(droppedIn.style.top.substring(-2))
-				this.locations[this.location.id].settings['z'] = 10
+				//this.locations[this.location.id].settings['z'] = 10
 				this.targetParentLocation = 0
 			}
 
