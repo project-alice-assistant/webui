@@ -95,19 +95,15 @@ export default {
 
 				this.myHome.newMoveable(event.target, this)
 
-				// if (this.location.parentLocation !== 0) {
-				// 	const parent = document.querySelector(`#loc_${this.location.parentLocation}`)
-				// 	const parentXMin = parseInt(parent.style.left.substring(-2))
-				// 	const parentYMin = parseInt(parent.style.left.substring(-2))
-				// 	const parentXMax = parentXMin + parseInt(parent.style.width.substring(-2))
-				// 	const parentYMax = parentYMin + parseInt(parent.style.height.substring(-2))
-				// 	this.myHome.moveable.bounds = {
-				// 		left: parentXMin,
-				// 		right: parentXMax,
-				// 		top: parentYMin,
-				// 		bottom: parentYMax
-				// 	}
-				// }
+				if (this.location.parentLocation !== 0) {
+					const parent = document.querySelector(`#loc_${this.location.parentLocation}`)
+					this.myHome.moveable.bounds = {
+						left: -10,
+						right: parseInt(parent.style.width.substring(-2)) + 10,
+						top: -10,
+						bottom: parseInt(parent.style.height.substring(-2)) + 10
+					}
+				}
 
 				let self = this
 				let locations = Array.from(document.querySelectorAll('.location'))
@@ -162,18 +158,6 @@ export default {
 				} else {
 					this.targetParentLocation = 0
 					this.myHome.removeDroppable()
-				}
-			}
-
-			if (this.location.parentLocation !== 0) {
-				const parent = document.querySelector(`#loc_${this.location.parentLocation}`)
-				const parentXMin = parseInt(parent.style.left.substring(-2))
-				const parentYMin = parseInt(parent.style.left.substring(-2))
-				const parentXMax = parentXMin + parseInt(parent.style.width.substring(-2))
-				const parentYMax = parentYMin + parseInt(parent.style.height.substring(-2))
-
-				if ((left + parentXMin < parentXMin) || (left + parentXMin + parseInt(target.style.width.substring(-2)) > parentXMax) || (top + parentYMin < parentYMin) || (top + parentYMin + parseInt(target.style.height.substring(-2)) > parentYMax)) {
-					return
 				}
 			}
 
