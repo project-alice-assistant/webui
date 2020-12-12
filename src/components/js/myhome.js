@@ -76,7 +76,9 @@ export default {
 				self.addingLocation = false
 			} else if (event.key === 'Control') {
 				if (self.moveable != null) {
-					self.moveable.snapThreshold = 15
+					self.moveable.setState({
+						snapThreshold: 15
+					})
 				}
 			}
 		})
@@ -84,7 +86,9 @@ export default {
 		document.addEventListener('keydown', function (event) {
 			if (event.key === 'Control') {
 				if (self.moveable != null) {
-					self.moveable.snapThreshold = 1
+					self.moveable.setState({
+						snapThreshold: 1
+					})
 				}
 			}
 		})

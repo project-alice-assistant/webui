@@ -95,15 +95,19 @@ export default {
 
 				this.myHome.newMoveable(event.target, this)
 
-				if (this.location.parentLocation !== 0) {
-					const parent = document.querySelector(`#loc_${this.location.parentLocation}`)
-					this.myHome.moveable.bounds = {
-						top: parent.style.bottom,
-						left: parent.style.right,
-						bottom: parent.style.bottom + parent.style.height,
-						right: parent.style.left + parent.style.width
-					}
-				}
+				// if (this.location.parentLocation !== 0) {
+				// 	const parent = document.querySelector(`#loc_${this.location.parentLocation}`)
+				// 	const parentXMin = parseInt(parent.style.left.substring(-2))
+				// 	const parentYMin = parseInt(parent.style.left.substring(-2))
+				// 	const parentXMax = parentXMin + parseInt(parent.style.width.substring(-2))
+				// 	const parentYMax = parentYMin + parseInt(parent.style.height.substring(-2))
+				// 	this.myHome.moveable.bounds = {
+				// 		left: parentXMin,
+				// 		right: parentXMax,
+				// 		top: parentYMin,
+				// 		bottom: parentYMax
+				// 	}
+				// }
 
 				let self = this
 				let locations = Array.from(document.querySelectorAll('.location'))
@@ -161,13 +165,37 @@ export default {
 				}
 			}
 
-			if (this.location.parentLocation === 0) {
-				target.style.left = `${left}px`
-				target.style.top = `${top}px`
-			} else {
-				target.style.left = `${left}px`
-				target.style.top = `${top}px`
+			if (this.location.parentLocation !== 0) {
+				const parent = document.querySelector(`#loc_${this.location.parentLocation}`)
+				const parentXMin = parseInt(parent.style.left.substring(-2))
+				const parentYMin = parseInt(parent.style.left.substring(-2))
+				const parentXMax = parentXMin + parseInt(parent.style.width.substring(-2))
+				const parentYMax = parentYMin + parseInt(parent.style.height.substring(-2))
+
+				if ((left + parentXMin < parentXMin) || (left + parentXMin + parseInt(target.style.width.substring(-2)) > parentXMax) || (top + parentYMin < parentYMin) || (top + parentYMin + parseInt(target.style.height.substring(-2)) > parentYMax)) {
+					return
+				}
 			}
+
+			target.style.left = `${left}px`
+			target.style.top = `${top}px`
+		},
+		checkBoundaries: function (target) {
+			return true
+			if (this.location.parentLocation !== 0) {
+				const parent = document.querySelector(`#loc_${this.location.parentLocation}`)
+				const parentXMin = parseInt(parent.style.left.substring(-2))
+				const parentYMin = parseInt(parent.style.left.substring(-2))
+				const parentXMax = parentXMin + parseInt(parent.style.width.substring(-2))
+				const parentYMax = parentYMin + parseInt(parent.style.height.substring(-2))
+
+				if ((left + parentXMin < parentXMin) || (left + parentXMin + parseInt(target.style.width.substring(-2)) > parentXMax) || (top + parentYMin < parentYMin) || (top + parentYMin + parseInt(target.style.height.substring(-2)) > parentYMax)) {
+					return false
+				}
+
+				return true
+			}
+			return true
 		},
 		handleResize(target, width, height, delta, direction) {
 			if (direction[0] === -1) {
