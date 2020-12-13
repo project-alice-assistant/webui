@@ -1,5 +1,5 @@
 import axios from 'axios'
-import Moveable from 'moveable'
+import MoveableItem from './moveableItem'
 
 export default {
 	name: 'myhome',
@@ -32,7 +32,7 @@ export default {
 					callback: this.setDevicesEditMode
 				}
 			],
-			moveable: new Moveable(),
+			moveableItem: new MoveableItem(this, this.locations),
 			addingLocation: false,
 			paintingFloors: false,
 			deletingLocations: false,
@@ -74,20 +74,6 @@ export default {
 				}
 			} else if (event.key === 'Escape') {
 				self.addingLocation = false
-			} else if (event.key === 'Control') {
-				try {
-					self.moveable.snapThreshold = 15
-				} catch {
-				}
-			}
-		})
-
-		document.addEventListener('keydown', function (event) {
-			if (event.key === 'Control') {
-				try {
-					self.moveable.snapThreshold = 1
-				} catch {
-				}
 			}
 		})
 
@@ -98,7 +84,7 @@ export default {
 				self.zoomLevel = Math.min(self.zoomLevel + 0.05, 3.0)
 			}
 
-			self.destroyMoveable()
+			self.moveableItem.destroyMoveable()
 		})
 
 		axios({
@@ -137,63 +123,13 @@ export default {
 		this.areaSelector = this.$refs.areaSelector
 	},
 	methods: {
-		destroyMoveable: function () {
-			try {
-				this.moveable.destroy()
-			} catch {
-			}
-		},
 		removeDroppable: function () {
 			document.querySelectorAll('.droppable').forEach(el => {
 				el.classList.remove('droppable')
 			})
 		},
-		newMoveable: function (target, prop) {
-			this.destroyMoveable()
-			let container = document.querySelector('.floorPlan')
-			if (prop.location.parentLocation !== 0) {
-				container = document.querySelector(`#loc_${prop.location.parentLocation}`)
-			}
-			this.moveable = new Moveable(container, {
-				target: target,
-				props: prop,
-				draggable: true,
-				resizable: true,
-				rotatable: true,
-				snappable: true,
-				isDisplaySnapDigit: true,
-				snapCenter: true,
-				snapGap: false,
-				snapThreshold: 15,
-				throttleDrag: 1,
-				throttleResize: 1,
-				throttleRotate: 5,
-				scalable: false,
-				keepRatio: false,
-				edge: false,
-				origin: false
-			})
-
-			this.moveable.on('dragStart', ({target}) => {
-				this.dragging = true
-				this.moveable.props.startDrag(target)
-			}).on('drag', ({target, left, top, clientX, clientY}) => {
-				this.moveable.props.handleDrag(target, left, top, clientX, clientY)
-			}).on('dragEnd', ({target, isDrag, clientX, clientY}) => {
-				this.dragging = false
-			})
-
-			this.moveable.on('resize', ({target, width, height, delta, direction}) => {
-				this.moveable.props.handleResize(target, width, height, delta, direction)
-			}).on('resizeEnd', ({target}) => {
-				this.moveable.props.saveSize(target)
-			})
-
-			this.moveable.on('rotate', ({target, dist, transform}) => {
-				this.moveable.props.handleRotate(target, dist, transform)
-			}).on('rotateEnd', ({}) => {
-				this.moveable.props.saveRotation()
-			})
+		setMoveable: function (target, prop) {
+			this.moveableItem.setMoveable(target, prop)
 		},
 		cinemaMode: function () {
 			this.$store.commit('toggleCinemaMode')
@@ -210,7 +146,7 @@ export default {
 			this.devicesEditMode = false
 			this.locationsEditMode = false
 
-			this.destroyMoveable()
+			this.moveableItem.destroyMoveable()
 			this.removeDroppable()
 			this.paintingFloors = false
 			this.addingLocation = false
@@ -220,7 +156,7 @@ export default {
 		},
 		togglePaintingMode: function () {
 			this.paintingFloors = !this.paintingFloors
-			this.destroyMoveable()
+			this.moveableItem.destroyMoveable()
 			this.addingLocation = false
 			this.deletingLocations = false
 			this.settingLocations = false
@@ -228,7 +164,7 @@ export default {
 		},
 		toggleLocationSettings: function () {
 			this.settingLocations = !this.settingLocations
-			this.destroyMoveable()
+			this.moveableItem.destroyMoveable()
 			this.addingLocation = false
 			this.deletingLocations = false
 			this.placingFurniture = false
@@ -237,17 +173,17 @@ export default {
 		toggleFurnitureMode: function () {
 			this.placingFurniture = !this.placingFurniture
 			this.settingLocations = false
-			this.destroyMoveable()
+			this.moveableItem.destroyMoveable()
 			this.addingLocation = false
 			this.deletingLocations = false
 			this.paintingFloors = false
 		},
 		floorPlanClick: function () {
-			this.destroyMoveable()
+			this.moveableItem.destroyMoveable()
 		},
 		deleteLocations: function () {
 			this.deletingLocations = !this.deletingLocations
-			this.destroyMoveable()
+			this.moveableItem.destroyMoveable()
 			this.paintingFloors = false
 			this.addingLocation = false
 			this.settingLocations = false
@@ -277,7 +213,7 @@ export default {
 		},
 		addLocationDialog: function () {
 			if (this.addingLocation) return
-			this.destroyMoveable()
+			this.moveableItem.destroyMoveable()
 			this.paintingFloors = false
 			this.deletingLocations = false
 			this.settingLocations = false
@@ -394,34 +330,6 @@ export default {
 				event.target.classList.remove('grabbed')
 				this.draggingPlan = false
 			}
-		},
-		addFurniture: function (parentId, x, y) {
-			const data = {
-				parentLocation: 0,
-				settings: {
-					'x': x,
-					'y': y,
-					'z': 0,
-					'w': 25,
-					'h': 25,
-					'r': 0,
-					't': this.activeFurnitureTile
-				}
-			}
-			axios({
-				method: 'put',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/furniture/`,
-				data: data,
-				headers: {
-					'auth': localStorage.getItem('apiToken'),
-					'content-type': 'application/json'
-				}
-			}).then(response => {
-				if ('location' in response.data) {
-					let loc = response.data['location']
-					this.$set(this.locations, loc.id, loc)
-				}
-			})
 		}
 	},
 	watch: {
@@ -429,7 +337,7 @@ export default {
 			immediate: true,
 			handler(to) {
 				if (to.path !== '/myhome') {
-					this.destroyMoveable()
+					this.moveableItem.destroyMoveable()
 				}
 			}
 		}

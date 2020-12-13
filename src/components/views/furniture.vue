@@ -1,7 +1,7 @@
 <template>
 	<div
-		:id="`fur_${furniture.id}`"
-		:ref="furniture.id"
+		:id="`fur_${data.id}`"
+		:ref="data.id"
 		:class="{
 			clickable: myHome.placingFurniture
 		}"

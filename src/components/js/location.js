@@ -1,119 +1,59 @@
 import axios from 'axios'
-import Moveable from 'moveable'
 
 export default {
 	name: 'location',
 	data: function () {
 		return {
 			rotationDelta: 0,
-			moveable: new Moveable(),
 			targetParentLocation: 0
 		}
 	},
 	props: [
-		'location',
+		'data',
 		'locations',
 		'furnitures',
 		'myHome'
 	],
 	methods: {
-		destroyMoveable: function () {
-			try {
-				this.moveable.destroy()
-			} catch {
-			}
-		},
-		newMoveable: function (target, prop) {
-			this.destroyMoveable()
-			let container = document.querySelector(`#loc_${prop.furniture.parentLocation}`)
-			this.moveable = new Moveable(container, {
-				target: target,
-				dragArea: true,
-				props: prop,
-				draggable: true,
-				resizable: true,
-				rotatable: true,
-				snappable: true,
-				isDisplaySnapDigit: true,
-				snapCenter: true,
-				snapGap: false,
-				snapThreshold: 10,
-				throttleDrag: 1,
-				throttleResize: 1,
-				throttleRotate: 5,
-				scalable: false,
-				keepRatio: false,
-				edge: false,
-				origin: false
-			})
-
-			this.moveable.on('dragStart', ({target}) => {
-				this.dragging = true
-				this.moveable.props.startDrag(target)
-			}).on('drag', ({target, left, top, clientX, clientY}) => {
-				this.moveable.props.handleDrag(target, left, top, clientX, clientY)
-			}).on('dragEnd', ({target, isDrag, clientX, clientY}) => {
-				this.dragging = false
-			})
-
-			this.moveable.on('resize', ({target, width, height, delta, direction}) => {
-				this.moveable.props.handleResize(target, width, height, delta, direction)
-			}).on('resizeEnd', ({target}) => {
-				this.moveable.props.saveSize(target)
-			})
-
-			this.moveable.on('rotate', ({target, dist, transform}) => {
-				this.moveable.props.handleRotate(target, dist, transform)
-			}).on('rotateEnd', ({}) => {
-				this.moveable.props.saveRotation()
-			})
-		},
 		computeCustomStyle: function () {
-			let style = `left:${this.location['settings']['x']}px;`
-			style += `top:${this.location['settings']['y']}px;`
-			style += `width:${this.location['settings']['w']}px;`
-			style += `height:${this.location['settings']['h']}px;`
-			style += `transform:rotate(${this.location['settings']['r']}deg);`
-			style += `background: url('http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/floors/${this.location.settings['t'] || 'floor-80'}.png');`
-			style += `background-color: var(--windowBG)`
-
-			return style
+			return this.myHome.moveableItem.computeCustomStyle(
+				this.data,
+				`background: url('http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/floors/${this.data.settings['t'] || 'floor-80'}.png');background-color: var(--windowBG);`
+			)
 		},
 		save: function () {
 			const data = {
-				id: this.location.id,
-				name: this.location.name,
-				parentLocation: this.location.parentLocation,
-				synonyms: this.location.synonyms,
-				settings: this.location.settings
+				id: this.data.id,
+				name: this.data.name,
+				parentLocation: this.data.parentLocation,
+				synonyms: this.data.synonyms,
+				settings: this.data.settings
 			}
 
 			axios({
 				method: 'patch',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/${this.location.id}/`,
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/${this.data.id}/`,
 				data: data,
 				headers: {
 					'auth': localStorage.getItem('apiToken'),
 					'content-type': 'application/json'
 				}
-			}).then(response => {
-			})
+			}).then()
 		},
 		handleClick: function (event) {
 			event.stopPropagation()
 			this.myHome.removeDroppable()
 
 			if (this.myHome.paintingFloors && this.myHome.activeFloorTile !== '') {
-				this.myHome.locations[this.location.id].settings['t'] = this.myHome.activeFloorTile
+				this.myHome.locations[this.data.id].settings['t'] = this.myHome.activeFloorTile
 				this.save()
 			} else if (this.myHome.addingLocation) {
 
 			} else if (this.myHome.placingFurniture) {
 				if (this.myHome.activeFurnitureTile === '') return
 
-				console.log(event)
 				const data = {
-					parentLocation: this.location.id,
+					parentLocation: this.data.id,
 					settings: {
 						x: event.layerX,
 						y: event.layerY,
@@ -140,36 +80,16 @@ export default {
 					}
 				})
 			} else if (!this.myHome.settingLocations && !this.myHome.deletingLocations && !this.myHome.paintingFloors && this.myHome.locationsEditMode) {
-				if (event.target.classList.contains('dragging')) {
-					this.savePosition(event.target)
-					return
-				}
+				if (event.target.classList.contains('dragging')) return
 
-				this.myHome.newMoveable(event.target, this)
-
-				if (this.location.parentLocation !== 0) {
-					const parent = document.querySelector(`#loc_${this.location.parentLocation}`)
-					this.myHome.moveable.bounds = {
-						left: -10,
-						right: parseInt(parent.style.width.substring(-2)) + 10,
-						top: -10,
-						bottom: parseInt(parent.style.height.substring(-2)) + 10
-					}
-				}
-
-				let self = this
-				let locations = Array.from(document.querySelectorAll('.location'))
-				locations.forEach(el => {
-					if (parseInt(el.id.substring(4)) === self.location.id) {
-						locations.splice(locations.indexOf(el), 1)
-						return true
-					}
+				this.myHome.setMoveable(event.target, this)
+				this.myHome.moveableItem.setBoundaries(this.$el, 10)
+				const locations = Array.from(document.querySelectorAll('.location')).filter((location, index, array) => {
+					const locId = parseInt(location.id.substring(4))
+					return !(locId === this.data.id || this.myHome.locations[locId].parentLocation === this.data.id);
 				})
-				this.myHome.moveable.elementGuidelines = locations
+				this.myHome.moveableItem.setGuidelines(locations)
 			}
-		},
-		startDrag: function (target) {
-			target.classList.add('dragging')
 		},
 		rename: function (event) {
 			if (!this.myHome.locationsEditMode || this.myHome.addingLocation || this.myHome.paintingFloors) return
@@ -186,22 +106,22 @@ export default {
 					cancelText: this.$t('buttons.cancel')
 				})
 				.then(function (dialogue) {
-					self.location.name = dialogue.data
-					self.$set(self.myHome.locations, self.location.id, self.location)
+					self.data.name = dialogue.data
+					self.$set(self.myHome.locations, self.data.id, self.data)
 					self.$forceUpdate()
 					self.save()
 				})
 		},
 		deleteMe: function (event) {
 			event.stopPropagation()
-			this.myHome.deleteLocation(this.location.id)
+			this.myHome.deleteLocation(this.data.id)
 		},
 		handleDrag: function (target, left, top, clientX, clientY) {
 			const elementsBelow = document.elementsFromPoint(clientX, clientY)
 			for (const el of elementsBelow) {
 				if (el.classList.contains('location')) {
 					const elementId = parseInt(el.id.substring(4))
-					if (el !== this.$el && elementId !== this.location.parentLocation) {
+					if (el !== this.$el && elementId !== this.data.parentLocation) {
 						this.myHome.removeDroppable()
 						el.classList.add('droppable')
 						this.targetParentLocation = elementId
@@ -212,58 +132,15 @@ export default {
 					this.myHome.removeDroppable()
 				}
 			}
-
-			target.style.left = `${left}px`
-			target.style.top = `${top}px`
 		},
-		handleResize(target, width, height, delta, direction) {
-			if (direction[0] === -1) {
-				let posX = parseInt(target.style.left.slice(0, -2)) - delta[0]
-				target.style.left = `${posX}px`
-			}
-			if (direction[1] === -1) {
-				let posY = parseInt(target.style.top.slice(0, -2)) - delta[1]
-				target.style.top = `${posY}px`
-			}
-			target.style.width = `${width}px`
-			target.style.height = `${height}px`
-		},
-		handleRotate(target, dist, transform) {
-			this.rotationDelta = dist
-			target.style.transform = transform
-		},
-		savePosition: function (target) {
-			if (this.targetParentLocation === 0 || this.location.parentLocation !== 0) {
-				this.locations[this.location.id].settings['x'] = parseInt(target.style.left.substring(-2))
-				this.locations[this.location.id].settings['y'] = parseInt(target.style.top.substring(-2))
-			} else {
+		setPosition: function (target) {
+			if (this.targetParentLocation !== 0 && this.data.parentLocation === 0) {
 				const droppedIn = document.querySelector(`#loc_${this.targetParentLocation}`)
-				this.locations[this.location.id].parentLocation = this.targetParentLocation
-				this.locations[this.location.id].settings['x'] = parseInt(target.style.left.substring(-2)) - parseInt(droppedIn.style.left.substring(-2))
-				this.locations[this.location.id].settings['y'] = parseInt(target.style.top.substring(-2)) - parseInt(droppedIn.style.top.substring(-2))
-				//this.locations[this.location.id].settings['z'] = 10
+				this.datas[this.data.id].parentLocation = this.targetParentLocation
+				this.datas[this.data.id].settings['x'] = parseInt(target.style.left.substring(-2)) - parseInt(droppedIn.style.left.substring(-2))
+				this.datas[this.data.id].settings['y'] = parseInt(target.style.top.substring(-2)) - parseInt(droppedIn.style.top.substring(-2))
 				this.targetParentLocation = 0
 			}
-
-			this.myHome.removeDroppable()
-			target.classList.remove('dragging')
-			this.save()
-		},
-		saveSize: function (target) {
-			this.locations[this.location.id].settings['x'] = parseInt(target.style.left.substring(-2))
-			this.locations[this.location.id].settings['y'] = parseInt(target.style.top.substring(-2))
-			this.locations[this.location.id].settings['w'] = parseInt(target.style.width.substring(-2))
-			this.locations[this.location.id].settings['h'] = parseInt(target.style.height.substring(-2))
-			this.save()
-		},
-		saveRotation: function () {
-			if (this.locations[this.location.id].settings['r'] === 0) {
-				this.locations[this.location.id].settings['r'] = this.rotationDelta
-			} else {
-				this.locations[this.location.id].settings['r'] = this.locations[this.location.id].settings['r'] + this.rotationDelta
-			}
-			this.rotationDelta = 0
-			this.save()
 		}
 	}
 }

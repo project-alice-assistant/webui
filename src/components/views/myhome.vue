@@ -72,7 +72,7 @@
 					v-for="location in locations"
 					v-if="location.parentLocation === 0"
 					:key="location.id"
-					:location="location"
+					:data="location"
 					:locations="locations"
 					:furnitures="furnitures"
 					:myHome="me"
