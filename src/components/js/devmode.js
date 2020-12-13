@@ -146,7 +146,7 @@ export default {
 				method: 'PUT',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/createSkill/`,
 				headers: {
-					'auth': this.$store.state.loggedInUser['token'],
+					'auth': localStorage.getItem('apiToken'),
 					'content-type': 'multipart/form-data'
 				},
 				data: data
@@ -177,7 +177,7 @@ export default {
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/uploadSkill/`,
 				data: data,
 				headers: {
-					'auth': this.$store.state.loggedInUser['token'],
+					'auth': localStorage.getItem('apiToken'),
 					'content-type': 'multipart/form-data'
 				}
 			}).then(function(response) {
@@ -214,7 +214,7 @@ export default {
 			axios({
 				method: 'get',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/`,
-				headers: {'auth': this.$store.state.loggedInUser['token']}
+				headers: {'auth': localStorage.getItem('apiToken')}
 			}).then(response => {
 				if ('data' in response.data) {
 					this.skills = response.data.data

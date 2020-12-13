@@ -20,7 +20,7 @@ export default {
 			axios({
 				method: 'get',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.skill.name}/reload/`,
-				headers: {'auth': this.$store.state.loggedInUser['token']}
+				headers: {'auth': localStorage.getItem('apiToken')}
 			}).then(response => {
 				if ('skill' in response.data) {
 					this.$parent.updateSkillData(response.data.skill)
@@ -32,7 +32,7 @@ export default {
 			axios({
 				method: 'get',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.skill.name}/toggleActiveState/`,
-				headers: {'auth': this.$store.state.loggedInUser['token']}
+				headers: {'auth': localStorage.getItem('apiToken')}
 			}).then(() => (this.skill.active = !this.skill.active))
 
 		},
@@ -41,7 +41,7 @@ export default {
 			axios({
 				method: 'get',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.skill.name}/checkUpdate/`,
-				headers: {'auth': this.$store.state.loggedInUser['token']}
+				headers: {'auth': localStorage.getItem('apiToken')}
 			}).then(() => {
 			})
 		},
@@ -55,7 +55,7 @@ export default {
 					axios({
 						method: 'delete',
 						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/skills/${self.skill.name}/`,
-						headers: {'auth': self.$store.state.loggedInUser['token']}
+						headers: {'auth': localStorage.getItem('apiToken')}
 					}).then(() => {
 						self.$el.parentNode.removeChild(self.$el)
 						self.$destroy()
@@ -78,7 +78,7 @@ export default {
 					method: 'PATCH',
 					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.skill.name}/`,
 					headers: {
-						'auth': this.$store.state.loggedInUser['token'],
+						'auth': localStorage.getItem('apiToken'),
 						'content-type': 'application/json'
 					},
 					data: JSON.stringify(dialogue.data)

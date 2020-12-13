@@ -40,7 +40,7 @@ export default {
 				method: 'PATCH',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/config/`,
 				headers: {
-					'auth': this.$store.state.loggedInUser['token'],
+					'auth': localStorage.getItem('apiToken'),
 					'content-type': 'application/json'
 				},
 				data: this.$store.state.settings
@@ -56,7 +56,7 @@ export default {
 			axios({
 				method: 'GET',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/${id}/`,
-				headers: {'auth': this.$store.state.loggedInUser['token']},
+				headers: {'auth': localStorage.getItem('apiToken')},
 			}).then(function() {
 				setTimeout(() =>{
 					icon.classList.add('green')
@@ -81,7 +81,7 @@ export default {
 			axios({
 				method: 'GET',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/${id}/`,
-				headers: {'auth': this.$store.state.loggedInUser['token']}
+				headers: {'auth': localStorage.getItem('apiToken')}
 			}).then(function() {
 				self.checkState(state, icon)
 			}).catch(function() {
@@ -98,7 +98,7 @@ export default {
 			axios({
 				method: 'GET',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/${id}/`,
-				headers: {'auth': this.$store.state.loggedInUser['token']}
+				headers: {'auth': localStorage.getItem('apiToken')}
 			}).then(response => {
 				if ('success' in response.data && response.data['success']) {
 					setTimeout(() => {
@@ -130,7 +130,7 @@ export default {
 			axios({
 				method: 'GET',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/state/${state}/`,
-				headers: {'auth': this.$store.state.loggedInUser['token']}
+				headers: {'auth': localStorage.getItem('apiToken')}
 			}).then(response => {
 				if ('state' in response.data) {
 					if (response.data['state'] === 4) {
