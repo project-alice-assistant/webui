@@ -91,7 +91,8 @@ export default {
 						h: 50,
 						z: 10,
 						r: 0,
-						t: this.myHome.activeConstructionTile
+						t: this.myHome.activeConstructionTile,
+						b: ''
 					}
 				}
 
@@ -173,6 +174,11 @@ export default {
 		},
 		setPosition: function (target) {
 			if (this.targetParentLocation !== 0 && this.data.parentLocation === 0) {
+				for (const location of this.myHome.locations.entries()) {
+					// Prevent cyclic nesting, parent in child
+					if (location.parentLocation === this.data.id) return
+				}
+
 				const droppedIn = document.querySelector(`#loc_${this.targetParentLocation}`)
 				this.myHome.locations[this.data.id].parentLocation = this.targetParentLocation
 				this.myHome.locations[this.data.id].settings['x'] = parseInt(target.style.left.substring(-2)) - parseInt(droppedIn.style.left.substring(-2))

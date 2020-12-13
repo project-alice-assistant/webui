@@ -6,6 +6,7 @@ export default class MoveableItem {
 		this.controller = controller
 		this.moveable = new Moveable()
 		this.rotationDelta = 0
+		this.altDown = false
 
 		let self = this
 		document.addEventListener('keyup', function (event) {
@@ -18,6 +19,7 @@ export default class MoveableItem {
 				try {
 					self.moveable.resizable = true
 					self.moveable.roundable = false
+					self.altDown = false
 				} catch {
 				}
 			}
@@ -33,6 +35,7 @@ export default class MoveableItem {
 				try {
 					self.moveable.resizable = false
 					self.moveable.roundable = true
+					self.altDown = true
 				} catch {
 				}
 			}
@@ -40,6 +43,7 @@ export default class MoveableItem {
 	}
 
 	destroyMoveable() {
+		if (this.altDown) return
 		try {
 			this.moveable.destroy()
 		} catch {
@@ -53,6 +57,10 @@ export default class MoveableItem {
 		style += `height:${obj['settings']['h']}px;`
 		style += `transform:rotate(${obj['settings']['r']}deg);`
 		style += background
+
+		if (obj['settings'].hasOwnProperty('b')) {
+			style += `border-radius:${obj['settings']['b']}`
+		}
 
 		return style
 	}
@@ -156,13 +164,23 @@ export default class MoveableItem {
 			}
 		})
 
-		this.moveable.on('roundStart', e => {
-
-		}).on('round', e => {
-			e.target.style.borderRadius = e.borderRadius;
-		}).on('roundEnd', e => {
-			console.log(e);
-		});
+		this.moveable.on('round', el => {
+			try {
+				this.moveable.props.handleBorderRadius(el.target)
+			} catch {
+			} finally {
+				this.handleBorderRadius(el)
+			}
+		}).on('roundEnd', el => {
+			document.stopPropagation()
+			try {
+				this.moveable.props.setBorderRadius(el)
+			} catch {
+			} finally {
+				this.setBorderRadius(el)
+				this.save()
+			}
+		})
 	}
 
 	setBoundaries(element, offset) {
@@ -223,6 +241,11 @@ export default class MoveableItem {
 		this.rotationDelta = 0
 	}
 
+	setBorderRadius(el) {
+		const item = this.getItem(el.target)
+		item.settings['b'] = el.target.style.border - radius
+	}
+
 	handleResize(target, width, height, delta, direction) {
 		if (direction[0] === -1) {
 			let posX = parseInt(target.style.left.slice(0, -2)) - delta[0]
@@ -239,5 +262,9 @@ export default class MoveableItem {
 	handleRotate(target, dist, transform) {
 		this.rotationDelta = dist
 		target.style.transform = transform
+	}
+
+	handleBorderRadius(el) {
+		el.target.style.borderRadius = el.borderRadius
 	}
 }

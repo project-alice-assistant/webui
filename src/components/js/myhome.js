@@ -85,6 +85,7 @@ export default {
 				self.placingFurniture = false
 				self.deletingLocations = false
 				self.settingLocations = false
+				self.moveableItem.destroyMoveable()
 			}
 		})
 
@@ -137,7 +138,6 @@ export default {
 				this.locations = response.data.data.locations
 				this.constructions = response.data.data.constructions
 				this.furnitures = response.data.data.furnitures
-				console.log(this.locations)
 			}
 		})
 	},
