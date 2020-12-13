@@ -14,7 +14,7 @@ export default class MoveableItem {
 					self.moveable.snapThreshold = 15
 				} catch {
 				}
-			} else if (event.key === 'Shift') {
+			} else if (event.key === 'Alt') {
 				try {
 					self.moveable.resizable = true
 					self.moveable.roundable = false
@@ -29,7 +29,7 @@ export default class MoveableItem {
 					self.moveable.snapThreshold = 1
 				} catch {
 				}
-			} else if (event.key === 'Shift') {
+			} else if (event.key === 'Alt') {
 				try {
 					self.moveable.resizable = false
 					self.moveable.roundable = true
@@ -77,7 +77,7 @@ export default class MoveableItem {
 			resizable: true,
 			rotatable: true,
 			snappable: true,
-			roundable: true,
+			roundable: false,
 			roundClickable: false,
 			minRoundControls: [8, 8],
 			isDisplaySnapDigit: true,
