@@ -38,6 +38,7 @@ export default {
 			deletingLocations: false,
 			settingLocations: false,
 			placingFurniture: false,
+			placingConstructions: false,
 			newLocationName: '',
 			locationsEditMode: false,
 			devicesEditMode: false,
@@ -46,8 +47,10 @@ export default {
 			furnitures: {},
 			floorTiles: [],
 			furnitureTiles: [],
+			constructionTiles: [],
 			activeFloorTile: '',
 			activeFurnitureTile: '',
+			activeConstructionTile: '',
 			zoomLevel: 1.0,
 			areaSelectorX: 0,
 			areaSelectorY: 0,
@@ -74,6 +77,14 @@ export default {
 				}
 			} else if (event.key === 'Escape') {
 				self.addingLocation = false
+				self.activeConstructionTile = ''
+				self.activeFurnitureTile = ''
+				self.activeFloorTile = ''
+				self.paintingFloors = false
+				self.placingConstructions = false
+				self.placingFurniture = false
+				self.deletingLocations = false
+				self.settingLocations = false
 			}
 		})
 
@@ -109,6 +120,16 @@ export default {
 
 		axios({
 			method: 'get',
+			url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/constructions/tiles/`,
+			headers: {'auth': localStorage.getItem('apiToken')}
+		}).then(response => {
+			if ('data' in response.data) {
+				this.constructionTiles = response.data.data
+			}
+		})
+
+		axios({
+			method: 'get',
 			url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/`,
 			headers: {'auth': localStorage.getItem('apiToken')}
 		}).then(response => {
@@ -116,6 +137,7 @@ export default {
 				this.locations = response.data.data.locations
 				this.constructions = response.data.data.constructions
 				this.furnitures = response.data.data.furnitures
+				console.log(this.locations)
 			}
 		})
 	},
@@ -153,6 +175,7 @@ export default {
 			this.deletingLocations = false
 			this.settingLocations = false
 			this.placingFurniture = false
+			this.placingConstructions = false
 		},
 		togglePaintingMode: function () {
 			this.paintingFloors = !this.paintingFloors
@@ -161,6 +184,7 @@ export default {
 			this.deletingLocations = false
 			this.settingLocations = false
 			this.placingFurniture = false
+			this.placingConstructions = false
 		},
 		toggleLocationSettings: function () {
 			this.settingLocations = !this.settingLocations
@@ -168,6 +192,7 @@ export default {
 			this.addingLocation = false
 			this.deletingLocations = false
 			this.placingFurniture = false
+			this.placingConstructions = false
 			this.paintingFloors = false
 		},
 		toggleFurnitureMode: function () {
@@ -177,6 +202,16 @@ export default {
 			this.addingLocation = false
 			this.deletingLocations = false
 			this.paintingFloors = false
+			this.placingConstructions = false
+		},
+		toggleConstructionsMode: function () {
+			this.placingConstructions = !this.placingConstructions
+			this.settingLocations = false
+			this.moveableItem.destroyMoveable()
+			this.addingLocation = false
+			this.deletingLocations = false
+			this.paintingFloors = false
+			this.placingFurniture = false
 		},
 		floorPlanClick: function () {
 			this.moveableItem.destroyMoveable()
@@ -188,28 +223,7 @@ export default {
 			this.addingLocation = false
 			this.settingLocations = false
 			this.placingFurniture = false
-		},
-		deleteLocation: function (locId) {
-			axios({
-				method: 'delete',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/${locId}/`,
-				headers: {'auth': localStorage.getItem('apiToken')}
-			}).then(response => {
-				if ('success' in response.data && response.data.success) {
-					this.$delete(this.locations, locId)
-				}
-			})
-		},
-		deleteFurniture: function (furId) {
-			axios({
-				method: 'delete',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/furniture/${furId}/`,
-				headers: {'auth': localStorage.getItem('apiToken')}
-			}).then(response => {
-				if ('success' in response.data && response.data.success) {
-					this.$delete(this.furnitures, furId)
-				}
-			})
+			this.placingConstructions = false
 		},
 		addLocationDialog: function () {
 			if (this.addingLocation) return
@@ -218,6 +232,7 @@ export default {
 			this.deletingLocations = false
 			this.settingLocations = false
 			this.placingFurniture = false
+			this.placingConstructions = false
 
 			let self = this
 			this.$dialog

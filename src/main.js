@@ -22,6 +22,7 @@ import Tabs from './components/views/tabs'
 import ReactiveIcon from './components/views/reactiveIcon'
 import Location from './components/views/location'
 import Furniture from './components/views/furniture'
+import Construction from './components/views/construction'
 
 import 'vuejs-dialog/dist/vuejs-dialog.min.css'
 import 'vue-tour/dist/vue-tour.css'
@@ -38,7 +39,7 @@ import './components/css/overrides/vuemovable.css'
 import faIconOption from './components/views/fontawesomePromptDialog'
 import widgetOption from './components/views/widgetOptionsDialog'
 import skillSettings from './components/views/skillSettingsDialog'
-import dialogView from "./components/js/dialogView";
+import dialogView from './components/js/dialogView';
 
 Vue.config.productionTip = false
 
@@ -61,6 +62,7 @@ Vue.component('reactive-icon', ReactiveIcon)
 Vue.component('location', Location)
 Vue.component('dialogView', dialogView)
 Vue.component('furniture', Furniture)
+Vue.component('construction', Construction)
 
 Vue.directive('fit2box', Fit2Box)
 

@@ -10,7 +10,8 @@
 				 aria-hidden="true" class="fas fa-cogs fa-2x fa-fw" @click="toggleLocationSettings"/>
 			<i v-tooltip="$t('tooltips.paintFloors')" :class="{yellow: paintingFloors}"
 				 aria-hidden="true" class="fas fa-paint-roller fa-2x fa-fw clickable" @click="togglePaintingMode"/>
-			<i v-tooltip="$t('tooltips.buildMode')" aria-hidden="true" class="fas fa-hard-hat fa-2x fa-fw clickable"/>
+			<i v-tooltip="$t('tooltips.buildMode')" :class="{clickable: !placingConstructions, yellow: placingConstructions}"
+				 aria-hidden="true" class="fas fa-hard-hat fa-2x fa-fw clickable" @click="toggleConstructionsMode"/>
 			<i v-tooltip="$t('tooltips.manageFurniture')" :class="{yellow: placingFurniture}"
 				 aria-hidden="true" class="fas fa-couch fa-2x fa-fw clickable" @click="toggleFurnitureMode"/>
 		</div>
@@ -34,6 +35,17 @@
 				alt="unknown"
 				class="clickable"
 				@click="activeFurnitureTile === furnitureId ? activeFurnitureTile = '' : activeFurnitureTile = furnitureId"
+			/>
+		</div>
+		<div v-if="locationsEditMode && placingConstructions" class="tools sideTools placeConstructions">
+			<img
+				v-for="conId in constructionTiles"
+				:key="conId"
+				:class="{selected: conId === activeConstructionTile}"
+				:src="`http://${$store.state.settings['aliceIp']}:${$store.state.settings['apiPort']}/api/v1.0.1/myHome/constructions/${conId}.png`"
+				alt="unknown"
+				class="clickable"
+				@click="activeConstructionTile === conId ? activeConstructionTile = '' : activeConstructionTile = conId"
 			/>
 		</div>
 		<div :class="{fullscreen: $store.state.fullScreen, editMode: locationsEditMode}" class="myHomeEditor">
@@ -75,6 +87,7 @@
 					:data="location"
 					:locations="locations"
 					:furnitures="furnitures"
+					:constructions="constructions"
 					:myHome="me"
 				/>
 			</div>

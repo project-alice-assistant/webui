@@ -14,6 +14,12 @@ export default class MoveableItem {
 					self.moveable.snapThreshold = 15
 				} catch {
 				}
+			} else if (event.key === 'Shift') {
+				try {
+					self.moveable.resizable = true
+					self.moveable.roundable = false
+				} catch {
+				}
 			}
 		})
 
@@ -21,6 +27,12 @@ export default class MoveableItem {
 			if (event.key === 'Control') {
 				try {
 					self.moveable.snapThreshold = 1
+				} catch {
+				}
+			} else if (event.key === 'Shift') {
+				try {
+					self.moveable.resizable = false
+					self.moveable.roundable = true
 				} catch {
 				}
 			}
@@ -65,6 +77,9 @@ export default class MoveableItem {
 			resizable: true,
 			rotatable: true,
 			snappable: true,
+			roundable: true,
+			roundClickable: false,
+			minRoundControls: [8, 8],
 			isDisplaySnapDigit: true,
 			snapCenter: true,
 			snapGap: false,
@@ -131,15 +146,23 @@ export default class MoveableItem {
 			} finally {
 				this.handleRotate(target, dist, transform)
 			}
-		}).on('rotateEnd', ({}) => {
+		}).on('rotateEnd', ({target}) => {
 			try {
-				this.moveable.props.setRotation()
+				this.moveable.props.setRotation(target)
 			} catch {
 			} finally {
-				this.setRotation()
+				this.setRotation(target)
 				this.save()
 			}
 		})
+
+		this.moveable.on('roundStart', e => {
+
+		}).on('round', e => {
+			e.target.style.borderRadius = e.borderRadius;
+		}).on('roundEnd', e => {
+			console.log(e);
+		});
 	}
 
 	setBoundaries(element, offset) {
@@ -190,7 +213,7 @@ export default class MoveableItem {
 		item.settings['h'] = parseInt(target.style.height.substring(-2))
 	}
 
-	setRotation() {
+	setRotation(target) {
 		const item = this.getItem(target)
 		if (item.settings['r'] === 0) {
 			item.settings['r'] = this.rotationDelta

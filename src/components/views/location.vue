@@ -21,8 +21,15 @@
 			v-for="fur in furnitures"
 			v-if="fur.parentLocation === data.id"
 			:key="`fur_${fur.id}`"
-			:class="{clickable: myHome.locationsEditMode && !myHome.addingLocation && !myHome.paintingFloors}"
 			:data="fur"
+			:location="data"
+			:myHome="myHome"
+		/>
+		<construction
+			v-for="con in constructions"
+			v-if="con.parentLocation === data.id"
+			:key="`con_${con.id}`"
+			:data="con"
 			:location="data"
 			:myHome="myHome"
 		/>

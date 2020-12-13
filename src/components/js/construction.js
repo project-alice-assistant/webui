@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export default {
-	name: 'furniture',
+	name: 'construction',
 	data: function () {
 		return {
 			rotationDelta: 0
@@ -16,7 +16,7 @@ export default {
 		computeCustomStyle: function () {
 			return this.myHome.moveableItem.computeCustomStyle(
 				this.data,
-				`background: url('http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/furniture/${this.data.settings['t'] || 'deco-1'}.png') no-repeat; background-size: 100% 100%;`
+				`background: url('http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/constructions/${this.data.settings['t'] || 'construction-200'}.png') no-repeat; background-size: 100% 100%;`
 			)
 		},
 		save: function () {
@@ -28,7 +28,7 @@ export default {
 
 			axios({
 				method: 'patch',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/furniture/${this.data.id}/`,
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/constructions/${this.data.id}/`,
 				data: data,
 				headers: {
 					'auth': localStorage.getItem('apiToken'),
@@ -39,27 +39,27 @@ export default {
 		handleClick: function (event) {
 			event.stopPropagation()
 			this.myHome.removeDroppable()
-			this.myHome.activeFurnitureTile = ''
+			this.myHome.activeConstructionTile = ''
 
-			if (this.myHome.placingFurniture) {
+			if (this.myHome.placingConstructions) {
 				this.myHome.setMoveable(event.target, this)
 				this.myHome.moveableItem.setBoundaries(this.$el, 0)
-				const furnitures = Array.from(document.querySelectorAll('.furniture')).filter((furniture, index, array) => {
-					const furId = parseInt(furniture.id.substring(4))
-					return !(furId === this.data.id);
+				const constructions = Array.from(document.querySelectorAll('.construction')).filter((construction, index, array) => {
+					const conId = parseInt(construction.id.substring(4))
+					return !(conId === this.data.id);
 				})
-				this.myHome.moveableItem.setGuidelines(furnitures)
+				this.myHome.moveableItem.setGuidelines(constructions)
 			}
 		},
 		deleteMe: function (event) {
 			event.stopPropagation()
 			axios({
 				method: 'delete',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/furniture/${this.data.id}/`,
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/constructions/${this.data.id}/`,
 				headers: {'auth': localStorage.getItem('apiToken')}
 			}).then(response => {
 				if ('success' in response.data && response.data.success) {
-					this.myHome.$delete(this.myHome.furnitures, this.data.id)
+					this.myHome.$delete(this.myHome.constructions, this.data.id)
 				}
 			})
 		}

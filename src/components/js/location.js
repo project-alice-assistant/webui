@@ -12,6 +12,7 @@ export default {
 		'data',
 		'locations',
 		'furnitures',
+		'constructions',
 		'myHome'
 	],
 	methods: {
@@ -76,7 +77,36 @@ export default {
 				}).then(response => {
 					if ('furniture' in response.data) {
 						let furniture = response.data['furniture']
-						this.myHome.$set(this.myHome.furnitures, furniture.id, furniture)
+						this.myHome.$set(this.furnitures, furniture.id, furniture)
+					}
+				})
+			} else if (this.myHome.placingConstructions) {
+				if (this.myHome.activeConstructionTile === '') return
+				const data = {
+					parentLocation: this.data.id,
+					settings: {
+						x: event.layerX,
+						y: event.layerY,
+						w: 50,
+						h: 50,
+						z: 10,
+						r: 0,
+						t: this.myHome.activeConstructionTile
+					}
+				}
+
+				axios({
+					method: 'put',
+					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/constructions/`,
+					data: data,
+					headers: {
+						'auth': localStorage.getItem('apiToken'),
+						'content-type': 'application/json'
+					}
+				}).then(response => {
+					if ('construction' in response.data) {
+						let construction = response.data['construction']
+						this.myHome.$set(this.constructions, construction.id, construction)
 					}
 				})
 			} else if (!this.myHome.settingLocations && !this.myHome.deletingLocations && !this.myHome.paintingFloors && this.myHome.locationsEditMode) {
@@ -114,7 +144,15 @@ export default {
 		},
 		deleteMe: function (event) {
 			event.stopPropagation()
-			this.myHome.deleteLocation(this.data.id)
+			axios({
+				method: 'delete',
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/${this.data.id}/`,
+				headers: {'auth': localStorage.getItem('apiToken')}
+			}).then(response => {
+				if ('success' in response.data && response.data.success) {
+					this.myHome.$delete(this.locations, this.data.id)
+				}
+			})
 		},
 		handleDrag: function (target, left, top, clientX, clientY) {
 			const elementsBelow = document.elementsFromPoint(clientX, clientY)
@@ -136,9 +174,9 @@ export default {
 		setPosition: function (target) {
 			if (this.targetParentLocation !== 0 && this.data.parentLocation === 0) {
 				const droppedIn = document.querySelector(`#loc_${this.targetParentLocation}`)
-				this.datas[this.data.id].parentLocation = this.targetParentLocation
-				this.datas[this.data.id].settings['x'] = parseInt(target.style.left.substring(-2)) - parseInt(droppedIn.style.left.substring(-2))
-				this.datas[this.data.id].settings['y'] = parseInt(target.style.top.substring(-2)) - parseInt(droppedIn.style.top.substring(-2))
+				this.myHome.locations[this.data.id].parentLocation = this.targetParentLocation
+				this.myHome.locations[this.data.id].settings['x'] = parseInt(target.style.left.substring(-2)) - parseInt(droppedIn.style.left.substring(-2))
+				this.myHome.locations[this.data.id].settings['y'] = parseInt(target.style.top.substring(-2)) - parseInt(droppedIn.style.top.substring(-2))
 				this.targetParentLocation = 0
 			}
 		}

@@ -135,6 +135,17 @@
 	top: 375px;
 }
 
+.placeConstructions {
+	background-color: var(--windowBG);
+	right: 61px;
+	top: 325px;
+}
+
+.placeConstructions:hover {
+	max-width: 300px;
+	width: 300px;
+}
+
 .selected {
 	border: 2px solid var(--hover);
 }
