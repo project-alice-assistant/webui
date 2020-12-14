@@ -173,17 +173,21 @@ export default {
 			}
 		},
 		setPosition: function (target) {
-			if (this.targetParentLocation !== 0 && this.data.parentLocation === 0) {
-				for (const location of this.myHome.locations.entries()) {
-					// Prevent cyclic nesting, parent in child
-					if (location.parentLocation === this.data.id) return
-				}
+			try {
+				if (this.targetParentLocation !== 0 && this.data.parentLocation === 0) {
+					for (const location of Object.entries(this.myHome.locations)) {
+						// Prevent cyclic nesting, parent in child
+						if (location.parentLocation === this.data.id) return
+					}
 
-				const droppedIn = document.querySelector(`#loc_${this.targetParentLocation}`)
-				this.myHome.locations[this.data.id].parentLocation = this.targetParentLocation
-				this.myHome.locations[this.data.id].settings['x'] = parseInt(target.style.left.substring(-2)) - parseInt(droppedIn.style.left.substring(-2))
-				this.myHome.locations[this.data.id].settings['y'] = parseInt(target.style.top.substring(-2)) - parseInt(droppedIn.style.top.substring(-2))
-				this.targetParentLocation = 0
+					const droppedIn = document.querySelector(`#loc_${this.targetParentLocation}`)
+					this.myHome.locations[this.data.id].parentLocation = this.targetParentLocation
+					this.myHome.locations[this.data.id].settings['x'] = parseInt(target.style.left.substring(-2)) - parseInt(droppedIn.style.left.substring(-2))
+					this.myHome.locations[this.data.id].settings['y'] = parseInt(target.style.top.substring(-2)) - parseInt(droppedIn.style.top.substring(-2))
+					this.targetParentLocation = 0
+				}
+			} catch (e) {
+				console.error(e)
 			}
 		}
 	}
