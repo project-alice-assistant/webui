@@ -174,7 +174,7 @@ export default {
 		},
 		setPosition: function (target) {
 			try {
-				if (this.targetParentLocation !== 0 && this.data.parentLocation === 0) {
+				if (this.targetParentLocation !== 0 && this.data.parentLocation !== this.targetParentLocation) {
 					for (const location of Object.entries(this.myHome.locations)) {
 						// Prevent cyclic nesting, parent in child
 						if (location.parentLocation === this.data.id) return

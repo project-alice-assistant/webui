@@ -1,5 +1,6 @@
 .moveable-line {
 	background: var(--text) !important;
+	height: 5px !important;
 }
 
 .moveable-control {

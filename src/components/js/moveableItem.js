@@ -8,8 +8,17 @@ export default class MoveableItem {
 		this.rotationDelta = 0
 		this.altDown = false
 
+		this.paddingBox = {
+			left: 15,
+			right: 15,
+			top: 15,
+			bottom: 15
+		}
+
 		let self = this
 		document.addEventListener('keyup', function (event) {
+			if (event.repeat) return
+
 			if (event.key === 'Control') {
 				try {
 					self.moveable.snapThreshold = 15
@@ -18,7 +27,9 @@ export default class MoveableItem {
 			} else if (event.key === 'Alt') {
 				try {
 					self.moveable.resizable = true
+					self.moveable.draggable = true
 					self.moveable.roundable = false
+					self.moveable.padding = {}
 					self.altDown = false
 				} catch {
 				}
@@ -26,6 +37,8 @@ export default class MoveableItem {
 		})
 
 		document.addEventListener('keydown', function (event) {
+			if (event.repeat) return
+
 			if (event.key === 'Control') {
 				try {
 					self.moveable.snapThreshold = 1
@@ -34,7 +47,9 @@ export default class MoveableItem {
 			} else if (event.key === 'Alt') {
 				try {
 					self.moveable.resizable = false
+					self.moveable.draggable = false
 					self.moveable.roundable = true
+					self.moveable.padding = self.paddingBox
 					self.altDown = true
 				} catch {
 				}
@@ -86,8 +101,6 @@ export default class MoveableItem {
 			rotatable: true,
 			snappable: true,
 			roundable: false,
-			roundClickable: false,
-			minRoundControls: [8, 8],
 			isDisplaySnapDigit: true,
 			snapCenter: true,
 			snapGap: false,
@@ -172,7 +185,6 @@ export default class MoveableItem {
 				this.handleBorderRadius(el)
 			}
 		}).on('roundEnd', el => {
-			document.stopPropagation()
 			try {
 				this.moveable.props.setBorderRadius(el)
 			} catch {
@@ -243,7 +255,7 @@ export default class MoveableItem {
 
 	setBorderRadius(el) {
 		const item = this.getItem(el.target)
-		item.settings['b'] = el.target.style.border - radius
+		item.settings['b'] = el.target.style['border-radius']
 	}
 
 	handleResize(target, width, height, delta, direction) {
