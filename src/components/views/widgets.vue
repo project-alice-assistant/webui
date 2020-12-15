@@ -47,7 +47,7 @@
 					</div>
 					<p v-html="widget.html"/>
 					<script type="application/javascript">
-						{{ widget.js }}
+						<!--{{ widget.js }}-->
 					</script>
 					<div class="widgetTool optioner" v-if="settings" @click="openWidgetSettings(widget)">
 						<i class="fas fa-cogs clickable" aria-hidden="true"/>

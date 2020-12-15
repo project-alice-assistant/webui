@@ -14,6 +14,7 @@ import VueDraggableResizable from 'vue-draggable-resizable'
 import VueSimpleMarkdown from 'vue-simple-markdown'
 import VueI18n from 'vue-i18n'
 import Fit2Box from 'vue-fit2box'
+import LoadScript from 'vue-plugin-load-script'
 
 import Skill from './components/views/skill'
 import StoreSkill from './components/views/storeSkill'
@@ -51,6 +52,7 @@ Vue.use(VueTour)
 Vue.use(VueTooltip)
 Vue.use(VueSimpleMarkdown)
 Vue.use(VueI18n)
+Vue.use(LoadScript)
 
 Vue.component('VueToggles', VueToggles)
 Vue.component('vue-draggable-resizable', VueDraggableResizable)

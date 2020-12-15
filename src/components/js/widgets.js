@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {v4 as uuidv4} from 'uuid'
 
 export default {
 	name: 'pa-widgets',
@@ -65,7 +66,8 @@ export default {
 			activePageId: 1,
 			selectedWidget: -1,
 			dragAndResizeEnabled: false,
-			hasTitle: true
+			hasTitle: true,
+			jsImports: ''
 		}
 	},
 	created: function() {
@@ -115,7 +117,28 @@ export default {
 				headers: {'auth': localStorage.getItem('apiToken')}
 			}).then(response => {
 				if ('widgets' in response.data) {
-					this.widgetInstances = response.data.widgets
+					let widgets = response.data.widgets
+
+					for (const widget of Object.values(widgets)) {
+						const uuid = uuidv4()
+						widget.html = widget.html.replace(/data-ref="(.*?)"/gi, `data-ref="$1_${uuid}"`)
+
+						const src = `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/resources/${widget.skill}/${widget.name}`
+						this.$loadScript(`${src}.js`).then()
+
+						let inject = `<script>new ${widget.skill}_${widget.name}('${uuid}')</script>`
+
+						let css = document.querySelector(`link[href="${src}.css"]`)
+						if (!css) {
+							css = document.createElement('link')
+							css.href = src
+							document.head.appendChild(css)
+						}
+
+						widget.html = inject + widget.html
+					}
+
+					this.widgetInstances = widgets
 				}
 			})
 		},
