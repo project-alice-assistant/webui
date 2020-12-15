@@ -1,15 +1,16 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import skills from '../components/views/skills'
-import scenarios from '../components/views/scenarios'
-import login from '../components/views/login'
-import admin from '../components/views/admin'
-import connect from '../components/views/connect'
-import syslog from '../components/views/syslog';
-import alicewatch from '../components/views/alicewatch';
-import devmode from '../components/views/devmode';
-import myhome from '../components/views/myhome';
-import dialogView from "../components/views/dialogView";
+import skills from '@/components/views/skills'
+import scenarios from '@/components/views/scenarios'
+import login from '@/components/views/login'
+import admin from '@/components/views/admin'
+import connect from '@/components/views/connect'
+import syslog from '@/components/views/syslog'
+import alicewatch from '@/components/views/alicewatch'
+import devmode from '@/components/views/devmode'
+import myhome from '@/components/views/myhome'
+import dialogView from '@/components/views/dialogView'
+import widgets from '@/components/views/widgets'
 
 Vue.use(VueRouter)
 
@@ -86,9 +87,16 @@ const routes = [
 		}
 	},
 	{
+		path: '/widgets',
+		component: widgets,
+		meta: {
+			title: 'nav.widgets'
+		}
+	},
+	{
 		path: '*',
 		name: 'Home',
-		component: myhome,
+		component: widgets,
 		meta: {
 			title: 'nav.widgets'
 		}
