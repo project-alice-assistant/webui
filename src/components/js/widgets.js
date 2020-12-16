@@ -124,20 +124,11 @@ export default {
 						widget.html = widget.html.replace(/data-ref="(.*?)"/gi, `data-ref="$1_${uuid}"`)
 
 						const src = `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/resources/${widget.skill}/${widget.name}`
-						this.$loadScript(`${src}.js`).then()
-
-						let inject = `<script>new ${widget.skill}_${widget.name}('${uuid}')</script>`
-
-						let css = document.querySelector(`link[href="${src}.css"]`)
-						if (!css) {
-							css = document.createElement('link')
-							css.href = src
-							document.head.appendChild(css)
-						}
-
-						widget.html = inject + widget.html
+						this.$loadScript(`${src}.js`).then(() => {
+							let cls = eval(`${widget.skill}_${widget.name}`)
+							new cls(uuid)
+						})
 					}
-
 					this.widgetInstances = widgets
 				}
 			})
@@ -157,7 +148,15 @@ export default {
 				}
 			}).then(response => {
 				if ('widget' in response.data) {
-					this.$set(this.widgetInstances, response.data['widget']['id'], response.data['widget'])
+					const uuid = uuidv4()
+					let widget = response.data.widget
+					widget.html = widget.html.replace(/data-ref="(.*?)"/gi, `data-ref="$1_${uuid}"`)
+					this.$set(this.widgetInstances, response.data['widget']['id'], widget)
+					const src = `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/resources/${widget.skill}/${widget.name}`
+					this.$loadScript(`${src}.js`).then(() => {
+						let cls = eval(`${widget.skill}_${widget.name}`)
+						new cls(uuid)
+					})
 				}
 			})
 		},
