@@ -189,6 +189,12 @@ export default {
 			} catch (e) {
 				console.error(e)
 			}
+		},
+		moveZUp() {
+			this.myHome.moveZUp(this)
+		},
+		moveZDown() {
+			this.myHome.moveZDown(this)
 		}
 	}
 }

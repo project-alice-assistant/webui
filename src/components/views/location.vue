@@ -43,8 +43,8 @@
 			<i aria-hidden="true" class="far fa-trash-alt clickable"/>
 		</div>
 		<div v-if="myHome.settingLocations" class="widgetTool zindexer">
-			<i aria-hidden="true" class="fas fa-level-up-alt clickable"/>
-			<i aria-hidden="true" class="fas fa-level-down-alt clickable"/>
+			<i aria-hidden="true" class="fas fa-level-up-alt clickable" @click="moveZUp"/>
+			<i aria-hidden="true" class="fas fa-level-down-alt clickable" @click="moveZDown"/>
 		</div>
 	</div>
 </template>

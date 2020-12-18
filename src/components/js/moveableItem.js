@@ -24,16 +24,16 @@ export default class MoveableItem {
 					self.moveable.snapThreshold = 15
 				} catch {
 				}
-			} else if (event.key === 'Alt') {
-				try {
-					self.moveable.resizable = true
-					self.moveable.draggable = true
-					self.moveable.roundable = false
-					self.moveable.padding = {}
-					self.altDown = false
-				} catch {
-				}
 			}
+			// } else if (event.key === 'Alt') {
+			// 	try {
+			// 		self.moveable.resizable = true
+			// 		self.moveable.draggable = true
+			// 		self.moveable.roundable = false
+			// 		self.moveable.padding = {}
+			// 		self.altDown = false
+			// 	} catch {
+			// 	}
 		})
 
 		document.addEventListener('keydown', function (event) {
@@ -44,16 +44,17 @@ export default class MoveableItem {
 					self.moveable.snapThreshold = 1
 				} catch {
 				}
-			} else if (event.key === 'Alt') {
-				try {
-					self.moveable.resizable = false
-					self.moveable.draggable = false
-					self.moveable.roundable = true
-					self.moveable.padding = self.paddingBox
-					self.altDown = true
-				} catch {
-				}
 			}
+			// } else if (event.key === 'Alt') {
+			// 	try {
+			// 		self.moveable.resizable = false
+			// 		self.moveable.draggable = false
+			// 		self.moveable.roundable = true
+			// 		self.moveable.padding = self.paddingBox
+			// 		self.altDown = true
+			// 	} catch {
+			// 	}
+			// }
 		})
 	}
 
@@ -70,6 +71,7 @@ export default class MoveableItem {
 		style += `top:${obj['settings']['y']}px;`
 		style += `width:${obj['settings']['w']}px;`
 		style += `height:${obj['settings']['h']}px;`
+		style += `z-index:${obj['settings']['z']};`
 		style += `transform:rotate(${obj['settings']['r']}deg);`
 		style += background
 

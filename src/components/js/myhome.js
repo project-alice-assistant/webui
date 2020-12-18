@@ -312,8 +312,7 @@ export default {
 						x: this.areaSelectorStartX,
 						y: this.areaSelectorStartY,
 						w: this.areaSelectorW || 150,
-						h: this.areaSelectorH || 150,
-						z: 0
+						h: this.areaSelectorH || 150
 					}
 				}
 
@@ -345,6 +344,67 @@ export default {
 				event.target.classList.remove('grabbed')
 				this.draggingPlan = false
 			}
+		},
+		moveZUp(location) {
+			const data = location.data
+			const myIndex = data.settings['z']
+			const myNewIndex = myIndex + 1;
+
+			if (myNewIndex > this.locations.length) {
+				return
+			}
+
+			for (const loc of Object.values(this.locations)) {
+				if (loc.settings['z'] === myNewIndex) {
+					loc.settings['z'] -= 1
+					data.settings['z'] = myNewIndex
+					this.saveLocationSettings(loc)
+					this.saveLocationSettings(location)
+					return
+				}
+			}
+		},
+		moveZDown(location) {
+			const data = location.data
+			const myIndex = data.settings['z']
+			const myNewIndex = myIndex - 1;
+
+			if (data.parentLocation > 0) {
+				const parent = document.querySelector(`#loc_${data.parentLocation}`)
+				if (myNewIndex <= parseInt(parent.style['z-index'])) {
+					return
+				}
+			}
+
+			if (myNewIndex < 0) {
+				return
+			}
+
+			for (const loc of Object.values(this.locations)) {
+				if (loc.settings['z'] === myNewIndex) {
+					loc.settings['z'] += 1
+					data.settings['z'] = myNewIndex
+					this.saveLocationSettings(loc)
+					this.saveLocationSettings(data)
+					return
+				}
+			}
+		},
+		saveLocationSettings(location) {
+			const data = {
+				id: location.id,
+				settings: location.settings
+			}
+
+			axios({
+				method: 'patch',
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/${data.id}/`,
+				data: data,
+				headers: {
+					'auth': localStorage.getItem('apiToken'),
+					'content-type': 'application/json'
+				}
+			}).then()
 		}
 	},
 	watch: {
