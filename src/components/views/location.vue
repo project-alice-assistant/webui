@@ -39,6 +39,9 @@
 			class="locationName"
 			@click="rename"
 		/>
+		<div v-if="myHome.settingLocations" class="widgetTool optioner" @click="openSettings">
+			<i aria-hidden="true" class="fas fa-cogs clickable"/>
+		</div>
 		<div v-if="myHome.deletingLocations" class="widgetTool deleter" @click="deleteMe">
 			<i aria-hidden="true" class="far fa-trash-alt clickable"/>
 		</div>

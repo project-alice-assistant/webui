@@ -40,6 +40,7 @@ import './components/css/overrides/vuemovable.css'
 import faIconOption from './components/views/fontawesomePromptDialog'
 import widgetOption from './components/views/widgetOptionsDialog'
 import skillSettings from './components/views/skillSettingsDialog'
+import locationSettings from './components/views/locationOptionsDialog'
 import dialogView from './components/js/dialogView';
 
 Vue.config.productionTip = false
@@ -71,6 +72,7 @@ Vue.directive('fit2box', Fit2Box)
 Vue.dialog.registerComponent('fontawesomePromptDialog', faIconOption)
 Vue.dialog.registerComponent('widgetOptionsPromptDialog', widgetOption)
 Vue.dialog.registerComponent('skillSettingsPromptDialog', skillSettings)
+Vue.dialog.registerComponent('locationSettingsPromptDialog', locationSettings)
 
 // Jquery use ONLY FOR WIDGETS, DO NOT USE JQUERY FOR __ANYTHING ELSE__
 global.jQuery = require('jquery')

@@ -405,6 +405,16 @@ export default {
 					'content-type': 'application/json'
 				}
 			}).then()
+		},
+		checkIfSynonymIsFree(synonym) {
+			for (const location of Object.values(this.locations)) {
+				if (location.name.toLowerCase() === synonym.toLowerCase()) return false
+
+				for (const locationSynonym of location.synonyms) {
+					if (locationSynonym.toLowerCase() === synonym.toLowerCase()) return false
+				}
+			}
+			return true
 		}
 	},
 	watch: {

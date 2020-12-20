@@ -77,7 +77,7 @@ export default {
 				}).then(response => {
 					if ('furniture' in response.data) {
 						let furniture = response.data['furniture']
-						this.myHome.$set(this.furnitures, furniture.id, furniture)
+						this.myHome.$set(this.myHome.furnitures, furniture.id, furniture)
 					}
 				})
 			} else if (this.myHome.placingConstructions) {
@@ -89,7 +89,6 @@ export default {
 						y: event.layerY,
 						w: 50,
 						h: 50,
-						z: 10,
 						r: 0,
 						t: this.myHome.activeConstructionTile,
 						b: ''
@@ -107,7 +106,8 @@ export default {
 				}).then(response => {
 					if ('construction' in response.data) {
 						let construction = response.data['construction']
-						this.myHome.$set(this.constructions, construction.id, construction)
+						console.log(construction)
+						this.myHome.$set(this.myHome.constructions, construction.id, construction)
 					}
 				})
 			} else if (!this.myHome.settingLocations && !this.myHome.deletingLocations && !this.myHome.paintingFloors && this.myHome.locationsEditMode) {
@@ -195,6 +195,21 @@ export default {
 		},
 		moveZDown() {
 			this.myHome.moveZDown(this)
+		},
+		openSettings() {
+			let self = this
+			this.settings = false
+
+			const message = {}
+			const options = {
+				view: 'locationSettingsPromptDialog',
+				data: this.data,
+				parent: this
+			}
+
+			this.$dialog.prompt(message, options).then(dialogue => {
+				self.save()
+			}).catch()
 		}
 	}
 }
