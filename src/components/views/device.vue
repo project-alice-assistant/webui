@@ -2,13 +2,14 @@
 	<div
 		:id="`dev_${data.uid}`"
 		:ref="data.uid"
-		:class="{
-			clickable: myHome.devicesEditMode
-		}"
 		:style="computeCustomStyle()"
-		class="device"
+		v-tooltip="data.displayName"
 		@click="handleClick"
+		class="device clickable"
 	>
+		<div class="deviceState">
+			<i v-if="!data.connected" aria-hidden="true" class="fas fa-heart-broken red"/>
+		</div>
 		<div v-if="myHome.deletingLocations" class="widgetTool deleter" @click="deleteMe">
 			<i aria-hidden="true" class="far fa-trash-alt clickable"/>
 		</div>

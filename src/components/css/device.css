@@ -9,3 +9,11 @@
 .dragging {
 	z-index: 100;
 }
+
+.deviceState {
+	font-size: 2em;
+	position: absolute;
+	right: 0;
+	text-shadow: 2px 2px 15px var(--accent);
+	top: 0;
+}

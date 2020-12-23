@@ -15,6 +15,16 @@
 			<i v-tooltip="$t('tooltips.manageFurniture')" :class="{yellow: placingFurniture}"
 				 aria-hidden="true" class="fas fa-couch fa-2x fa-fw clickable" @click="toggleFurnitureMode"/>
 		</div>
+		<div v-if="devicesEditMode" class="tools manageLocations">
+			<i v-tooltip="$t('tooltips.addDevice')" :class="{clickable: !addingLocation, yellow: addingLocation}"
+				 aria-hidden="true" class="fas fa-plus-circle fa-2x fa-fw" @click="addLocationDialog"/>
+			<i v-tooltip="$t('tooltips.removeDevice')" :class="{clickable: !deletingLocations, yellow: deletingLocations}"
+				 aria-hidden="true" class="fas fa-trash-alt fa-2x fa-fw" @click="deleteLocations"/>
+			<i v-tooltip="$t('tooltips.settings')" :class="{clickable: !settingLocations, yellow: settingLocations}"
+				 aria-hidden="true" class="fas fa-cogs fa-2x fa-fw" @click="toggleLocationSettings"/>
+			<i v-tooltip="$t('tooltips.linkDevice')" :class="{clickable: !settingLocations, yellow: settingLocations}"
+				 aria-hidden="true" class="fas fa-link fa-2x fa-fw" @click="toggleLocationSettings"/>
+		</div>
 		<div v-if="locationsEditMode && paintingFloors" class="tools sideTools paintFloors">
 			<img
 				alt="unknown"

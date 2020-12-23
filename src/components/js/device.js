@@ -1,11 +1,12 @@
 import axios from 'axios'
 
+// noinspection DuplicatedCode
 export default {
 	name: 'device',
 	data: function () {
 		return {
 			rotationDelta: 0,
-			targetParentLocation: -1
+			targetParentLocation: 0
 		}
 	},
 	props: [
@@ -40,7 +41,7 @@ export default {
 			event.stopPropagation()
 			this.myHome.removeDroppable()
 
-			if (this.myHome.devicesEditMode) {
+			if (this.myHome.devicesEditMode && event.target.classList.contains('device')) {
 				this.myHome.setMoveable(event.target, this)
 				this.myHome.moveableItem.setBoundaries(this.$el, 0)
 				const devices = Array.from(document.querySelectorAll('.device')).filter((device, index, array) => {
@@ -70,6 +71,7 @@ export default {
 		setPosition: function (target) {
 			try {
 				if (this.targetParentLocation !== 0 && this.data.parentLocation !== this.targetParentLocation) {
+					// noinspection DuplicatedCode
 					const droppedIn = document.querySelector(`#loc_${this.targetParentLocation}`)
 					this.myHome.devices[this.data.uid].parentLocation = this.targetParentLocation
 					this.myHome.devices[this.data.uid].settings['x'] = parseInt(target.style.left.substring(-2)) - parseInt(droppedIn.style.left.substring(-2))
