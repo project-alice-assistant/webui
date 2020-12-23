@@ -11,8 +11,9 @@ export default {
 	props: [
 		'data',
 		'locations',
-		'furnitures',
 		'constructions',
+		'furnitures',
+		'devices',
 		'myHome'
 	],
 	methods: {
@@ -207,7 +208,7 @@ export default {
 				parent: this
 			}
 
-			this.$dialog.prompt(message, options).then(dialogue => {
+			this.$dialog.prompt(message, options).then(() => {
 				self.save()
 			}).catch()
 		}

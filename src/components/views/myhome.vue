@@ -88,6 +88,14 @@
 					:locations="locations"
 					:furnitures="furnitures"
 					:constructions="constructions"
+					:devices="devices"
+					:myHome="me"
+				/>
+				<device
+					v-for="dev in devices"
+					v-if="dev.parentLocation === 0"
+					:key="`dev_${dev.uid}`"
+					:data="dev"
 					:myHome="me"
 				/>
 			</div>

@@ -14,7 +14,6 @@
 			v-if="loc.parentLocation === data.id"
 			:key="`loc_${loc.id}`"
 			:data="loc"
-			:locations="locations"
 			:myHome="myHome"
 		/>
 		<furniture
@@ -22,7 +21,6 @@
 			v-if="fur.parentLocation === data.id"
 			:key="`fur_${fur.id}`"
 			:data="fur"
-			:location="data"
 			:myHome="myHome"
 		/>
 		<construction
@@ -30,7 +28,13 @@
 			v-if="con.parentLocation === data.id"
 			:key="`con_${con.id}`"
 			:data="con"
-			:location="data"
+			:myHome="myHome"
+		/>
+		<device
+			v-for="dev in devices"
+			v-if="dev.parentLocation === data.id"
+			:key="`dev_${dev.uid}`"
+			:data="dev"
 			:myHome="myHome"
 		/>
 		<span

@@ -223,6 +223,8 @@ export default class MoveableItem {
 			return this.controller.furnitures[id]
 		} else if (target.classList.contains('construction')) {
 			return this.controller.constructions[id]
+		} else if (target.classList.contains('device')) {
+			return this.controller.devices[target.id.substring(4)]
 		}
 	}
 

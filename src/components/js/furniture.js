@@ -9,7 +9,6 @@ export default {
 	},
 	props: [
 		'data',
-		'location',
 		'myHome'
 	],
 	methods: {

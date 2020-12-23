@@ -45,6 +45,7 @@ export default {
 			locations: {},
 			constructions: {},
 			furnitures: {},
+			devices: {},
 			floorTiles: [],
 			furnitureTiles: [],
 			constructionTiles: [],
@@ -138,6 +139,7 @@ export default {
 				this.locations = response.data.data.locations
 				this.constructions = response.data.data.constructions
 				this.furnitures = response.data.data.furnitures
+				this.devices = response.data.data.devices
 			}
 		})
 	},
@@ -163,6 +165,15 @@ export default {
 		setDevicesEditMode: function () {
 			this.devicesEditMode = true
 			this.locationsEditMode = false
+
+			this.moveableItem.destroyMoveable()
+			this.removeDroppable()
+			this.paintingFloors = false
+			this.addingLocation = false
+			this.deletingLocations = false
+			this.settingLocations = false
+			this.placingFurniture = false
+			this.placingConstructions = false
 		},
 		closeEditor: function () {
 			this.devicesEditMode = false
