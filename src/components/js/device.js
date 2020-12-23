@@ -4,7 +4,8 @@ export default {
 	name: 'device',
 	data: function () {
 		return {
-			rotationDelta: 0
+			rotationDelta: 0,
+			targetParentLocation: -1
 		}
 	},
 	props: [
@@ -43,10 +44,40 @@ export default {
 				this.myHome.setMoveable(event.target, this)
 				this.myHome.moveableItem.setBoundaries(this.$el, 0)
 				const devices = Array.from(document.querySelectorAll('.device')).filter((device, index, array) => {
-					const devId = parseInt(device.id.substring(4))
-					return !(devId === this.data.id);
+					const devId = device.id.substring(4)
+					return !(devId === this.data.uid);
 				})
 				this.myHome.moveableItem.setGuidelines(devices)
+			}
+		},
+		handleDrag: function (target, left, top, clientX, clientY) {
+			const elementsBelow = document.elementsFromPoint(clientX, clientY)
+			for (const el of elementsBelow) {
+				if (el.classList.contains('location')) {
+					const elementId = parseInt(el.id.substring(4))
+					if (el !== this.$el && elementId !== this.data.parentLocation) {
+						this.myHome.removeDroppable()
+						el.classList.add('droppable')
+						this.targetParentLocation = elementId
+						break
+					}
+				} else {
+					this.targetParentLocation = 0
+					this.myHome.removeDroppable()
+				}
+			}
+		},
+		setPosition: function (target) {
+			try {
+				if (this.targetParentLocation !== 0 && this.data.parentLocation !== this.targetParentLocation) {
+					const droppedIn = document.querySelector(`#loc_${this.targetParentLocation}`)
+					this.myHome.devices[this.data.uid].parentLocation = this.targetParentLocation
+					this.myHome.devices[this.data.uid].settings['x'] = parseInt(target.style.left.substring(-2)) - parseInt(droppedIn.style.left.substring(-2))
+					this.myHome.devices[this.data.uid].settings['y'] = parseInt(target.style.top.substring(-2)) - parseInt(droppedIn.style.top.substring(-2))
+					this.targetParentLocation = 0
+				}
+			} catch (e) {
+				console.error(e)
 			}
 		},
 		deleteMe: function (event) {
