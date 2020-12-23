@@ -1,6 +1,6 @@
 .skill {
-	align-items: center;
 	background-color: var(--windowBG);
+	box-sizing: border-box;
 	display: flex;
 	flex-direction: column;
 	height: 200px;
@@ -57,9 +57,9 @@
 }
 
 .skillAuthor {
-	width: 100%;
-	margin: 5px 5px 0 5px;
+	margin: 5px;
 	overflow: hidden;
+	width: 100%;
 }
 
 .skillDescription {
@@ -68,7 +68,7 @@
 	box-sizing: border-box;
 	color: var(--text);
 	font-size: 0.9em;
-	margin-top: 5px;
+	margin: 5px auto auto;
 	max-height: 110px;
 	min-height: 110px;
 	overflow: hidden;
