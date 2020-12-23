@@ -5,21 +5,22 @@
 			<form ref="data" @keypress.enter.prevent>
 				<div class="configLayout">
 					<div class="labels">
-						<label for="skillName">{{$t('labels.skillName')}}</label>
-						<label for="skillSpeakableName">{{$t('labels.skillSpeakableName')}}</label>
-						<label for="skillDescription">{{$t('labels.skillDescription')}}</label>
-						<label for="skillCategory">{{$t('labels.skillCategory')}}</label>
-						<label for="skillLanguages" style="height: 200px;">{{$t('labels.skillLanguages')}}</label>
-						<label for="skillInstructions">{{$t('labels.skillInstructions')}}</label>
-						<label for="skillPipRequirements">{{$t('labels.skillPipRequirements')}}</label>
-						<label for="skillSystemRequirements">{{$t('labels.skillSystemRequirements')}}</label>
-						<label for="skillOnline">{{$t('labels.skillOnline')}}</label>
-						<label for="skillArbitrary">{{$t('labels.skillArbitrary')}}</label>
-						<label for="skillRequiredSkills">{{$t('labels.skillRequiredSkills')}}</label>
-						<label for="skillConflictingSkills">{{$t('labels.skillConflictingSkills')}}</label>
-						<label for="skillRequiredManagers">{{$t('labels.skillRequiredManagers')}}</label>
-						<label for="skillWidgets">{{$t('labels.skillWidgets')}}</label>
-						<label for="skillScenarioNodes">{{$t('labels.skillScenarioNodes')}}</label>
+						<label for="skillName">{{ $t('labels.skillName') }}</label>
+						<label for="skillSpeakableName">{{ $t('labels.skillSpeakableName') }}</label>
+						<label for="skillDescription">{{ $t('labels.skillDescription') }}</label>
+						<label for="skillCategory">{{ $t('labels.skillCategory') }}</label>
+						<label for="skillLanguages"
+									 style="height: 200px; align-items: flex-start">{{ $t('labels.skillLanguages') }}</label>
+						<label for="skillInstructions">{{ $t('labels.skillInstructions') }}</label>
+						<label for="skillPipRequirements">{{ $t('labels.skillPipRequirements') }}</label>
+						<label for="skillSystemRequirements">{{ $t('labels.skillSystemRequirements') }}</label>
+						<label for="skillOnline">{{ $t('labels.skillOnline') }}</label>
+						<label for="skillArbitrary">{{ $t('labels.skillArbitrary') }}</label>
+						<label for="skillRequiredSkills">{{ $t('labels.skillRequiredSkills') }}</label>
+						<label for="skillConflictingSkills">{{ $t('labels.skillConflictingSkills') }}</label>
+						<label for="skillRequiredManagers">{{ $t('labels.skillRequiredManagers') }}</label>
+						<label for="skillWidgets">{{ $t('labels.skillWidgets') }}</label>
+						<label for="skillScenarioNodes">{{ $t('labels.skillScenarioNodes') }}</label>
 						<label style="justify-content: flex-end;"><i ref="animatedIcon" class="fas fa-spinner fa-pulse fa-2x initialHidden" aria-hidden="true"/></label>
 					</div>
 					<div class="inputs longInputs">
