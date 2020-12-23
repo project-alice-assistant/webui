@@ -1,17 +1,17 @@
 .skill {
-	display: flex;
-	width: 300px;
-	min-width: 300px;
-	max-width: 300px;
-	height: 200px;
-	min-height: 200px;
-	max-height: 200px;
+	align-items: center;
 	background-color: var(--windowBG);
-	margin: 15px 0 0 15px;
-	position: relative;
-	overflow: hidden;
+	display: flex;
 	flex-direction: column;
+	height: 200px;
+	margin: 15px 0 0 15px;
+	max-height: 200px;
+	min-height: 200px;
+	min-width: 300px;
+	overflow: hidden;
+	position: relative;
 	transition: var(--shortAnimation);
+	width: 19%;
 }
 
 .skill:hover {
@@ -63,18 +63,18 @@
 }
 
 .skillDescription {
-	width: 290px;
-	min-height: 110px;
-	max-height: 110px;
-	overflow: hidden;
-	box-sizing: border-box;
-	padding: 5px;
-	margin: 5px 5px 0 5px;
-	color: var(--text);
-	font-size: 0.9em;
-	text-align: justify;
 	background-color: var(--mainBG);
 	border: 1px solid var(--text);
+	box-sizing: border-box;
+	color: var(--text);
+	font-size: 0.9em;
+	margin-top: 5px;
+	max-height: 110px;
+	min-height: 110px;
+	overflow: hidden;
+	padding: 5px;
+	text-align: justify;
+	width: 90%;
 }
 
 .download {
