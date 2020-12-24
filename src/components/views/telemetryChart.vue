@@ -26,7 +26,6 @@ export default {
 				xAxes: [{
 					type: 'time',
 					time: {
-						//unit: 'days',
 						displayFormats: {
 							hour: 'HH:mm',
 							days: 'DD MMM'

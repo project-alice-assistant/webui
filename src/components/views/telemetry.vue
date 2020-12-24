@@ -13,11 +13,11 @@
 			</select>
 			<label for="locations">Locations:</label><select id="locations" v-model="filter.location" @change="buildSelection()">
 				<option selected></option>
-				<option v-for="item in available.locations" :value="item">{{item}}</option>
+				<option v-for="item in available.locations" :value="item.id">{{item.id}} - {{item.name}}</option>
 			</select>
 			<label for="devices">Devices:</label><select id="devices" v-model="filter.device" @change="buildSelection()">
 				<option selected></option>
-				<option v-for="item in available.devices" :value="item">{{item}}</option>
+				<option v-for="item in available.devices" :value="item.id">{{item.id}} - {{item.name}}</option>
 			</select>
 			<label for="telemetryType">Telemetry Type:</label><select id="telemetryType" v-model="filter.telemetryType" @change="buildSelection()">
 				<option selected></option>
@@ -125,10 +125,10 @@ export default {
 				if(tt && li['type'] !== tt){
 					return false
 				}
-				if(dev && li['siteId'] !== dev){
+				if(dev && li['deviceId'] !== dev){
 					return false
 				}
-				if(loc && li['locationID'] !== loc){
+				if(loc && li['locationId'] !== loc){
 					return false
 				}
 				if(ser && li['service'] !== ser){
@@ -154,14 +154,14 @@ export default {
 					this.available.telemetryType.push(this.overview[combination]['type'])
 				}
 
-				if(!this.available.devices.includes(this.overview[combination]['siteId'])
+				if(!this.available.devices.some(el => el.id === this.overview[combination]['deviceId'])
 					&& filterLine(this.filter.telemetryType, "", this.filter.location, this.filter.service, this.overview[combination], this)){
-					this.available.devices.push(this.overview[combination]['siteId'])
+					this.available.devices.push({id: this.overview[combination]['deviceId'], name: this.overview[combination]['device']})
 				}
 
-				if(!this.available.locations.includes(this.overview[combination]['locationID'])
+				if(!this.available.locations.some(el => el.id === this.overview[combination]['locationId'])
 					&& filterLine(this.filter.telemetryType, this.filter.device, "", this.filter.service, this.overview[combination], this)){
-					this.available.locations.push(this.overview[combination]['locationID'])
+					this.available.locations.push({id: this.overview[combination]['locationId'], name: this.overview[combination]['location']})
 				}
 
 				if(!this.available.services.includes(this.overview[combination]['service'])
