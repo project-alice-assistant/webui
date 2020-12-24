@@ -11,6 +11,7 @@ import devmode from '@/components/views/devmode'
 import myhome from '@/components/views/myhome'
 import dialogView from '@/components/views/dialogView'
 import widgets from '@/components/views/widgets'
+import telemetry from '@/components/views/telemetry'
 
 Vue.use(VueRouter)
 
@@ -91,6 +92,13 @@ const routes = [
 		component: widgets,
 		meta: {
 			title: 'nav.widgets'
+		}
+	},
+	{
+		path: '/telemetry',
+		component: telemetry,
+		meta: {
+			title: 'nav.telemetry'
 		}
 	},
 	{
