@@ -9,8 +9,9 @@
 						<label for="skillSpeakableName">{{ $t('labels.skillSpeakableName') }}</label>
 						<label for="skillDescription">{{ $t('labels.skillDescription') }}</label>
 						<label for="skillCategory">{{ $t('labels.skillCategory') }}</label>
-						<label for="skillLanguages"
-									 style="height: 200px; align-items: flex-start">{{ $t('labels.skillLanguages') }}</label>
+						<label for="skillLanguages" style="height: 200px; align-items: flex-start">{{
+								$t('labels.skillLanguages')
+							}}</label>
 						<label for="skillInstructions">{{ $t('labels.skillInstructions') }}</label>
 						<label for="skillPipRequirements">{{ $t('labels.skillPipRequirements') }}</label>
 						<label for="skillSystemRequirements">{{ $t('labels.skillSystemRequirements') }}</label>

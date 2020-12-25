@@ -16,7 +16,7 @@ export default {
 				return state.mqttMessage
 			},
 			function(msg) {
-				if (msg.topic === C.CORE_HEARTBEAT_TOPIC) {
+				if (msg.topic === C.CORE_HEARTBEAT_TOPIC || msg.topic === C.CORE_RECONNECTION_TOPIC) {
 					if (self.reconnected) return
 
 					if (self.checkHeartbeat !== null) {
@@ -24,25 +24,32 @@ export default {
 						if (!self.connected && !self.reconnected) {
 							self.reconnected = true
 							// Let 5 seconds go for the animation to complete
-							setTimeout(function() {
+							setTimeout(function () {
 								self.connected = true
 								self.reconnected = false
 							}, 5000)
 							return
 						}
 					}
-					self.checkHeartbeat = setTimeout(function(){
+					self.checkHeartbeat = setTimeout(function () {
 						self.connected = false
 						self.reconnected = false
 					}, 4500)
 
 					self.connected = true
+				} else if (msg.topic === C.CORE_DISCONNECTION_TOPIC) {
+					self.connected = false
+					if (self.checkHeartbeat !== null) {
+						clearTimeout(self.checkHeartbeat)
+					}
 				}
 			}
 		)
 	},
 	beforeDestroy: function() {
 		this.$store.state.mqtt.unsubscribe(C.CORE_HEARTBEAT_TOPIC)
+		this.$store.state.mqtt.unsubscribe(C.CORE_RECONNECTION_TOPIC)
+		this.$store.state.mqtt.unsubscribe(C.CORE_DISCONNECTION_TOPIC)
 		this.unwatch()
 	}
 }

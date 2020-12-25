@@ -1,4 +1,5 @@
 import axios from 'axios'
+import * as C from '@/utils/constants';
 
 // noinspection DuplicatedCode
 export default {
@@ -6,7 +7,8 @@ export default {
 	data: function () {
 		return {
 			rotationDelta: 0,
-			targetParentLocation: 0
+			targetParentLocation: 0,
+			checkHeartbeat: null
 		}
 	},
 	props: [
@@ -14,6 +16,49 @@ export default {
 		'device',
 		'myHome'
 	],
+	created: function () {
+		let self = this
+		this.unwatch = this.$store.watch(
+			function (state) {
+				return state.mqttMessage
+			},
+			function (msg) {
+				let payload
+				try {
+					payload = JSON.parse(msg.payloadString)
+				} catch {
+					return
+				}
+
+				if (payload['uid'] !== self.data.uid) return
+
+				if (msg.topic === C.CORE_HEARTBEAT_TOPIC || msg.topic === C.DEVICE_HEARTBEAT_TOPIC || msg.topic === C.CORE_RECONNECTION_TOPIC) {
+					if (self.checkHeartbeat !== null) {
+						clearTimeout(self.checkHeartbeat)
+					}
+
+					self.data.connected = true
+
+					self.checkHeartbeat = setTimeout(function () {
+						self.data.connected = false
+					}, self.data['heartbeatRate'] * 2500)
+				} else if (msg.topic === C.CORE_DISCONNECTION_TOPIC) {
+					self.data.connected = false
+					if (self.checkHeartbeat !== null) {
+						clearTimeout(self.checkHeartbeat)
+					}
+				} else if (msg.topic === C.DEVICE_UPDATED_TOPIC) {
+					self.data = payload['device']
+				}
+			}
+		)
+	},
+	beforeDestroy: function () {
+		this.$store.state.mqtt.unsubscribe(C.CORE_HEARTBEAT_TOPIC)
+		this.$store.state.mqtt.unsubscribe(C.DEVICE_HEARTBEAT_TOPIC)
+		this.$store.state.mqtt.unsubscribe(C.DEVICE_UPDATED_TOPIC)
+		this.unwatch()
+	},
 	methods: {
 		computeCustomStyle: function () {
 			return this.myHome.moveableItem.computeCustomStyle(
@@ -49,6 +94,12 @@ export default {
 					return !(devId === this.data.uid);
 				})
 				this.myHome.moveableItem.setGuidelines(devices)
+			} else if (!this.myHome.devicesEditMode && !this.myHome.locationsEditMode) {
+				axios({
+					method: 'patch',
+					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/${this.data.uid}/onClick/`,
+					headers: {'auth': localStorage.getItem('apiToken')}
+				}).then()
 			}
 		},
 		handleDrag: function (target, left, top, clientX, clientY) {
