@@ -41,7 +41,11 @@
 			<button class="minimized" v-else><i class="fas fa-tools" aria-hidden="true"/></button>
 		</router-link>
 		<router-link to="/dialogView" v-if="this.$store.state.loggedInUser && this.$store.state.loggedInUser.authLevel === 'admin'">
-			<button v-if="!$store.state.minimized">TALK</button>
+			<button v-if="!$store.state.minimized">{{ $t('nav.dialogView') }}</button>
+			<button class="minimized" v-else><i class="fas fa-users" aria-hidden="true"/></button>
+		</router-link>
+		<router-link to="/telemetry" v-if="this.$store.state.loggedInUser && this.$store.state.loggedInUser.authLevel === 'admin'">
+			<button v-if="!$store.state.minimized">{{ $t('nav.telemetry') }}</button>
 			<button class="minimized" v-else><i class="fas fa-users" aria-hidden="true"/></button>
 		</router-link>
 		<a class="nav-link" @click="minimize" v-if="!this.$store.state.minimized">
