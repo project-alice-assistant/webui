@@ -12,10 +12,10 @@
 			<i v-else-if="data.deviceParams.micMuted" aria-hidden="true" class="fas fa-microphone-alt-slash red"/>
 			<i v-else-if="data.deviceParams.muted" aria-hidden="true" class="fas fa-volume-mute red"/>
 		</div>
-		<div v-if="myHome.deletingLocations" class="widgetTool deleter" @click="deleteMe">
+		<div v-if="data.id !== 1 && myHome.toolsState.deletingDevices" class="widgetTool deleter" @click="deleteMe">
 			<i aria-hidden="true" class="far fa-trash-alt clickable"/>
 		</div>
-		<div v-if="myHome.settingLocations" class="widgetTool zindexer">
+		<div v-if="myHome.toolsState.settingDevices" class="widgetTool zindexer">
 			<i aria-hidden="true" class="fas fa-level-up-alt clickable"/>
 			<i aria-hidden="true" class="fas fa-level-down-alt clickable"/>
 		</div>

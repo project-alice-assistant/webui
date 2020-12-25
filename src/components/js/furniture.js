@@ -40,7 +40,7 @@ export default {
 			this.myHome.removeDroppable()
 			this.myHome.activeFurnitureTile = ''
 
-			if (this.myHome.placingFurniture) {
+			if (this.myHome.toolsState.placingFurniture) {
 				this.myHome.setMoveable(event.target, this)
 				this.myHome.moveableItem.setBoundaries(this.$el, 0)
 				const furnitures = Array.from(document.querySelectorAll('.furniture')).filter((furniture, index, array) => {

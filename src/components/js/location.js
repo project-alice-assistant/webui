@@ -46,12 +46,12 @@ export default {
 			event.stopPropagation()
 			this.myHome.removeDroppable()
 
-			if (this.myHome.paintingFloors && this.myHome.activeFloorTile !== '') {
+			if (this.myHome.toolsState.paintingFloors && this.myHome.activeFloorTile !== '') {
 				this.myHome.locations[this.data.id].settings['t'] = this.myHome.activeFloorTile
 				this.save()
-			} else if (this.myHome.addingLocation) {
+			} else if (this.myHome.toolsState.addingLocation) {
 
-			} else if (this.myHome.placingFurniture) {
+			} else if (this.myHome.toolsState.placingFurniture) {
 				if (this.myHome.activeFurnitureTile === '') return
 
 				const data = {
@@ -81,7 +81,7 @@ export default {
 						this.myHome.$set(this.myHome.furnitures, furniture.id, furniture)
 					}
 				})
-			} else if (this.myHome.placingConstructions) {
+			} else if (this.myHome.toolsState.placingConstructions) {
 				if (this.myHome.activeConstructionTile === '') return
 				const data = {
 					parentLocation: this.data.id,
@@ -111,7 +111,7 @@ export default {
 						this.myHome.$set(this.myHome.constructions, construction.id, construction)
 					}
 				})
-			} else if (!this.myHome.settingLocations && !this.myHome.deletingLocations && !this.myHome.paintingFloors && this.myHome.locationsEditMode) {
+			} else if (!this.myHome.toolsState.settingLocations && !this.myHome.toolsState.deletingLocations && !this.myHome.toolsState.paintingFloors && this.myHome.locationsEditMode) {
 				if (event.target.classList.contains('dragging')) return
 
 				this.myHome.setMoveable(event.target, this)
@@ -124,7 +124,7 @@ export default {
 			}
 		},
 		rename: function (event) {
-			if (!this.myHome.locationsEditMode || this.myHome.addingLocation || this.myHome.paintingFloors) return
+			if (!this.myHome.locationsEditMode || this.myHome.toolsState.addingLocation || this.myHome.toolsState.paintingFloors) return
 			event.stopPropagation()
 
 			let self = this

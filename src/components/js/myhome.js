@@ -33,15 +33,21 @@ export default {
 				}
 			],
 			moveableItem: new MoveableItem(this, this.locations),
-			addingLocation: false,
-			paintingFloors: false,
-			deletingLocations: false,
-			settingLocations: false,
-			placingFurniture: false,
-			placingConstructions: false,
-			newLocationName: '',
 			locationsEditMode: false,
 			devicesEditMode: false,
+			toolsState: {
+				addingLocation: false,
+				paintingFloors: false,
+				deletingLocations: false,
+				addingDevice: false,
+				deletingDevices: false,
+				settingDevices: false,
+				linkingDevices: false,
+				settingLocations: false,
+				placingFurniture: false,
+				placingConstructions: false
+			},
+			newLocationName: '',
 			locations: {},
 			constructions: {},
 			furnitures: {},
@@ -77,16 +83,10 @@ export default {
 					self.$store.commit('stopCinemaMode')
 				}
 			} else if (event.key === 'Escape') {
-				self.addingLocation = false
 				self.activeConstructionTile = ''
 				self.activeFurnitureTile = ''
 				self.activeFloorTile = ''
-				self.paintingFloors = false
-				self.placingConstructions = false
-				self.placingFurniture = false
-				self.deletingLocations = false
-				self.settingLocations = false
-				self.moveableItem.destroyMoveable()
+				this.setActiveTool('dummy')
 			}
 		})
 
@@ -147,6 +147,22 @@ export default {
 		this.areaSelector = this.$refs.areaSelector
 	},
 	methods: {
+		setActiveTool: function (tool, isToggle) {
+			const self = this
+			Object.keys(this.toolsState).forEach(function (key, value) {
+				if (key === tool) {
+					if (isToggle) {
+						return self.toolsState[key] = !self.toolsState[key]
+					} else {
+						return self.toolsState[key] = true
+					}
+				} else {
+					return self.toolsState[key] = false
+				}
+			})
+			this.moveableItem.destroyMoveable()
+			this.removeDroppable()
+		},
 		removeDroppable: function () {
 			document.querySelectorAll('.droppable').forEach(el => {
 				el.classList.remove('droppable')
@@ -161,89 +177,24 @@ export default {
 		setLocationsEditMode: function () {
 			this.locationsEditMode = true
 			this.devicesEditMode = false
+			this.setActiveTool('dummy')
 		},
 		setDevicesEditMode: function () {
-			this.devicesEditMode = true
 			this.locationsEditMode = false
-
-			this.moveableItem.destroyMoveable()
-			this.removeDroppable()
-			this.paintingFloors = false
-			this.addingLocation = false
-			this.deletingLocations = false
-			this.settingLocations = false
-			this.placingFurniture = false
-			this.placingConstructions = false
+			this.devicesEditMode = true
+			this.setActiveTool('dummy')
 		},
 		closeEditor: function () {
-			this.devicesEditMode = false
-			this.locationsEditMode = false
-
-			this.moveableItem.destroyMoveable()
-			this.removeDroppable()
-			this.paintingFloors = false
-			this.addingLocation = false
-			this.deletingLocations = false
-			this.settingLocations = false
-			this.placingFurniture = false
-			this.placingConstructions = false
-		},
-		togglePaintingMode: function () {
-			this.paintingFloors = !this.paintingFloors
-			this.moveableItem.destroyMoveable()
-			this.addingLocation = false
-			this.deletingLocations = false
-			this.settingLocations = false
-			this.placingFurniture = false
-			this.placingConstructions = false
-		},
-		toggleLocationSettings: function () {
-			this.settingLocations = !this.settingLocations
-			this.moveableItem.destroyMoveable()
-			this.addingLocation = false
-			this.deletingLocations = false
-			this.placingFurniture = false
-			this.placingConstructions = false
-			this.paintingFloors = false
-		},
-		toggleFurnitureMode: function () {
-			this.placingFurniture = !this.placingFurniture
-			this.settingLocations = false
-			this.moveableItem.destroyMoveable()
-			this.addingLocation = false
-			this.deletingLocations = false
-			this.paintingFloors = false
-			this.placingConstructions = false
-		},
-		toggleConstructionsMode: function () {
-			this.placingConstructions = !this.placingConstructions
-			this.settingLocations = false
-			this.moveableItem.destroyMoveable()
-			this.addingLocation = false
-			this.deletingLocations = false
-			this.paintingFloors = false
-			this.placingFurniture = false
+			this.setActiveTool('dummy')
 		},
 		floorPlanClick: function () {
 			this.moveableItem.destroyMoveable()
 		},
 		deleteLocations: function () {
-			this.deletingLocations = !this.deletingLocations
-			this.moveableItem.destroyMoveable()
-			this.paintingFloors = false
-			this.addingLocation = false
-			this.settingLocations = false
-			this.placingFurniture = false
-			this.placingConstructions = false
+			this.setActiveTool('deletingLocations', true)
 		},
 		addLocationDialog: function () {
-			if (this.addingLocation) return
-			this.moveableItem.destroyMoveable()
-			this.paintingFloors = false
-			this.deletingLocations = false
-			this.settingLocations = false
-			this.placingFurniture = false
-			this.placingConstructions = false
+			if (this.toolsState.addingLocation) return
 
 			let self = this
 			this.$dialog
@@ -264,18 +215,18 @@ export default {
 						if ('location' in response.data) {
 							self.$dialog.alert(self.$t('dialogs.bodies.locationNameOrSynonymAlreadyExist')).then()
 						} else {
-							self.addingLocation = true
+							this.setActiveTool('addingLocation')
 							self.newLocationName = dialogue.data
 						}
 					})
 				})
 				.catch(function () {
-					self.addingLocation = false
+					this.setActiveTool('locationsEditMode')
 					self.newLocationName = ''
 				})
 		},
 		mouseDown: function (event) {
-			if (this.addingLocation) {
+			if (this.toolsState.addingLocation) {
 				this.clicked = true
 				this.areaSelectorStartX = event.offsetX
 				this.areaSelectorStartY = event.offsetY
@@ -288,7 +239,7 @@ export default {
 			}
 		},
 		mouseMove: function (event) {
-			if (this.addingLocation) {
+			if (this.toolsState.addingLocation) {
 				if (!this.clicked) return
 				this.drawSelectionArea(event.offsetX, event.offsetY)
 			} else if (this.draggingPlan) {
@@ -312,7 +263,7 @@ export default {
 		},
 		handleClick: function (event) {
 			this.clicked = false
-			if (this.addingLocation) {
+			if (this.toolsState.addingLocation) {
 				event.preventDefault()
 				event.stopPropagation()
 
@@ -335,7 +286,7 @@ export default {
 				this.areaSelectorH = 0
 				this.newLocationName = ''
 
-				this.addingLocation = false
+				this.setActiveTool('locationsEditMode')
 
 				axios({
 					method: 'put',

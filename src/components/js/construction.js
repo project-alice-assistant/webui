@@ -40,7 +40,7 @@ export default {
 			this.myHome.removeDroppable()
 			this.myHome.activeConstructionTile = ''
 
-			if (this.myHome.placingConstructions) {
+			if (this.myHome.toolsState.placingConstructions) {
 				this.myHome.setMoveable(event.target, this)
 				this.myHome.moveableItem.setBoundaries(this.$el, 0)
 				const constructions = Array.from(document.querySelectorAll('.construction')).filter((construction, index, array) => {

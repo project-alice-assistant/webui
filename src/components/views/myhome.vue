@@ -1,31 +1,34 @@
 <template>
 	<div class="container flexcolumn">
 		<actions-menu :menuItems="menuItems" v-if="$store.state.loggedInUser"/>
-		<div v-if="locationsEditMode" class="tools manageLocations">
-			<i v-tooltip="$t('tooltips.addLocations')" :class="{clickable: !addingLocation, yellow: addingLocation}"
-				 aria-hidden="true" class="fas fa-plus-circle fa-2x fa-fw" @click="addLocationDialog"/>
-			<i v-tooltip="$t('tooltips.removeLocations')" :class="{clickable: !deletingLocations, yellow: deletingLocations}"
-				 aria-hidden="true" class="fas fa-trash-alt fa-2x fa-fw" @click="deleteLocations"/>
-			<i v-tooltip="$t('tooltips.settings')" :class="{clickable: !settingLocations, yellow: settingLocations}"
-				 aria-hidden="true" class="fas fa-cogs fa-2x fa-fw" @click="toggleLocationSettings"/>
-			<i v-tooltip="$t('tooltips.paintFloors')" :class="{yellow: paintingFloors}"
-				 aria-hidden="true" class="fas fa-paint-roller fa-2x fa-fw clickable" @click="togglePaintingMode"/>
-			<i v-tooltip="$t('tooltips.buildMode')" :class="{clickable: !placingConstructions, yellow: placingConstructions}"
-				 aria-hidden="true" class="fas fa-hard-hat fa-2x fa-fw clickable" @click="toggleConstructionsMode"/>
-			<i v-tooltip="$t('tooltips.manageFurniture')" :class="{yellow: placingFurniture}"
-				 aria-hidden="true" class="fas fa-couch fa-2x fa-fw clickable" @click="toggleFurnitureMode"/>
+		<div v-if="locationsEditMode" class="tools rightSideTools">
+			<i v-tooltip="$t('tooltips.addLocations')" :class="{yellow: toolsState.addingLocation}"
+				 aria-hidden="true" class="fas fa-plus-circle fa-2x fa-fw clickable" @click="addLocationDialog"/>
+			<i v-tooltip="$t('tooltips.removeLocations')" :class="{yellow: toolsState.deletingLocations}"
+				 aria-hidden="true" class="fas fa-trash-alt fa-2x fa-fw clickable" @click="deleteLocations"/>
+			<i v-tooltip="$t('tooltips.settings')" :class="{yellow: toolsState.settingLocations}"
+				 aria-hidden="true" class="fas fa-cogs fa-2x fa-fw clickable" @click="setActiveTool('settingLocations', true)"/>
+			<i v-tooltip="$t('tooltips.paintFloors')" :class="{yellow: toolsState.paintingFloors}"
+				 aria-hidden="true" class="fas fa-paint-roller fa-2x fa-fw clickable"
+				 @click="setActiveTool('paintingFloors', true)"/>
+			<i v-tooltip="$t('tooltips.buildMode')" :class="{yellow: toolsState.placingConstructions}"
+				 aria-hidden="true" class="fas fa-hard-hat fa-2x fa-fw clickable"
+				 @click="setActiveTool('placingConstructions', true)"/>
+			<i v-tooltip="$t('tooltips.manageFurniture')" :class="{yellow: toolsState.placingFurniture}"
+				 aria-hidden="true" class="fas fa-couch fa-2x fa-fw clickable"
+				 @click="setActiveTool('placingFurniture', true)"/>
 		</div>
-		<div v-if="devicesEditMode" class="tools manageLocations">
-			<i v-tooltip="$t('tooltips.addDevice')" :class="{clickable: !addingLocation, yellow: addingLocation}"
-				 aria-hidden="true" class="fas fa-plus-circle fa-2x fa-fw" @click="addLocationDialog"/>
-			<i v-tooltip="$t('tooltips.removeDevice')" :class="{clickable: !deletingLocations, yellow: deletingLocations}"
-				 aria-hidden="true" class="fas fa-trash-alt fa-2x fa-fw" @click="deleteLocations"/>
-			<i v-tooltip="$t('tooltips.settings')" :class="{clickable: !settingLocations, yellow: settingLocations}"
-				 aria-hidden="true" class="fas fa-cogs fa-2x fa-fw" @click="toggleLocationSettings"/>
-			<i v-tooltip="$t('tooltips.linkDevice')" :class="{clickable: !settingLocations, yellow: settingLocations}"
-				 aria-hidden="true" class="fas fa-link fa-2x fa-fw" @click="toggleLocationSettings"/>
+		<div v-if="devicesEditMode" class="tools rightSideTools">
+			<i v-tooltip="$t('tooltips.addDevice')" :class="{yellow: toolsState.addingDevice}"
+				 aria-hidden="true" class="fas fa-plus-circle fa-2x fa-fw clickable" @click="addLocationDialog"/>
+			<i v-tooltip="$t('tooltips.removeDevice')" :class="{yellow: toolsState.deletingDevices}"
+				 aria-hidden="true" class="fas fa-trash-alt fa-2x fa-fw clickable" @click="deleteLocations"/>
+			<i v-tooltip="$t('tooltips.settings')" :class="{yellow: toolsState.settingDevices}"
+				 aria-hidden="true" class="fas fa-cogs fa-2x fa-fw clickable" @click="setActiveTool('settingDevices', true)"/>
+			<i v-tooltip="$t('tooltips.linkDevice')" :class="{yellow: toolsState.linkingDevices}"
+				 aria-hidden="true" class="fas fa-link fa-2x fa-fw clickable" @click="setActiveTool('linkingDevices', true)"/>
 		</div>
-		<div v-if="locationsEditMode && paintingFloors" class="tools sideTools paintFloors">
+		<div v-if="locationsEditMode && toolsState.paintingFloors" class="tools sideTools paintFloors">
 			<img
 				alt="unknown"
 				v-for="imageId in floorTiles"
@@ -36,7 +39,7 @@
 				@click="activeFloorTile === imageId ? activeFloorTile = '' : activeFloorTile = imageId"
 			/>
 		</div>
-		<div v-if="locationsEditMode && placingFurniture" class="tools sideTools placeFurniture">
+		<div v-if="locationsEditMode && toolsState.placingFurniture" class="tools sideTools placeFurniture">
 			<img
 				v-for="furnitureId in furnitureTiles"
 				:key="furnitureId"
@@ -47,7 +50,7 @@
 				@click="activeFurnitureTile === furnitureId ? activeFurnitureTile = '' : activeFurnitureTile = furnitureId"
 			/>
 		</div>
-		<div v-if="locationsEditMode && placingConstructions" class="tools sideTools placeConstructions">
+		<div v-if="locationsEditMode && toolsState.placingConstructions" class="tools sideTools placeConstructions">
 			<img
 				v-for="conId in constructionTiles"
 				:key="conId"
@@ -67,7 +70,7 @@
 				`"
 				:class="{
 					locationsEditMode: locationsEditMode,
-					addLocation: addingLocation
+					addLocation: toolsState.addingLocation
 				}"
 				ref="floorPlan"
 				class="floorPlan"
@@ -77,14 +80,14 @@
 				@mouseup="handleClick"
 			>
 				<div
-					v-if="addingLocation"
+					v-if="toolsState.addingLocation"
 					class="reactiveLayer"
 					@mousedown="mouseDown"
 					@mousemove="mouseMove"
 					@mouseup="handleClick"
 				>
 					<div
-						v-if="addingLocation && clicked"
+						v-if="toolsState.addingLocation && clicked"
 						ref="areaSelector"
 						:style="`top: ${areaSelectorY}px; left: ${areaSelectorX}px; width: ${areaSelectorW}px; height: ${areaSelectorH}px`"
 						class="areaSelector"
