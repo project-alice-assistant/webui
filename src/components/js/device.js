@@ -40,6 +40,7 @@ export default {
 					self.data.connected = true
 
 					self.checkHeartbeat = setTimeout(function () {
+						console.log('disconnected')
 						self.data.connected = false
 					}, self.data['heartbeatRate'] * 2500)
 				} else if (msg.topic === C.CORE_DISCONNECTION_TOPIC) {
@@ -48,7 +49,7 @@ export default {
 						clearTimeout(self.checkHeartbeat)
 					}
 				} else if (msg.topic === C.DEVICE_UPDATED_TOPIC) {
-					self.data = payload['device']
+					self.myHome.devices[self.data.uid] = payload['device']
 				}
 			}
 		)
