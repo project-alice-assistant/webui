@@ -76,7 +76,20 @@ export default {
 			floorPlanY: 0
 		}
 	},
-	created: function() {
+	computed: {
+		ghostBackground: function () {
+			let end = 'locations/floors/floor-80.png'
+			if (this.activeFloorTile) {
+				end = `locations/floors/${this.activeFloorTile}.png`
+			} else if (this.activeFurnitureTile) {
+				end = `furniture/${this.activeFurnitureTile}.png`
+			} else if (this.activeConstructionTile) {
+				end = `constructions/${this.activeConstructionTile}.png`
+			}
+			return `background-image: url('http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/${end}');`
+		}
+	},
+	created: function () {
 		this.me = this
 		let self = this;
 		document.addEventListener('keyup', function (event) {
@@ -88,7 +101,7 @@ export default {
 				self.activeConstructionTile = ''
 				self.activeFurnitureTile = ''
 				self.activeFloorTile = ''
-				this.setActiveTool('dummy')
+				self.setActiveTool('dummy')
 			}
 		})
 
@@ -253,6 +266,10 @@ export default {
 
 				this.draggingPlanStartX = event.clientX
 				this.draggingPlanStartY = event.clientY
+			} else if ((this.toolsState.paintingFloors && this.activeFloorTile !== '') || (this.toolsState.placingFurniture && this.activeFurnitureTile !== '') || (this.toolsState.placingConstructions && this.activeConstructionTile !== '')) {
+				let rect = this.$refs['myHomeEditor'].getBoundingClientRect()
+				this.$refs['ghost'].style.top = `${event.clientY - 25 - rect.top}px`
+				this.$refs['ghost'].style.left = `${event.clientX - 25 - rect.left}px`
 			}
 		},
 		drawSelectionArea: function (movedX, movedY) {

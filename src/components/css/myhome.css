@@ -157,3 +157,18 @@
 .addLocation {
 	cursor: crosshair;
 }
+
+.ghost {
+	background-repeat: no-repeat;
+	background-size: contain;
+	height: 50px;
+	left: -100px;
+	max-height: 50px;
+	max-width: 50px;
+	opacity: 0.75;
+	pointer-events: none;
+	position: absolute;
+	top: -100px;
+	width: 50px;
+	z-index: 1000;
+}

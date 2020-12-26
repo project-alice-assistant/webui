@@ -57,8 +57,8 @@ export default {
 				const data = {
 					parentLocation: this.data.id,
 					settings: {
-						x: event.layerX,
-						y: event.layerY,
+						x: event.layerX - 25,
+						y: event.layerY - 25,
 						w: 50,
 						h: 50,
 						z: 0,
@@ -86,8 +86,8 @@ export default {
 				const data = {
 					parentLocation: this.data.id,
 					settings: {
-						x: event.layerX,
-						y: event.layerY,
+						x: event.layerX - 25,
+						y: event.layerY - 25,
 						w: 50,
 						h: 50,
 						r: 0,

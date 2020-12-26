@@ -61,7 +61,8 @@
 				@click="activeConstructionTile === conId ? activeConstructionTile = '' : activeConstructionTile = conId"
 			/>
 		</div>
-		<div :class="{fullscreen: $store.state.fullScreen, editMode: locationsEditMode}" class="myHomeEditor">
+		<div ref="myHomeEditor" :class="{fullscreen: $store.state.fullScreen, editMode: locationsEditMode}" class="myHomeEditor">
+			<div ref="ghost" :class="{hidden: !activeFloorTile && !activeFurnitureTile && !activeConstructionTile}" :style="ghostBackground" class="ghost"/>
 			<div
 				:style="`
 					transform: scale(${zoomLevel});
