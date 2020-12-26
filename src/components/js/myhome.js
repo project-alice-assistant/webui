@@ -54,12 +54,14 @@ export default {
 			constructions: {},
 			furnitures: {},
 			devices: {},
+			deviceTypes: {},
 			floorTiles: [],
 			furnitureTiles: [],
 			constructionTiles: [],
 			activeFloorTile: '',
 			activeFurnitureTile: '',
 			activeConstructionTile: '',
+			activeDeviceTile: '',
 			zoomLevel: 1.0,
 			areaSelectorX: 0,
 			areaSelectorY: 0,
@@ -85,6 +87,8 @@ export default {
 				end = `furniture/${this.activeFurnitureTile}.png`
 			} else if (this.activeConstructionTile) {
 				end = `constructions/${this.activeConstructionTile}.png`
+			} else if (this.activeDeviceTile) {
+				end = `deviceTypes/${this.activeDeviceTile}.png`
 			}
 			return `background-image: url('http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/${end}');`
 		}
@@ -101,6 +105,7 @@ export default {
 				self.activeConstructionTile = ''
 				self.activeFurnitureTile = ''
 				self.activeFloorTile = ''
+				self.activeDeviceTile = ''
 				self.setActiveTool('dummy')
 			}
 		})
@@ -142,6 +147,16 @@ export default {
 		}).then(response => {
 			if ('data' in response.data) {
 				this.constructionTiles = response.data.data
+			}
+		})
+
+		axios({
+			method: 'get',
+			url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/deviceTypes/`,
+			headers: {'auth': localStorage.getItem('apiToken')}
+		}).then(response => {
+			if ('types' in response.data) {
+				this.deviceTypes = response.data.types
 			}
 		})
 
@@ -243,6 +258,22 @@ export default {
 					self.newLocationName = ''
 				})
 		},
+		addDeviceDialog: function () {
+			if (this.toolsState.addingDevice) return
+
+			let self = this
+			const message = {}
+			const options = {
+				view: 'addDevicePromptDialog',
+				parent: this
+			}
+
+			this.$dialog.prompt(message, options).then(dialogue => {
+				if (!dialogue.data) return
+				self.setActiveTool('addingDevice')
+				self.activeDeviceTile = dialogue.data
+			}).catch()
+		},
 		mouseDown: function (event) {
 			if (this.toolsState.addingLocation) {
 				this.clicked = true
@@ -266,7 +297,7 @@ export default {
 
 				this.draggingPlanStartX = event.clientX
 				this.draggingPlanStartY = event.clientY
-			} else if ((this.toolsState.paintingFloors && this.activeFloorTile !== '') || (this.toolsState.placingFurniture && this.activeFurnitureTile !== '') || (this.toolsState.placingConstructions && this.activeConstructionTile !== '')) {
+			} else if ((this.toolsState.paintingFloors && this.activeFloorTile !== '') || (this.toolsState.placingFurniture && this.activeFurnitureTile !== '') || (this.toolsState.placingConstructions && this.activeConstructionTile !== '') || (this.toolsState.addingDevice && this.activeDeviceTile !== '')) {
 				let rect = this.$refs['myHomeEditor'].getBoundingClientRect()
 				this.$refs['ghost'].style.top = `${event.clientY - 25 - rect.top}px`
 				this.$refs['ghost'].style.left = `${event.clientX - 25 - rect.left}px`

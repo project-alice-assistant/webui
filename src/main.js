@@ -42,6 +42,7 @@ import faIconOption from './components/views/fontawesomePromptDialog'
 import widgetOption from './components/views/widgetOptionsDialog'
 import skillSettings from './components/views/skillSettingsDialog'
 import locationSettings from './components/views/locationOptionsDialog'
+import addDeviceDialog from './components/views/addDeviceDialog'
 import dialogView from './components/js/dialogView'
 
 Vue.config.productionTip = false
@@ -75,6 +76,7 @@ Vue.dialog.registerComponent('fontawesomePromptDialog', faIconOption)
 Vue.dialog.registerComponent('widgetOptionsPromptDialog', widgetOption)
 Vue.dialog.registerComponent('skillSettingsPromptDialog', skillSettings)
 Vue.dialog.registerComponent('locationSettingsPromptDialog', locationSettings)
+Vue.dialog.registerComponent('addDevicePromptDialog', addDeviceDialog)
 
 // Jquery use ONLY FOR WIDGETS, DO NOT USE JQUERY FOR __ANYTHING ELSE__
 global.jQuery = require('jquery')

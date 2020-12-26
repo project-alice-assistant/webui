@@ -20,7 +20,7 @@
 		</div>
 		<div v-if="devicesEditMode" class="tools rightSideTools">
 			<i v-tooltip="$t('tooltips.addDevice')" :class="{yellow: toolsState.addingDevice}"
-				 aria-hidden="true" class="fas fa-plus-circle fa-2x fa-fw clickable" @click="addLocationDialog"/>
+				 aria-hidden="true" class="fas fa-plus-circle fa-2x fa-fw clickable" @click="addDeviceDialog"/>
 			<i v-tooltip="$t('tooltips.removeDevice')" :class="{yellow: toolsState.deletingDevices}"
 				 aria-hidden="true" class="fas fa-trash-alt fa-2x fa-fw clickable" @click="deleteLocations"/>
 			<i v-tooltip="$t('tooltips.settings')" :class="{yellow: toolsState.settingDevices}"
