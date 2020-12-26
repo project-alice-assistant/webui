@@ -1,10 +1,12 @@
 import axios from 'axios'
+import {v4 as uuidv4} from 'uuid'
 import MoveableItem from './moveableItem'
 
 export default {
 	name: 'myhome',
 	data: function () {
 		return {
+			uid: uuidv4(),
 			me: '',
 			menuItems: [
 				{
@@ -145,6 +147,9 @@ export default {
 	},
 	mounted: function () {
 		this.areaSelector = this.$refs.areaSelector
+	},
+	activated: function () {
+		this.uid = uuidv4()
 	},
 	methods: {
 		setActiveTool: function (tool, isToggle) {

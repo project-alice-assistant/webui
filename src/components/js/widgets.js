@@ -5,6 +5,7 @@ export default {
 	name: 'pa-widgets',
 	data: function() {
 		return {
+			uid: uuidv4(),
 			tabs: {},
 			menuItems: [
 				{
@@ -92,15 +93,18 @@ export default {
 			}
 		})
 	},
+	activated: function () {
+		this.uid = uuidv4()
+	},
 	methods: {
-		changePage: function(id) {
+		changePage: function (id) {
 			this.activePageId = id
 			this.$forceUpdate()
 		},
-		cinemaMode: function() {
+		cinemaMode: function () {
 			this.$store.commit('toggleCinemaMode')
 		},
-		fetchWidgetTemplates: function() {
+		fetchWidgetTemplates: function () {
 			axios({
 				method: 'get',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/templates/`

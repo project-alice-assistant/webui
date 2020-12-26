@@ -1,5 +1,5 @@
 <template>
-	<div class="container flexcolumn">
+	<div :key="uid" class="container flexcolumn">
 		<actions-menu :menuItems="menuItems" v-if="$store.state.loggedInUser"/>
 		<div v-if="locationsEditMode" class="tools rightSideTools">
 			<i v-tooltip="$t('tooltips.addLocations')" :class="{yellow: toolsState.addingLocation}"
