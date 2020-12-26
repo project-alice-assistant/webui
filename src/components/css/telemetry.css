@@ -1,0 +1,53 @@
+.addMe {
+	background: #2ba5ff;
+	border-radius: 1em;
+	clip-path: polygon(0% 0%, calc(100% - 1em) 0%, 100% 50%, 100% 50%, calc(100% - 1em) 100%, 0% 100%);
+	height: 1em;
+	margin: .2em auto;
+	overflow: hidden;
+	padding-bottom: 0.1em;
+	padding-left: 1em;
+	padding-top: 0.1em;
+	width: 90%;
+}
+
+.added {
+	background: #2ba5ff;
+	border-radius: 1em;
+	clip-path: polygon(100% 100%, 100% 0%, 1em 0%, 0% 50%, 1em 100%);
+	height: 1em;
+	margin: .2em auto;
+	overflow: hidden;
+	padding-bottom: 0.1em;
+	padding-left: 1em;
+	padding-top: 0.1em;
+	width: 90%;
+}
+
+.floaty {
+	background: var(--secondary);
+	display: block;
+	margin: .2em;
+	overflow-y: scroll;
+	width: 100%;
+}
+
+.selections {
+	display: flex;
+	height: 10em;
+	overflow-y: auto;
+	width: 100%;
+}
+
+button {
+	margin: .4em .8em;
+	padding: .2em 1em;
+}
+
+.backspace {
+	background: darkred;
+}
+
+.enter {
+	background: #2ba5ff;
+}
