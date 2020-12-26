@@ -154,7 +154,7 @@ export default {
 	methods: {
 		setActiveTool: function (tool, isToggle) {
 			const self = this
-			Object.keys(this.toolsState).forEach(function (key, value) {
+			Object.keys(this.toolsState).forEach(function (key, _value) {
 				if (key === tool) {
 					if (isToggle) {
 						return self.toolsState[key] = !self.toolsState[key]

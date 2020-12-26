@@ -9,8 +9,8 @@
 	>
 		<div class="deviceState">
 			<i v-if="!data.connected" aria-hidden="true" class="fas fa-heart-broken red"/>
-			<i v-else-if="data.deviceParams.micMuted" aria-hidden="true" class="fas fa-microphone-alt-slash red"/>
-			<i v-else-if="data.deviceParams.muted" aria-hidden="true" class="fas fa-volume-mute red"/>
+			<i v-if="data.deviceParams.micMuted" aria-hidden="true" class="fas fa-microphone-alt-slash red"/>
+			<i v-if="data.deviceParams.soundMuted" aria-hidden="true" class="fas fa-volume-mute red"/>
 		</div>
 		<div v-if="data.id !== 1 && myHome.toolsState.deletingDevices" class="widgetTool deleter" @click="deleteMe">
 			<i aria-hidden="true" class="far fa-trash-alt clickable"/>

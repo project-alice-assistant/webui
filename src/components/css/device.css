@@ -11,9 +11,10 @@
 }
 
 .deviceState {
-	font-size: 2em;
+	font-size: 1.5em;
+	left: 0;
 	position: absolute;
-	right: 0;
 	text-shadow: 2px 2px 15px var(--accent);
-	top: 0;
+	top: -1em;
+	width: 500px;
 }
