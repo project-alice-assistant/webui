@@ -30,7 +30,15 @@
 		</router-link>
 		<router-link to="/alicewatch" v-if="this.$store.state.loggedInUser">
 			<button v-if="!$store.state.minimized">{{ $t('nav.alicewatch') }}</button>
-			<button class="minimized" v-else><i class="fas fa-comments" aria-hidden="true"/></button>
+			<button v-else class="minimized"><i aria-hidden="true" class="fas fa-eye"/></button>
+		</router-link>
+		<router-link v-if="this.$store.state.loggedInUser && this.$store.state.loggedInUser.authLevel === 'admin'" to="/dialogView">
+			<button v-if="!$store.state.minimized">{{ $t('nav.dialogView') }}</button>
+			<button v-else class="minimized"><i aria-hidden="true" class="fas fa-comments"/></button>
+		</router-link>
+		<router-link v-if="this.$store.state.loggedInUser && this.$store.state.loggedInUser.authLevel === 'admin'" to="/telemetry">
+			<button v-if="!$store.state.minimized">{{ $t('nav.telemetry') }}</button>
+			<button v-else class="minimized"><i aria-hidden="true" class="fas fa-database"/></button>
 		</router-link>
 		<router-link to="/devmode" v-if="this.$store.state.settings['devMode'] && this.$store.state.loggedInUser">
 			<button v-if="!$store.state.minimized">{{ $t('nav.devmode') }}</button>
@@ -39,14 +47,6 @@
 		<router-link to="/admin" v-if="this.$store.state.loggedInUser && this.$store.state.loggedInUser.authLevel === 'admin'">
 			<button v-if="!$store.state.minimized">{{ $t('nav.admin') }}</button>
 			<button class="minimized" v-else><i class="fas fa-tools" aria-hidden="true"/></button>
-		</router-link>
-		<router-link to="/dialogView" v-if="this.$store.state.loggedInUser && this.$store.state.loggedInUser.authLevel === 'admin'">
-			<button v-if="!$store.state.minimized">{{ $t('nav.dialogView') }}</button>
-			<button class="minimized" v-else><i class="fas fa-users" aria-hidden="true"/></button>
-		</router-link>
-		<router-link to="/telemetry" v-if="this.$store.state.loggedInUser && this.$store.state.loggedInUser.authLevel === 'admin'">
-			<button v-if="!$store.state.minimized">{{ $t('nav.telemetry') }}</button>
-			<button class="minimized" v-else><i class="fas fa-users" aria-hidden="true"/></button>
 		</router-link>
 		<a class="nav-link" @click="minimize" v-if="!this.$store.state.minimized">
 			<button>{{ $t('buttons.minimize') }}</button>
