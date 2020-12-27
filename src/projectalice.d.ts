@@ -1,4 +1,4 @@
-export interface Device {
+export interface DeviceType {
 	deviceTypeName: string,
 	perLocationLimit: number,
 	totalDeviceLimit: number,
@@ -8,3 +8,16 @@ export interface Device {
 	abilities: Array<any>
 }
 
+export interface Device {
+	abilities: number,
+	connected: boolean,
+	deviceParams: Object,
+	displayName: string,
+	displaySettings: Object,
+	id: number,
+	lastContact: number,
+	parentLocation: number,
+	skillName: string,
+	typeName: string,
+	uid: string
+}
