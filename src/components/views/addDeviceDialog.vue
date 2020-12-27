@@ -7,7 +7,7 @@
 		<p>
 			<select id="deviceList" v-model="selected" name="device">
 				<optgroup v-for="(devices, skillName) in parent.deviceTypes" :key="skillName" :label="skillName.toUpperCase()">
-					<option v-for="device in devices" :key="device.deviceTypeName" :value="`${skillName.toLowerCase()}/${device.deviceTypeName.toLowerCase()}`">{{ device.deviceTypeName }}</option>
+					<option v-for="device in devices" v-if="canAddDevice(device)" :key="device.deviceTypeName" :value="`${skillName.toLowerCase()}/${device.deviceTypeName.toLowerCase()}`">{{ device.deviceTypeName }}</option>
 				</optgroup>
 			</select>
 		</p>
@@ -31,6 +31,18 @@ export default {
 		}
 	},
 	methods: {
+		canAddDevice(device) {
+			if (device.totalDeviceLimit > 0) {
+				let i = 0
+				for (const type of Object.values(this.parent.devices)) {
+					if (type.skillName === device.skillName && type.typeName === device.deviceTypeName) {
+						i++
+					}
+				}
+				return i < device.totalDeviceLimit
+			}
+			return true
+		},
 		handleConfirm() {
 			if (!this.selected) this.cancel()
 			this.proceed(this.selected)
