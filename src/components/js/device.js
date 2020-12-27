@@ -49,7 +49,7 @@ export default {
 						clearTimeout(self.checkHeartbeat)
 					}
 				} else if (msg.topic === C.DEVICE_UPDATED_TOPIC) {
-					self.myHome.devices[self.data.uid] = payload['device']
+					self.myHome.devices[self.data.id] = payload['device']
 				}
 			}
 		)
@@ -68,6 +68,8 @@ export default {
 			)
 		},
 		save: function () {
+			if (this.data.uid === -1) return
+
 			const data = {
 				parentLocation: this.data.parentLocation,
 				settings: this.data.settings
@@ -84,13 +86,15 @@ export default {
 			}).then()
 		},
 		handleClick: function (event) {
+			if (this.myHome.toolsState.addingDevice || this.data.uid === -1) return
+
 			event.stopPropagation()
 			this.myHome.removeDroppable()
 
 			if (this.myHome.devicesEditMode && event.target.classList.contains('device')) {
 				this.myHome.setMoveable(event.target, this)
 				this.myHome.moveableItem.setBoundaries(this.$el, 0)
-				const devices = Array.from(document.querySelectorAll('.device')).filter((device, index, array) => {
+				const devices = Array.from(document.querySelectorAll('.device')).filter((device) => {
 					const devId = device.id.substring(4)
 					return !(devId === this.data.uid);
 				})
@@ -125,9 +129,9 @@ export default {
 				if (this.targetParentLocation !== 0 && this.data.parentLocation !== this.targetParentLocation) {
 					// noinspection DuplicatedCode
 					const droppedIn = document.querySelector(`#loc_${this.targetParentLocation}`)
-					this.myHome.devices[this.data.uid].parentLocation = this.targetParentLocation
-					this.myHome.devices[this.data.uid].settings['x'] = parseInt(target.style.left.substring(-2)) - parseInt(droppedIn.style.left.substring(-2))
-					this.myHome.devices[this.data.uid].settings['y'] = parseInt(target.style.top.substring(-2)) - parseInt(droppedIn.style.top.substring(-2))
+					this.myHome.devices[this.data.id].parentLocation = this.targetParentLocation
+					this.myHome.devices[this.data.id].settings['x'] = parseInt(target.style.left.substring(-2)) - parseInt(droppedIn.style.left.substring(-2))
+					this.myHome.devices[this.data.id].settings['y'] = parseInt(target.style.top.substring(-2)) - parseInt(droppedIn.style.top.substring(-2))
 					this.targetParentLocation = 0
 				}
 			} catch (e) {
@@ -142,7 +146,7 @@ export default {
 				headers: {'auth': localStorage.getItem('apiToken')}
 			}).then(response => {
 				if ('success' in response.data && response.data.success) {
-					this.myHome.$delete(this.myHome.devices, this.data.uid)
+					this.myHome.$delete(this.myHome.devices, this.data.id)
 				}
 			})
 		}

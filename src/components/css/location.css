@@ -30,3 +30,7 @@
 .droppable {
 	border: 5px dashed var(--accent);
 }
+
+.notDroppable {
+	border: 5px solid red;
+}

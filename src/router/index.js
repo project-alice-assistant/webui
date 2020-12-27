@@ -104,7 +104,7 @@ const routes = [
 	{
 		path: '*',
 		name: 'Home',
-		component: widgets,
+		component: myhome,
 		meta: {
 			title: 'nav.widgets'
 		}

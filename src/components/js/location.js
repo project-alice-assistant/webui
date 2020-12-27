@@ -49,8 +49,34 @@ export default {
 			if (this.myHome.toolsState.paintingFloors && this.myHome.activeFloorTile !== '') {
 				this.myHome.locations[this.data.id].settings['t'] = this.myHome.activeFloorTile
 				this.save()
-			} else if (this.myHome.toolsState.addingLocation) {
+			} else if (this.myHome.toolsState.addingDevice && this.myHome.activeDeviceTile !== '') {
+				if (!this.checkDevicePerLocationLimit()) return
 
+				const data = {
+					deviceType: this.myHome.activeDeviceTile.deviceTypeName,
+					skillName: this.myHome.activeDeviceTile.skillName,
+					parentLocation: this.data.id,
+					settings: {
+						x: event.layerX - 25,
+						y: event.layerY - 25
+					}
+				}
+
+				axios({
+					method: 'put',
+					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/`,
+					data: data,
+					headers: {
+						'auth': localStorage.getItem('apiToken'),
+						'content-type': 'application/json'
+					}
+				}).then(response => {
+					if ('device' in response.data) {
+						let device = response.data['device']
+						this.myHome.$set(this.myHome.devices, device.id, device)
+					}
+					this.myHome.setActiveTool('none')
+				})
 			} else if (this.myHome.toolsState.placingFurniture) {
 				if (this.myHome.activeFurnitureTile === '') return
 
@@ -211,6 +237,36 @@ export default {
 			this.$dialog.prompt(message, options).then(() => {
 				self.save()
 			}).catch()
+		},
+		checkDevicePerLocationLimit() {
+			const activeDeviceType = this.myHome.activeDeviceTile
+			const perLocationLimit = activeDeviceType.perLocationLimit
+
+			if (perLocationLimit === 0) {
+				this.$el.classList.add('droppable')
+			} else {
+				let count = 0
+				for (const device of Object.values(this.devices)) {
+					if (device.skillName === activeDeviceType.skillName && device.deviceType === activeDeviceType.deviceTypeName && device.parentLocation === this.data.id) {
+						count++
+					}
+				}
+				console.log(count, perLocationLimit)
+				return count < perLocationLimit
+			}
+		},
+		onMouseEnter() {
+			if (this.myHome.toolsState.addingDevice) {
+				if (this.checkDevicePerLocationLimit()) {
+					this.$el.classList.add('droppable')
+				} else {
+					this.$el.classList.add('notDroppable')
+				}
+			}
+		},
+		onMouseLeave() {
+			this.$el.classList.remove('droppable')
+			this.$el.classList.remove('notDroppable')
 		}
 	}
 }

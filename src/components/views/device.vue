@@ -1,16 +1,23 @@
 <template>
 	<div
-		:id="`dev_${data.uid}`"
-		:ref="data.uid"
+		:id="`dev_${data.id}`"
+		:ref="data.id"
 		:style="computeCustomStyle()"
 		v-tooltip="data.displayName"
 		@click="handleClick"
 		class="device clickable"
 	>
 		<div class="deviceState">
-			<i v-if="!data.connected" aria-hidden="true" class="fas fa-heart-broken red"/>
-			<i v-if="data.deviceParams.micMuted" aria-hidden="true" class="fas fa-microphone-alt-slash red"/>
-			<i v-if="data.deviceParams.soundMuted" aria-hidden="true" class="fas fa-volume-mute red"/>
+			<span v-if="data.uid === -1">
+				<i aria-hidden="true" class="fas fa-unlink red"/>
+			</span>
+			<span v-else-if="!data.connected">
+				<i aria-hidden="true" class="fas fa-heart-broken red"/>
+			</span>
+			<span v-else>
+				<i v-if="data.deviceParams.micMuted" aria-hidden="true" class="fas fa-microphone-alt-slash red"/>
+				<i v-if="data.deviceParams.soundMuted" aria-hidden="true" class="fas fa-volume-mute red"/>
+			</span>
 		</div>
 		<div v-if="data.id !== 1 && myHome.toolsState.deletingDevices" class="widgetTool deleter" @click="deleteMe">
 			<i aria-hidden="true" class="far fa-trash-alt clickable"/>

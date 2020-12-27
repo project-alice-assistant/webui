@@ -4,8 +4,8 @@ export interface DeviceType {
 	totalDeviceLimit: number,
 	allowLocationLinks: boolean,
 	heartbeatRate: number,
-	deviceSettings: Object,
-	abilities: Array<any>
+	abilities: Array<any>,
+	skillName: string
 }
 
 export interface Device {

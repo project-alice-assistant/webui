@@ -1,3 +1,4 @@
+<script src="../../utils/htmlFormatter.js"></script>
 <template>
 	<div :key="uid" class="container flexcolumn">
 		<actions-menu :menuItems="menuItems" v-if="$store.state.loggedInUser"/>
@@ -108,7 +109,7 @@
 				<device
 					v-for="dev in devices"
 					v-if="dev.parentLocation === 0"
-					:key="`dev_${dev.uid}`"
+					:key="`dev_${dev.id}`"
 					:data="dev"
 					:myHome="me"
 				/>

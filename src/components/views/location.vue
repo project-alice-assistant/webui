@@ -8,12 +8,18 @@
 		}"
 		class="location"
 		@click="handleClick"
+		@mouseenter="onMouseEnter"
+		@mouseleave="onMouseLeave"
 	>
 		<location
 			v-for="loc in locations"
 			v-if="loc.parentLocation === data.id"
 			:key="`loc_${loc.id}`"
 			:data="loc"
+			:constructions="constructions"
+			:devices="devices"
+			:furnitures="furnitures"
+			:locations="locations"
 			:myHome="myHome"
 		/>
 		<furniture

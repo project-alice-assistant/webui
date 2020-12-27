@@ -89,7 +89,7 @@ export default {
 			} else if (this.activeConstructionTile) {
 				end = `constructions/${this.activeConstructionTile}.png`
 			} else if (this.activeDeviceTile) {
-				end = `deviceTypes/${this.activeDeviceTile}.png`
+				end = `deviceTypes/${this.activeDeviceTile.skillName.toLowerCase()}/${this.activeDeviceTile.deviceTypeName.toLowerCase()}.png`
 			}
 			return `background-image: url('http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/${end}');`
 		}
@@ -211,6 +211,9 @@ export default {
 		removeDroppable: function () {
 			document.querySelectorAll('.droppable').forEach(el => {
 				el.classList.remove('droppable')
+			})
+			document.querySelectorAll('.notDroppable').forEach(el => {
+				el.classList.remove('notDroppable')
 			})
 		},
 		setMoveable: function (target, prop) {
