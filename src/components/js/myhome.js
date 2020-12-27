@@ -38,6 +38,7 @@ export default {
 			locationsEditMode: false,
 			devicesEditMode: false,
 			toolsState: {
+				none: true,
 				addingLocation: false,
 				paintingFloors: false,
 				deletingLocations: false,
@@ -106,7 +107,7 @@ export default {
 				self.activeFurnitureTile = ''
 				self.activeFloorTile = ''
 				self.activeDeviceTile = ''
-				self.setActiveTool('dummy')
+				self.setActiveTool('none')
 			}
 		})
 
@@ -193,6 +194,17 @@ export default {
 					return self.toolsState[key] = false
 				}
 			})
+
+			let result = false
+			for (let i in this.toolsState)
+				if (this.toolsState[i] === true) {
+					result = true
+				}
+
+			if (!result) {
+				self.toolsState['none'] = true
+			}
+
 			this.moveableItem.destroyMoveable()
 			this.removeDroppable()
 		},
@@ -210,15 +222,15 @@ export default {
 		setLocationsEditMode: function () {
 			this.locationsEditMode = true
 			this.devicesEditMode = false
-			this.setActiveTool('dummy')
+			this.setActiveTool('none')
 		},
 		setDevicesEditMode: function () {
 			this.locationsEditMode = false
 			this.devicesEditMode = true
-			this.setActiveTool('dummy')
+			this.setActiveTool('none')
 		},
 		closeEditor: function () {
-			this.setActiveTool('dummy')
+			this.setActiveTool('none')
 		},
 		floorPlanClick: function () {
 			this.moveableItem.destroyMoveable()
@@ -227,7 +239,7 @@ export default {
 			this.setActiveTool('deletingLocations', true)
 		},
 		addLocationDialog: function () {
-			if (this.toolsState.addingLocation) return
+			if (!this.toolsState.none) return
 
 			let self = this
 			this.$dialog
@@ -259,7 +271,7 @@ export default {
 				})
 		},
 		addDeviceDialog: function () {
-			if (this.toolsState.addingDevice) return
+			if (!this.toolsState.none) return
 
 			let self = this
 			const message = {}
@@ -280,7 +292,7 @@ export default {
 				this.areaSelectorStartX = event.offsetX
 				this.areaSelectorStartY = event.offsetY
 				this.drawSelectionArea(this.areaSelectorStartX, this.areaSelectorStartY)
-			} else if (event.target.classList.contains('floorPlan')) {
+			} else if (event.target.classList.contains('floorPlan') && this.toolsState.none) {
 				event.target.classList.add('grabbed')
 				this.draggingPlan = true
 				this.draggingPlanStartX = event.clientX

@@ -35,7 +35,7 @@ export default {
 			if (deviceType.totalDeviceLimit > 0) {
 				let i = 0
 				for (const device of Object.values(this.parent.devices)) {
-					if (type.skillName === device.skillName && type.deviceTypeName === deviceType.deviceTypeName) {
+					if (deviceType.skillName === device.skillName && deviceType.deviceTypeName === device.typeName) {
 						i++
 					}
 				}
