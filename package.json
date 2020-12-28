@@ -31,7 +31,8 @@
 		"vuejs-overlay": "^0.0.28",
 		"vuex": "^3.5.1",
 		"uuid": "^8.3.2",
-		"vue-plugin-load-script": "^1.3.2"
+		"vue-plugin-load-script": "^1.3.2",
+		"leader-line-new": "^1.1.9"
 	},
 	"devDependencies": {
 		"@vue/cli-plugin-babel": "~4.5.0",

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import * as C from '@/utils/constants';
+import * as C from '@/utils/constants'
 
 // noinspection DuplicatedCode
 export default {
@@ -91,7 +91,9 @@ export default {
 			event.stopPropagation()
 			this.myHome.removeDroppable()
 
-			if (this.myHome.devicesEditMode && event.target.classList.contains('device')) {
+			if (this.myHome.devicesEditMode && this.myHome.toolsState.linkingDevices) {
+				this.myHome.newConnectionLine(this.data.id)
+			} else if (this.myHome.devicesEditMode && event.target.classList.contains('device')) {
 				this.myHome.setMoveable(event.target, this)
 				this.myHome.moveableItem.setBoundaries(this.$el, 0)
 				const devices = Array.from(document.querySelectorAll('.device')).filter((device) => {

@@ -1,7 +1,7 @@
 <template>
 	<div
 		:id="`dev_${data.id}`"
-		:ref="data.id"
+		:ref="`dev_${data.id}`"
 		:style="computeCustomStyle()"
 		v-tooltip="data.displayName"
 		@click="handleClick"

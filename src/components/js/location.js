@@ -133,8 +133,27 @@ export default {
 				}).then(response => {
 					if ('construction' in response.data) {
 						let construction = response.data['construction']
-						console.log(construction)
 						this.myHome.$set(this.myHome.constructions, construction.id, construction)
+					}
+				})
+			} else if (this.myHome.toolsState.linkingDevices && this.myHome.newConnectionLink !== null) {
+				const data = {
+					targetLocation: this.data.id,
+					deviceId: parseInt(this.myHome.newConnectionLink.start.id.substring(4))
+				}
+
+				axios({
+					method: 'put',
+					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/deviceLinks/`,
+					data: data,
+					headers: {
+						'auth': localStorage.getItem('apiToken'),
+						'content-type': 'application/json'
+					}
+				}).then(response => {
+					if ('link' in response.data) {
+						let link = response.data['link']
+						this.myHome.$set(this.myHome.deviceLinks, link.id, link)
 					}
 				})
 			} else if (!this.myHome.toolsState.settingLocations && !this.myHome.toolsState.deletingLocations && !this.myHome.toolsState.paintingFloors && this.myHome.locationsEditMode) {

@@ -1,6 +1,7 @@
 import axios from 'axios'
 import {v4 as uuidv4} from 'uuid'
 import MoveableItem from './moveableItem'
+import LeaderLine from 'leader-line-new'
 
 export default {
 	name: 'myhome',
@@ -56,6 +57,7 @@ export default {
 			furnitures: {},
 			devices: {},
 			deviceTypes: {},
+			deviceLinks: {},
 			floorTiles: [],
 			furnitureTiles: [],
 			constructionTiles: [],
@@ -76,7 +78,11 @@ export default {
 			draggingPlanStartX: 0,
 			draggingPlanStartY: 0,
 			floorPlanX: 0,
-			floorPlanY: 0
+			floorPlanY: 0,
+			deviceLinkParent: 0,
+			deviceLinkTarget: 0,
+			newConnectionLink: null,
+			connectionLinks: {}
 		}
 	},
 	computed: {
@@ -117,7 +123,6 @@ export default {
 			} else {
 				self.zoomLevel = Math.min(self.zoomLevel + 0.05, 3.0)
 			}
-
 			self.moveableItem.destroyMoveable()
 		})
 
@@ -171,6 +176,8 @@ export default {
 				this.constructions = response.data.data.constructions
 				this.furnitures = response.data.data.furnitures
 				this.devices = response.data.data.devices
+				this.links = response.data.data.links
+				this.drawDeviceLinks()
 			}
 		})
 	},
@@ -181,6 +188,27 @@ export default {
 		this.uid = uuidv4()
 	},
 	methods: {
+		drawDeviceLinks: function () {
+			for (const link of Object.values(this.links)) {
+				console.log(`#dev_${link.deviceId}`)
+				console.log(`#loc_${link.targetLocation}`)
+				new LeaderLine(
+					document.querySelector(`#dev_${link.deviceId}`),
+					document.querySelector(`#loc_${link.targetLocation}`),
+					{
+						color: '#343434',
+						size: 3,
+						dash: {
+							animation: {
+								duration: 250,
+								timing: 'linear'
+							}
+						},
+						dropShadow: true
+					}
+				)
+			}
+		},
 		setActiveTool: function (tool, isToggle) {
 			const self = this
 			Object.keys(this.toolsState).forEach(function (key, _value) {
@@ -311,10 +339,17 @@ export default {
 
 				this.draggingPlanStartX = event.clientX
 				this.draggingPlanStartY = event.clientY
-			} else if ((this.toolsState.paintingFloors && this.activeFloorTile !== '') || (this.toolsState.placingFurniture && this.activeFurnitureTile !== '') || (this.toolsState.placingConstructions && this.activeConstructionTile !== '') || (this.toolsState.addingDevice && this.activeDeviceTile !== '')) {
+			} else if ((this.toolsState.paintingFloors && this.activeFloorTile !== '')
+				|| (this.toolsState.placingFurniture && this.activeFurnitureTile !== '')
+				|| (this.toolsState.placingConstructions && this.activeConstructionTile !== '')
+				|| (this.toolsState.addingDevice && this.activeDeviceTile !== '')
+				|| (this.toolsState.linkingDevices)) {
 				let rect = this.$refs['myHomeEditor'].getBoundingClientRect()
 				this.$refs['ghost'].style.top = `${event.clientY - 25 - rect.top}px`
 				this.$refs['ghost'].style.left = `${event.clientX - 25 - rect.left}px`
+				if (this.newConnectionLink !== null) {
+					this.newConnectionLink.position()
+				}
 			}
 		},
 		drawSelectionArea: function (movedX, movedY) {
@@ -327,6 +362,23 @@ export default {
 			this.areaSelectorY = y
 			this.areaSelectorW = x2 - x
 			this.areaSelectorH = y2 - y
+		},
+		newConnectionLine: function (deviceId) {
+			this.newConnectionLink = new LeaderLine(
+				document.querySelector(`#dev_${deviceId}`),
+				this.$refs.ghost,
+				{
+					color: 'blue',
+					size: 4,
+					dash: {
+						animation: {
+							duration: 250,
+							timing: 'linear'
+						}
+					},
+					dropShadow: true
+				}
+			)
 		},
 		handleClick: function (event) {
 			this.clicked = false
