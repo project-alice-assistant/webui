@@ -47,6 +47,7 @@
 			v-fit2box="data.name"
 			:class="{clickable: myHome.locationsEditMode && !myHome.toolsState.addingLocation && !myHome.toolsState.paintingFloors}"
 			class="locationName"
+			v-if="myHome.locationsEditMode"
 			@click="rename"
 		/>
 		<div v-if="myHome.toolsState.settingLocations" class="widgetTool optioner" @click="openSettings">

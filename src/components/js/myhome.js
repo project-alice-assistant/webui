@@ -234,6 +234,8 @@ export default {
 		},
 		closeEditor: function () {
 			this.setActiveTool('none')
+			this.locationsEditMode = false
+			this.devicesEditMode = false
 		},
 		floorPlanClick: function () {
 			this.moveableItem.destroyMoveable()
