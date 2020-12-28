@@ -260,13 +260,13 @@ export default {
 						if ('location' in response.data) {
 							self.$dialog.alert(self.$t('dialogs.bodies.locationNameOrSynonymAlreadyExist')).then()
 						} else {
-							this.setActiveTool('addingLocation')
+							self.setActiveTool('addingLocation')
 							self.newLocationName = dialogue.data
 						}
 					})
 				})
 				.catch(function () {
-					this.setActiveTool('locationsEditMode')
+					self.setActiveTool('locationsEditMode')
 					self.newLocationName = ''
 				})
 		},
