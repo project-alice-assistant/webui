@@ -64,7 +64,7 @@ export default {
 		computeCustomStyle: function () {
 			return this.myHome.moveableItem.computeCustomStyle(
 				this.data,
-				`background: url('http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/${this.data.uid}/device.png') no-repeat; background-size: 100% 100%;`
+				`background: url('http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/${this.data.id}/device.png') no-repeat; background-size: 100% 100%;`
 			)
 		},
 		save: function () {
@@ -77,7 +77,7 @@ export default {
 
 			axios({
 				method: 'patch',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/${this.data.uid}/`,
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/${this.data.id}/`,
 				data: data,
 				headers: {
 					'auth': localStorage.getItem('apiToken'),
@@ -96,7 +96,7 @@ export default {
 				this.myHome.moveableItem.setBoundaries(this.$el, 0)
 				const devices = Array.from(document.querySelectorAll('.device')).filter((device) => {
 					const devId = device.id.substring(4)
-					return !(devId === this.data.uid);
+					return !(devId === this.data.id);
 				})
 				this.myHome.moveableItem.setGuidelines(devices)
 			} else if (!this.myHome.devicesEditMode && !this.myHome.locationsEditMode) {
@@ -142,7 +142,7 @@ export default {
 			event.stopPropagation()
 			axios({
 				method: 'delete',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/${this.data.uid}/`,
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/${this.data.id}/`,
 				headers: {'auth': localStorage.getItem('apiToken')}
 			}).then(response => {
 				if ('success' in response.data && response.data.success) {

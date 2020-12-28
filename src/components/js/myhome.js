@@ -238,9 +238,6 @@ export default {
 		floorPlanClick: function () {
 			this.moveableItem.destroyMoveable()
 		},
-		deleteLocations: function () {
-			this.setActiveTool('deletingLocations', true)
-		},
 		addLocationDialog: function () {
 			if (!this.toolsState.none) return
 

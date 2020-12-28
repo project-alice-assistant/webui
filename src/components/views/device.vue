@@ -8,7 +8,7 @@
 		class="device clickable"
 	>
 		<div class="deviceState">
-			<span v-if="data.uid === -1">
+			<span v-if="parseInt(data.uid) === -1">
 				<i aria-hidden="true" class="fas fa-unlink red"/>
 			</span>
 			<span v-else-if="!data.connected">

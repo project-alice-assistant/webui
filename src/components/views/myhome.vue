@@ -1,4 +1,3 @@
-<script src="../../utils/htmlFormatter.js"></script>
 <template>
 	<div :key="uid" class="container flexcolumn">
 		<actions-menu :menuItems="menuItems" v-if="$store.state.loggedInUser"/>
@@ -6,7 +5,7 @@
 			<i v-tooltip="$t('tooltips.addLocations')" :class="{yellow: toolsState.addingLocation}"
 				 aria-hidden="true" class="fas fa-plus-circle fa-2x fa-fw clickable" @click="addLocationDialog"/>
 			<i v-tooltip="$t('tooltips.removeLocations')" :class="{yellow: toolsState.deletingLocations}"
-				 aria-hidden="true" class="fas fa-trash-alt fa-2x fa-fw clickable" @click="deleteLocations"/>
+				 aria-hidden="true" class="fas fa-trash-alt fa-2x fa-fw clickable" @click="setActiveTool('deletingLocations', true)"/>
 			<i v-tooltip="$t('tooltips.settings')" :class="{yellow: toolsState.settingLocations}"
 				 aria-hidden="true" class="fas fa-cogs fa-2x fa-fw clickable" @click="setActiveTool('settingLocations', true)"/>
 			<i v-tooltip="$t('tooltips.paintFloors')" :class="{yellow: toolsState.paintingFloors}"
@@ -23,7 +22,7 @@
 			<i v-tooltip="$t('tooltips.addDevice')" :class="{yellow: toolsState.addingDevice}"
 				 aria-hidden="true" class="fas fa-plus-circle fa-2x fa-fw clickable" @click="addDeviceDialog"/>
 			<i v-tooltip="$t('tooltips.removeDevice')" :class="{yellow: toolsState.deletingDevices}"
-				 aria-hidden="true" class="fas fa-trash-alt fa-2x fa-fw clickable" @click="deleteLocations"/>
+				 aria-hidden="true" class="fas fa-trash-alt fa-2x fa-fw clickable" @click="setActiveTool('deletingDevices', true)"/>
 			<i v-tooltip="$t('tooltips.settings')" :class="{yellow: toolsState.settingDevices}"
 				 aria-hidden="true" class="fas fa-cogs fa-2x fa-fw clickable" @click="setActiveTool('settingDevices', true)"/>
 			<i v-tooltip="$t('tooltips.linkDevice')" :class="{yellow: toolsState.linkingDevices}"
