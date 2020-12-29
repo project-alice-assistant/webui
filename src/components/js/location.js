@@ -154,6 +154,9 @@ export default {
 					if ('link' in response.data) {
 						let link = response.data['link']
 						this.myHome.$set(this.myHome.deviceLinks, link.id, link)
+						this.myHome.drawDeviceLinks(link.id)
+					} else {
+						this.myHome.setActiveTool('none')
 					}
 				})
 			} else if (!this.myHome.toolsState.settingLocations && !this.myHome.toolsState.deletingLocations && !this.myHome.toolsState.paintingFloors && this.myHome.locationsEditMode) {
@@ -217,6 +220,7 @@ export default {
 					this.myHome.removeDroppable()
 				}
 			}
+			this.myHome.refreshDeviceLinks()
 		},
 		setPosition: function (target) {
 			try {

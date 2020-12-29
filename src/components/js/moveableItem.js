@@ -45,16 +45,6 @@ export default class MoveableItem {
 				} catch {
 				}
 			}
-			// } else if (event.key === 'Alt') {
-			// 	try {
-			// 		self.moveable.resizable = false
-			// 		self.moveable.draggable = false
-			// 		self.moveable.roundable = true
-			// 		self.moveable.padding = self.paddingBox
-			// 		self.altDown = true
-			// 	} catch {
-			// 	}
-			// }
 		})
 	}
 

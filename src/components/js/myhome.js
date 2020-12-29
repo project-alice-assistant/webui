@@ -16,7 +16,8 @@ export default {
 					isToggle: true,
 					extendedIcon: 'fas fa-times-circle',
 					extendedName: this.$t('tooltips.close'),
-					onClose: this.closeEditor
+					onClose: this.closeEditor,
+					onOpen: this.openEditor
 				},
 				{
 					name: this.$t('tooltips.theaterMode'),
@@ -113,6 +114,10 @@ export default {
 				self.activeFurnitureTile = ''
 				self.activeFloorTile = ''
 				self.activeDeviceTile = ''
+				if (self.newConnectionLink) {
+					self.newConnectionLink.remove()
+				}
+				self.newConnectionLink = null
 				self.setActiveTool('none')
 			}
 		})
@@ -124,6 +129,11 @@ export default {
 				self.zoomLevel = Math.min(self.zoomLevel + 0.05, 3.0)
 			}
 			self.moveableItem.destroyMoveable()
+			self.refreshDeviceLinks()
+		})
+
+		document.addEventListener('contextmenu', function (event) {
+			self.setActiveTool('none')
 		})
 
 		axios({
@@ -175,26 +185,57 @@ export default {
 				this.locations = response.data.data.locations
 				this.constructions = response.data.data.constructions
 				this.furnitures = response.data.data.furnitures
+				this.deviceLinks = response.data.data.links
 				this.devices = response.data.data.devices
-				this.links = response.data.data.links
-				this.drawDeviceLinks()
 			}
 		})
 	},
 	mounted: function () {
 		this.areaSelector = this.$refs.areaSelector
+
+		let self = this
+		this.$watch(
+			() => {
+				return this.devicesEditMode
+			},
+			(newVal, _oldVal) => {
+				if (newVal) {
+					for (const link of Object.values(self.connectionLinks)) {
+						link.show('draw')
+					}
+				} else {
+					for (const link of Object.values(self.connectionLinks)) {
+						link.hide('fade')
+					}
+				}
+			},
+			{
+				deep: true
+			}
+		)
 	},
 	activated: function () {
 		this.uid = uuidv4()
 	},
 	methods: {
-		drawDeviceLinks: function () {
-			for (const link of Object.values(this.links)) {
-				console.log(`#dev_${link.deviceId}`)
-				console.log(`#loc_${link.targetLocation}`)
-				new LeaderLine(
-					document.querySelector(`#dev_${link.deviceId}`),
-					document.querySelector(`#loc_${link.targetLocation}`),
+		drawDeviceLinks: function (specificLinkId) {
+			for (const link of Object.values(this.deviceLinks)) {
+				if (specificLinkId && link.id !== specificLinkId) continue
+
+				let device = null
+				for (const location of this.$children.filter(loc => loc.$options.name === 'location')) {
+					device = location.$children.find(dev => dev.$options.name === 'device' && dev.data.id === link.deviceId)
+					if (device) break
+				}
+
+				if (!device) continue
+				let targetLocation = document.querySelector(`#loc_${link.targetLocation}`)
+				const line = new LeaderLine(
+					device.$el,
+					LeaderLine.pointAnchor(targetLocation, {
+						x: targetLocation.style.width / 2,
+						y: targetLocation.style.height / 2
+					}),
 					{
 						color: '#343434',
 						size: 3,
@@ -204,9 +245,22 @@ export default {
 								timing: 'linear'
 							}
 						},
-						dropShadow: true
+						dropShadow: true,
+						hide: true,
+						middleLabel: this.locations[link.targetLocation].name
 					}
 				)
+				device.myLinks[link.id] = line
+				this.connectionLinks[link.id] = line
+
+				if (this.devicesEditMode) {
+					line.show('draw')
+				}
+			}
+		},
+		refreshDeviceLinks: function () {
+			for (const link of Object.values(this.connectionLinks)) {
+				link.position()
 			}
 		},
 		setActiveTool: function (tool, isToggle) {
@@ -233,6 +287,10 @@ export default {
 				self.toolsState['none'] = true
 			}
 
+			if (this.newConnectionLink) {
+				this.newConnectionLink.remove()
+				this.newConnectionLink = null
+			}
 			this.moveableItem.destroyMoveable()
 			this.removeDroppable()
 		},
@@ -260,10 +318,23 @@ export default {
 			this.devicesEditMode = true
 			this.setActiveTool('none')
 		},
+		openEditor: function () {
+			if (Object.keys(this.connectionLinks).length === 0) {
+				this.drawDeviceLinks()
+			}
+		},
 		closeEditor: function () {
 			this.setActiveTool('none')
 			this.locationsEditMode = false
 			this.devicesEditMode = false
+			this.moveableItem.destroyMoveable()
+			this.removeDroppable()
+		},
+		removeConnectionLinks: function () {
+			for (const link of Object.values(this.connectionLinks)) {
+				link.remove()
+			}
+			this.connectionLinks = {}
 		},
 		floorPlanClick: function () {
 			this.moveableItem.destroyMoveable()
@@ -339,6 +410,7 @@ export default {
 
 				this.draggingPlanStartX = event.clientX
 				this.draggingPlanStartY = event.clientY
+				this.refreshDeviceLinks()
 			} else if ((this.toolsState.paintingFloors && this.activeFloorTile !== '')
 				|| (this.toolsState.placingFurniture && this.activeFurnitureTile !== '')
 				|| (this.toolsState.placingConstructions && this.activeConstructionTile !== '')
@@ -503,7 +575,8 @@ export default {
 			immediate: true,
 			handler(to) {
 				if (to.path !== '/myhome') {
-					this.moveableItem.destroyMoveable()
+					this.closeEditor()
+					this.removeConnectionLinks()
 				}
 			}
 		}

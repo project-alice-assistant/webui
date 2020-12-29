@@ -4,8 +4,10 @@
 		:ref="`dev_${data.id}`"
 		:style="computeCustomStyle()"
 		v-tooltip="data.displayName"
-		@click="handleClick"
 		class="device clickable"
+		@click="handleClick"
+		@mouseenter="onMouseEnter"
+		@mouseleave="onMouseExit"
 	>
 		<div class="deviceState">
 			<span v-if="parseInt(data.uid) === -1">

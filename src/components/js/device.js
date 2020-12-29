@@ -8,7 +8,8 @@ export default {
 		return {
 			rotationDelta: 0,
 			targetParentLocation: 0,
-			checkHeartbeat: null
+			checkHeartbeat: null,
+			myLinks: {}
 		}
 	},
 	props: [
@@ -100,7 +101,7 @@ export default {
 					const devId = device.id.substring(4)
 					return !(devId === this.data.id);
 				})
-				this.myHome.moveableItem.setGuidelines(devices)
+				this.myHome.moveableItem.setGuidelines([])
 			} else if (!this.myHome.devicesEditMode && !this.myHome.locationsEditMode) {
 				axios({
 					method: 'patch',
@@ -125,6 +126,7 @@ export default {
 					this.myHome.removeDroppable()
 				}
 			}
+			this.myHome.refreshDeviceLinks()
 		},
 		setPosition: function (target) {
 			try {
@@ -151,6 +153,20 @@ export default {
 					this.myHome.$delete(this.myHome.devices, this.data.id)
 				}
 			})
+		},
+		onMouseEnter: function () {
+			if (this.myHome.locationsEditMode && this.myHome.toolsState.none) {
+				for (const link of Object.values(this.myLinks)) {
+					link.show('draw')
+				}
+			}
+		},
+		onMouseExit: function () {
+			if (this.myHome.locationsEditMode && this.myHome.toolsState.none) {
+				for (const link of Object.values(this.myLinks)) {
+					link.hide('draw')
+				}
+			}
 		}
 	}
 }
