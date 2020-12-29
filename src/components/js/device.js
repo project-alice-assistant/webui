@@ -41,7 +41,6 @@ export default {
 					self.data.connected = true
 
 					self.checkHeartbeat = setTimeout(function () {
-						console.log('disconnected')
 						self.data.connected = false
 					}, self.data['heartbeatRate'] * 2500)
 				} else if (msg.topic === C.CORE_DISCONNECTION_TOPIC) {
@@ -93,14 +92,10 @@ export default {
 			this.myHome.removeDroppable()
 
 			if (this.myHome.devicesEditMode && this.myHome.toolsState.linkingDevices) {
-				this.myHome.newConnectionLine(this.data.id)
+				this.myHome.newConnectionLine(this)
 			} else if (this.myHome.devicesEditMode && event.target.classList.contains('device')) {
 				this.myHome.setMoveable(event.target, this)
 				this.myHome.moveableItem.setBoundaries(this.$el, 0)
-				const devices = Array.from(document.querySelectorAll('.device')).filter((device) => {
-					const devId = device.id.substring(4)
-					return !(devId === this.data.id);
-				})
 				this.myHome.moveableItem.setGuidelines([])
 			} else if (!this.myHome.devicesEditMode && !this.myHome.locationsEditMode) {
 				axios({

@@ -32,3 +32,11 @@
 .notDroppable {
 	border: 5px solid red;
 }
+
+.location.notDroppable::after {
+	background: url('../../assets/images/strike.png') repeat;
+	content: '';
+	height: 100%;
+	width: 100%;
+	z-index: 1000;
+}

@@ -99,7 +99,7 @@ const i18n = new VueI18n({
 	messages: {}
 })
 
-document.addEventListener('contextmenu', event => event.preventDefault())
+//document.addEventListener('contextmenu', event => event.preventDefault())
 
 new Vue({
 	store,

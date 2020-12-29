@@ -137,6 +137,8 @@ export default {
 					}
 				})
 			} else if (this.myHome.toolsState.linkingDevices && this.myHome.newConnectionLink !== null) {
+				if (!this.checkDeviceLinkPossible()) return
+
 				const data = {
 					targetLocation: this.data.id,
 					deviceId: parseInt(this.myHome.newConnectionLink.start.id.substring(4))
@@ -274,9 +276,22 @@ export default {
 						count++
 					}
 				}
-				console.log(count, perLocationLimit)
 				return count < perLocationLimit
 			}
+		},
+		checkDeviceLinkPossible() {
+			try {
+				const device = this.myHome.deviceLinkParent
+				const deviceType = this.myHome.getDeviceType(device)
+				if (device.data.parentLocation === this.data.id || !deviceType.allowLocationLinks) return false
+
+				for (const link of Object.values(this.myHome.deviceLinks)) {
+					if (link.deviceId === device.data.id && link.targetLocation === this.data.id) return false
+				}
+			} catch {
+				return false
+			}
+			return true
 		},
 		onMouseEnter() {
 			if (this.myHome.toolsState.addingDevice) {
@@ -284,6 +299,12 @@ export default {
 					this.$el.classList.add('droppable')
 				} else {
 					this.$el.classList.add('notDroppable')
+				}
+			} else if (this.myHome.toolsState.linkingDevices && this.myHome.newConnectionLink) {
+				if (!this.checkDeviceLinkPossible()) {
+					this.$el.classList.add('notDroppable')
+				} else {
+					this.$el.classList.add('droppable')
 				}
 			}
 		},

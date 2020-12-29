@@ -80,8 +80,7 @@ export default {
 			draggingPlanStartY: 0,
 			floorPlanX: 0,
 			floorPlanY: 0,
-			deviceLinkParent: 0,
-			deviceLinkTarget: 0,
+			deviceLinkParent: null,
 			newConnectionLink: null,
 			connectionLinks: {}
 		}
@@ -133,7 +132,20 @@ export default {
 		})
 
 		document.addEventListener('contextmenu', function (event) {
-			self.setActiveTool('none')
+			if (self.activeDeviceTile) {
+				self.activeDeviceTile = ''
+			} else if (self.activeConstructionTile) {
+				self.activeConstructionTile = ''
+			} else if (self.activeFurnitureTile) {
+				self.activeFurnitureTile = ''
+			} else if (self.activeFloorTile) {
+				self.activeFloorTile = ''
+			} else if (self.newConnectionLink) {
+				self.newConnectionLink.remove()
+				self.newConnectionLink = null
+			} else {
+				self.setActiveTool('none')
+			}
 		})
 
 		axios({
@@ -218,6 +230,21 @@ export default {
 		this.uid = uuidv4()
 	},
 	methods: {
+		getDeviceType: function (device) {
+			const skillName = device.data.skillName.toLowerCase()
+			const deviceTypeName = device.data.typeName.toLowerCase()
+			if (!skillName in this.deviceTypes) {
+				return null
+			}
+
+			for (const deviceType of this.deviceTypes[skillName]) {
+				if (deviceType.deviceTypeName.toLowerCase() === deviceTypeName) {
+					return deviceType
+				}
+			}
+
+			return null
+		},
 		drawDeviceLinks: function (specificLinkId) {
 			for (const link of Object.values(this.deviceLinks)) {
 				if (specificLinkId && link.id !== specificLinkId) continue
@@ -435,9 +462,10 @@ export default {
 			this.areaSelectorW = x2 - x
 			this.areaSelectorH = y2 - y
 		},
-		newConnectionLine: function (deviceId) {
+		newConnectionLine: function (device) {
+			this.deviceLinkParent = device
 			this.newConnectionLink = new LeaderLine(
-				document.querySelector(`#dev_${deviceId}`),
+				document.querySelector(`#dev_${device.data.id}`),
 				this.$refs.ghost,
 				{
 					color: 'blue',
