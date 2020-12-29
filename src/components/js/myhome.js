@@ -273,6 +273,8 @@ export default {
 							}
 						},
 						dropShadow: true,
+						endPlug: 'disc',
+						endPlugSize: 3,
 						hide: true,
 						middleLabel: this.locations[link.targetLocation].name
 					}
