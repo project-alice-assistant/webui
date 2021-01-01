@@ -6,7 +6,7 @@
 			painting: myHome.toolsState.paintingFloors,
 			clickable: myHome.locationsEditMode && !myHome.toolsState.addingLocation && !myHome.toolsState.paintingFloors
 		}"
-		class="location test"
+		class="location"
 		@click="handleClick"
 		@mouseenter="onMouseEnter"
 		@mouseleave="onMouseLeave"

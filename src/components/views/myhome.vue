@@ -73,6 +73,7 @@
 					locationsEditMode: locationsEditMode,
 					addLocation: toolsState.addingLocation
 				}"
+				id="floorPlan"
 				ref="floorPlan"
 				class="floorPlan"
 				@click="floorPlanClick"

@@ -8,13 +8,6 @@ export default class MoveableItem {
 		this.rotationDelta = 0
 		this.altDown = false
 
-		this.paddingBox = {
-			left: 15,
-			right: 15,
-			top: 15,
-			bottom: 15
-		}
-
 		let self = this
 		document.addEventListener('keyup', function (event) {
 			if (event.repeat) return
@@ -25,15 +18,6 @@ export default class MoveableItem {
 				} catch {
 				}
 			}
-			// } else if (event.key === 'Alt') {
-			// 	try {
-			// 		self.moveable.resizable = true
-			// 		self.moveable.draggable = true
-			// 		self.moveable.roundable = false
-			// 		self.moveable.padding = {}
-			// 		self.altDown = false
-			// 	} catch {
-			// 	}
 		})
 
 		document.addEventListener('keydown', function (event) {
@@ -107,27 +91,24 @@ export default class MoveableItem {
 		})
 
 		this.moveable.on('dragStart', ({target}) => {
-			this.dragging = true
-
 			try {
 				this.moveable.props.dragStart(target)
 			} catch {
+				this.startDrag(target)
 			} finally {
-				target.classList.add('dragging')
+				this.dragging = true
 			}
 		}).on('drag', ({target, left, top, clientX, clientY}) => {
 			try {
 				this.moveable.props.handleDrag(target, left, top, clientX, clientY)
 			} catch {
-			} finally {
-				target.style.left = `${left}px`
-				target.style.top = `${top}px`
+				this.handleDrag(target, left, top)
 			}
 		}).on('dragEnd', ({target}) => {
-			this.setPosition(target)
 			try {
 				this.moveable.props.setPosition(target)
 			} catch {
+				this.setPosition(target)
 			} finally {
 				this.save()
 				this.dragging = false
@@ -139,15 +120,14 @@ export default class MoveableItem {
 			try {
 				this.moveable.props.handleResize(target, width, height, delta, direction)
 			} catch {
-			} finally {
 				this.handleResize(target, width, height, delta, direction)
 			}
 		}).on('resizeEnd', ({target}) => {
 			try {
 				this.moveable.props.setSize(target)
 			} catch {
-			} finally {
 				this.setSize(target)
+			} finally {
 				this.save()
 			}
 		})
@@ -156,15 +136,14 @@ export default class MoveableItem {
 			try {
 				this.moveable.props.handleRotate(target, dist, transform)
 			} catch {
-			} finally {
 				this.handleRotate(target, dist, transform)
 			}
 		}).on('rotateEnd', ({target}) => {
 			try {
 				this.moveable.props.setRotation(target)
 			} catch {
-			} finally {
 				this.setRotation(target)
+			} finally {
 				this.save()
 			}
 		})
@@ -173,15 +152,14 @@ export default class MoveableItem {
 			try {
 				this.moveable.props.handleBorderRadius(el.target)
 			} catch {
-			} finally {
 				this.handleBorderRadius(el)
 			}
 		}).on('roundEnd', el => {
 			try {
 				this.moveable.props.setBorderRadius(el)
 			} catch {
-			} finally {
 				this.setBorderRadius(el)
+			} finally {
 				this.save()
 			}
 		})
@@ -198,11 +176,12 @@ export default class MoveableItem {
 	}
 
 	save() {
-		this.moveable.props.save()
+		//this.moveable.props.save()
 	}
 
 	startDrag(target) {
 		target.classList.add('dragging')
+		target.style['z-index'] = 1000
 	}
 
 	getItem(target) {
@@ -272,5 +251,10 @@ export default class MoveableItem {
 
 	handleBorderRadius(el) {
 		el.target.style.borderRadius = el.borderRadius
+	}
+
+	handleDrag(target, left, top) {
+		target.style.left = `${left}px`
+		target.style.top = `${top}px`
 	}
 }
