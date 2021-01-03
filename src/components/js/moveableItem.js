@@ -104,9 +104,9 @@ export default class MoveableItem {
 			} catch {
 				this.handleDrag(target, left, top)
 			}
-		}).on('dragEnd', ({target}) => {
+		}).on('dragEnd', ({target, clientX, clientY}) => {
 			try {
-				this.moveable.props.setPosition(target)
+				this.moveable.props.setPosition(target, clientX, clientY)
 			} catch {
 				this.setPosition(target)
 			} finally {
@@ -176,7 +176,7 @@ export default class MoveableItem {
 	}
 
 	save() {
-		//this.moveable.props.save()
+		this.moveable.props.save()
 	}
 
 	startDrag(target) {

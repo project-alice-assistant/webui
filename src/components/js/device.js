@@ -131,7 +131,7 @@ export default {
 			this.myHome.refreshDeviceLinks()
 			throw true
 		},
-		setPosition: function (target) {
+		setPosition: function (target, clientX, clientY) {
 			try {
 				if (this.targetParentLocation !== 0 && this.data.parentLocation !== this.targetParentLocation) {
 					// noinspection DuplicatedCode
@@ -139,16 +139,16 @@ export default {
 					const droppedIn = document.querySelector(`#loc_${this.targetParentLocation}`)
 					this.myHome.moveableItem.container = droppedIn
 					this.myHome.devices[this.data.id].parentLocation = this.targetParentLocation
-					this.myHome.devices[this.data.id].settings['x'] = parseInt(target.style.left.substring(-2)) - parseInt(parentLocation.style.width.substring(-2))
-					this.myHome.devices[this.data.id].settings['y'] = parseInt(target.style.top.substring(-2))
 					this.myHome.devices[this.data.id].settings['z'] = parseInt(droppedIn.style['z-index']) + 1
+					this.myHome.devices[this.data.id].settings['x'] = parentLocation.offsetLeft + parseInt(target.style.left.substring(-2)) - droppedIn.offsetLeft
+					this.myHome.devices[this.data.id].settings['y'] = parentLocation.offsetTop + parseInt(target.style.top.substring(-2)) - droppedIn.offsetTop
 					this.targetParentLocation = 0
 				} else {
 					// noinspection ExceptionCaughtLocallyJS
 					throw true
 				}
 			} catch (e) {
-				console.error(e)
+				console.log(e)
 				throw e
 			}
 		},
