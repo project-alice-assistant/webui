@@ -230,6 +230,21 @@ export default {
 		this.uid = uuidv4()
 	},
 	methods: {
+		checkDevicePerLocationLimit(deviceType, locationId) {
+			const perLocationLimit = deviceType.perLocationLimit
+
+			if (perLocationLimit === 0) {
+				return true
+			} else {
+				let count = 0
+				for (const device of Object.values(this.devices)) {
+					if (device.skillName === deviceType.skillName && device.deviceType === deviceType.deviceTypeName && device.parentLocation === locationId) {
+						count++
+					}
+				}
+				return count < perLocationLimit
+			}
+		},
 		getDeviceType: function (device) {
 			const skillName = device.data.skillName.toLowerCase()
 			const deviceTypeName = device.data.typeName.toLowerCase()

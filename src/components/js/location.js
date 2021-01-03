@@ -50,7 +50,7 @@ export default {
 				this.myHome.locations[this.data.id].settings['t'] = this.myHome.activeFloorTile
 				this.save()
 			} else if (this.myHome.toolsState.addingDevice && this.myHome.activeDeviceTile !== '') {
-				if (!this.checkDevicePerLocationLimit()) return
+				if (!this.checkDevicePerLocationLimit(this.data.id)) return
 
 				const data = {
 					deviceType: this.myHome.activeDeviceTile.deviceTypeName,
@@ -223,6 +223,7 @@ export default {
 				}
 			}
 			this.myHome.refreshDeviceLinks()
+			throw true
 		},
 		setPosition: function (target) {
 			try {
@@ -237,9 +238,12 @@ export default {
 					this.myHome.locations[this.data.id].settings['x'] = parseInt(target.style.left.substring(-2)) - parseInt(droppedIn.style.left.substring(-2))
 					this.myHome.locations[this.data.id].settings['y'] = parseInt(target.style.top.substring(-2)) - parseInt(droppedIn.style.top.substring(-2))
 					this.targetParentLocation = 0
+				} else {
+					// noinspection ExceptionCaughtLocallyJS
+					throw true
 				}
 			} catch (e) {
-				console.error(e)
+				throw e
 			}
 		},
 		moveZUp() {
@@ -263,22 +267,6 @@ export default {
 				self.save()
 			}).catch()
 		},
-		checkDevicePerLocationLimit() {
-			const activeDeviceType = this.myHome.activeDeviceTile
-			const perLocationLimit = activeDeviceType.perLocationLimit
-
-			if (perLocationLimit === 0) {
-				this.$el.classList.add('droppable')
-			} else {
-				let count = 0
-				for (const device of Object.values(this.devices)) {
-					if (device.skillName === activeDeviceType.skillName && device.deviceType === activeDeviceType.deviceTypeName && device.parentLocation === this.data.id) {
-						count++
-					}
-				}
-				return count < perLocationLimit
-			}
-		},
 		checkDeviceLinkPossible() {
 			try {
 				const device = this.myHome.deviceLinkParent
@@ -295,7 +283,7 @@ export default {
 		},
 		onMouseEnter() {
 			if (this.myHome.toolsState.addingDevice) {
-				if (this.checkDevicePerLocationLimit()) {
+				if (this.myHome.checkDevicePerLocationLimit(this.myHome.activeDeviceTile, this.data.id)) {
 					this.$el.classList.add('droppable')
 				} else {
 					this.$el.classList.add('notDroppable')

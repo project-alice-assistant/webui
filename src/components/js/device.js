@@ -95,7 +95,7 @@ export default {
 				this.myHome.newConnectionLine(this)
 			} else if (this.myHome.devicesEditMode && event.target.classList.contains('device')) {
 				this.myHome.setMoveable(event.target, this)
-				this.myHome.moveableItem.setBoundaries(this.$el, 0)
+				this.myHome.moveableItem.setBoundaries(this.myHome.$refs.floorPlan)
 				this.myHome.moveableItem.setGuidelines([])
 			} else if (!this.myHome.devicesEditMode && !this.myHome.locationsEditMode) {
 				axios({
@@ -110,11 +110,18 @@ export default {
 			for (const el of elementsBelow) {
 				if (el.classList.contains('location')) {
 					const elementId = parseInt(el.id.substring(4))
-					if (el !== this.$el && elementId !== this.data.parentLocation) {
-						this.myHome.removeDroppable()
-						el.classList.add('droppable')
-						this.targetParentLocation = elementId
-						break
+					if (this.myHome.checkDevicePerLocationLimit(this.myHome.getDeviceType(this), elementId)) {
+						if (this.data.parentLocation !== elementId) {
+							this.myHome.removeDroppable()
+							el.classList.add('droppable')
+							this.targetParentLocation = elementId
+							break
+						}
+					} else {
+						if (this.data.parentLocation !== elementId) {
+							this.myHome.removeDroppable()
+							el.classList.add('notDroppable')
+						}
 					}
 				} else {
 					this.targetParentLocation = 0
@@ -122,19 +129,27 @@ export default {
 				}
 			}
 			this.myHome.refreshDeviceLinks()
+			throw true
 		},
 		setPosition: function (target) {
 			try {
 				if (this.targetParentLocation !== 0 && this.data.parentLocation !== this.targetParentLocation) {
 					// noinspection DuplicatedCode
+					const parentLocation = document.querySelector(`#loc_${this.data.parentLocation}`)
 					const droppedIn = document.querySelector(`#loc_${this.targetParentLocation}`)
+					this.myHome.moveableItem.container = droppedIn
 					this.myHome.devices[this.data.id].parentLocation = this.targetParentLocation
-					this.myHome.devices[this.data.id].settings['x'] = parseInt(target.style.left.substring(-2)) - parseInt(droppedIn.style.left.substring(-2))
-					this.myHome.devices[this.data.id].settings['y'] = parseInt(target.style.top.substring(-2)) - parseInt(droppedIn.style.top.substring(-2))
+					this.myHome.devices[this.data.id].settings['x'] = parseInt(target.style.left.substring(-2)) - parseInt(parentLocation.style.width.substring(-2))
+					this.myHome.devices[this.data.id].settings['y'] = parseInt(target.style.top.substring(-2))
+					this.myHome.devices[this.data.id].settings['z'] = parseInt(droppedIn.style['z-index']) + 1
 					this.targetParentLocation = 0
+				} else {
+					// noinspection ExceptionCaughtLocallyJS
+					throw true
 				}
 			} catch (e) {
 				console.error(e)
+				throw e
 			}
 		},
 		deleteMe: function (event) {
