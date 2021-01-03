@@ -162,7 +162,7 @@ export default {
 					}
 				})
 			} else if (!this.myHome.toolsState.settingLocations && !this.myHome.toolsState.deletingLocations && !this.myHome.toolsState.paintingFloors && this.myHome.locationsEditMode) {
-				if (event.target.classList.contains('dragging')) return
+				if (event.target.classList.contains('dragging') || !event.target.classList.contains('location')) return
 
 				this.myHome.setMoveable(event.target, this)
 				this.myHome.moveableItem.setBoundaries(this.$el, 10)

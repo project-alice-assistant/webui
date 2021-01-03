@@ -43,13 +43,18 @@
 			:data="dev"
 			:myHome="myHome"
 		/>
-		<span
-			v-resize-text="{ratio: 1.3, minFontSize: '10px', delay: 200}"
-			:class="{clickable: myHome.locationsEditMode && !myHome.toolsState.addingLocation && !myHome.toolsState.paintingFloors}"
-			class="locationName"
-			v-if="myHome.locationsEditMode"
-			@click="rename"
-		>{{ data.name }}</span>
+		<svg class="locationName" viewBox="0 0 100 100">
+			<text
+				v-if="myHome.locationsEditMode"
+				:class="{clickable: myHome.locationsEditMode && !myHome.toolsState.addingLocation && !myHome.toolsState.paintingFloors}"
+				text-anchor="middle"
+				x="50"
+				y="50"
+				@click="rename"
+			>
+				{{ data.name }}
+			</text>
+		</svg>
 		<div v-if="myHome.toolsState.settingLocations" class="widgetTool optioner" @click="openSettings">
 			<i aria-hidden="true" class="fas fa-cogs clickable"/>
 		</div>

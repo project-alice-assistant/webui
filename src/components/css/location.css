@@ -13,10 +13,16 @@
 }
 
 .locationName {
+	max-height: 95%;
+	pointer-events: none;
 	position: absolute;
-	text-align: center;
+	width: 95%;
+}
+
+.locationName text {
+	fill: var(--text);
+	pointer-events: all;
 	text-shadow: 2px 2px 2px var(--accent);
-	width: 90%;
 }
 
 .dragging {
