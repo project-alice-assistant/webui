@@ -55,7 +55,6 @@ export default {
 					}
 					resolve()
 				}).catch(reason => {
-					self.ip = ''
 					reject(new Error('Error connecting to Alice ' + reason))
 				})
 			})
