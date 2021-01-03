@@ -44,12 +44,12 @@
 			:myHome="myHome"
 		/>
 		<span
-			v-fit2box="data.name"
+			v-resize-text="{ratio: 1.3, minFontSize: '10px', delay: 200}"
 			:class="{clickable: myHome.locationsEditMode && !myHome.toolsState.addingLocation && !myHome.toolsState.paintingFloors}"
 			class="locationName"
 			v-if="myHome.locationsEditMode"
 			@click="rename"
-		/>
+		>{{ data.name }}</span>
 		<div v-if="myHome.toolsState.settingLocations" class="widgetTool optioner" @click="openSettings">
 			<i aria-hidden="true" class="fas fa-cogs clickable"/>
 		</div>

@@ -13,8 +13,8 @@ import VueTooltip from 'v-tooltip'
 import VueDraggableResizable from 'vue-draggable-resizable'
 import VueSimpleMarkdown from 'vue-simple-markdown'
 import VueI18n from 'vue-i18n'
-import Fit2Box from 'vue-fit2box'
 import LoadScript from 'vue-plugin-load-script'
+import VueResizeText from 'vue-resize-text'
 
 import Skill from './components/views/skill'
 import StoreSkill from './components/views/storeSkill'
@@ -56,6 +56,7 @@ Vue.use(VueTooltip)
 Vue.use(VueSimpleMarkdown)
 Vue.use(VueI18n)
 Vue.use(LoadScript)
+Vue.use(VueResizeText)
 
 Vue.component('VueToggles', VueToggles)
 Vue.component('vue-draggable-resizable', VueDraggableResizable)
@@ -69,8 +70,6 @@ Vue.component('dialogView', dialogView)
 Vue.component('furniture', Furniture)
 Vue.component('construction', Construction)
 Vue.component('device', Device)
-
-Vue.directive('fit2box', Fit2Box)
 
 Vue.dialog.registerComponent('fontawesomePromptDialog', faIconOption)
 Vue.dialog.registerComponent('widgetOptionsPromptDialog', widgetOption)
