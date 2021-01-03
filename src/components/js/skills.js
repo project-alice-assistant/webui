@@ -144,6 +144,9 @@ export default {
 		setInterval(this.reloadStoreSkills, 5 * 60 * 1000)
 		this.reloadStoreSkills()
 	},
+	activated: function () {
+		this.shopOpen = false
+	},
 	methods: {
 		updateSkillData(skillData) {
 			for (const [index, skill] of this.skills.entries()) {
