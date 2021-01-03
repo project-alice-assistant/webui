@@ -26,6 +26,7 @@ const routes = [
 	},
 	{
 		path: '/skills',
+		name: 'Skills',
 		component: skills,
 		meta: {
 			title: 'nav.skills'
@@ -34,12 +35,14 @@ const routes = [
 	{
 		path: '/scenarios',
 		component: scenarios,
+		name: 'Scenarios',
 		meta: {
 			title: 'nav.scenarios'
 		}
 	},
 	{
 		path: '/login',
+		name: 'Login',
 		component: login,
 		meta: {
 			title: 'nav.login'
@@ -47,6 +50,7 @@ const routes = [
 	},
 	{
 		path: '/syslog',
+		name: 'Syslog',
 		component: syslog,
 		meta: {
 			title: 'nav.syslog'
@@ -54,6 +58,7 @@ const routes = [
 	},
 	{
 		path: '/alicewatch',
+		name: 'AliceWatch',
 		component: alicewatch,
 		meta: {
 			title: 'nav.alicewatch'
@@ -61,6 +66,7 @@ const routes = [
 	},
 	{
 		path: '/admin',
+		name: 'Admin',
 		component: admin,
 		meta: {
 			title: 'nav.admin'
@@ -68,6 +74,7 @@ const routes = [
 	},
 	{
 		path: '/devmode',
+		name: 'Devmode',
 		component: devmode,
 		meta: {
 			title: 'nav.devmode'
@@ -75,6 +82,7 @@ const routes = [
 	},
 	{
 		path: '/myhome',
+		name: 'MyHome',
 		component: myhome,
 		meta: {
 			title: 'nav.myhome'
@@ -82,6 +90,7 @@ const routes = [
 	},
 	{
 		path: '/dialogView',
+		name: 'Dialog View',
 		component: dialogView,
 		meta: {
 			title: 'nav.dialogView'
@@ -89,6 +98,7 @@ const routes = [
 	},
 	{
 		path: '/widgets',
+		name: 'Home',
 		component: widgets,
 		meta: {
 			title: 'nav.widgets'
@@ -96,6 +106,7 @@ const routes = [
 	},
 	{
 		path: '/telemetry',
+		name: 'Telemetry',
 		component: telemetry,
 		meta: {
 			title: 'nav.telemetry'
@@ -104,7 +115,7 @@ const routes = [
 	{
 		path: '*',
 		name: 'Home',
-		component: myhome,
+		component: widgets,
 		meta: {
 			title: 'nav.widgets'
 		}

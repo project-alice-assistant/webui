@@ -95,6 +95,9 @@ export default {
 	},
 	activated: function () {
 		this.uid = uuidv4()
+		this.removeWidgets = false
+		this.settings = false
+		this.dragAndResizeEnabled = false
 	},
 	methods: {
 		changePage: function (id) {
