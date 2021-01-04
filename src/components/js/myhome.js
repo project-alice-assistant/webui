@@ -227,7 +227,7 @@ export default {
 		)
 	},
 	activated: function () {
-		this.uid = uuidv4()
+		//this.uid = uuidv4()
 	},
 	methods: {
 		checkDevicePerLocationLimit(deviceType, locationId) {
