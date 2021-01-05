@@ -98,6 +98,21 @@ export default {
 				end = `deviceTypes/${this.activeDeviceTile.skillName.toLowerCase()}/${this.activeDeviceTile.deviceTypeName.toLowerCase()}.png`
 			}
 			return `background-image: url('http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/${end}');`
+		},
+		shownDeviceTypes: function () {
+			let shownList = {}
+			for( const [skill, types] of Object.entries(this.deviceTypes)){
+				let possibles = []
+				for(const typ of types){
+					if(this.canAddDevice(typ)){
+						possibles.push(typ)
+					}
+				}
+				if(possibles.length > 0){
+					shownList[skill] = possibles
+				}
+			}
+			return shownList
 		}
 	},
 	created: function () {
@@ -244,6 +259,19 @@ export default {
 				}
 				return count < perLocationLimit
 			}
+		},
+		canAddDevice:
+			function (deviceType) {
+				if (deviceType.totalDeviceLimit > 0) {
+					let count = 0
+					for (const device of Object.values(this.devices)) {
+						if (deviceType.skillName === device.skillName && deviceType.deviceTypeName === device.typeName) {
+							count++
+						}
+					}
+					return count < deviceType.totalDeviceLimit
+				}
+				return true
 		},
 		getDeviceType: function (device) {
 			const skillName = device.data.skillName.toLowerCase()

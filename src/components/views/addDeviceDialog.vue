@@ -1,15 +1,20 @@
 <template>
 	<div class="custom-view-wrapper">
 		<h3>{{ parent.$t('dialogs.titles.addDevice') }}</h3>
-		<p>
-			<label for="deviceList">{{ parent.$t('dialogs.bodies.chooseDevice') }}</label><br/>
-		</p>
-		<p>
-			<select id="deviceList" v-model="selected" name="device">
-				<optgroup v-for="(deviceTypes, skillName) in parent.deviceTypes" :key="skillName" :label="skillName.toUpperCase()">
-					<option v-for="deviceType in deviceTypes" v-if="canAddDevice(deviceType)" :key="deviceType.deviceTypeName" :value="deviceType">{{ deviceType.deviceTypeName }}</option>
-				</optgroup>
-			</select>
+		<div v-if="Object.keys(parent.shownDeviceTypes).length > 0">
+			<p>
+				<label for="deviceList">{{ parent.$t('dialogs.bodies.chooseDevice') }}</label><br/>
+			</p>
+			<p v-if="Object.keys(parent.shownDeviceTypes).length > 0">
+				<select id="deviceList" v-model="selected" name="device">
+					<optgroup v-for="(deviceTypes, skillName) in parent.shownDeviceTypes" :key="skillName" :label="skillName.toUpperCase()">
+						<option v-for="deviceType in deviceTypes" :key="deviceType.deviceTypeName" :value="deviceType">{{ deviceType.deviceTypeName }}</option>
+					</optgroup>
+				</select>
+			</p>
+		</div>
+		<p v-else>
+			{{ parent.$t('dialogs.bodies.noDevices') }}
 		</p>
 		<div>
 			<button @click="handleDismiss">{{ parent.$t('buttons.cancel') }}</button>
@@ -31,18 +36,6 @@ export default {
 		}
 	},
 	methods: {
-		canAddDevice(deviceType) {
-			if (deviceType.totalDeviceLimit > 0) {
-				let count = 0
-				for (const device of Object.values(this.parent.devices)) {
-					if (deviceType.skillName === device.skillName && deviceType.deviceTypeName === device.typeName) {
-						count++
-					}
-				}
-				return count < deviceType.totalDeviceLimit
-			}
-			return true
-		},
 		handleConfirm() {
 			if (!this.selected) this.cancel()
 			this.proceed(this.selected)
