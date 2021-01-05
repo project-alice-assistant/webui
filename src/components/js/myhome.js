@@ -337,6 +337,10 @@ export default {
 			}
 			this.moveableItem.destroyMoveable()
 			this.removeDroppable()
+			this.activeFloorTile = ''
+			this.activeFurnitureTile = ''
+			this.activeConstructionTile = ''
+			this.activeDeviceTile = ''
 		},
 		removeDroppable: function () {
 			document.querySelectorAll('.droppable').forEach(el => {
