@@ -151,7 +151,7 @@ export default {
 		updateSkillData(skillData) {
 			for (const [index, skill] of this.skills.entries()) {
 				if (skill.name === skillData.name) {
-					this.skills[index] = skillData
+					this.skills.$set(index, skillData)
 					return
 				}
 			}
@@ -202,7 +202,7 @@ export default {
 				headers: {'auth': localStorage.getItem('apiToken')}
 			}).then(response => {
 				if ('status' in response.data) {
-					for (const [skillName, status] of Object.entries(response.data.status)) {
+					for (const skillName of Object.keys(response.data.status)) {
 						this.$refs[skillName.toLowerCase()][0].setIsDownloading()
 					}
 				}
