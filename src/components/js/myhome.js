@@ -102,7 +102,7 @@ export default {
 	},
 	created: function () {
 		this.me = this
-		let self = this;
+		let self = this
 		document.addEventListener('keyup', function (event) {
 			if (event.key === 'Enter') {
 				if (self.$store.state.fullScreen) {

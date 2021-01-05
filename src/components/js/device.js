@@ -91,7 +91,7 @@ export default {
 			event.stopPropagation()
 			this.myHome.removeDroppable()
 
-			if (this.myHome.devicesEditMode && this.myHome.toolsState.linkingDevices) {
+			if (this.myHome.devicesEditMode && this.myHome.toolsState.linkingDevices && this.myHome.newConnectionLink === null) {
 				this.myHome.newConnectionLine(this)
 			} else if (this.myHome.devicesEditMode && event.target.classList.contains('device')) {
 				this.myHome.setMoveable(event.target, this)
