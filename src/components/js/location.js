@@ -50,7 +50,7 @@ export default {
 				this.myHome.locations[this.data.id].settings['t'] = this.myHome.activeFloorTile
 				this.save()
 			} else if (this.myHome.toolsState.addingDevice && this.myHome.activeDeviceTile !== '') {
-				if (!this.myHome.checkDevicePerLocationLimit(this.data.id)) return
+				if (!this.myHome.checkDevicePerLocationLimit(this.myHome.activeDeviceTile, this.data.id)) return
 
 				const data = {
 					deviceType: this.myHome.activeDeviceTile.deviceTypeName,
