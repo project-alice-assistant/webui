@@ -91,7 +91,7 @@
 					<div
 						v-if="toolsState.addingLocation && clicked"
 						ref="areaSelector"
-						:style="`top: ${areaSelectorY}px; left: ${areaSelectorX}px; width: ${areaSelectorW}px; height: ${areaSelectorH}px`"
+						:style="`pointer-events: none; top: ${areaSelectorY}px; left: ${areaSelectorX}px; width: ${areaSelectorW}px; height: ${areaSelectorH}px`"
 						class="areaSelector"
 					/>
 				</div>
