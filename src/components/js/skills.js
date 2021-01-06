@@ -195,6 +195,7 @@ export default {
 			if (this.skillsToDownload.length <= 0) {
 				return
 			}
+			this.shopOpen = false
 			axios({
 				method: 'put',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/installSkills/`,
