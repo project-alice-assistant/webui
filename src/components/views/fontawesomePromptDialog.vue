@@ -1,16 +1,17 @@
 <template>
 	<div class="custom-view-wrapper">
 		<div class="dg-content-body dg-content-body--has-title">
-			<h6 class="dg-title">New icon</h6>
-			<div class="dg-content">Please enter the new font awesome icon, including the prefix</div>
+			<h6 class="dg-title">{{ parent.$t('dialogs.titles.newIcon') }}</h6>
+			<div class="dg-content" v-html="parent.$t('dialogs.bodies.enterNewIcon')"/>
 			<form autocomplete="off" class="dg-form" data-children-count="1">
-				<label for="dg-input-elem">Example: fas fa-biohazard</label><br/><br/>
+				<label for="dg-input-elem">{{ parent.$t('dialogs.labels.faExample') }}</label><br/><br/>
 				<input type="text" autocomplete="off" id="dg-input-elem" v-model="icon" @input="update"/>
 			</form>
 		</div>
 		<div class="dg-content-footer">
-			<button style="background-color: var(--windowBG);" @click="handleDismiss">Cancel</button>
-			<button class="dg-pull-right" style="background-color: var(--windowBG);" @click="handleConfirm"><i :class="icon" class="fa-2x" aria-hidden="true"/></button>
+			<button style="background-color: var(--windowBG);" @click="handleDismiss">{{ parent.$t('buttons.cancel') }}</button>
+			<button class="dg-pull-right" style="background-color: var(--windowBG);" @click="handleConfirm">
+				<i :class="icon" class="fa-2x" aria-hidden="true"/></button>
 		</div>
 	</div>
 </template>
@@ -22,6 +23,7 @@ export default {
 	mixins: [VueDialogMixin],
 	data: function() {
 		return {
+			parent: this.options['parent'],
 			icon: 'fas fa-biohazard'
 		}
 	},

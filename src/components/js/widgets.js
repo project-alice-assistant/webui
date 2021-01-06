@@ -390,7 +390,8 @@ export default {
 
 			const message = {}
 			const options = {
-				view: 'fontawesomePromptDialog'
+				view: 'fontawesomePromptDialog',
+				parent: this
 			}
 
 			this.$dialog.prompt(message, options).then(dialogue => {
