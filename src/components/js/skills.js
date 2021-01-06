@@ -1,11 +1,12 @@
 import axios from 'axios'
+import * as C from '@/utils/constants';
 
 export default {
 	name: 'skills',
 	data: function () {
 		return {
 			shopOpen: false,
-			skills: [],
+			skills: {},
 			storeSkills: {},
 			skillsToDownload: [],
 			menuItems: [
@@ -20,7 +21,6 @@ export default {
 				{
 					name: this.$t('tooltips.download'),
 					icon: 'fas fa-check-circle',
-					isToggle: true,
 					callback: this.doDownload
 				}
 			],
@@ -144,17 +144,37 @@ export default {
 		setInterval(this.reloadStoreSkills, 5 * 60 * 1000)
 		this.reloadStoreSkills()
 	},
+	created: function () {
+		let self = this
+		this.unwatch = this.$store.watch(
+			function (state) {
+				return state.mqttMessage
+			},
+			function (msg) {
+				if (msg.topic === C.SKILL_INSTALLED_TOPIC) {
+					const payload = JSON.parse(msg.payloadString)
+					axios({
+						method: 'get',
+						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/skills/${payload.skillName}/`,
+						headers: {'auth': localStorage.getItem('apiToken')}
+					}).then(response => {
+						if ('skill' in response.data) {
+							const newSkill = response.data.skill
+							self.skills[newSkill.name] = newSkill
+							self.skillsToDownload.splice(self.skillsToDownload.indexOf(newSkill.name), 1)
+							self.$forceUpdate()
+						}
+					})
+				}
+			}
+		)
+	},
 	activated: function () {
 		this.shopOpen = false
 	},
 	methods: {
 		updateSkillData(skillData) {
-			for (const [index, skill] of this.skills.entries()) {
-				if (skill.name === skillData.name) {
-					this.skills.$set(index, skillData)
-					return
-				}
-			}
+			this.skills.$set(skillData.name, skillData)
 		},
 		fetchSkills: function () {
 			axios({
@@ -162,8 +182,8 @@ export default {
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/`,
 				headers: {'auth': localStorage.getItem('apiToken')}
 			}).then(response => {
-				if ('data' in response.data) {
-					this.skills = response.data.data
+				if ('skills' in response.data) {
+					this.skills = response.data.skills
 				}
 			})
 		},
@@ -195,7 +215,6 @@ export default {
 			if (this.skillsToDownload.length <= 0) {
 				return
 			}
-			this.shopOpen = false
 			axios({
 				method: 'put',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/installSkills/`,
@@ -205,6 +224,7 @@ export default {
 				if ('status' in response.data) {
 					for (const skillName of Object.keys(response.data.status)) {
 						this.$refs[skillName.toLowerCase()][0].setIsDownloading()
+						this.shopOpen = false
 					}
 				}
 			})

@@ -11,8 +11,7 @@ export default {
 		}
 	},
 	props: [
-		'skill',
-		'index' //only first skill gets tour marking
+		'skill'
 	],
 	methods: {
 		reloadSkill: function () {
