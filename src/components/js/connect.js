@@ -142,6 +142,10 @@ export default {
 			this.$store.state.mqtt.subscribe(C.HOTWORD_TOPIC)
 			this.$store.state.mqtt.subscribe(C.ASR_PART_TOPIC)
 			this.$store.state.mqtt.subscribe(C.ASR_TOPIC)
+			this.$store.state.mqtt.subscribe(C.SKILL_UPDATED_TOPIC)
+			this.$store.state.mqtt.subscribe(C.SKILL_UPDATING_TOPIC)
+			this.$store.state.mqtt.subscribe(C.SKILL_INSTALLED_TOPIC)
+			this.$store.state.mqtt.subscribe(C.SKILL_DELETED_TOPIC)
 		},
 		onConnectionFailed: function (_msg) {
 			console.log('Mqtt connection failed')

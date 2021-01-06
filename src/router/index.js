@@ -98,7 +98,7 @@ const routes = [
 	},
 	{
 		path: '/widgets',
-		name: 'Home',
+		name: 'Widgets',
 		component: widgets,
 		meta: {
 			title: 'nav.widgets'
