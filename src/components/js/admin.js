@@ -4,7 +4,8 @@ export default {
 	name: 'admin',
 	data: function() {
 		return {
-			activeTab: 0,
+			activeTabId: 1,
+			settingSearchKeyword: '',
 			tabs: {
 				1: {
 					'icon': 'fas fa-cogs',
@@ -28,9 +29,19 @@ export default {
 				const reqValue = parentTemplate['value']
 				const parentValue = this.$store.state.settings[parentConfig]
 
-				return (reqCondition === 'is' && parentValue === reqValue) || (reqCondition === 'isnot' && parentValue !== reqValue) || (reqCondition === 'isgreater' && parentValue > reqValue) || (reqCondition === 'islower' && parentValue < reqValue);
+				const conditionsPassed = (reqCondition === 'is' && parentValue === reqValue) || (reqCondition === 'isnot' && parentValue !== reqValue) || (reqCondition === 'isgreater' && parentValue > reqValue) || (reqCondition === 'islower' && parentValue < reqValue)
+
+				if (conditionsPassed && this.settingSearchKeyword !== '') {
+					return settingName.toLowerCase().includes(this.settingSearchKeyword.toLowerCase());
+				} else {
+					return conditionsPassed
+				}
 			} else {
-				return true
+				if (this.settingSearchKeyword !== '') {
+					return settingName.toLowerCase().includes(this.settingSearchKeyword.toLowerCase());
+				} else {
+					return true
+				}
 			}
 		},
 		save: function(event) {
