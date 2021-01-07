@@ -165,6 +165,10 @@ export default {
 							self.$forceUpdate()
 						}
 					})
+				} else if (msg.topic === C.SKILL_DELETED_TOPIC) {
+					const payload = JSON.parse(msg.payloadString)
+					delete self.skills[payload.skillName]
+					self.$forceUpdate()
 				}
 			}
 		)

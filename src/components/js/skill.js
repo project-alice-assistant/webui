@@ -55,9 +55,6 @@ export default {
 						method: 'delete',
 						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/skills/${self.skill.name}/`,
 						headers: {'auth': localStorage.getItem('apiToken')}
-					}).then(() => {
-						self.$el.parentNode.removeChild(self.$el)
-						self.$destroy()
 					})
 				})
 				.catch()
