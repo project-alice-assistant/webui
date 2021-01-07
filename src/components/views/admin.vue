@@ -42,6 +42,14 @@
 										type="password"
 									/>
 									<input
+										v-if="settingTemplate['dataType'] === 'email'"
+										:id="settingName"
+										v-model="$store.state.settings[settingName]"
+										v-init="$store.state.settings[settingName]"
+										:placeholder="settingTemplate['defaultValue']"
+										type="email"
+									/>
+									<input
 										v-if="settingTemplate['dataType'] === 'integer' && !settingTemplate['isSensitive']"
 										:id="settingName"
 										v-model="$store.state.settings[settingName]"

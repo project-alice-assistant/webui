@@ -24,6 +24,14 @@
 						:placeholder="settingTemplate['defaultValue']"
 					/>
 					<input
+						v-if="settingTemplate['dataType'] === 'email'"
+						:id="settingName"
+						v-model="options['skill']['settings'][settingName]"
+						v-init="options['skill']['settings'][settingName]"
+						:placeholder="settingTemplate['defaultValue']"
+						type="email"
+					/>
+					<input
 						:id="settingName"
 						type="password"
 						v-if="settingTemplate['dataType'] === 'string' && settingTemplate['isSensitive']"
