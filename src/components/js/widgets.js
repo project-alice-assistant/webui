@@ -64,7 +64,7 @@ export default {
 			removeWidgets: false,
 			widgetTemplates: {},
 			widgetInstances: {},
-			activePageId: 1,
+			activeTabId: 1,
 			selectedWidget: -1,
 			dragAndResizeEnabled: false,
 			hasTitle: true,
@@ -98,10 +98,11 @@ export default {
 		this.removeWidgets = false
 		this.settings = false
 		this.dragAndResizeEnabled = false
+		console.log(this.activeTabId)
 	},
 	methods: {
 		changePage: function (id) {
-			this.activePageId = id
+			this.activeTabId = id
 			this.$forceUpdate()
 		},
 		cinemaMode: function () {
@@ -132,6 +133,7 @@ export default {
 
 						const src = `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/resources/${widget.skill}/${widget.name}`
 						this.$loadScript(`${src}.js`).then(() => {
+							// noinspection JSUnresolvedVariable
 							let cls = eval(`${widget.skill}_${widget.name}`)
 							new cls(uuid)
 						})
@@ -147,7 +149,7 @@ export default {
 				data: {
 					skillName: skillName,
 					widgetName: widgetName,
-					pageId: this.activePageId
+					pageId: this.activeTabId
 				},
 				headers: {
 					'auth': localStorage.getItem('apiToken'),
@@ -161,7 +163,8 @@ export default {
 					this.$set(this.widgetInstances, response.data['widget']['id'], widget)
 					const src = `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/resources/${widget.skill}/${widget.name}`
 					this.$loadScript(`${src}.js`).then(() => {
-						let cls = eval(`${widget.skill}_${widget.name}`)
+						let cls = eval(`// noinspection JSUnresolvedVariable
+						${widget.skill}_${widget.name}`)
 						new cls(uuid)
 					})
 				}

@@ -2,8 +2,7 @@ export default {
 	name: 'tabs',
 	data: function() {
 		return {
-			activeTab: 0,
-			activeId: 1
+			activeTabId: 1
 		}
 	},
 	props: [
@@ -14,10 +13,9 @@ export default {
 		'renameTab'
 	],
 	methods: {
-		handleClick: function(position, id) {
-			this.activeTab = position
-
-			this.$parent.activeTab = position
+		handleClick: function (id) {
+			this.activeTabId = id
+			this.$parent.activeTabId = id
 
 			if (this.onChange) {
 				this.onChange(id)
@@ -28,27 +26,25 @@ export default {
 				this.tabs[id].onChangeTo()
 			}
 
-			if (this.tabs[this.activeId].hasOwnProperty('onLeaveFrom')) {
+			if (this.tabs[id].hasOwnProperty('onLeaveFrom')) {
 				// noinspection JSUnresolvedFunction
-				this.tabs[this.activeId].onLeaveFrom()
+				this.tabs[id].onLeaveFrom()
 			}
-
-			this.activeId = id
 		},
-		rename: function(wid) {
+		rename: function (id) {
 			if (this.renameTab) {
-				this.renameTab(wid)
+				this.renameTab(id)
 			}
 		}
 		,
-		add: function() {
+		add: function () {
 			if (this.addTab) {
 				this.addTab()
 			}
 		},
-		remove: function(wid) {
+		remove: function (id) {
 			if (this.removeTab) {
-				this.removeTab(wid)
+				this.removeTab(id)
 			}
 		}
 	}

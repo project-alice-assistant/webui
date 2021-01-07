@@ -16,7 +16,7 @@
 			:renameTab="renameTab"
 			:onChange="changePage"
 		/>
-		<div class="tab_page" v-for="tab in tabs" :key="tab.id" v-if="tab.id === activePageId">
+		<div v-for="tab in tabs" v-if="tab.id === activeTabId" :key="tab.id" class="tab_page">
 			<vue-draggable-resizable
 				class-name="widgetContainer"
 				classNameActive="nothingtoseehere"
@@ -36,7 +36,7 @@
 				@resizestop="saveSize"
 				v-for="widget in widgetInstances"
 				:key="widget.id"
-				v-if="widget['page'] === activePageId"
+				v-if="widget['page'] === activeTabId"
 			>
 				<div class="widget" :style="computeCustomStyle(widget)">
 					<component is="style" type="text/css" scoped>
