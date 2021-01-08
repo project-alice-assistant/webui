@@ -35,9 +35,8 @@
 				@activated="selectedWidget = widget.id"
 				@dragstop="savePosition"
 				@resizestop="saveSize"
-				v-for="widget in widgetInstances"
+				v-for="widget in activePageWidgets"
 				:key="widget.id"
-				v-if="widget['page'] === activeTabId"
 			>
 				<div class="widget" :style="computeCustomStyle(widget)">
 					<component is="style" type="text/css" scoped>

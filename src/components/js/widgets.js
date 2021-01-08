@@ -71,6 +71,13 @@ export default {
 			jsImports: ''
 		}
 	},
+	computed: {
+		'activePageWidgets': function() {
+			return Object.values(this.widgetInstances).filter( widget => {
+				return widget['page'] === this.activeTabId
+			})
+		}
+	},
 	created: function() {
 		let self = this;
 		document.addEventListener('keyup', function (event) {
@@ -98,7 +105,6 @@ export default {
 		this.removeWidgets = false
 		this.settings = false
 		this.dragAndResizeEnabled = false
-		console.log(this.activeTabId)
 	},
 	methods: {
 		changePage: function (id) {
