@@ -10,7 +10,6 @@ export default {
 	],
 	methods: {
 		handleClick: function (id) {
-			this.activeTabId = id
 			this.$parent.activeTabId = id
 
 			if (this.onChange) {
