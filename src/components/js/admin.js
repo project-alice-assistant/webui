@@ -17,11 +17,42 @@ export default {
 					'id': 2,
 					'position': 1
 				}
+			},
+			categoriesVisibility: ''
+		}
+	},
+	computed: {
+		categorySettings() {
+			return (categoryName) => {
+				let settings = {}
+				for (const [settingName, settingTemplate] of Object.entries(this.$store.state.settingTemplates)) {
+					if (settingTemplate['display'] !== 'hidden' && settingTemplate['category'].toLowerCase() === categoryName.toLowerCase() && this.checkSettingVisibility(settingName)) {
+						settings[settingName] = settingTemplate
+					}
+				}
+				return settings
+			}
+		},
+		settingsCategories() {
+			if (this.settingSearchKeyword === '') {
+				return this.$store.state.settingCategories
+			} else {
+				let self = this
+				return Object.values(this.$store.state.settingCategories).filter(categoryName => {
+					return self.checkCategoryVisibility(categoryName)
+				})
 			}
 		}
 	},
 	methods: {
-		checkSettingVisibility: function(settingName) {
+		checkCategoryVisibility: function (categoryName) {
+			const parent = document.querySelector(`#${categoryName.toLowerCase().replace(' ', '_')}`)
+			if (parent !== null) {
+				return parent.querySelector('.input') !== null
+			}
+		},
+		checkSettingVisibility: function (settingName) {
+			let visible = true
 			if ('parent' in this.$store.state.settingTemplates[settingName]) {
 				const parentTemplate = this.$store.state.settingTemplates[settingName]['parent']
 				const parentConfig = parentTemplate['config']
@@ -29,20 +60,18 @@ export default {
 				const reqValue = parentTemplate['value']
 				const parentValue = this.$store.state.settings[parentConfig]
 
-				const conditionsPassed = (reqCondition === 'is' && parentValue === reqValue) || (reqCondition === 'isnot' && parentValue !== reqValue) || (reqCondition === 'isgreater' && parentValue > reqValue) || (reqCondition === 'islower' && parentValue < reqValue)
+				visible = (reqCondition === 'is' && parentValue === reqValue) || (reqCondition === 'isnot' && parentValue !== reqValue) || (reqCondition === 'isgreater' && parentValue > reqValue) || (reqCondition === 'islower' && parentValue < reqValue)
 
-				if (conditionsPassed && this.settingSearchKeyword !== '') {
-					return settingName.toLowerCase().includes(this.settingSearchKeyword.toLowerCase());
-				} else {
-					return conditionsPassed
+				if (visible && this.settingSearchKeyword !== '') {
+					visible = settingName.toLowerCase().includes(this.settingSearchKeyword.toLowerCase());
 				}
 			} else {
 				if (this.settingSearchKeyword !== '') {
-					return settingName.toLowerCase().includes(this.settingSearchKeyword.toLowerCase());
-				} else {
-					return true
+					visible = settingName.toLowerCase().includes(this.settingSearchKeyword.toLowerCase());
 				}
 			}
+
+			return visible
 		},
 		save: function(event) {
 			let self = this

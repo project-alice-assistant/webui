@@ -10,14 +10,17 @@
 						<input v-model="settingSearchKeyword" :placeholder="$t('labels.keyword')" type="text"/>
 					</div>
 				</div>
-				<div v-for="category in $store.state.settingCategories" class="settingsCategory">
+				<div
+					v-for="category in settingsCategories"
+					:id="category.toLowerCase().replace(' ', '_')"
+					class="settingsCategory"
+				>
 					<div class="title">{{ category.toUpperCase() }}</div>
 					<div class="configLayout">
 						<div class="labels">
 							<label
-								v-for="(settingTemplate, settingName) in $store.state.settingTemplates"
+								v-for="(settingTemplate, settingName) in categorySettings(category)"
 								:class="settingTemplate['dataType'] === 'longstring' ? 'textAreaLabel' : ''"
-								v-if="settingTemplate['display'] !== 'hidden' && settingTemplate['category'].toLowerCase() === category.toLowerCase() && checkSettingVisibility(settingName)"
 								v-tooltip="settingTemplate['description']"
 								:for="settingName"
 								:id="`label_${settingName}`"
@@ -27,8 +30,7 @@
 						</div>
 						<div class="inputs">
 							<div
-								v-for="(settingTemplate, settingName) in $store.state.settingTemplates"
-								v-if="settingTemplate['display'] !== 'hidden' && settingTemplate['category'].toLowerCase() === category.toLowerCase() && checkSettingVisibility(settingName)"
+								v-for="(settingTemplate, settingName) in categorySettings(category)"
 								class="input"
 								:id="`input_${settingName}`"
 							>
