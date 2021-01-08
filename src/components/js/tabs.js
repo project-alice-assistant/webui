@@ -1,16 +1,12 @@
 export default {
 	name: 'tabs',
-	data: function() {
-		return {
-			activeTabId: 1
-		}
-	},
 	props: [
 		'tabs',
 		'onChange',
 		'addTab',
 		'removeTab',
-		'renameTab'
+		'renameTab',
+		'activeTabId'
 	],
 	methods: {
 		handleClick: function (id) {

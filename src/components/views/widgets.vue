@@ -11,12 +11,13 @@
 		<actions-menu :menuItems="menuItems" v-if="$store.state.loggedInUser"/>
 		<tabs
 			:tabs="tabs"
+			:activeTabId="activeTabId"
 			:addTab="addTab"
 			:removeTab="removeTab"
 			:renameTab="renameTab"
 			:onChange="changePage"
 		/>
-		<div v-for="tab in tabs" v-if="tab.id === activeTabId" :key="tab.id" class="tab_page">
+		<div :key="activeTabId" class="tab_page">
 			<vue-draggable-resizable
 				class-name="widgetContainer"
 				classNameActive="nothingtoseehere"
