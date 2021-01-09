@@ -93,6 +93,10 @@ export default {
 
 			if (this.myHome.devicesEditMode && this.myHome.toolsState.linkingDevices && this.myHome.newConnectionLink === null && this.data.parentLocation !== 0) {
 				this.myHome.newConnectionLine(this)
+			} else if (this.myHome.devicesEditMode && this.myHome.toolsState.unlinkingDevices && this.myHome.newConnectionLink === null) {
+				this.myHome.newDisconnectionLine(this)
+			} else if (this.myHome.toolsState.unlinkingDevices && this.myHome.newConnectionLink !== null) {
+
 			} else if (this.myHome.toolsState.linkingDevices && this.myHome.newConnectionLink !== null) {
 				this.showError(this.$t('notifications.errors.noDeviceToDeviceLink'))
 			} else if (this.myHome.devicesEditMode && event.target.classList.contains('device')) {

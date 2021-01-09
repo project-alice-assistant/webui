@@ -167,6 +167,34 @@ export default {
 						this.showError('Error while saving link!')
 					}
 				})
+			} else if (this.myHome.toolsState.unlinkingDevices && this.myHome.newConnectionLink !== null) {
+				if (!this.isDeviceLinkedToMe(parseInt(this.myHome.newConnectionLink.start.id.substring(4)))) {
+					this.showInfo(this.$t('notifications.info.deviceNotLinkedToLocation'))
+					return
+				}
+
+				const data = {
+					targetLocation: this.data.id,
+					deviceId: parseInt(this.myHome.newConnectionLink.start.id.substring(4))
+				}
+
+				axios({
+					method: 'delete',
+					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/deviceLinks/`,
+					data: data,
+					headers: {
+						'auth': localStorage.getItem('apiToken'),
+						'content-type': 'application/json'
+					}
+				}).then(response => {
+					if ('success' in response.data && response.data.success) {
+						this.showSuccess(this.$t('notifications.successes.deviceUnlinked'))
+						const linkId = this.myHome.removeDeviceLink(parseInt(this.myHome.newConnectionLink.start.id.substring(4)), this.data.id)
+						delete this.myHome.deviceLinkParent.myLinks[linkId]
+					} else {
+						this.showError(this.$t('notifications.errors.deviceUnlinkFailed'))
+					}
+				})
 			} else if (!this.myHome.toolsState.settingLocations && !this.myHome.toolsState.deletingLocations && !this.myHome.toolsState.paintingFloors && this.myHome.locationsEditMode) {
 				if (event.target.classList.contains('dragging') || !event.target.classList.contains('location')) return
 
@@ -292,15 +320,23 @@ export default {
 
 				for (const link of Object.values(this.myHome.deviceLinks)) {
 					if (link.deviceId === device.data.id && link.targetLocation === this.data.id){
-						if(showError) this.showError('There is already a link from this device to this location!')
+						if (showError) this.showError('There is already a link from this device to this location!')
 						return false
 					}
 				}
 			} catch {
-				if(showError) this.showError('Unexpected error occurred!')
+				if (showError) this.showError('Unexpected error occurred!')
 				return false
 			}
 			return true
+		},
+		isDeviceLinkedToMe(deviceId) {
+			for (const link of Object.values(this.myHome.deviceLinks)) {
+				if (link.deviceId === deviceId && link.targetLocation === this.data.id) {
+					return true
+				}
+			}
+			return false
 		},
 		onMouseEnter() {
 			if (this.myHome.toolsState.addingDevice) {

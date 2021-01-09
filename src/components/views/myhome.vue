@@ -27,6 +27,8 @@
 				 aria-hidden="true" class="fas fa-cogs fa-2x fa-fw clickable" @click="setActiveTool('settingDevices', true)"/>
 			<i v-tooltip="$t('tooltips.linkDevice')" :class="{yellow: toolsState.linkingDevices}"
 				 aria-hidden="true" class="fas fa-link fa-2x fa-fw clickable" @click="setActiveTool('linkingDevices', true)"/>
+			<i v-tooltip="$t('tooltips.unlinkDevice')" :class="{yellow: toolsState.unlinkingDevices}"
+				 aria-hidden="true" class="fas fa-unlink fa-2x fa-fw clickable" @click="setActiveTool('unlinkingDevices', true)"/>
 		</div>
 		<div v-if="locationsEditMode && toolsState.paintingFloors" class="tools sideTools paintFloors">
 			<img

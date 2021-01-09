@@ -48,6 +48,7 @@ export default {
 				deletingDevices: false,
 				settingDevices: false,
 				linkingDevices: false,
+				unlinkingDevices: false,
 				settingLocations: false,
 				placingFurniture: false,
 				placingConstructions: false
@@ -299,6 +300,9 @@ export default {
 				}
 
 				if (!device) continue
+
+				const label = LeaderLine.captionLabel(this.locations[link.targetLocation].name)
+
 				let targetLocation = document.querySelector(`#loc_${link.targetLocation}`)
 				const line = new LeaderLine(
 					device.$el,
@@ -319,7 +323,7 @@ export default {
 						endPlug: 'disc',
 						endPlugSize: 3,
 						hide: true,
-						middleLabel: this.locations[link.targetLocation].name
+						middleLabel: label
 					}
 				)
 				device.myLinks[link.id] = line
@@ -491,7 +495,8 @@ export default {
 				|| (this.toolsState.placingFurniture && this.activeFurnitureTile !== '')
 				|| (this.toolsState.placingConstructions && this.activeConstructionTile !== '')
 				|| (this.toolsState.addingDevice && this.activeDeviceTile !== '')
-				|| (this.toolsState.linkingDevices)) {
+				|| (this.toolsState.linkingDevices)
+				|| (this.toolsState.unlinkingDevices)) {
 				let rect = this.$refs['myHomeEditor'].getBoundingClientRect()
 				this.$refs['ghost'].style.top = `${event.clientY - 25 - rect.top}px`
 				this.$refs['ghost'].style.left = `${event.clientX - 25 - rect.left}px`
@@ -522,6 +527,24 @@ export default {
 					dash: {
 						animation: {
 							duration: 250,
+							timing: 'linear'
+						}
+					},
+					dropShadow: true
+				}
+			)
+		},
+		newDisconnectionLine: function (device) {
+			this.deviceLinkParent = device
+			this.newConnectionLink = new LeaderLine(
+				document.querySelector(`#dev_${device.data.id}`),
+				this.$refs.ghost,
+				{
+					color: 'red',
+					size: 4,
+					dash: {
+						animation: {
+							duration: 100,
 							timing: 'linear'
 						}
 					},
@@ -645,6 +668,15 @@ export default {
 				}
 			}
 			return true
+		},
+		removeDeviceLink(deviceId, locationId) {
+			for (const link of Object.values(this.deviceLinks)) {
+				if (link.deviceId === deviceId && link.targetLocation === locationId) {
+					this.connectionLinks[link.id].remove()
+					delete this.connectionLinks[link.id]
+					return link.id
+				}
+			}
 		}
 	},
 	watch: {
