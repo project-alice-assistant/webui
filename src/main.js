@@ -45,7 +45,11 @@ import locationSettings from './components/views/locationOptionsDialog'
 import addDeviceDialog from './components/views/addDeviceDialog'
 import dialogView from './components/js/dialogView'
 
+import notifyToast from './utils/notifyToast'
+
 Vue.config.productionTip = false
+
+Vue.use(notifyToast)
 
 Vue.use(VueAxios, axios)
 Vue.use(VModal)

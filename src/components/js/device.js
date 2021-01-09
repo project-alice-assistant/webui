@@ -161,6 +161,7 @@ export default {
 			}).then(response => {
 				if ('success' in response.data && response.data.success) {
 					this.myHome.$delete(this.myHome.devices, this.data.id)
+					this.showSuccess('Device deleted')
 				}
 			})
 		},

@@ -40,7 +40,9 @@ export default {
 					'auth': localStorage.getItem('apiToken'),
 					'content-type': 'application/json'
 				}
-			}).then()
+			}).then(
+				//TODO check if save worked and show message
+			)
 		},
 		handleClick: function (event) {
 			event.stopPropagation()
@@ -137,7 +139,9 @@ export default {
 					}
 				})
 			} else if (this.myHome.toolsState.linkingDevices && this.myHome.newConnectionLink !== null) {
-				if (!this.checkDeviceLinkPossible()) return
+				if (!this.checkDeviceLinkPossible(true)) {
+					return
+				}
 
 				const data = {
 					targetLocation: this.data.id,
@@ -157,8 +161,10 @@ export default {
 						let link = response.data['link']
 						this.myHome.$set(this.myHome.deviceLinks, link.id, link)
 						this.myHome.drawDeviceLinks(link.id)
+						this.showSuccess('Link has been created!')
 					} else {
 						this.myHome.setActiveTool('none')
+						this.showError('Error while saving link!')
 					}
 				})
 			} else if (!this.myHome.toolsState.settingLocations && !this.myHome.toolsState.deletingLocations && !this.myHome.toolsState.paintingFloors && this.myHome.locationsEditMode) {
@@ -203,6 +209,9 @@ export default {
 			}).then(response => {
 				if ('success' in response.data && response.data.success) {
 					this.myHome.$delete(this.locations, this.data.id)
+					this.showSuccess('Location deleted')
+				} else {
+					this.showError('Error while deleting location!')
 				}
 			})
 		},
@@ -243,6 +252,7 @@ export default {
 					throw true
 				}
 			} catch (e) {
+				this.showError('Fatal Error!?')
 				throw e
 			}
 		},
@@ -267,16 +277,27 @@ export default {
 				self.save()
 			}).catch()
 		},
-		checkDeviceLinkPossible() {
+		checkDeviceLinkPossible(showError = false) {
 			try {
 				const device = this.myHome.deviceLinkParent
 				const deviceType = this.myHome.getDeviceType(device)
-				if (device.data.parentLocation === this.data.id || !deviceType.allowLocationLinks) return false
+				if (device.data.parentLocation === this.data.id) {
+					if(showError) this.showError('No link to parent Location allowed')
+					return false
+				}
+				if(!deviceType.allowLocationLinks){
+					if(showError) this.showError('This device must not have links!')
+					return false
+				}
 
 				for (const link of Object.values(this.myHome.deviceLinks)) {
-					if (link.deviceId === device.data.id && link.targetLocation === this.data.id) return false
+					if (link.deviceId === device.data.id && link.targetLocation === this.data.id){
+						if(showError) this.showError('There is already a link from this device to this location!')
+						return false
+					}
 				}
 			} catch {
+				if(showError) this.showError('Unexpected error occurred!')
 				return false
 			}
 			return true

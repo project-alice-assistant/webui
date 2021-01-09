@@ -480,6 +480,10 @@ button:active {
 	border-color: green;
 }
 
+.notifyContainer {
+	top: 1% !important;
+}
+
 @keyframes wiggle {
 	0% { transform: rotate(0deg); }
 	2% { transform: rotate(-2deg); }
