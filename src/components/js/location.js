@@ -222,6 +222,10 @@ export default {
 					cancelText: this.$t('buttons.cancel')
 				})
 				.then(function (dialogue) {
+					if(dialogue.data === ''){
+						self.showError('The name can\'t be empty')
+						return
+					}
 					self.data.name = dialogue.data
 					self.$set(self.myHome.locations, self.data.id, self.data)
 					self.$forceUpdate()
