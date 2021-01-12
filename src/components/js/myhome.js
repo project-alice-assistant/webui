@@ -674,6 +674,7 @@ export default {
 				if (link.deviceId === deviceId && link.targetLocation === locationId) {
 					this.connectionLinks[link.id].remove()
 					delete this.connectionLinks[link.id]
+					delete this.deviceLinks[link.id]
 					return link.id
 				}
 			}
