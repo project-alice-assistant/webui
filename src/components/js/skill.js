@@ -22,6 +22,7 @@ export default {
 				headers: {'auth': localStorage.getItem('apiToken')}
 			}).then(response => {
 				if ('skill' in response.data) {
+					this.showSuccess("Triggered Reload")
 					this.$parent.updateSkillData(response.data.skill)
 				}
 			})
@@ -55,7 +56,10 @@ export default {
 						method: 'delete',
 						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/skills/${self.skill.name}/`,
 						headers: {'auth': localStorage.getItem('apiToken')}
-					})
+					}).then(
+						//todo show message depending on success
+						this.showInfo("Deletion requested.")
+					)
 				})
 				.catch()
 		},

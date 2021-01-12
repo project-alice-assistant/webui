@@ -73,9 +73,13 @@ export default {
 						'content-type': 'application/json'
 					}
 				}).then(response => {
-					if ('device' in response.data) {
-						let device = response.data['device']
-						this.myHome.$set(this.myHome.devices, device.id, device)
+					if (response.data['success']) {
+						if ('device' in response.data) {
+							let device = response.data['device']
+							this.myHome.$set(this.myHome.devices, device.id, device)
+						}
+					} else {
+						this.showError(response.data['message'])
 					}
 					this.myHome.setActiveTool('none')
 				})
@@ -161,10 +165,13 @@ export default {
 						let link = response.data['link']
 						this.myHome.$set(this.myHome.deviceLinks, link.id, link)
 						this.myHome.drawDeviceLinks(link.id)
-						this.showSuccess('Link has been created!')
+						this.showSuccess(this.$t('notifications.success.deviceLinked'))
 					} else {
 						this.myHome.setActiveTool('none')
-						this.showError('Error while saving link!')
+						this.showError(this.$t('notifications.error.deviceLinked'))
+						if ('message' in response.data) {
+							this.showError(response.data['message'])
+						}
 					}
 				})
 			} else if (this.myHome.toolsState.unlinkingDevices && this.myHome.newConnectionLink !== null) {
@@ -280,11 +287,11 @@ export default {
 					this.myHome.locations[this.data.id].settings['y'] = parseInt(target.style.top.substring(-2)) - parseInt(droppedIn.style.top.substring(-2))
 					this.targetParentLocation = 0
 				} else {
-					// noinspection ExceptionCaughtLocallyJS
-					throw true
+					return true
 				}
 			} catch (e) {
 				this.showError('Fatal Error!?')
+				console.log(e)
 				throw e
 			}
 		},
