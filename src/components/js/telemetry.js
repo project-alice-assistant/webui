@@ -65,8 +65,8 @@ export default {
 				// split the filter by wildcard * and check for the presence of all of them
 				// is one missing, the method returns false and the line is filtered out
 				let splitLine = that.filter.input.split('*')
-				for (const no of splitLine) {
-					if (!liString.includes(splitLine[no])) {
+				for (const split of splitLine) {
+					if (!liString.includes(split)) {
 						return false
 					}
 				}
@@ -98,37 +98,37 @@ export default {
 			for (const combination of this.overview) {
 
 				// checks for the drop down filters
-				if (!this.available.telemetryType.includes(this.overview[combination]['type'])
-					&& filterLine('', this.filter.device, this.filter.location, this.filter.service, this.overview[combination], this)) {
-					this.available.telemetryType.push(this.overview[combination]['type'])
+				if (!this.available.telemetryType.includes(combination['type'])
+					&& filterLine('', this.filter.device, this.filter.location, this.filter.service, combination, this)) {
+					this.available.telemetryType.push(combination['type'])
 				}
 
-				if (!this.available.devices.some(el => el.id === this.overview[combination]['deviceId'])
-					&& filterLine(this.filter.telemetryType, '', this.filter.location, this.filter.service, this.overview[combination], this)) {
+				if (!this.available.devices.some(el => el.id === combination['deviceId'])
+					&& filterLine(this.filter.telemetryType, '', this.filter.location, this.filter.service, combination, this)) {
 					this.available.devices.push({
-						id: this.overview[combination]['deviceId'],
-						name: this.overview[combination]['device']
+						id: combination['deviceId'],
+						name: combination['device']
 					})
 				}
 
-				if (!this.available.locations.some(el => el.id === this.overview[combination]['locationId'])
-					&& filterLine(this.filter.telemetryType, this.filter.device, '', this.filter.service, this.overview[combination], this)) {
+				if (!this.available.locations.some(el => el.id === combination['locationId'])
+					&& filterLine(this.filter.telemetryType, this.filter.device, '', this.filter.service, combination, this)) {
 					this.available.locations.push({
-						id: this.overview[combination]['locationId'],
-						name: this.overview[combination]['location']
+						id: combination['locationId'],
+						name: combination['location']
 					})
 				}
 
-				if (!this.available.services.includes(this.overview[combination]['service'])
-					&& filterLine(this.filter.telemetryType, this.filter.device, this.filter.location, '', this.overview[combination], this)) {
-					this.available.services.push(this.overview[combination]['service'])
+				if (!this.available.services.includes(combination['service'])
+					&& filterLine(this.filter.telemetryType, this.filter.device, this.filter.location, '', combination, this)) {
+					this.available.services.push(combination['service'])
 				}
 
 				// check for the list of all possible combinations
 				// in addition to the filters, already selected combinations are omitted
-				if (!this.selection.includes(this.overview[combination])
-					&& filterLine(this.filter.telemetryType, this.filter.device, this.filter.location, this.filter.service, this.overview[combination], this)) {
-					this.available.combinations.push(this.overview[combination])
+				if (!this.selection.includes(combination)
+					&& filterLine(this.filter.telemetryType, this.filter.device, this.filter.location, this.filter.service, combination, this)) {
+					this.available.combinations.push(combination)
 				}
 			}
 		},
