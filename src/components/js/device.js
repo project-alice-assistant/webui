@@ -68,7 +68,7 @@ export default {
 			)
 		},
 		save: function () {
-			if (this.data.uid === -1) return
+			if (this.data.uid === '') return
 
 			const data = {
 				parentLocation: this.data.parentLocation,
@@ -86,7 +86,7 @@ export default {
 			}).then()
 		},
 		handleClick: function (event) {
-			if (this.myHome.toolsState.addingDevice || this.data.uid === -1) return
+			if (this.myHome.toolsState.addingDevice) return
 
 			event.stopPropagation()
 			this.myHome.removeDroppable()
@@ -105,10 +105,21 @@ export default {
 				this.myHome.moveableItem.setGuidelines([])
 			} else if (!this.myHome.devicesEditMode && !this.myHome.locationsEditMode) {
 				axios({
-					method: 'patch',
-					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/${this.data.uid}/onClick/`,
+					method: 'GET',
+					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/${this.data.id}/onClick/`,
 					headers: {'auth': localStorage.getItem('apiToken')}
-				}).then()
+				}).then(response => {
+					if ('success' in response.data) {
+						if (!response.data.success) {
+							this.showError(this.$t('notifications.errors.somethingWentWrong'))
+							console.error(response.data.message)
+						} else {
+							if (this.data['uid'] === '') {
+								this.showInfo(this.$t('notifications.info.pleasePlugDevice'))
+							}
+						}
+					}
+				})
 			}
 		},
 		handleDrag: function (target, left, top, clientX, clientY) {
