@@ -39,7 +39,7 @@
 		<device
 			v-for="dev in devices"
 			v-if="dev.parentLocation === data.id"
-			:key="`dev_${dev.uid}`"
+			:key="`dev_${dev.id}`"
 			:data="dev"
 			:myHome="myHome"
 		/>

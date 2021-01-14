@@ -39,6 +39,7 @@ export default {
 				{
 					name: this.$t('tooltips.uploadPresets'),
 					icon: 'fas fa-file-upload',
+					callback: this.saveWidgetsLayout
 				},
 				{
 					name: this.$t('tooltips.downloadPresets'),
@@ -116,6 +117,9 @@ export default {
 		this.startWidgetsOnPage(this.activeTabId)
 	},
 	methods: {
+		saveWidgetsLayout: function () {
+
+		},
 		startWidgetsOnPage: function (pageId) {
 			for (const widget of Object.values(this.widgetInstances)) {
 				if (widget['page'] === pageId) {
