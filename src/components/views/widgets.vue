@@ -45,7 +45,7 @@
 					<div class="widgetIcon" v-if="widget.params['title']">
 						<i :class="widget.icon" aria-hidden="true"></i>
 					</div>
-					<p v-html="widget.html"/>
+					<p v-html="widget.taggedHtml"/>
 					<div class="widgetTool optioner" v-if="settings" @click="openWidgetSettings(widget)">
 						<i class="fas fa-cogs clickable" aria-hidden="true"/>
 					</div>

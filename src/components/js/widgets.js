@@ -73,18 +73,21 @@ export default {
 	},
 	computed: {
 		'activePageWidgets': function() {
-			return Object.values(this.widgetInstances).filter( widget => {
+			return Object.values(this.widgetInstances).filter(widget => {
 				return widget['page'] === this.activeTabId
 			})
 		}
 	},
 	created: function() {
 		let self = this
+
+		// Start these vues so that they start logging stuff
 		this.$router.replace('/syslog').then(function () {
 			self.$router.replace('/alicewatch').then(function () {
 				self.$router.replace('/').then()
 			})
 		})
+
 		document.addEventListener('keyup', function (event) {
 			if (event.key === 'Enter') {
 				if (self.$store.state.fullScreen) {
@@ -110,11 +113,31 @@ export default {
 		this.removeWidgets = false
 		this.settings = false
 		this.dragAndResizeEnabled = false
+		this.startWidgetsOnPage(this.activeTabId)
 	},
 	methods: {
+		startWidgetsOnPage: function (pageId) {
+			for (const widget of Object.values(this.widgetInstances)) {
+				if (widget['page'] === pageId) {
+					this.startWidgetScript(widget)
+				}
+			}
+		},
+		startWidgetScript: function (widget) {
+			const uuid = uuidv4()
+			widget.taggedHtml = widget.html.replace(/data-ref="(.*?)"/gi, `data-ref="$1_${uuid}"`)
+
+			const src = `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/resources/${widget.skill}/${widget.name}`
+			this.$loadScript(`${src}.js`).then(() => {
+				// noinspection JSUnresolvedVariable
+				let cls = eval(`${widget.skill}_${widget.name}`)
+				new cls(uuid)
+			})
+		},
 		changePage: function (id) {
 			this.activeTabId = id
 			this.$forceUpdate()
+			this.startWidgetsOnPage(this.activeTabId)
 		},
 		cinemaMode: function () {
 			this.$store.commit('toggleCinemaMode')
@@ -136,21 +159,9 @@ export default {
 				headers: {'auth': localStorage.getItem('apiToken')}
 			}).then(response => {
 				if ('widgets' in response.data) {
-					let widgets = response.data.widgets
-
-					for (const widget of Object.values(widgets)) {
-						const uuid = uuidv4()
-						widget.html = widget.html.replace(/data-ref="(.*?)"/gi, `data-ref="$1_${uuid}"`)
-
-						const src = `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/resources/${widget.skill}/${widget.name}`
-						this.$loadScript(`${src}.js`).then(() => {
-							// noinspection JSUnresolvedVariable
-							let cls = eval(`${widget.skill}_${widget.name}`)
-							new cls(uuid)
-						})
-					}
-					this.widgetInstances = widgets
+					this.widgetInstances = response.data.widgets
 				}
+				this.startWidgetsOnPage(this.activeTabId)
 			})
 		},
 		addWidget: function(skillName, widgetName) {
@@ -168,16 +179,8 @@ export default {
 				}
 			}).then(response => {
 				if ('widget' in response.data) {
-					const uuid = uuidv4()
-					let widget = response.data.widget
-					widget.html = widget.html.replace(/data-ref="(.*?)"/gi, `data-ref="$1_${uuid}"`)
-					this.$set(this.widgetInstances, response.data['widget']['id'], widget)
-					const src = `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/resources/${widget.skill}/${widget.name}`
-					this.$loadScript(`${src}.js`).then(() => {
-						let cls = eval(`// noinspection JSUnresolvedVariable
-						${widget.skill}_${widget.name}`)
-						new cls(uuid)
-					})
+					this.$set(this.widgetInstances, response.data['widget']['id'], response.data.widget)
+					this.startWidgetScript(response.data.widget)
 				}
 			})
 		},
