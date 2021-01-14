@@ -79,7 +79,12 @@ export default {
 		}
 	},
 	created: function() {
-		let self = this;
+		let self = this
+		this.$router.replace('/syslog').then(function () {
+			self.$router.replace('/alicewatch').then(function () {
+				self.$router.replace('/').then()
+			})
+		})
 		document.addEventListener('keyup', function (event) {
 			if (event.key === 'Enter') {
 				if (self.$store.state.fullScreen) {
