@@ -46,10 +46,18 @@ export default {
 			}
 		)
 	},
-	beforeDestroy: function() {
+	beforeDestroy: function () {
 		this.$store.state.mqtt.unsubscribe(C.CORE_HEARTBEAT_TOPIC)
 		this.$store.state.mqtt.unsubscribe(C.CORE_RECONNECTION_TOPIC)
 		this.$store.state.mqtt.unsubscribe(C.CORE_DISCONNECTION_TOPIC)
 		this.unwatch()
+	},
+	watch: {
+		$route: {
+			immediate: true,
+			handler(to) {
+				localStorage.setItem('showPage', to.path)
+			}
+		}
 	}
 }
