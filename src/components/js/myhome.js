@@ -67,7 +67,6 @@ export default {
 			activeFurnitureTile: '',
 			activeConstructionTile: '',
 			activeDeviceTile: '',
-			zoomLevel: 1.0,
 			areaSelectorX: 0,
 			areaSelectorY: 0,
 			areaSelectorStartX: 0,
@@ -81,6 +80,7 @@ export default {
 			draggingPlanStartY: 0,
 			floorPlanX: 0,
 			floorPlanY: 0,
+			zoomLevel: 1.0,
 			deviceLinkParent: null,
 			newConnectionLink: null,
 			connectionLinks: {}
@@ -143,6 +143,7 @@ export default {
 			} else {
 				self.zoomLevel = Math.min(self.zoomLevel + 0.05, 3.0)
 			}
+			localStorage.setItem('zoomLevel', self.zoomLevel)
 			self.moveableItem.destroyMoveable()
 			self.refreshDeviceLinks()
 		})
@@ -163,6 +164,10 @@ export default {
 				self.setActiveTool('none')
 			}
 		})
+
+		this.floorPlanX = parseInt(localStorage.getItem('floorPlanX'))
+		this.floorPlanY = parseInt(localStorage.getItem('floorPlanY'))
+		this.zoomLevel = parseFloat(localStorage.getItem('zoomLevel')) || 1.0
 
 		axios({
 			method: 'get',
@@ -595,6 +600,8 @@ export default {
 				})
 			} else if (this.draggingPlan) {
 				event.target.classList.remove('grabbed')
+				localStorage.setItem('floorPlanX', this.floorPlanX)
+				localStorage.setItem('floorPlanY', this.floorPlanY)
 				this.draggingPlan = false
 			}
 		},
