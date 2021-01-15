@@ -251,6 +251,11 @@ export default {
 		//this.uid = uuidv4()
 	},
 	methods: {
+		recenter: function () {
+			this.floorPlanX = 0
+			this.floorPlany = 0
+			this.zoomLevel = 1.0
+		},
 		checkDevicePerLocationLimit(deviceType, locationId) {
 			const perLocationLimit = deviceType.perLocationLimit
 

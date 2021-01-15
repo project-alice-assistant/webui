@@ -63,6 +63,7 @@
 				@click="activeConstructionTile === conId ? activeConstructionTile = '' : activeConstructionTile = conId"
 			/>
 		</div>
+		<i aria-hidden="true" class="fas fa-location-arrow clickable centerPointer" @click="recenter"/>
 		<div ref="myHomeEditor" :class="{fullscreen: $store.state.fullScreen, editMode: locationsEditMode}" class="myHomeEditor">
 			<div ref="ghost" :class="{hidden: !activeFloorTile && !activeFurnitureTile && !activeConstructionTile}" :style="ghostBackground" class="ghost"/>
 			<div
