@@ -26,7 +26,7 @@ export default {
 					this.loadI18n().then(() => {
 						this.validateToken().then(() => {
 							self.$store.commit('uiConnected', true)
-							self.$router.replace('/').then()
+							this.$router.replace(localStorage.getItem('showPage') || '/').then()
 						})
 					}).catch(reason => {
 						console.error(reason)
