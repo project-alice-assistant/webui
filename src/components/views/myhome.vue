@@ -63,8 +63,14 @@
 				@click="activeConstructionTile === conId ? activeConstructionTile = '' : activeConstructionTile = conId"
 			/>
 		</div>
-		<i aria-hidden="true" class="fas fa-location-arrow clickable centerPointer" @click="recenter"/>
 		<div ref="myHomeEditor" :class="{fullscreen: $store.state.fullScreen, editMode: locationsEditMode}" class="myHomeEditor">
+			<div class="compass">
+				<div class="cardinalPoint n">N</div>
+				<div class="cardinalPoint e">E</div>
+				<div class="cardinalPoint s">S</div>
+				<div class="cardinalPoint w">W</div>
+				<i id="centerPointer" ref="centerPointer" aria-hidden="true" class="fas fa-location-arrow clickable" @click="recenter"/>
+			</div>
 			<div ref="ghost" :class="{hidden: !activeFloorTile && !activeFurnitureTile && !activeConstructionTile}" :style="ghostBackground" class="ghost"/>
 			<div
 				:style="`
@@ -84,6 +90,7 @@
 				@mousemove="mouseMove"
 				@mouseup="handleClick"
 			>
+				<div id="center" ref="center"/>
 				<div
 					v-if="toolsState.addingLocation"
 					class="reactiveLayer"

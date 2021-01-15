@@ -220,6 +220,7 @@ export default {
 				this.furnitures = response.data.data.furnitures
 				this.deviceLinks = response.data.data.links
 				this.devices = response.data.data.devices
+				this.positionCenterPointer()
 			}
 		})
 	},
@@ -253,7 +254,7 @@ export default {
 	methods: {
 		recenter: function () {
 			this.floorPlanX = 0
-			this.floorPlany = 0
+			this.floorPlanY = 0
 			this.zoomLevel = 1.0
 		},
 		checkDevicePerLocationLimit(deviceType, locationId) {
@@ -477,6 +478,12 @@ export default {
 				self.activeDeviceTile = dialogue.data
 			}).catch()
 		},
+		positionCenterPointer: function () {
+			const center = this.$refs['center'].getBoundingClientRect()
+			const centerPointer = this.$refs['centerPointer'].getBoundingClientRect()
+			const angle = Math.atan2(centerPointer.top + 17 - center.top, centerPointer.left + 17 - center.left) - (135 * Math.PI / 180)
+			this.$refs['centerPointer'].style.transform = `rotate(${angle}rad)`
+		},
 		mouseDown: function (event) {
 			if (this.toolsState.addingLocation) {
 				this.clicked = true
@@ -501,13 +508,14 @@ export default {
 				this.draggingPlanStartX = event.clientX
 				this.draggingPlanStartY = event.clientY
 				this.refreshDeviceLinks()
+				this.positionCenterPointer()
 			} else if ((this.toolsState.paintingFloors && this.activeFloorTile !== '')
 				|| (this.toolsState.placingFurniture && this.activeFurnitureTile !== '')
 				|| (this.toolsState.placingConstructions && this.activeConstructionTile !== '')
 				|| (this.toolsState.addingDevice && this.activeDeviceTile !== '')
 				|| (this.toolsState.linkingDevices)
 				|| (this.toolsState.unlinkingDevices)) {
-				let rect = this.$refs['myHomeEditor'].getBoundingClientRect()
+				const rect = this.$refs['myHomeEditor'].getBoundingClientRect()
 				this.$refs['ghost'].style.top = `${event.clientY - 25 - rect.top}px`
 				this.$refs['ghost'].style.left = `${event.clientX - 25 - rect.left}px`
 				if (this.newConnectionLink !== null) {

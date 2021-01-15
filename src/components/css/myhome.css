@@ -173,11 +173,79 @@
 	z-index: 1000;
 }
 
-.centerPointer {
-	font-size: 2em;
-	left: 10px;
+.compass {
+	align-content: center;
+	align-items: center;
+	border: 2px solid var(--accent);
+	border-radius: 9999999px;
+	box-sizing: border-box;
+	display: flex;
+	--compass-height: 100px;
+	justify-content: center;
+	justify-items: center;
+	left: 20px;
+	min-height: 100px;
 	position: absolute;
-	top: 10px;
-	transform: rotate(45deg);
+	top: 20px;
+	--compass-width: 100px;
+	width: 100px;
+	z-index: 1001;
+}
+
+.cardinalPoint {
+	align-content: center;
+	align-items: center;
+	display: flex;
+	font-size: 20px;
+	--cardinalPoint-height: 30px;
+	height: 30px;
+	justify-content: center;
+	justify-items: center;
+	min-height: 30px;
+	min-width: 30px;
+	position: absolute;
+	text-transform: capitalize;
+	--cardinalPoint-width: 30px;
+	width: 30px;
+}
+
+.n {
+	left: calc(var(--compass-width) / 2 - var(--cardinalPoint-width) / 2);
+	top: calc(var(--cardinalPoint-height) / -2);
+}
+
+.e {
+	right: calc(var(--cardinalPoint-width) / -2);
+	top: calc(var(--compass-height) / 2 - var(--cardinalPoint-height) / 2);
+}
+
+.s {
+	bottom: calc(var(--cardinalPoint-height) / -2);
+	left: calc(var(--compass-width) / 2 - var(--cardinalPoint-width) / 2);
+}
+
+.w {
+	left: calc(var(--cardinalPoint-width) / -2);
+	top: calc(var(--compass-height) / 2 - var(--cardinalPoint-height) / 2);
+}
+
+#centerPointer {
+	font-size: 34px !important;
+	max-height: 34px;
+	max-width: 34px;
+	width: 34px;
+}
+
+#center {
+	background-color: rgba(0, 0, 0, 0);
+	height: 1px;
+	left: 50000px;
+	margin: 0 auto;
+	min-height: 1px;
+	min-width: 1px;
+	pointer-events: none;
+	position: absolute;
+	top: 50000px;
+	width: 1px;
 	z-index: 1001;
 }
