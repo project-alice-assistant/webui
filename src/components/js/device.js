@@ -61,6 +61,9 @@ export default {
 		this.unwatch()
 	},
 	methods: {
+		openSettings: function () {
+
+		},
 		computeCustomStyle: function () {
 			return this.myHome.moveableItem.computeCustomStyle(
 				this.data,

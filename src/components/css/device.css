@@ -18,3 +18,39 @@
 	top: -1em;
 	width: 500px;
 }
+
+.deviceTool {
+	align-items: center;
+	background-color: var(--accent);
+	border-radius: 9999999px;
+	box-shadow: 0 2px 15px var(--accent);
+	color: var(--text);
+	display: flex;
+	flex-direction: column;
+	font-size: 25px;
+	height: 1.5em;
+	justify-content: center;
+	justify-items: center;
+	position: absolute;
+	width: 1.5em;
+	z-index: 9999;
+}
+
+.optioner {
+	left: -20px;
+	top: -20px;
+}
+
+.deleter {
+	bottom: -20px;
+	left: -20px;
+}
+
+.zindexer {
+	background-color: var(--accent);
+	border-radius: 1.5em;
+	height: 3em;
+	justify-content: space-evenly;
+	right: -20px;
+	top: -20px;
+}

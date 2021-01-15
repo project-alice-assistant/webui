@@ -420,7 +420,7 @@ export default {
 			this.moveableItem.destroyMoveable()
 		},
 		addLocationDialog: function () {
-			if (!this.toolsState.none) return
+			this.setActiveTool('none')
 
 			let self = this
 			this.$dialog
@@ -452,7 +452,7 @@ export default {
 				})
 		},
 		addDeviceDialog: function () {
-			if (!this.toolsState.none) return
+			this.setActiveTool('none')
 
 			let self = this
 			const message = {}
