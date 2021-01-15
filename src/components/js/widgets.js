@@ -376,10 +376,10 @@ export default {
 			}
 			let self = this
 			if (id <= 1) {
-				this.$dialog.alert('You can\'t delete the default page').then()
+				this.$dialog.alert(this.$t('dialogs.bodies.cannotDeleteDefaultPage')).then()
 			} else {
-				this.$dialog.confirm('Do you really want to delete this page?')
-					.then(function() {
+				this.$dialog.confirm(this.$t('dialogs.bodies.confirmPageDelete'))
+					.then(function () {
 						axios({
 							method: 'DELETE',
 							url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/widgets/pages/${id}/`,
@@ -387,6 +387,9 @@ export default {
 						}).then(response => {
 							if ('pages' in response.data) {
 								self.$delete(self.tabs, id)
+								self.showSuccess(self.$t('notifications.successes.pageDeleted'))
+								self.activeTabId = 1
+								localStorage.setItem('widgetsActiveTabId', 1)
 							}
 						})
 					}).catch(() => {})
