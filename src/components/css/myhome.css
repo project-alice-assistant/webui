@@ -184,11 +184,11 @@
 	justify-content: center;
 	justify-items: center;
 	left: 20px;
-	min-height: 100px;
+	min-height: var(--compass-height);
 	position: absolute;
 	top: 20px;
 	--compass-width: 100px;
-	width: 100px;
+	width: var(--compass-width);
 	z-index: 1001;
 }
 
@@ -198,15 +198,15 @@
 	display: flex;
 	font-size: 20px;
 	--cardinalPoint-height: 30px;
-	height: 30px;
+	height: var(--cardinalPoint-height);
 	justify-content: center;
 	justify-items: center;
-	min-height: 30px;
-	min-width: 30px;
+	min-height: var(--cardinalPoint-height);
+	min-width: var(--cardinalPoint-width);
 	position: absolute;
 	text-transform: capitalize;
 	--cardinalPoint-width: 30px;
-	width: 30px;
+	width: var(--cardinalPoint-width);
 }
 
 .n {
