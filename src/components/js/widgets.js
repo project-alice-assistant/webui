@@ -37,15 +37,6 @@ export default {
 					}
 				},
 				{
-					name: this.$t('tooltips.uploadPresets'),
-					icon: 'fas fa-file-upload',
-					callback: this.saveWidgetsLayout
-				},
-				{
-					name: this.$t('tooltips.downloadPresets'),
-					icon: 'fas fa-file-download',
-				},
-				{
 					name: this.$t('tooltips.addWidgets'),
 					icon: 'far fa-plus-square',
 					onClick: () => {
@@ -106,6 +97,7 @@ export default {
 				this.tabs = response.data.pages
 				this.fetchWidgetTemplates()
 				this.fetchWidgetInstances()
+				this.activeTabId = parseInt(localStorage.getItem('widgetsActiveTabId')) || 1
 			}
 		})
 	},
@@ -117,9 +109,6 @@ export default {
 		this.startWidgetsOnPage(this.activeTabId)
 	},
 	methods: {
-		saveWidgetsLayout: function () {
-
-		},
 		startWidgetsOnPage: function (pageId) {
 			for (const widget of Object.values(this.widgetInstances)) {
 				if (widget['page'] === pageId) {
@@ -142,6 +131,7 @@ export default {
 			this.activeTabId = id
 			this.$forceUpdate()
 			this.startWidgetsOnPage(this.activeTabId)
+			localStorage.setItem('widgetsActiveTabId', this.activeTabId)
 		},
 		cinemaMode: function () {
 			this.$store.commit('toggleCinemaMode')
