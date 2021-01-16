@@ -287,6 +287,8 @@ export default {
 					this.myHome.locations[this.data.id].settings['y'] = parseInt(target.style.top.substring(-2)) - parseInt(droppedIn.style.top.substring(-2))
 					this.targetParentLocation = 0
 				} else {
+					this.myHome.locations[this.data.id].settings['x'] = parseInt(target.style.left.substring(-2))
+					this.myHome.locations[this.data.id].settings['y'] = parseInt(target.style.top.substring(-2))
 					return true
 				}
 			} catch (e) {
