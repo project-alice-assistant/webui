@@ -62,7 +62,18 @@ export default {
 	},
 	methods: {
 		openSettings: function () {
+			let self = this
 
+			const message = {}
+			const options = {
+				view: 'deviceOptionsPromptDialog',
+				data: this.data,
+				parent: this
+			}
+
+			this.$dialog.prompt(message, options).then(() => {
+
+			}).catch()
 		},
 		computeCustomStyle: function () {
 			return this.myHome.moveableItem.computeCustomStyle(
