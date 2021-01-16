@@ -102,7 +102,7 @@ export default {
 
 			} else if (this.myHome.toolsState.linkingDevices && this.myHome.newConnectionLink !== null) {
 				this.showError(this.$t('notifications.errors.noDeviceToDeviceLink'))
-			} else if (this.myHome.devicesEditMode && event.target.classList.contains('device')) {
+			} else if (this.myHome.devicesEditMode && event.target.classList.contains('device') && this.myHome.toolsState['none']) {
 				this.myHome.setMoveable(event.target, this)
 				this.myHome.moveableItem.setBoundaries(this.myHome.$refs.floorPlan)
 				this.myHome.moveableItem.setGuidelines([])
