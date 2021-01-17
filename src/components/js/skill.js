@@ -67,6 +67,7 @@ export default {
 			if (this.$tours['skills'].currentStep !== -1) return
 
 			let backup = JSON.parse(JSON.stringify(this.skill['settings']))
+			let self = this
 			const options = {
 				view: 'skillSettingsPromptDialog',
 				skill: this.skill,
@@ -82,9 +83,13 @@ export default {
 						'content-type': 'application/json'
 					},
 					data: JSON.stringify(dialogue.data)
-				}).then(() => {
-					backup = {}
-					this.$parent.updateSkillData(this.skill)
+				}).then((response) => {
+					if (this.checkResponse(response)){
+						backup = {}
+						self.$parent.updateSkillData(self.skill)
+					} else {
+						self.skill['settings'] = backup
+					}
 				})
 			}).catch(() => this.skill['settings'] = backup)
 		}
