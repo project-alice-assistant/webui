@@ -7,6 +7,7 @@ export default class MoveableItem {
 		this.moveable = new Moveable()
 		this.rotationDelta = 0
 		this.altDown = false
+		this.timeout = 0
 
 		let self = this
 		document.addEventListener('keyup', function (event) {
@@ -97,6 +98,7 @@ export default class MoveableItem {
 				this.startDrag(target)
 			} finally {
 				this.dragging = true
+				this.timeout = Math.floor(new Date().getTime()/250)
 			}
 		}).on('drag', ({target, left, top, clientX, clientY}) => {
 			try {
@@ -112,6 +114,12 @@ export default class MoveableItem {
 			} finally {
 				this.save()
 				this.dragging = false
+				let newTimeout = Math.floor(new Date().getTime()/250)
+				if( this.timeout !== newTimeout) {
+					this.timeout = newTimeout
+				} else {
+					this.timeout = 0
+				}
 				target.classList.remove('dragging')
 			}
 		})
