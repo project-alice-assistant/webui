@@ -40,8 +40,9 @@ export default {
 					'auth': localStorage.getItem('apiToken'),
 					'content-type': 'application/json'
 				}
-			}).then(
-				//TODO check if save worked and show message
+			}).then(response => {
+					this.checkResponse(response)
+				}
 			)
 		},
 		handleClick: function (event) {
@@ -73,13 +74,11 @@ export default {
 						'content-type': 'application/json'
 					}
 				}).then(response => {
-					if (response.data['success']) {
+					if (this.checkResponse(response)) {
 						if ('device' in response.data) {
 							let device = response.data['device']
 							this.myHome.$set(this.myHome.devices, device.id, device)
 						}
-					} else {
-						this.showError(response.data['message'])
 					}
 					this.myHome.setActiveTool('none')
 				})
@@ -108,9 +107,11 @@ export default {
 						'content-type': 'application/json'
 					}
 				}).then(response => {
-					if ('furniture' in response.data) {
-						let furniture = response.data['furniture']
-						this.myHome.$set(this.myHome.furnitures, furniture.id, furniture)
+					if(this.checkResponse(response)){
+						if ('furniture' in response.data) {
+							let furniture = response.data['furniture']
+							this.myHome.$set(this.myHome.furnitures, furniture.id, furniture)
+						}
 					}
 				})
 			} else if (this.myHome.toolsState.placingConstructions) {
@@ -137,9 +138,11 @@ export default {
 						'content-type': 'application/json'
 					}
 				}).then(response => {
-					if ('construction' in response.data) {
-						let construction = response.data['construction']
-						this.myHome.$set(this.myHome.constructions, construction.id, construction)
+					if(this.checkResponse(response)) {
+						if ('construction' in response.data) {
+							let construction = response.data['construction']
+							this.myHome.$set(this.myHome.constructions, construction.id, construction)
+						}
 					}
 				})
 			} else if (this.myHome.toolsState.linkingDevices && this.myHome.newConnectionLink !== null) {
@@ -161,17 +164,16 @@ export default {
 						'content-type': 'application/json'
 					}
 				}).then(response => {
-					if ('link' in response.data) {
-						let link = response.data['link']
-						this.myHome.$set(this.myHome.deviceLinks, link.id, link)
-						this.myHome.drawDeviceLinks(link.id)
-						this.showSuccess(this.$t('notifications.success.deviceLinked'))
+					if(this.checkResponse(response)){
+						if ('link' in response.data) {
+							let link = response.data['link']
+							this.myHome.$set(this.myHome.deviceLinks, link.id, link)
+							this.myHome.drawDeviceLinks(link.id)
+							this.showSuccess(this.$t('notifications.success.deviceLinked'))
+						}
 					} else {
 						this.myHome.setActiveTool('none')
 						this.showError(this.$t('notifications.error.deviceLinked'))
-						if ('message' in response.data) {
-							this.showError(response.data['message'])
-						}
 					}
 				})
 			} else if (this.myHome.toolsState.unlinkingDevices && this.myHome.newConnectionLink !== null) {
@@ -194,7 +196,7 @@ export default {
 						'content-type': 'application/json'
 					}
 				}).then(response => {
-					if ('success' in response.data && response.data.success) {
+					if (this.checkResponse(response)) {
 						this.showSuccess(this.$t('notifications.successes.deviceUnlinked'))
 						const linkId = this.myHome.removeDeviceLink(parseInt(this.myHome.newConnectionLink.start.id.substring(4)), this.data.id)
 						delete this.myHome.deviceLinkParent.myLinks[linkId]
@@ -246,11 +248,11 @@ export default {
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/${this.data.id}/`,
 				headers: {'auth': localStorage.getItem('apiToken')}
 			}).then(response => {
-				if ('success' in response.data && response.data.success) {
+				if (this.checkResponse(response)) {
 					this.myHome.$delete(this.locations, this.data.id)
-					this.showSuccess('Location deleted')
+					this.showSuccess(this.$t('notifications.successes.locationDeleted'))
 				} else {
-					this.showError('Error while deleting location!')
+					this.showError(this.$t('notifications.errors.locationDeleted'))
 				}
 			})
 		},
