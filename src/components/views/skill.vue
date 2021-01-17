@@ -9,7 +9,7 @@
 				<li><span class="fa-li"><i class="fas fa-code-branch" aria-hidden="true"></i></span>{{ skill.version }}</li>
 				<li><span class="fa-li"><i class="fas fa-compress-arrows-alt" aria-hidden="true"></i></span>{{ skill.aliceMinVersion }}</li>
 				<li><span class="fa-li"><i class="fas fa-user" aria-hidden="true"></i></span>{{ skill.author }}</li>
-				<li><span class="fa-li"><i class="fas fa-users" aria-hidden="true"></i></span>{{ skill.maintainers.join(', ') }}</li>
+				<li v-if="skill.maintainers"><span class="fa-li"><i class="fas fa-users" aria-hidden="true"></i></span>{{ skill.maintainers.join(', ') }}</li>
 				<li><span class="fa-li"><i class="fas fa-folder-open" aria-hidden="true"></i></span>{{ skill.category }}</li>
 				<li><span class="fa-li"><i class="fas fa-quote-right" aria-hidden="true"></i></span>{{ skill.description }}</li>
 			</ul>
@@ -25,9 +25,9 @@
 		<div class="skillBody" v-if="viewSkill">
 			<div class="clickable" @click="$tours['skills'].currentStep !== -1 ? '' : viewIntents = true" data-tour="7">{{$t('skill.intents')}}</div>
 			<div class="clickable" @click="$tours['skills'].currentStep !== -1 ? '' : viewInfos = true" data-tour="8">{{$t('skill.info')}}</div>
-			<div class="clickable" @click="$tours['skills'].currentStep !== -1 ? '' : viewInstructions = true" data-tour="9" v-if="skill.instructions.length > 0">{{$t('skill.instructions')}}</div>
+			<div class="clickable" @click="$tours['skills'].currentStep !== -1 ? '' : viewInstructions = true" data-tour="9" v-if="skill.instructions && skill.instructions.length > 0">{{$t('skill.instructions')}}</div>
 			<div class="skillActions">
-				<i class="fas fa-cog clickable" aria-hidden="true" v-if="Object.keys(skill.settings).length" @click="showSettings" data-tour="1" v-tooltip="$t('tooltips.settings')"/>
+				<i class="fas fa-cog clickable" aria-hidden="true" v-if="skill.settings && Object.keys(skill.settings).length" @click="showSettings" data-tour="1" v-tooltip="$t('tooltips.settings')"/>
 				<i class="fas fa-power-off clickable" aria-hidden="true" v-if="!skill.required" @click="toggle" data-tour="2" v-tooltip="skill.active ? $t('tooltips.stop') : $t('tooltips.start')"/>
 				<i class="fas fa-sync clickable" aria-hidden="true" v-if="skill.active" @click="reloadSkill" data-tour="3" v-tooltip="$t('tooltips.reload')"/>
 				<i class="fas fa-arrow-alt-circle-up clickable" aria-hidden="true" v-if="skill.updateAvailable" @click="update" data-tour="4" v-tooltip="$t('tooltips.update')"/>
