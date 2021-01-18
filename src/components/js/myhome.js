@@ -698,6 +698,15 @@ export default {
 					return link.id
 				}
 			}
+		},
+		getDeviceLinks(deviceId) {
+			let ret = {}
+			for (const link of Object.values(this.deviceLinks)) {
+				if (link.deviceId === deviceId) {
+					ret[link.id] = link
+				}
+			}
+			return ret
 		}
 	},
 	watch: {

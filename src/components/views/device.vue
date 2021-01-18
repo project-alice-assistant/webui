@@ -3,7 +3,7 @@
 		:id="`dev_${data.id}`"
 		:ref="`dev_${data.id}`"
 		:style="computeCustomStyle()"
-		v-tooltip="data.displayName"
+		v-tooltip="data.deviceConfigs.displayName"
 		class="device clickable"
 		@click="handleClick"
 		@mouseenter="onMouseEnter"

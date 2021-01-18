@@ -1,3 +1,4 @@
+<!--suppress JSUnresolvedVariable -->
 <template>
 	<div class="custom-view-wrapper">
 		<h3>{{ parent.$t('dialogs.titles.deviceSettings') }}</h3>
@@ -6,7 +7,7 @@
 			<div class="labels">
 				<label for="displayName">{{ parent.$t('dialogs.labels.deviceDisplayName') }}: </label>
 				<label v-if="data['allowHeartbeatOverride']" for="heartbeatRate">{{ parent.$t('dialogs.labels.heartbeatRate') }}: </label>
-				<label v-for="(template, configName) in myConfigTemplates" :key="configName">{{ configName }}</label>
+				<label v-for="(template, configName) in myConfigTemplates" :key="configName" v-tooltip="template.description">{{ configName }}</label>
 			</div>
 			<div class="inputs">
 				<div class="input">
@@ -17,9 +18,8 @@
 						type="text"
 					/>
 				</div>
-				<div class="input">
-					<input v-if="data['allowHeartbeatOverride']"
-								 id="heartbeatRate"
+				<div v-if="data['allowHeartbeatOverride']" class="input">
+					<input id="heartbeatRate"
 								 v-model="heartbeatRate"
 								 v-init="heartbeatRate"
 								 type="number"
@@ -35,7 +35,7 @@
 			<h5>{{ parent.$t('dialogs.titles.linkTo') }}: {{ parent.myHome.locations[parent.myHome.deviceLinks[linkId].targetLocation].name }}</h5>
 			<div class="configLayout">
 				<div class="labels">
-					<label v-for="(template, configName) in myLinkConfigTemplate" :key="configName" :for="configName">{{ configName }}</label>
+					<label v-for="(template, configName) in myLinkConfigTemplate" :key="configName" v-tooltip="template.description" :for="configName">{{ configName }}</label>
 				</div>
 				<div class="inputs">
 					<div v-for="(template, configName) in myLinkConfigTemplate" :key="configName" class="input">

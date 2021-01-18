@@ -42,7 +42,7 @@ export default {
 
 					self.checkHeartbeat = setTimeout(function () {
 						self.data.connected = false
-					}, self.data['heartbeatRate'] * 2500)
+					}, self.data.deviceConfigs['heartbeatRate'] * 2500)
 				} else if (msg.topic === C.CORE_DISCONNECTION_TOPIC) {
 					self.data.connected = false
 					if (self.checkHeartbeat !== null) {
@@ -70,8 +70,8 @@ export default {
 				parent: this
 			}
 
-			this.$dialog.prompt(message, options).then(() => {
-
+			this.$dialog.prompt(message, options).then(function (dialogue) {
+				self.save()
 			}).catch()
 		},
 		computeCustomStyle: function () {
@@ -85,9 +85,12 @@ export default {
 
 			const data = {
 				parentLocation: this.data.parentLocation,
-				settings: this.data.settings
+				settings: this.data.settings,
+				deviceConfigs: this.data.deviceConfigs,
+				linksConfigs: this.myHome.getDeviceLinks(this.data.id)
 			}
 
+			const self = this
 			axios({
 				method: 'patch',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/${this.data.id}/`,
@@ -96,7 +99,14 @@ export default {
 					'auth': localStorage.getItem('apiToken'),
 					'content-type': 'application/json'
 				}
-			}).then()
+			}).then(response => {
+				console.log(response)
+				if ('success' in response.data && response.data.success) {
+					self.showSuccess(self.$t('notifications.successes.deviceSaved'))
+				} else {
+					self.showError(self.$t('notifications.successes.deviceSavingFailed'))
+				}
+			})
 		},
 		handleClick: function (event) {
 			if (this.myHome.toolsState.addingDevice) return
