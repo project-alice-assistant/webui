@@ -6,42 +6,40 @@
 			<div class="labels">
 				<label for="displayName">{{ parent.$t('dialogs.labels.deviceDisplayName') }}: </label>
 				<label v-if="data['allowHeartbeatOverride']" for="heartbeatRate">{{ parent.$t('dialogs.labels.heartbeatRate') }}: </label>
+				<label v-for="(template, configName) in myConfigTemplates" :key="configName">{{ configName }}</label>
 			</div>
 			<div class="inputs">
 				<div class="input">
 					<input
 						id="displayName"
-						v-model="data['displayName']"
-						v-init="data['displayName']"
+						v-model="displayName"
+						v-init="displayName"
 						type="text"
 					/>
 				</div>
 				<div class="input">
-					<input
-						v-if="data['allowHeartbeatOverride']"
-						id="heartbeatRate"
-						v-model="data['heartbeatRate']"
-						v-init="data['heartbeatRate']"
-						type="number"
+					<input v-if="data['allowHeartbeatOverride']"
+								 id="heartbeatRate"
+								 v-model="heartbeatRate"
+								 v-init="heartbeatRate"
+								 type="number"
 					/>
+				</div>
+				<div v-for="(template, configName) in myConfigTemplates" :key="configName" class="input">
+					<configInput :configName="configName" :parent="parent" :template="template"/>
 				</div>
 			</div>
 		</div>
-		<h4>{{ parent.$t('dialogs.titles.deviceLinksSettings') }}</h4>
+		<h4 v-if="parent.myLinks.length > 0">{{ parent.$t('dialogs.titles.deviceLinksSettings') }}</h4>
 		<div v-for="(link, linkId) in parent.myLinks" :key="linkId">
-			<h4>{{ parent.$t('dialogs.titles.linkTo') }}: {{ link.middleLabel }}</h4>
+			<h5>{{ parent.$t('dialogs.titles.linkTo') }}: {{ parent.myHome.locations[parent.myHome.deviceLinks[linkId].targetLocation].name }}</h5>
 			<div class="configLayout">
 				<div class="labels">
-					<label for="displayName">{{ parent.$t('dialogs.labels.deviceDisplayName') }}: </label>
+					<label v-for="(template, configName) in myLinkConfigTemplate" :key="configName" :for="configName">{{ configName }}</label>
 				</div>
 				<div class="inputs">
-					<div class="input">
-						<input
-							id="displayName"
-							v-model="data['displayName']"
-							v-init="data['displayName']"
-							type="text"
-						/>
+					<div v-for="(template, configName) in myLinkConfigTemplate" :key="configName" class="input">
+						<configInput :configName="configName" :parent="parent" :template="template"/>
 					</div>
 				</div>
 			</div>
@@ -64,6 +62,35 @@ export default {
 		return {
 			parent: this.options['parent'],
 			data: this.options['data']
+		}
+	},
+	computed: {
+		myConfigTemplates: function () {
+			return this.parent.myHome.getDeviceType(this).deviceConfigsTemplates
+		},
+		myLinkConfigTemplate: function () {
+			return this.parent.myHome.getDeviceType(this).linkConfigsTemplates
+		},
+		configValue() {
+			return (configName) => {
+				return this.parent.myHome.devices[this.parent.data['id']].deviceConfigs[configName] || ''
+			}
+		},
+		displayName: {
+			get: function () {
+				return this.parent.myHome.devices[this.parent.data['id']].deviceConfigs['displayName']
+			},
+			set: function (value) {
+				return this.parent.myHome.devices[this.parent.data['id']].deviceConfigs['displayName'] = value
+			}
+		},
+		heartbeatRate: {
+			get: function () {
+				return this.parent.myHome.devices[this.parent.data['id']].deviceConfigs['heartbeatRate']
+			},
+			set: function (value) {
+				return this.parent.myHome.devices[this.parent.data['id']].deviceConfigs['heartbeatRate'] = value
+			}
 		}
 	},
 	methods: {

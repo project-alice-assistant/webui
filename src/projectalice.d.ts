@@ -5,19 +5,31 @@ export interface DeviceType {
 	allowLocationLinks: boolean,
 	heartbeatRate: number,
 	abilities: Array<any>,
-	skillName: string
+	skillName: string,
+	deviceConfigsTemplates: object,
+	linkConfigsTemplates: object,
+	allowHeartbeatOverride: boolean
 }
 
 export interface Device {
 	abilities: number,
 	connected: boolean,
 	deviceParams: Object,
+	deviceConfigs: Object,
 	displayName: string,
-	displaySettings: Object,
+	settings: Object,
 	id: number,
 	lastContact: number,
 	parentLocation: number,
 	skillName: string,
 	typeName: string,
 	uid: string
+}
+
+export interface Link {
+	configs: Object,
+	deviceId: number,
+	deviceUid: string,
+	id: number,
+	targetLocation: number
 }

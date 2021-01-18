@@ -63,7 +63,6 @@ export default {
 	methods: {
 		openSettings: function () {
 			let self = this
-
 			const message = {}
 			const options = {
 				view: 'deviceOptionsPromptDialog',

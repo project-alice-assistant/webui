@@ -1,10 +1,20 @@
 .dg-main-content {
 	background-color: var(--windowBG);
 	border-radius: 0;
+	max-height: 90%;
+	overflow-y: auto;
 }
 
 .dg-btn {
 	border-radius: 0;
+}
+
+.dg-container {
+	align-content: center;
+	align-items: center;
+	display: flex;
+	justify-content: center;
+	justify-items: center;
 }
 
 .dg-btn--cancel {
@@ -53,4 +63,10 @@
 
 .dg-backdrop {
 	opacity: 0.75;
+}
+
+.dg-content-cont--floating {
+	position: unset;
+	top: unset;
+	transform: unset;
 }
