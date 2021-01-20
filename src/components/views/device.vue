@@ -10,7 +10,7 @@
 		@mouseleave="onMouseExit"
 	>
 		<div class="deviceState">
-			<span v-if="data.uid === ''">
+			<span v-if="data.uid === '' || data.uid === -1">
 				<i aria-hidden="true" class="fas fa-unlink red"/>
 			</span>
 			<span v-else-if="!data.connected">
