@@ -99,9 +99,18 @@ export default {
 				}
 			}).then(response => {
 				if ('success' in response.data && response.data.success) {
+					self.myHome.removeDeviceLinks(self.data.id)
+
+					for (const link of Object.values(response.data.links)) {
+						this.myHome.$set(this.myHome.deviceLinks, link.id, link)
+					}
+
 					self.showSuccess(self.$t('notifications.successes.deviceSaved'))
+					setTimeout(function () {
+						self.myHome.drawDeviceLinks({specificDeviceId: self.data.id})
+					}, 250)
 				} else {
-					self.showError(self.$t('notifications.successes.deviceSavingFailed'))
+					self.showError(self.$t('notifications.errors.deviceSavingFailed'))
 				}
 			})
 		},

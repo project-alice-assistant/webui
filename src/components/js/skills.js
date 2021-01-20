@@ -178,7 +178,7 @@ export default {
 	},
 	methods: {
 		updateSkillData(skillData) {
-			this.skills.$set(skillData.name, skillData)
+			this.skills[skillData.name] = skillData
 		},
 		fetchSkills: function () {
 			axios({

@@ -16,7 +16,7 @@
 	position: absolute;
 	text-shadow: 2px 2px 15px var(--accent);
 	top: -1em;
-	width: 500px;
+	width: auto;
 }
 
 .deviceTool {

@@ -300,9 +300,11 @@ export default {
 
 			return null
 		},
-		drawDeviceLinks: function (specificLinkId) {
+		drawDeviceLinks: function ({specificLinkId, specificDeviceId, specificLocationId} = {}) {
 			for (const link of Object.values(this.deviceLinks)) {
-				if (specificLinkId && link.id !== specificLinkId) continue
+				if ((specificLinkId !== undefined && link.id !== specificLinkId) ||
+					(specificDeviceId !== undefined && link.deviceId !== specificDeviceId) ||
+					(specificLocationId !== undefined && link.targetLocation !== specificLocationId)) continue
 
 				let device = null
 				for (const location of this.$children.filter(loc => loc.$options.name === 'location')) {

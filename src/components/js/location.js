@@ -83,7 +83,7 @@ export default {
 							for (const link of Object.values(response.data.link)) {
 								this.myHome.$set(this.myHome.deviceLinks, link.id, link)
 								setTimeout(function () {
-									self.myHome.drawDeviceLinks(link.id)
+									self.myHome.drawDeviceLinks({specificLinkId: link.id})
 								}, 1000)
 							}
 						}
@@ -176,7 +176,7 @@ export default {
 						if ('link' in response.data) {
 							let link = response.data['link']
 							this.myHome.$set(this.myHome.deviceLinks, link.id, link)
-							this.myHome.drawDeviceLinks(link.id)
+							this.myHome.drawDeviceLinks({specificLinkId: link.id})
 							this.showSuccess(this.$t('notifications.success.deviceLinked'))
 						}
 					} else {
