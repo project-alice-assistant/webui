@@ -312,37 +312,39 @@ export default {
 
 				if (!device) continue
 
-				const label = LeaderLine.captionLabel(this.locations[link.targetLocation].name)
-
-				let targetLocation = document.querySelector(`#loc_${link.targetLocation}`)
-				const line = new LeaderLine(
-					device.$el,
-					LeaderLine.pointAnchor(targetLocation, {
-						x: targetLocation.style.width / 2,
-						y: targetLocation.style.height / 2
-					}),
-					{
-						color: '#343434',
-						size: 3,
-						dash: {
-							animation: {
-								duration: 250,
-								timing: 'linear'
-							}
-						},
-						dropShadow: true,
-						endPlug: 'disc',
-						endPlugSize: 3,
-						hide: true,
-						middleLabel: label
-					}
-				)
-				device.myLinks[link.id] = line
-				this.connectionLinks[link.id] = line
-
-				if (this.devicesEditMode) {
-					line.show('draw')
+				this.newDeviceLink(link, device)
+			}
+		},
+		newDeviceLink(link, device) {
+			const label = LeaderLine.captionLabel(this.locations[link.targetLocation].name)
+			const targetLocation = document.querySelector(`#loc_${link.targetLocation}`)
+			const line = new LeaderLine(
+				device.$el,
+				LeaderLine.pointAnchor(targetLocation, {
+					x: targetLocation.style.width / 2,
+					y: targetLocation.style.height / 2
+				}),
+				{
+					color: '#343434',
+					size: 3,
+					dash: {
+						animation: {
+							duration: 250,
+							timing: 'linear'
+						}
+					},
+					dropShadow: true,
+					endPlug: 'disc',
+					endPlugSize: 3,
+					hide: true,
+					middleLabel: label
 				}
+			)
+			device.myLinks[link.id] = line
+			this.connectionLinks[link.id] = line
+
+			if (this.devicesEditMode) {
+				line.show('draw')
 			}
 		},
 		refreshDeviceLinks: function () {
@@ -698,6 +700,20 @@ export default {
 					return link.id
 				}
 			}
+		},
+		removeDeviceLinks(deviceId) {
+			for (const link of Object.values(this.deviceLinks)) {
+				if (link.deviceId === deviceId) {
+					this.connectionLinks[link.id].remove()
+					delete this.connectionLinks[link.id]
+					delete this.deviceLinks[link.id]
+				}
+			}
+			this.refreshDeviceLinks()
+		},
+		deleteDevice(deviceId) {
+			this.$delete(this.devices, deviceId)
+			this.removeDeviceLinks(deviceId)
 		},
 		getDeviceLinks(deviceId) {
 			let ret = {}

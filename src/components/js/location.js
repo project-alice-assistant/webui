@@ -48,6 +48,7 @@ export default {
 		handleClick: function (event) {
 			event.stopPropagation()
 			this.myHome.removeDroppable()
+			const self = this
 
 			if (this.myHome.toolsState.paintingFloors && this.myHome.activeFloorTile !== '') {
 				this.myHome.locations[this.data.id].settings['t'] = this.myHome.activeFloorTile
@@ -78,6 +79,13 @@ export default {
 						if ('device' in response.data) {
 							let device = response.data['device']
 							this.myHome.$set(this.myHome.devices, device.id, device)
+
+							for (const link of Object.values(response.data.link)) {
+								this.myHome.$set(this.myHome.deviceLinks, link.id, link)
+								setTimeout(function () {
+									self.myHome.drawDeviceLinks(link.id)
+								}, 1000)
+							}
 						}
 					}
 					this.myHome.setActiveTool('none')
@@ -294,7 +302,7 @@ export default {
 					return true
 				}
 			} catch (e) {
-				this.showError('Fatal Error!?')
+				this.showError(this.$t('notifications.successes.uiError'))
 				console.log(e)
 				throw e
 			}
@@ -324,23 +332,20 @@ export default {
 			try {
 				const device = this.myHome.deviceLinkParent
 				const deviceType = this.myHome.getDeviceType(device)
-				if (device.data.parentLocation === this.data.id) {
-					if(showError) this.showError('No link to parent Location allowed')
-					return false
-				}
-				if(!deviceType.allowLocationLinks){
-					if(showError) this.showError('This device must not have links!')
+
+				if (!deviceType.allowLocationLinks) {
+					if (showError) this.showError(this.$t('notifications.successes.cannotLinkDevice'))
 					return false
 				}
 
 				for (const link of Object.values(this.myHome.deviceLinks)) {
-					if (link.deviceId === device.data.id && link.targetLocation === this.data.id){
-						if (showError) this.showError('There is already a link from this device to this location!')
+					if (link.deviceId === device.data.id && link.targetLocation === this.data.id) {
+						if (showError) this.showError(this.$t('notifications.successes.deviceAlreadyLinkedToLocation'))
 						return false
 					}
 				}
 			} catch {
-				if (showError) this.showError('Unexpected error occurred!')
+				if (showError) this.showError(this.$t('notifications.successes.unexpectedServerError'))
 				return false
 			}
 			return true

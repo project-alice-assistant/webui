@@ -100,7 +100,6 @@ export default {
 					'content-type': 'application/json'
 				}
 			}).then(response => {
-				console.log(response)
 				if ('success' in response.data && response.data.success) {
 					self.showSuccess(self.$t('notifications.successes.deviceSaved'))
 				} else {
@@ -188,7 +187,6 @@ export default {
 					throw true
 				}
 			} catch (e) {
-				console.log(e)
 				throw e
 			}
 		},
@@ -200,8 +198,8 @@ export default {
 				headers: {'auth': localStorage.getItem('apiToken')}
 			}).then(response => {
 				if ('success' in response.data && response.data.success) {
-					this.myHome.$delete(this.myHome.devices, this.data.id)
-					this.showSuccess(this.$t('notifications.success.deviceDeleted'))
+					this.myHome.deleteDevice(this.data.id)
+					this.showSuccess(this.$t('notifications.successes.deviceDeleted'))
 				}
 			})
 		},
