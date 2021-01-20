@@ -20,6 +20,8 @@
 				<i v-if="data.deviceParams.micMuted" aria-hidden="true" class="fas fa-microphone-alt-slash red"/>
 				<i v-if="data.deviceParams.soundMuted" aria-hidden="true" class="fas fa-volume-mute red"/>
 				<i v-if="data.deviceParams.batteryWarning" aria-hidden="true" class="fas fa-battery-quarter red"/>
+				<i v-if="data.deviceParams.alert" aria-hidden="true" class="fas fa-exclamation-triangle red"/>
+				<i v-if="data.deviceParams.notification" aria-hidden="true" class="fas fa-bell"/>
 			</span>
 		</div>
 		<div v-if="data.id !== 1 && myHome.toolsState.deletingDevices" class="deviceTool deleter" @click="deleteMe">
