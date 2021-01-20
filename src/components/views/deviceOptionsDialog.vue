@@ -26,7 +26,7 @@
 					/>
 				</div>
 				<div v-for="(template, configName) in myConfigTemplates" :key="configName" class="input">
-					<configInput :configName="configName" :parent="parent" :template="template"/>
+					<configInput :configName="configName" :holder="parent.myHome.devices[parent.data['id']].deviceConfigs" :template="template"/>
 				</div>
 			</div>
 		</div>
@@ -39,7 +39,7 @@
 				</div>
 				<div class="inputs">
 					<div v-for="(template, configName) in myLinkConfigTemplate" :key="configName" class="input">
-						<configInput :configName="configName" :parent="parent" :template="template"/>
+						<configInput :configName="configName" :holder="parent.myHome.deviceLinks[linkId].configs" :template="template"/>
 					</div>
 				</div>
 			</div>

@@ -81,8 +81,6 @@ export default {
 			)
 		},
 		save: function () {
-			if (this.data.uid === '') return
-
 			const data = {
 				parentLocation: this.data.parentLocation,
 				settings: this.data.settings,

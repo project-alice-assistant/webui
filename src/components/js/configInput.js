@@ -3,15 +3,15 @@ export default {
 	props: [
 		'template',
 		'configName',
-		'parent'
+		'holder'
 	],
 	computed: {
 		configValue: {
 			get: function () {
-				return this.parent.myHome.devices[this.parent.data['id']].deviceConfigs[this.configName]
+				return this.holder[this.configName]
 			},
 			set: function (value) {
-				return this.parent.myHome.devices[this.parent.data['id']].deviceConfigs[this.configName] = value
+				return this.holder[this.configName] = value
 			}
 		}
 	}
