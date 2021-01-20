@@ -1,7 +1,7 @@
 <!--suppress HtmlFormInputWithoutLabel -->
 <template>
 	<div class="container flexcolumn">
-		<tabs :tabs="tabs"/>
+		<tabs :activeTabId="activeTabId" :tabs="tabs"/>
 		<div v-if="activeTabId === 1" class="tab_page">
 			<div class="settingsContainer">
 				<div class="settingsCategory">
