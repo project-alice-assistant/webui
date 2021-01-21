@@ -25,8 +25,16 @@ export default {
 				this.connectMQTT().then(() => {
 					this.loadI18n().then(() => {
 						this.validateToken().then(() => {
-							self.$store.commit('uiConnected', true)
-							this.$router.replace(localStorage.getItem('showPage') || '/').then()
+							// Start these pages so that they start logging stuff
+							const lastVisitedPage = localStorage.getItem('showPage') || '/'
+							this.$router.replace('/syslog').then(function () {
+								self.$router.replace('/alicewatch').then(function () {
+									if (lastVisitedPage !== '/alicewatch') {
+										self.$router.replace(lastVisitedPage).then()
+									}
+									self.$store.commit('uiConnected', true)
+								})
+							})
 						})
 					}).catch(reason => {
 						console.error(reason)

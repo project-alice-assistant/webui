@@ -1,11 +1,14 @@
 import axios from 'axios'
 import {v4 as uuidv4} from 'uuid'
+import MoveableItem from './moveableItem'
 
 export default {
 	name: 'pa-widgets',
 	data: function() {
 		return {
 			uid: uuidv4(),
+			controller: this,
+			moveableItem: new MoveableItem(this),
 			tabs: {},
 			menuItems: [
 				{
@@ -18,6 +21,7 @@ export default {
 						this.removeWidgets = false
 						this.settings = false
 						this.dragAndResizeEnabled = false
+						this.moveableItem.destroyMoveable()
 					},
 					onOpen: () => {
 						this.dragAndResizeEnabled = true
@@ -72,14 +76,6 @@ export default {
 	},
 	created: function() {
 		let self = this
-
-		// Start these vues so that they start logging stuff
-		this.$router.replace('/syslog').then(function () {
-			self.$router.replace('/alicewatch').then(function () {
-				self.$router.replace('/').then()
-			})
-		})
-
 		document.addEventListener('keyup', function (event) {
 			if (event.key === 'Enter') {
 				if (self.$store.state.fullScreen) {
@@ -109,6 +105,9 @@ export default {
 		this.startWidgetsOnPage(this.activeTabId)
 	},
 	methods: {
+		setMoveable: function (target, prop) {
+			this.moveableItem.setMoveable(target, prop)
+		},
 		startWidgetsOnPage: function (pageId) {
 			for (const widget of Object.values(this.widgetInstances)) {
 				if (widget['page'] === pageId) {
@@ -128,6 +127,7 @@ export default {
 			})
 		},
 		changePage: function (id) {
+			this.moveableItem.destroyMoveable()
 			this.activeTabId = id
 			this.$forceUpdate()
 			this.startWidgetsOnPage(this.activeTabId)
@@ -188,163 +188,60 @@ export default {
 			}).then(response => {
 				if ('success' in response.data && response.data.success) {
 					const listing = this.listOfWidgetOnPage(this.widgetInstances[widgetId]['page'])
-					const hisZIndex = this.widgetInstances[widgetId]['params']['z']
+					const hisZIndex = this.widgetInstances[widgetId]['settings']['z']
 					this.$delete(this.widgetInstances, widgetId)
 
 					for (const w of listing) {
-						if (w.params['z'] > hisZIndex) {
-							w.params['z'] -= 1
-							this.saveWidgetParams(w)
+						if (w.settings['z'] > hisZIndex) {
+							w.settings['z'] -= 1
+							this.saveWidget(w)
 						}
 					}
 				}
 			})
 		},
-		savePosition: function(x, y) {
-			if (this.selectedWidget <= -1) {
-				return
-			}
-
-			x = Math.ceil(x / 5) * 5
-			y = Math.ceil(y / 5) * 5
-
-			let widgetId = this.selectedWidget
-
-			axios({
-				method: 'patch',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/${widgetId}/savePosition/`,
-				data: {
-					x: x,
-					y: y
-				},
-				headers: {
-					'auth': this.$store.getters.apiToken,
-					'content-type': 'application/json'
-				}
-			}).then(response => {
-				if ('success' in response.data && response.data.success) {
-					let widget = this.widgetInstances[widgetId]
-					widget.params['x'] = x
-					widget.params['y'] = y
-					this.$set(this.widgetInstances, widgetId, widget)
-				}
-			})
-		},
-		saveSize: function(x, y, w, h) {
-			if (this.selectedWidget <= -1) {
-				return
-			}
-			x = Math.ceil(x / 5) * 5
-			y = Math.ceil(y / 5) * 5
-			w = Math.ceil(w / 5) * 5
-			h = Math.ceil(h / 5) * 5
-
-			let widgetId = this.selectedWidget
-
-			axios({
-				method: 'patch',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/${widgetId}/saveSize/`,
-				data: {
-					x: x,
-					y: y,
-					w: w,
-					h: h
-				},
-				headers: {
-					'auth': this.$store.getters.apiToken,
-					'content-type': 'application/json'
-				}
-			}).then(response => {
-				if ('success' in response.data && response.data.success) {
-					let widget = this.widgetInstances[widgetId]
-					widget.params['x'] = x
-					widget.params['y'] = y
-					widget.params['w'] = w
-					widget.params['h'] = h
-					this.$set(this.widgetInstances, widgetId, widget)
-				}
-			})
-		},
-		openWidgetSettings(widget) {
-			let self = this
-			let backup = {...widget.params}
-			this.settings = false
-
-			const message = {}
-			const options = {
-				view: 'widgetOptionsPromptDialog',
-				widget: widget,
-				parent: this
-			}
-
-			this.$dialog.prompt(message, options).then(dialogue => {
-				axios({
-					method: 'PATCH',
-					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/widgets/${dialogue.data.id}/`,
-					data: JSON.stringify(dialogue.data.params),
-					headers: {
-						'auth': this.$store.getters.apiToken,
-						'content-type': 'application/json'
-					}
-				}).catch(() => {
-					widget.params = backup
-				}).finally(() => {
-					this.settings = true
-				})
-			}).catch(() => {
-				widget.params = backup
-				this.settings = true
-			})
-		},
-		saveWidgetParams(widget) {
+		saveWidget(widget) {
+			const self = this
 			axios({
 				method: 'PATCH',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/${widget.id}/`,
-				data: JSON.stringify(widget.params),
+				data: JSON.stringify(widget.settings),
 				headers: {
 					'auth': this.$store.getters.apiToken,
 					'content-type': 'application/json'
 				}
+			}).then(response => {
+				if ('success' in response.data && response.data.success) {
+					self.showSuccess(self.$t('notifications.successes.widgetSaved'))
+				} else {
+					self.showError(self.$t('notifications.errors.widgetSavingFailed'))
+				}
 			})
 		},
-		computeCustomStyle(widget) {
-			let style = ''
-			style += `color: ${widget.params['color']};`
-			style += `background-color: ${widget.params['rgba']};`
-			style += `font-size: ${widget.params['font-size']}em;`
-
-			if (!widget.params['borders']) {
-				style += 'box-shadow:none;'
-			}
-
-			if (widget.params['rotation'] && widget.params['rotation'] !== 0) {
-				style += `transform:rotate(${widget.params['rotation']}deg);`
-			}
-
-			return style
-		},
 		moveZUp(widget) {
-			const myIndex = widget.params['z']
-			const myNewIndex = myIndex + 1;
+			const myIndex = widget.settings['z']
+			const myNewIndex = myIndex + 1
 			const listing = this.listOfWidgetOnPage(widget['page'])
+
+			console.log(myIndex, myNewIndex, listing)
 
 			if (myNewIndex > listing.length) {
 				return
 			}
 
 			for (const w of listing) {
-				if (w.params['z'] === myNewIndex) {
-					w.params['z'] -= 1
-					widget.params['z'] = myNewIndex
-					this.saveWidgetParams(w)
-					this.saveWidgetParams(widget)
+				if (w.settings['z'] === myNewIndex) {
+					w.settings['z'] -= 1
+					widget.settings['z'] = myNewIndex
+					this.saveWidget(w)
+					this.saveWidget(widget)
 					return
 				}
 			}
 		},
 		moveZDown(widget) {
-			const myIndex = widget.params['z']
-			const myNewIndex = myIndex - 1;
+			const myIndex = widget.settings['z']
+			const myNewIndex = myIndex - 1
 			const listing = this.listOfWidgetOnPage(widget['page'])
 
 			if (myNewIndex <= 0) {
@@ -352,11 +249,11 @@ export default {
 			}
 
 			for (const w of listing) {
-				if (w.params['z'] === myNewIndex) {
-					w.params['z'] += 1
-					widget.params['z'] = myNewIndex
-					this.saveWidgetParams(w)
-					this.saveWidgetParams(widget)
+				if (w.settings['z'] === myNewIndex) {
+					w.settings['z'] += 1
+					widget.settings['z'] = myNewIndex
+					this.saveWidget(w)
+					this.saveWidget(widget)
 					return
 				}
 			}
@@ -383,7 +280,7 @@ export default {
 						axios({
 							method: 'DELETE',
 							url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/widgets/pages/${id}/`,
-							headers: {'auth': this.$store.getters.apiToken}
+							headers: {'auth': self.$store.getters.apiToken}
 						}).then(response => {
 							if ('pages' in response.data) {
 								self.$delete(self.tabs, id)
@@ -436,6 +333,14 @@ export default {
 					this.$set(this.tabs, page.id, page)
 				}
 			})
+		}
+	},
+	watch: {
+		$route: {
+			immediate: true,
+			handler(to) {
+				this.moveableItem.destroyMoveable()
+			}
 		}
 	}
 }

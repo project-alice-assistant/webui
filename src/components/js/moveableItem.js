@@ -41,7 +41,32 @@ export default class MoveableItem {
 		}
 	}
 
-	computeCustomStyle(obj, background) {
+
+	computeWidgetCustomStyle(widget) {
+		let style = `color: ${widget.settings['color']};`
+		style += `background-color: ${widget.settings['rgba']};`
+		style += `font-size: ${widget.settings['font-size']}em;`
+		style += `top: ${widget.settings['y']}px;`
+		style += `left: ${widget.settings['x']}px;`
+		style += `width: ${widget.settings['w']}px;`
+		style += `height: ${widget.settings['h']}px;`
+		style += `z-index: ${widget.settings['z']};`
+		style += 'min-width: 50px;'
+		style += 'min-height: 50px;'
+
+		if (!widget.settings['borders']) {
+			style += 'box-shadow:none;'
+		}
+
+		if (widget.settings['r'] && widget.settings['r'] !== 0) {
+			style += `transform:rotate(${widget.settings['r']}deg);`
+		}
+
+		return style
+	}
+
+
+	computeMyHomeCustomStyle(obj, background) {
 		let style = `left:${obj['settings']['x']}px;`
 		style += `top:${obj['settings']['y']}px;`
 		style += `width:${obj['settings']['w']}px;`
@@ -65,9 +90,12 @@ export default class MoveableItem {
 		this.destroyMoveable()
 
 		let container = document.querySelector('.floorPlan')
-
-		if (prop.data.parentLocation !== 0) {
-			container = document.querySelector(`#loc_${prop.data.parentLocation}`)
+		if (container) {
+			if (prop.data.parentLocation !== 0) {
+				container = document.querySelector(`#loc_${prop.data.parentLocation}`)
+			}
+		} else {
+			container = document.querySelector('.tab_page')
 		}
 
 		this.moveable = new Moveable(container, {
@@ -201,7 +229,9 @@ export default class MoveableItem {
 		} else if (target.classList.contains('construction')) {
 			return this.controller.constructions[id]
 		} else if (target.classList.contains('device')) {
-			return this.controller.devices[target.id.substring(4)]
+			return this.controller.devices[id]
+		} else if (target.classList.contains('widget')) {
+			return this.controller.widgetInstances[id]
 		}
 	}
 
@@ -213,7 +243,11 @@ export default class MoveableItem {
 		const item = this.getItem(target)
 		item.settings['x'] = parseInt(target.style.left.substring(-2))
 		item.settings['y'] = parseInt(target.style.top.substring(-2))
-		this.controller.removeDroppable()
+
+		try {
+			this.controller.removeDroppable()
+		} catch {
+		}
 	}
 
 	setSize(target) {

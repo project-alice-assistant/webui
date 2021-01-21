@@ -18,7 +18,7 @@ export default {
 	],
 	methods: {
 		computeCustomStyle: function () {
-			return this.myHome.moveableItem.computeCustomStyle(
+			return this.myHome.moveableItem.computeMyHomeCustomStyle(
 				this.data,
 				`background: url('http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/floors/${this.data.settings['t'] || 'floor-80'}.png');background-color: var(--windowBG);`
 			)
@@ -302,7 +302,7 @@ export default {
 					return true
 				}
 			} catch (e) {
-				this.showError(this.$t('notifications.successes.uiError'))
+				this.showError(this.$t('notifications.errors.uiError'))
 				console.log(e)
 				throw e
 			}

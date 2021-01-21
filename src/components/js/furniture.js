@@ -13,7 +13,7 @@ export default {
 	],
 	methods: {
 		computeCustomStyle: function () {
-			return this.myHome.moveableItem.computeCustomStyle(
+			return this.myHome.moveableItem.computeMyHomeCustomStyle(
 				this.data,
 				`background: url('http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/furniture/${this.data.settings['t'] || 'deco-1'}.png') no-repeat; background-size: 100% 100%;`
 			)

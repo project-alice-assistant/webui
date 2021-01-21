@@ -21,12 +21,6 @@
 	margin-bottom: 5px;
 }
 
-.widgetContainer {
-	position: absolute;
-	width: 100%;
-	height: 100%;
-}
-
 .widget {
 	display: flex;
 	flex-direction: column;
@@ -42,11 +36,12 @@
 }
 
 .widgetIcon {
-	width: 100%;
 	font-size: 20px;
-	text-align: left;
 	margin-bottom: 2px;
 	min-height: 20px;
+	pointer-events: none;
+	text-align: left;
+	width: 100%;
 }
 
 .widget > p {
@@ -58,21 +53,21 @@
 }
 
 .widgetTool {
-	position: absolute;
-	z-index: 9999;
-	width: 1.5em;
-	height: 1.5em;
-	border-radius: 9999999px;
+	align-items: center;
 	background-color: var(--accent);
+	border-radius: 9999999px;
+	box-shadow: 0 2px 15px var(--accent);
+	color: var(--text);
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	justify-items: center;
-	justify-content: center;
-	box-shadow: 0 2px 15px var(--accent);
 	font-size: 35px;
-	color: var(--text);
+	height: 1.5em;
+	justify-content: center;
+	justify-items: center;
 	opacity: 1;
+	position: absolute;
+	width: 1.5em;
+	z-index: 200;
 }
 
 .optioner {

@@ -10,7 +10,6 @@ import VueTour from 'vue-tour'
 import Overlay from 'vuejs-overlay'
 import VueDialog from 'vuejs-dialog'
 import VueTooltip from 'v-tooltip'
-import VueDraggableResizable from 'vue-draggable-resizable'
 import VueSimpleMarkdown from 'vue-simple-markdown'
 import VueI18n from 'vue-i18n'
 import LoadScript from 'vue-plugin-load-script'
@@ -26,10 +25,10 @@ import Furniture from './components/views/furniture'
 import ConfigInput from './components/views/configInput'
 import Construction from './components/views/construction'
 import Device from './components/views/device'
+import Widget from './components/views/widget'
 
 import 'vuejs-dialog/dist/vuejs-dialog.min.css'
 import 'vue-tour/dist/vue-tour.css'
-import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
 import 'vue-simple-markdown/dist/vue-simple-markdown.css'
 import './ProjectAlice.css'
 import './components/css/overrides/vuejsdialog.css'
@@ -65,7 +64,6 @@ Vue.use(LoadScript)
 Vue.use(VueResizeText)
 
 Vue.component('VueToggles', VueToggles)
-Vue.component('vue-draggable-resizable', VueDraggableResizable)
 Vue.component('skill', Skill)
 Vue.component('storeSkill', StoreSkill)
 Vue.component('actionsMenu', ActionsMenu)
@@ -77,6 +75,7 @@ Vue.component('furniture', Furniture)
 Vue.component('construction', Construction)
 Vue.component('device', Device)
 Vue.component('configInput', ConfigInput)
+Vue.component('widget', Widget)
 
 Vue.dialog.registerComponent('fontawesomePromptDialog', faIconOption)
 Vue.dialog.registerComponent('widgetOptionsPromptDialog', widgetOption)

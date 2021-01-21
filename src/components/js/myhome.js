@@ -36,7 +36,7 @@ export default {
 					callback: this.setDevicesEditMode
 				}
 			],
-			moveableItem: new MoveableItem(this, this.locations),
+			moveableItem: new MoveableItem(this),
 			locationsEditMode: false,
 			devicesEditMode: false,
 			toolsState: {

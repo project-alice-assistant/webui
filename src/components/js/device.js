@@ -75,7 +75,7 @@ export default {
 			}).catch()
 		},
 		computeCustomStyle: function () {
-			return this.myHome.moveableItem.computeCustomStyle(
+			return this.myHome.moveableItem.computeMyHomeCustomStyle(
 				this.data,
 				`background: url('http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/${this.data.id}/device.png') no-repeat; background-size: 100% 100%;`
 			)

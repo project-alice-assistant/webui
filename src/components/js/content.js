@@ -56,7 +56,9 @@ export default {
 		$route: {
 			immediate: true,
 			handler(to) {
-				localStorage.setItem('showPage', to.path)
+				if (this.$store.state.uiConnected) {
+					localStorage.setItem('showPage', to.path)
+				}
 			}
 		}
 	}
