@@ -22,7 +22,7 @@ export default {
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then(response => {
 				if ('skill' in response.data) {
-					this.showSuccess("Triggered Reload")
+					this.showSuccess('notifications.successes.reloadTriggered')
 					this.$parent.updateSkillData(response.data.skill)
 				}
 			})

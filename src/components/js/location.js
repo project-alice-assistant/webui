@@ -240,7 +240,7 @@ export default {
 				})
 				.then(function (dialogue) {
 					if(dialogue.data === ''){
-						self.showError('The name can\'t be empty')
+						self.showError(self.$t('notifications.errors.noLocationEmptyName'))
 						return
 					}
 					self.data.name = dialogue.data
