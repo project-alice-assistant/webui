@@ -28,12 +28,31 @@ export default {
 				{
 					target: '[data-tour="0"]',
 					header: {
-						title: 'Your skills'
+						title: this.$t('tours.skills.yourSkills')
 					},
 					content: this.$t('tours.skills.data0'),
+					before: type => new Promise((resolve, reject) => {
+						// Add a dummy skill for function tour
+						this.skills['dummy'] = {
+							name: 'ProjectAliceDemo',
+							author: 'Alice',
+							delayed: false,
+							active: true,
+							description: this.$t('skill.demoDesc'),
+							icon: 'fas fa-biohazard',
+							instructions: this.$t('skill.demoInstructions'),
+							required: false,
+							settings: {dummy: true},
+							updateAvailable: true,
+							version: '1.0.0',
+							aliceMinVersion: '1.0.0-b4',
+							category: 'system',
+							maintainers: ['project', 'alice']
+						}
+						setTimeout(resolve, 500)
+					}),
 					params: {
-						highlight: true,
-						placement: 'right'
+						highlight: true
 					}
 				},
 				{
@@ -119,23 +138,6 @@ export default {
 	},
 	mounted: function () {
 		if (!localStorage.getItem('skillsTourCompleted')) {
-			// Add a dummy skill for function tour
-			this.skills['dummy'] = {
-				name: 'ProjectAliceDemo',
-				author: 'Alice',
-				delayed: false,
-				active: true,
-				description: this.$t('skill.demoDesc'),
-				icon: 'fas fa-biohazard',
-				instructions: this.$t('skill.demoInstructions'),
-				required: false,
-				settings: {dummy: true},
-				updateAvailable: true,
-				version: '1.0.0',
-				aliceMinVersion: '1.0.0-b4',
-				category: 'system',
-				maintainers: ['project', 'alice']
-			}
 			this.$tours['skills'].start()
 		} else {
 			this.fetchSkills()
