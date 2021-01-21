@@ -41,7 +41,6 @@ export default class MoveableItem {
 		}
 	}
 
-
 	computeWidgetCustomStyle(widget) {
 		let style = `color: ${widget.settings['color']};`
 		style += `background-color: ${widget.settings['rgba']};`
