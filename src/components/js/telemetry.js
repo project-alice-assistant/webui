@@ -42,7 +42,7 @@ export default {
 				method: 'get',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/telemetry/overview/`,
 				headers: {
-					'auth': localStorage.getItem('apiToken'),
+					'auth': this.$store.getters.apiToken,
 					'Content-Type': 'application/json'
 				}
 			}).then(response => {

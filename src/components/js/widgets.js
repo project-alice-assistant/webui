@@ -91,7 +91,7 @@ export default {
 		axios({
 			method: 'get',
 			url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/pages/`,
-			headers: {'auth': localStorage.getItem('apiToken')}
+			headers: {'auth': this.$store.getters.apiToken}
 		}).then(response => {
 			if ('pages' in response.data) {
 				this.tabs = response.data.pages
@@ -150,7 +150,7 @@ export default {
 			axios({
 				method: 'get',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/`,
-				headers: {'auth': localStorage.getItem('apiToken')}
+				headers: {'auth': this.$store.getters.apiToken}
 			}).then(response => {
 				if ('widgets' in response.data) {
 					this.widgetInstances = response.data.widgets
@@ -168,7 +168,7 @@ export default {
 					pageId: this.activeTabId
 				},
 				headers: {
-					'auth': localStorage.getItem('apiToken'),
+					'auth': this.$store.getters.apiToken,
 					'content-type': 'application/json'
 				}
 			}).then(response => {
@@ -183,7 +183,7 @@ export default {
 				method: 'delete',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/${widgetId}/`,
 				headers: {
-					'auth': localStorage.getItem('apiToken')
+					'auth': this.$store.getters.apiToken
 				}
 			}).then(response => {
 				if ('success' in response.data && response.data.success) {
@@ -218,7 +218,7 @@ export default {
 					y: y
 				},
 				headers: {
-					'auth': localStorage.getItem('apiToken'),
+					'auth': this.$store.getters.apiToken,
 					'content-type': 'application/json'
 				}
 			}).then(response => {
@@ -251,7 +251,7 @@ export default {
 					h: h
 				},
 				headers: {
-					'auth': localStorage.getItem('apiToken'),
+					'auth': this.$store.getters.apiToken,
 					'content-type': 'application/json'
 				}
 			}).then(response => {
@@ -283,7 +283,7 @@ export default {
 					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/widgets/${dialogue.data.id}/`,
 					data: JSON.stringify(dialogue.data.params),
 					headers: {
-						'auth': localStorage.getItem('apiToken'),
+						'auth': this.$store.getters.apiToken,
 						'content-type': 'application/json'
 					}
 				}).catch(() => {
@@ -302,7 +302,7 @@ export default {
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/${widget.id}/`,
 				data: JSON.stringify(widget.params),
 				headers: {
-					'auth': localStorage.getItem('apiToken'),
+					'auth': this.$store.getters.apiToken,
 					'content-type': 'application/json'
 				}
 			})
@@ -383,7 +383,7 @@ export default {
 						axios({
 							method: 'DELETE',
 							url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/widgets/pages/${id}/`,
-							headers: {'auth': localStorage.getItem('apiToken')}
+							headers: {'auth': this.$store.getters.apiToken}
 						}).then(response => {
 							if ('pages' in response.data) {
 								self.$delete(self.tabs, id)
@@ -415,7 +415,7 @@ export default {
 					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/widgets/pages/${id}/`,
 					data: {newIcon: icon},
 					headers: {
-						'auth': localStorage.getItem('apiToken'),
+						'auth': this.$store.getters.apiToken,
 						'content-type': 'application/json'
 					}
 				}).then(response => {
@@ -429,7 +429,7 @@ export default {
 			axios({
 				method: 'PUT',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/addPage/`,
-				headers: {'auth': localStorage.getItem('apiToken')}
+				headers: {'auth': this.$store.getters.apiToken}
 			}).then(response => {
 				if ('newpage' in response.data) {
 					let page = response.data.newpage

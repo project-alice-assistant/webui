@@ -75,7 +75,7 @@ export default {
 					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/dialog/process/`,
 					data: data,
 					headers: {
-						'auth': localStorage.getItem('apiToken'),
+						'auth': this.$store.getters.apiToken,
 						'Content-Type': 'multipart/form-data'
 					}
 				}).then(response => {
@@ -91,7 +91,7 @@ export default {
 					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/dialog/continue/`,
 					data: data,
 					headers: {
-						'auth': localStorage.getItem('apiToken'),
+						'auth': this.$store.getters.apiToken,
 						'Content-Type': 'multipart/form-data'
 					}
 				})

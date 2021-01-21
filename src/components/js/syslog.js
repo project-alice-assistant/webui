@@ -56,7 +56,7 @@ export default {
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/sysCmd/`,
 				data: data,
 				headers: {
-					'auth': localStorage.getItem('apiToken'),
+					'auth': this.$store.getters.apiToken,
 					'Content-Type': 'multipart/form-data'
 				}
 			})

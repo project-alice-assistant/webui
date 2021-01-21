@@ -37,7 +37,7 @@ export default {
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/${this.data.id}/`,
 				data: data,
 				headers: {
-					'auth': localStorage.getItem('apiToken'),
+					'auth': this.$store.getters.apiToken,
 					'content-type': 'application/json'
 				}
 			}).then(response => {
@@ -71,7 +71,7 @@ export default {
 					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/`,
 					data: data,
 					headers: {
-						'auth': localStorage.getItem('apiToken'),
+						'auth': this.$store.getters.apiToken,
 						'content-type': 'application/json'
 					}
 				}).then(response => {
@@ -111,7 +111,7 @@ export default {
 					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/furniture/`,
 					data: data,
 					headers: {
-						'auth': localStorage.getItem('apiToken'),
+						'auth': this.$store.getters.apiToken,
 						'content-type': 'application/json'
 					}
 				}).then(response => {
@@ -142,7 +142,7 @@ export default {
 					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/constructions/`,
 					data: data,
 					headers: {
-						'auth': localStorage.getItem('apiToken'),
+						'auth': this.$store.getters.apiToken,
 						'content-type': 'application/json'
 					}
 				}).then(response => {
@@ -168,7 +168,7 @@ export default {
 					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/deviceLinks/`,
 					data: data,
 					headers: {
-						'auth': localStorage.getItem('apiToken'),
+						'auth': this.$store.getters.apiToken,
 						'content-type': 'application/json'
 					}
 				}).then(response => {
@@ -200,7 +200,7 @@ export default {
 					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/deviceLinks/`,
 					data: data,
 					headers: {
-						'auth': localStorage.getItem('apiToken'),
+						'auth': this.$store.getters.apiToken,
 						'content-type': 'application/json'
 					}
 				}).then(response => {
@@ -254,7 +254,7 @@ export default {
 			axios({
 				method: 'delete',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/${this.data.id}/`,
-				headers: {'auth': localStorage.getItem('apiToken')}
+				headers: {'auth': this.$store.getters.apiToken}
 			}).then(response => {
 				if (this.checkResponse(response)) {
 					this.myHome.$delete(this.locations, this.data.id)

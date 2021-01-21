@@ -19,7 +19,7 @@ export default {
 			axios({
 				method: 'get',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.skill.name}/reload/`,
-				headers: {'auth': localStorage.getItem('apiToken')}
+				headers: {'auth': this.$store.getters.apiToken}
 			}).then(response => {
 				if ('skill' in response.data) {
 					this.showSuccess("Triggered Reload")
@@ -32,7 +32,7 @@ export default {
 			axios({
 				method: 'get',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.skill.name}/toggleActiveState/`,
-				headers: {'auth': localStorage.getItem('apiToken')}
+				headers: {'auth': this.$store.getters.apiToken}
 			}).then(() => (this.skill.active = !this.skill.active))
 
 		},
@@ -41,7 +41,7 @@ export default {
 			axios({
 				method: 'get',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.skill.name}/checkUpdate/`,
-				headers: {'auth': localStorage.getItem('apiToken')}
+				headers: {'auth': this.$store.getters.apiToken}
 			}).then(() => {
 			})
 		},
@@ -55,7 +55,7 @@ export default {
 					axios({
 						method: 'delete',
 						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/skills/${self.skill.name}/`,
-						headers: {'auth': localStorage.getItem('apiToken')}
+						headers: {'auth': this.$store.getters.apiToken}
 					}).then(response => {
 						if ('success' in response.data) {
 							if (response.data.success) {
@@ -84,7 +84,7 @@ export default {
 					method: 'PATCH',
 					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.skill.name}/`,
 					headers: {
-						'auth': localStorage.getItem('apiToken'),
+						'auth': this.$store.getters.apiToken,
 						'content-type': 'application/json'
 					},
 					data: JSON.stringify(dialogue.data)

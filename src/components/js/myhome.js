@@ -172,7 +172,7 @@ export default {
 		axios({
 			method: 'get',
 			url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/floors/`,
-			headers: {'auth': localStorage.getItem('apiToken')}
+			headers: {'auth': this.$store.getters.apiToken}
 		}).then(response => {
 			if ('data' in response.data) {
 				this.floorTiles = response.data.data
@@ -182,7 +182,7 @@ export default {
 		axios({
 			method: 'get',
 			url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/furniture/tiles/`,
-			headers: {'auth': localStorage.getItem('apiToken')}
+			headers: {'auth': this.$store.getters.apiToken}
 		}).then(response => {
 			if ('data' in response.data) {
 				this.furnitureTiles = response.data.data
@@ -192,7 +192,7 @@ export default {
 		axios({
 			method: 'get',
 			url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/constructions/tiles/`,
-			headers: {'auth': localStorage.getItem('apiToken')}
+			headers: {'auth': this.$store.getters.apiToken}
 		}).then(response => {
 			if ('data' in response.data) {
 				this.constructionTiles = response.data.data
@@ -202,7 +202,7 @@ export default {
 		axios({
 			method: 'get',
 			url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/deviceTypes/`,
-			headers: {'auth': localStorage.getItem('apiToken')}
+			headers: {'auth': this.$store.getters.apiToken}
 		}).then(response => {
 			if ('types' in response.data) {
 				this.deviceTypes = response.data.types
@@ -212,7 +212,7 @@ export default {
 		axios({
 			method: 'get',
 			url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/`,
-			headers: {'auth': localStorage.getItem('apiToken')}
+			headers: {'auth': this.$store.getters.apiToken}
 		}).then(response => {
 			if ('data' in response.data) {
 				this.locations = response.data.data.locations
@@ -451,7 +451,7 @@ export default {
 					axios({
 						method: 'get',
 						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/${dialogue.data}/`,
-						headers: {'auth': localStorage.getItem('apiToken')}
+						headers: {'auth': this.$store.getters.apiToken}
 					}).then(response => {
 						if ('location' in response.data) {
 							self.$dialog.alert(self.$t('dialogs.bodies.locationNameOrSynonymAlreadyExist')).then()
@@ -606,7 +606,7 @@ export default {
 					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/`,
 					data: data,
 					headers: {
-						'auth': localStorage.getItem('apiToken'),
+						'auth': this.$store.getters.apiToken,
 						'content-type': 'application/json'
 					}
 				}).then(response => {
@@ -678,7 +678,7 @@ export default {
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/${data.id}/`,
 				data: data,
 				headers: {
-					'auth': localStorage.getItem('apiToken'),
+					'auth': this.$store.getters.apiToken,
 					'content-type': 'application/json'
 				}
 			}).then()

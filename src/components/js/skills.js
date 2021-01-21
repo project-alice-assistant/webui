@@ -156,7 +156,7 @@ export default {
 					axios({
 						method: 'get',
 						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/skills/${payload.skillName}/`,
-						headers: {'auth': localStorage.getItem('apiToken')}
+						headers: {'auth': this.$store.getters.apiToken}
 					}).then(response => {
 						if ('skill' in response.data) {
 							const newSkill = response.data.skill
@@ -184,7 +184,7 @@ export default {
 			axios({
 				method: 'get',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/`,
-				headers: {'auth': localStorage.getItem('apiToken')}
+				headers: {'auth': this.$store.getters.apiToken}
 			}).then(response => {
 				if ('skills' in response.data) {
 					this.skills = response.data.skills
@@ -223,7 +223,7 @@ export default {
 				method: 'put',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/installSkills/`,
 				data: this.skillsToDownload,
-				headers: {'auth': localStorage.getItem('apiToken')}
+				headers: {'auth': this.$store.getters.apiToken}
 			}).then(response => {
 				if ('status' in response.data) {
 					for (const skillName of Object.keys(response.data.status)) {
