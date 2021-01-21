@@ -3,6 +3,7 @@
 	border-left: 200px solid transparent;
 	bottom: 0;
 	height: 0;
+	pointer-events: none;
 	position: fixed;
 	right: 0;
 	width: 0;
