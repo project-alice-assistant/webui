@@ -120,7 +120,7 @@ export default {
 	mounted: function () {
 		if (!localStorage.getItem('skillsTourCompleted')) {
 			// Add a dummy skill for function tour
-			this.skills.push({
+			this.skills['dummy'] = {
 				name: 'ProjectAliceDemo',
 				author: 'Alice',
 				delayed: false,
@@ -135,7 +135,7 @@ export default {
 				aliceMinVersion: '1.0.0-b4',
 				category: 'system',
 				maintainers: ['project', 'alice']
-			})
+			}
 			this.$tours['skills'].start()
 		} else {
 			this.fetchSkills()
