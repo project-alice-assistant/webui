@@ -119,21 +119,27 @@ export default {
 	created: function () {
 		this.me = this
 		let self = this
+		this.setActiveTool('none')
 		document.addEventListener('keyup', function (event) {
 			if (event.key === 'Enter') {
 				if (self.$store.state.fullScreen) {
 					self.$store.commit('stopCinemaMode')
 				}
 			} else if (event.key === 'Escape') {
-				self.activeConstructionTile = ''
-				self.activeFurnitureTile = ''
-				self.activeFloorTile = ''
-				self.activeDeviceTile = ''
-				if (self.newConnectionLink) {
-					self.newConnectionLink.remove()
+				if (self.activeConstructionTile !== '' || self.activeFurnitureTile !== '' || self.activeFloorTile !== '' || self.activeDeviceTile !== '' || self.newConnectionLink) {
+					self.activeConstructionTile = ''
+					self.activeFurnitureTile = ''
+					self.activeFloorTile = ''
+					self.activeDeviceTile = ''
+					if (self.newConnectionLink) {
+						self.newConnectionLink.remove()
+					}
+					self.newConnectionLink = null
+				} else if (!self.toolsState.none) {
+					self.setActiveTool('none')
+				} else {
+					self.closeEditor()
 				}
-				self.newConnectionLink = null
-				self.setActiveTool('none')
 			}
 		})
 
