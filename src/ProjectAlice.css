@@ -444,6 +444,11 @@ button:active {
 	margin-bottom: 10px;
 }
 
+.configLayout > .inputs > .input > .inputRangeValue {
+	min-width: 3em;
+	width: 2em;
+}
+
 .configLayout > .inputs > .inputMultiline {
 	width: 100%;
 	display: flex;

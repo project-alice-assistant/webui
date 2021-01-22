@@ -69,7 +69,7 @@
 			:placeholder="template['defaultValue']"
 			:step="template['step']"
 			type="range"
-		/> {{ configName }}
+		/><span class="inputRangeValue">{{ configName }}</span>
 	</div>
 	<textarea v-else-if="template['dataType'] === 'longstring'"
 						v-model="configValue"

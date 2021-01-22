@@ -21,6 +21,7 @@ export default {
 				{
 					name: this.$t('tooltips.download'),
 					icon: 'fas fa-check-circle',
+					isToggle: true,
 					callback: this.doDownload
 				}
 			],
@@ -219,6 +220,7 @@ export default {
 		},
 		doDownload: function () {
 			if (this.skillsToDownload.length <= 0) {
+				this.toggleShop()
 				return
 			}
 			axios({

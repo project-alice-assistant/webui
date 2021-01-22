@@ -111,7 +111,7 @@
 										:placeholder="settingTemplate['defaultValue']"
 										:step="settingTemplate['step']"
 										type="range"
-									/> {{$store.state.settings[settingName]}}
+									/><span class="inputRangeValue">{{ $store.state.settings[settingName] }}</span>
 								</div>
 								<textarea
 									v-if="settingTemplate['dataType'] === 'longstring'"

@@ -75,7 +75,7 @@
 						v-model="options['skill']['settings'][settingName]"
 						v-init="options['skill']['settings'][settingName]"
 						:placeholder="settingTemplate['defaultValue']"
-					/>
+					/><span class="inputRangeValue">{{ options['skill']['settings'][settingName] }}</span>
 					<select
 						v-if="settingTemplate['dataType'] === 'list'"
 						:id="settingName"
@@ -85,7 +85,7 @@
 							v-if="settingTemplate['values'].constructor === Object"
 							v-for="(value, text) in settingTemplate['values']" v-bind:value="value"
 						>
-							{{text}}
+							{{ text }}
 						</option>
 						<option
 							v-if="settingTemplate['values'].constructor === Array"

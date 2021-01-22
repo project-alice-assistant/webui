@@ -52,7 +52,7 @@
 						v-model="options['widget'].settings['background-opacity']"
 						v-init="options['widget'].settings['background-opacity']"
 						@input="hex2rgba"
-					/>{{ parseFloat(options['widget'].settings['background-opacity']) * 100 }}%
+					/><span class="inputRangeValue">{{ parseFloat(options['widget'].settings['background-opacity']) * 100 }}%</span>
 				</div>
 				<div class="input">
 					<input
@@ -63,7 +63,7 @@
 						step="0.01"
 						v-model="options['widget'].settings['font-size']"
 						v-init="options['widget'].settings['font-size']"
-					/>{{ options['widget'].settings['font-size'] }}em
+					/><span class="inputRangeValue">{{ options['widget'].settings['font-size'] }}em</span>
 				</div>
 				<div class="input">
 					<input
