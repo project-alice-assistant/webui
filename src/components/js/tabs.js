@@ -10,10 +10,13 @@ export default {
 	],
 	methods: {
 		handleClick: function (id) {
-			this.$parent.activeTabId = id
 
-			if (this.onChange) {
-				this.onChange(id)
+			if (this.$parent.activeTabId !== id) {
+				if (this.onChange) {
+					this.onChange(id)
+				} else {
+					this.$parent.activeTabId = id
+				}
 			}
 
 			if (this.tabs[id].hasOwnProperty('onChangeTo')) {
