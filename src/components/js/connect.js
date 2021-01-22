@@ -13,6 +13,7 @@ export default {
 		}
 	},
 	created: function () {
+		this.remember = localStorage.getItem('rememberServer') || false
 		this.ip = localStorage.getItem('host') || '127.0.0.1'
 		this.port = localStorage.getItem('apiPort') || 5001
 		this.doConnect()
@@ -60,6 +61,7 @@ export default {
 					if (self.remember) {
 						localStorage.setItem('host', self.ip)
 						localStorage.setItem('apiPort', self.port)
+						localStorage.setItem('rememberServer', true)
 					} else {
 						localStorage.removeItem('host')
 						localStorage.removeItem('apiPort')
