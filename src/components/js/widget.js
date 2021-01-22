@@ -5,6 +5,7 @@ export default {
 	name: 'widget',
 	data: function () {
 		return {
+			hovered: false,
 			rotationDelta: 0
 		}
 	},
@@ -61,19 +62,6 @@ export default {
 				return !(parseInt(widget.id.substring(4)) === this.widget.id)
 			})
 			this.controller.moveableItem.setGuidelines(widgets)
-		},
-		deleteMe: function (event) {
-			event.stopPropagation()
-			axios({
-				method: 'delete',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/${this.data.id}/`,
-				headers: {'auth': this.$store.getters.apiToken}
-			}).then(response => {
-				if ('success' in response.data && response.data.success) {
-					this.myHome.deleteDevice(this.data.id)
-					this.showSuccess(this.$t('notifications.successes.deviceDeleted'))
-				}
-			})
 		}
 	}
 }

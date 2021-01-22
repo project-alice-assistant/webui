@@ -9,7 +9,8 @@ export default {
 			rotationDelta: 0,
 			targetParentLocation: 0,
 			checkHeartbeat: null,
-			myLinks: {}
+			myLinks: {},
+			hovered: false
 		}
 	},
 	props: [
@@ -70,7 +71,7 @@ export default {
 				parent: this
 			}
 
-			this.$dialog.prompt(message, options).then(function (dialogue) {
+			this.$dialog.prompt(message, options).then(function (_dialogue) {
 				self.save()
 			}).catch()
 		},
@@ -177,7 +178,7 @@ export default {
 			this.myHome.refreshDeviceLinks()
 			throw true
 		},
-		setPosition: function (target, clientX, clientY) {
+		setPosition: function (target, _clientX, _clientY) {
 			try {
 				if (this.targetParentLocation !== 0 && this.data.parentLocation !== this.targetParentLocation) {
 					// noinspection DuplicatedCode
@@ -211,6 +212,7 @@ export default {
 			})
 		},
 		onMouseEnter: function () {
+			this.hovered = true
 			if (this.myHome.locationsEditMode && this.myHome.toolsState.none) {
 				for (const link of Object.values(this.myLinks)) {
 					link.show('draw')
@@ -218,6 +220,7 @@ export default {
 			}
 		},
 		onMouseExit: function () {
+			this.hovered = false
 			if (this.myHome.locationsEditMode && this.myHome.toolsState.none) {
 				for (const link of Object.values(this.myLinks)) {
 					link.hide('draw')

@@ -5,7 +5,8 @@ export default {
 	data: function () {
 		return {
 			rotationDelta: 0,
-			targetParentLocation: 0
+			targetParentLocation: 0,
+			hovered: false
 		}
 	},
 	props: [
@@ -217,7 +218,7 @@ export default {
 
 				this.myHome.setMoveable(event.target, this)
 				this.myHome.moveableItem.setBoundaries(this.$el, 10)
-				const locations = Array.from(document.querySelectorAll('.location')).filter((location, index, array) => {
+				const locations = Array.from(document.querySelectorAll('.location')).filter((location, _index, _array) => {
 					const locId = parseInt(location.id.substring(4))
 					return !(locId === this.data.id || this.myHome.locations[locId].parentLocation === this.data.id);
 				})
@@ -359,6 +360,7 @@ export default {
 			return false
 		},
 		onMouseEnter() {
+			this.hovered = true
 			if (this.myHome.toolsState.addingDevice) {
 				if (this.myHome.checkDevicePerLocationLimit(this.myHome.activeDeviceTile, this.data.id)) {
 					this.$el.classList.add('droppable')
@@ -374,6 +376,7 @@ export default {
 			}
 		},
 		onMouseLeave() {
+			this.hovered = false
 			this.$el.classList.remove('droppable')
 			this.$el.classList.remove('notDroppable')
 		}

@@ -27,10 +27,10 @@
 		<div v-if="data.id !== 1 && myHome.toolsState.deletingDevices" class="deviceTool deleter" @click="deleteMe">
 			<i aria-hidden="true" class="far fa-trash-alt clickable"/>
 		</div>
-		<div v-if="myHome.toolsState.settingDevices" class="deviceTool optioner" @click="openSettings">
+		<div v-if="myHome.toolsState.settingDevices && hovered" class="deviceTool optioner" @click="openSettings">
 			<i aria-hidden="true" class="fas fa-cogs clickable"/>
 		</div>
-		<div v-if="myHome.toolsState.settingDevices" class="deviceTool zindexer">
+		<div v-if="myHome.toolsState.settingDevices && hovered" class="deviceTool zindexer">
 			<i aria-hidden="true" class="fas fa-level-up-alt clickable"/>
 			<i aria-hidden="true" class="fas fa-level-down-alt clickable"/>
 		</div>

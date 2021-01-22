@@ -4,7 +4,8 @@ export default {
 	name: 'furniture',
 	data: function () {
 		return {
-			rotationDelta: 0
+			rotationDelta: 0,
+			hovered: false
 		}
 	},
 	props: [

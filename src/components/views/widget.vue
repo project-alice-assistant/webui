@@ -4,6 +4,8 @@
 		:style="computeCustomStyle()"
 		class="widget"
 		@click="handleClick"
+		@mouseenter="hovered = true"
+		@mouseleave="hovered = false"
 	>
 		<component is="style" scoped type="text/css">
 			{{ widget.css }}
@@ -12,13 +14,13 @@
 			<i :class="widget.icon" aria-hidden="true"></i>
 		</div>
 		<p :class="{noCursorEvents: controller.dragAndResizeEnabled}" v-html="widget.taggedHtml"/>
-		<div v-if="controller.settings" class="widgetTool optioner" @click="openSettings(widget)">
+		<div v-if="controller.settings && hovered" class="widgetTool optioner" @click="openSettings(widget)">
 			<i aria-hidden="true" class="fas fa-cogs clickable"/>
 		</div>
 		<div v-if="controller.removeWidgets" class="widgetTool deleter" @click="controller.removeWidget(widget.id)">
 			<i aria-hidden="true" class="far fa-trash-alt clickable"/>
 		</div>
-		<div v-if="controller.settings" class="widgetTool zindexer">
+		<div v-if="controller.settings && hovered" class="widgetTool zindexer">
 			<i aria-hidden="true" class="fas fa-level-up-alt clickable" @click="controller.moveZUp(widget)"/>
 			<i aria-hidden="true" class="fas fa-level-down-alt clickable" @click="controller.moveZDown(widget)"/>
 		</div>
