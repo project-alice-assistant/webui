@@ -60,6 +60,9 @@ export default {
 					if (self.remember) {
 						localStorage.setItem('host', self.ip)
 						localStorage.setItem('apiPort', self.port)
+					} else {
+						localStorage.removeItem('host')
+						localStorage.removeItem('apiPort')
 					}
 					resolve()
 				}).catch(reason => {
