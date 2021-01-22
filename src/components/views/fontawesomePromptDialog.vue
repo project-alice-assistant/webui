@@ -19,6 +19,7 @@
 	</div>
 </template>
 
+
 <script>
 import VueDialogMixin from 'vuejs-dialog/dist/vuejs-dialog-mixin.min.js'
 
