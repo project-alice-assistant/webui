@@ -158,7 +158,7 @@ export default {
 					axios({
 						method: 'get',
 						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/skills/${payload.skillName}/`,
-						headers: {'auth': this.$store.getters.apiToken}
+						headers: {'auth': self.$store.getters.apiToken}
 					}).then(response => {
 						if ('skill' in response.data) {
 							const newSkill = response.data.skill

@@ -451,7 +451,7 @@ export default {
 					axios({
 						method: 'get',
 						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/${dialogue.data}/`,
-						headers: {'auth': this.$store.getters.apiToken}
+						headers: {'auth': self.$store.getters.apiToken}
 					}).then(response => {
 						if ('location' in response.data) {
 							self.$dialog.alert(self.$t('dialogs.bodies.locationNameOrSynonymAlreadyExist')).then()

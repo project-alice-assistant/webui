@@ -55,7 +55,7 @@ export default {
 					axios({
 						method: 'delete',
 						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/skills/${self.skill.name}/`,
-						headers: {'auth': this.$store.getters.apiToken}
+						headers: {'auth': self.$store.getters.apiToken}
 					}).then(response => {
 						if ('success' in response.data) {
 							if (response.data.success) {

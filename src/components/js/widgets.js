@@ -312,7 +312,7 @@ export default {
 					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/widgets/pages/${id}/`,
 					data: {newIcon: icon},
 					headers: {
-						'auth': this.$store.getters.apiToken,
+						'auth': self.$store.getters.apiToken,
 						'content-type': 'application/json'
 					}
 				}).then(response => {

@@ -31,7 +31,7 @@ export default {
 					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/widgets/${self.widget.id}/`,
 					data: JSON.stringify(dialogue.data.settings),
 					headers: {
-						'auth': this.$store.getters.apiToken,
+						'auth': self.$store.getters.apiToken,
 						'content-type': 'application/json'
 					}
 				}).catch(() => {
