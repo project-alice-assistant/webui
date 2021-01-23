@@ -171,8 +171,8 @@ export default {
 			}
 		})
 
-		this.floorPlanX = parseInt(localStorage.getItem('floorPlanX'))
-		this.floorPlanY = parseInt(localStorage.getItem('floorPlanY'))
+		this.floorPlanX = parseInt(localStorage.getItem('floorPlanX')) || 0
+		this.floorPlanY = parseInt(localStorage.getItem('floorPlanY')) || 0
 		this.zoomLevel = parseFloat(localStorage.getItem('zoomLevel')) || 1.0
 
 		axios({
