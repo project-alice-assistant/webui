@@ -123,7 +123,7 @@ export default {
 			this.$loadScript(`${src}.js`).then(() => {
 				// noinspection JSUnresolvedVariable
 				let cls = eval(`${widget.skill}_${widget.name}`)
-				new cls(uuid)
+				new cls(uuid, widget.id)
 			})
 		},
 		changePage: function (id) {
