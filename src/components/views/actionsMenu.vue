@@ -14,7 +14,7 @@
 			 aria-hidden="true"
 			 v-for="(item, i) in menuItems.slice(0, isExtended ? 999 : 1)"
 			 :key="item.name"
-			 @click="handleClick(item)"
+			 @click="handleClick(item, $event)"
 			 v-tooltip="isExtended ? item.extendedName || item.name : item.name"
 		/>
 	</div>

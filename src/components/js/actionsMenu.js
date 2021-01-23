@@ -24,7 +24,20 @@ export default {
 				this.extend = true
 			}
 		},
-		handleClick: function(item) {
+		handleClick: function (item, event) {
+			if (item.hasOwnProperty('activeClass')) {
+				if (item.hasOwnProperty('active')) {
+					if (!item.active) {
+						event.target.classList.add(item.activeClass)
+					} else {
+						event.target.classList.remove(item.activeClass)
+					}
+					item.active = !item.active
+				} else {
+					item.active = true
+					event.target.classList.add(item.activeClass)
+				}
+			}
 			if (item.hasOwnProperty('isToggle') && item.isToggle) {
 				this.toggle(item)
 			}

@@ -36,6 +36,7 @@ export default {
 				{
 					name: this.$t('tooltips.settings'),
 					icon: 'fas fa-cog',
+					activeClass: 'yellow',
 					onClick: () => {
 						this.settings = !this.settings
 					}
