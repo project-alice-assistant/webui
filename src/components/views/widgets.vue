@@ -30,4 +30,5 @@
 
 <style src="../css/widgets.css" scoped/>
 <style src="../css/tabs.css" scoped/>
+<style scoped src="../css/overrides/overlay.css"/>
 <script src="../js/widgets.js"/>

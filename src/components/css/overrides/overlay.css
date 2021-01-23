@@ -1,17 +1,17 @@
 .v-overlay-main {
-	background: var(--windowBG);
-	border-radius: 0;
-	min-width: 45%;
-	max-width: 45%;
-	min-height: 50%;
-	max-height: 75%;
-	overflow: auto;
-	overflow-x: hidden;
-	color: var(--text);
+	background: var(--windowBG) !important;
+	border-radius: 0 !important;
+	color: var(--text) !important;
+	max-height: 75% !important;
+	max-width: 45% !important;
+	min-height: 50% !important;
+	min-width: 45% !important;
+	overflow: auto !important;
+	overflow-x: hidden !important;
 }
 
 .v-overlay-header {
-	color: var(--text);
-	font-size: 1.25em;
-	height: 2em;
+	color: var(--text) !important;
+	font-size: 1.25em !important;
+	height: 2em !important;
 }
