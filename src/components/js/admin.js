@@ -58,9 +58,22 @@ export default {
 				const parentConfig = parentTemplate['config']
 				const reqCondition = parentTemplate['condition']
 				const reqValue = parentTemplate['value']
-				const parentValue = this.$store.state.settings[parentConfig]
+				let parentValue = this.$store.state.settings[parentConfig]
 
-				visible = (reqCondition === 'is' && parentValue === reqValue) || (reqCondition === 'isnot' && parentValue !== reqValue) || (reqCondition === 'isgreater' && parentValue > reqValue) || (reqCondition === 'islower' && parentValue < reqValue)
+				if (Array.isArray(parentConfig)) {
+					const type = parentTemplate['checkType'] || 'and'
+					for (const parent of parentConfig) {
+						parentValue = this.$store.state.settings[parent]
+						visible = (reqCondition === 'is' && parentValue === reqValue) || (reqCondition === 'isnot' && parentValue !== reqValue) || (reqCondition === 'isgreater' && parentValue > reqValue) || (reqCondition === 'islower' && parentValue < reqValue)
+						if (type === 'or' && visible) {
+							break
+						} else if (type === 'and' && !visible) {
+							break
+						}
+					}
+				} else {
+					visible = (reqCondition === 'is' && parentValue === reqValue) || (reqCondition === 'isnot' && parentValue !== reqValue) || (reqCondition === 'isgreater' && parentValue > reqValue) || (reqCondition === 'islower' && parentValue < reqValue)
+				}
 
 				if (visible && this.settingSearchKeyword !== '') {
 					visible = settingName.toLowerCase().includes(this.settingSearchKeyword.toLowerCase());
