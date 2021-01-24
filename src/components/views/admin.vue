@@ -120,6 +120,7 @@
 									v-init="$store.state.settings[settingName]"
 									:placeholder="settingTemplate['defaultValue']"
 								/>
+								<span v-if="settingTemplate['dataType'] === 'range'" class="inputRangeValue">{{ $store.state.settings[settingName] }}</span>
 							</div>
 						</div>
 					</div>
