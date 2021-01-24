@@ -40,6 +40,7 @@
 									v-model="$store.state.settings[settingName]"
 									v-init="$store.state.settings[settingName]"
 									:placeholder="settingTemplate['defaultValue']"
+									@change="checkSetters(settingName)"
 									type="text"
 								/>
 								<input
@@ -48,6 +49,7 @@
 									v-model="$store.state.settings[settingName]"
 									v-init="$store.state.settings[settingName]"
 									:placeholder="settingTemplate['defaultValue']"
+									@change="checkSetters(settingName)"
 									type="password"
 								/>
 								<input
@@ -56,6 +58,7 @@
 									v-model="$store.state.settings[settingName]"
 									v-init="$store.state.settings[settingName]"
 									:placeholder="settingTemplate['defaultValue']"
+									@change="checkSetters(settingName)"
 									type="email"
 								/>
 								<input
@@ -64,6 +67,7 @@
 									v-model="$store.state.settings[settingName]"
 									v-init="$store.state.settings[settingName]"
 									:placeholder="settingTemplate['defaultValue']"
+									@change="checkSetters(settingName)"
 									type="number"
 								/>
 								<input
@@ -71,18 +75,20 @@
 									:id="settingName"
 									v-model="$store.state.settings[settingName]"
 									:placeholder="settingTemplate['defaultValue']"
+									@change="checkSetters(settingName)"
 									type="password"
 								/>
 								<select
 									v-if="settingTemplate['dataType'] === 'list'"
 									:id="settingName"
 									v-model="$store.state.settings[settingName]"
+									@change="checkSetters(settingName)"
 								>
 									<option
 										v-if="settingTemplate['values'].constructor === Object"
 										v-for="(value, text) in settingTemplate['values']" v-bind:value="value"
 									>
-										{{text}}
+										{{ text }}
 									</option>
 									<option
 										v-if="settingTemplate['values'].constructor === Array"
@@ -100,6 +106,7 @@
 									checkedBg="var(--windowBG)"
 									uncheckedBg="var(--windowBG)"
 									@click="$store.state.settings[settingName] = !$store.state.settings[settingName]"
+									@change="checkSetters(settingName)"
 								/>
 								<div v-if="settingTemplate['dataType'] === 'range'" class="rangeInput">
 									<input
@@ -111,6 +118,7 @@
 										:placeholder="settingTemplate['defaultValue']"
 										:step="settingTemplate['step']"
 										type="range"
+										@change="checkSetters(settingName)"
 									/>
 								</div>
 								<textarea
@@ -119,6 +127,7 @@
 									v-model="$store.state.settings[settingName]"
 									v-init="$store.state.settings[settingName]"
 									:placeholder="settingTemplate['defaultValue']"
+									@change="checkSetters(settingName)"
 								/>
 								<span v-if="settingTemplate['dataType'] === 'range'" class="inputRangeValue">{{ $store.state.settings[settingName] }}</span>
 							</div>
