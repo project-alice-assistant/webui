@@ -44,6 +44,7 @@ import skillSettings from './components/views/skillSettingsDialog'
 import locationSettings from './components/views/locationOptionsDialog'
 import deviceOptions from './components/views/deviceOptionsDialog'
 import addDeviceDialog from './components/views/addDeviceDialog'
+import deviceReplyListSelect from './components/views/deviceReplyListSelect'
 import dialogView from './components/js/dialogView'
 
 import notifyToast from './utils/notifyToast'
@@ -83,6 +84,7 @@ Vue.dialog.registerComponent('skillSettingsPromptDialog', skillSettings)
 Vue.dialog.registerComponent('locationSettingsPromptDialog', locationSettings)
 Vue.dialog.registerComponent('addDevicePromptDialog', addDeviceDialog)
 Vue.dialog.registerComponent('deviceOptionsPromptDialog', deviceOptions)
+Vue.dialog.registerComponent('deviceReplyListSelect', deviceReplyListSelect)
 
 // Jquery use ONLY FOR WIDGETS, DO NOT USE JQUERY FOR __ANYTHING ELSE__
 global.jQuery = require('jquery')
