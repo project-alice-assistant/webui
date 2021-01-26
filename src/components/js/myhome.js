@@ -262,6 +262,7 @@ export default {
 			this.floorPlanX = 0
 			this.floorPlanY = 0
 			this.zoomLevel = 1.0
+			this.refreshDeviceLinks()
 		},
 		checkDevicePerLocationLimit(deviceType, locationId) {
 			const perLocationLimit = deviceType.perLocationLimit
