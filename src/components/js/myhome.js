@@ -83,7 +83,42 @@ export default {
 			zoomLevel: 1.0,
 			deviceLinkParent: null,
 			newConnectionLink: null,
-			connectionLinks: {}
+			connectionLinks: {},
+			tourCallbacks: {
+				onSkip: this.finishTour,
+				onFinish: this.finishTour
+			},
+			steps: [
+				{
+					target: '[data-tour="0"]',
+					header: {
+						title: this.$t('tours.myHome.myHome')
+					},
+					content: this.$t('tours.myHome.data0'),
+					params: {
+						highlight: true,
+						placement: 'bottom'
+					},
+					before: type => new Promise((resolve, reject) => {
+						// Just wait for the default device to be shown at least
+						setTimeout(resolve, 500)
+					}),
+				},
+				{
+					target: '[data-tour="1"]',
+					content: this.$t('tours.myHome.data1'),
+					params: {
+						highlight: true
+					}
+				},
+				{
+					target: '[data-tour="2"]',
+					content: this.$t('tours.myHome.data2'),
+					params: {
+						highlight: true
+					}
+				}
+			]
 		}
 	},
 	computed: {
@@ -154,7 +189,7 @@ export default {
 			self.refreshDeviceLinks()
 		})
 
-		document.addEventListener('contextmenu', function (event) {
+		document.addEventListener('contextmenu', function (_event) {
 			if (self.activeDeviceTile) {
 				self.activeDeviceTile = ''
 			} else if (self.activeConstructionTile) {
@@ -231,6 +266,10 @@ export default {
 		})
 	},
 	mounted: function () {
+		if (!localStorage.getItem('myHomeTourCompleted')) {
+			this.$tours['myHome'].start()
+		}
+
 		this.areaSelector = this.$refs.areaSelector
 
 		let self = this
@@ -258,6 +297,9 @@ export default {
 		//this.uid = uuidv4()
 	},
 	methods: {
+		finishTour: function () {
+			localStorage.setItem('myHomeTourCompleted', true)
+		},
 		recenter: function () {
 			this.floorPlanX = 0
 			this.floorPlanY = 0

@@ -1,5 +1,6 @@
 <template>
 	<div :key="uid" class="container flexcolumn">
+		<v-tour :callbacks="tourCallbacks" :steps="steps" name="myHome"/>
 		<actions-menu :menuItems="menuItems" v-if="$store.state.loggedInUser"/>
 		<div v-if="locationsEditMode" class="tools rightSideTools">
 			<i v-tooltip="$t('tooltips.addLocations')" :class="{yellow: toolsState.addingLocation}"
@@ -63,13 +64,13 @@
 				@click="activeConstructionTile === conId ? activeConstructionTile = '' : activeConstructionTile = conId"
 			/>
 		</div>
-		<div ref="myHomeEditor" :class="{fullscreen: $store.state.fullScreen, editMode: locationsEditMode}" class="myHomeEditor">
-			<div class="compass">
+		<div ref="myHomeEditor" :class="{fullscreen: $store.state.fullScreen, editMode: locationsEditMode}" class="myHomeEditor" data-tour="0">
+			<div class="compass" data-tour="1">
 				<div class="cardinalPoint n">N</div>
 				<div class="cardinalPoint e">E</div>
 				<div class="cardinalPoint s">S</div>
 				<div class="cardinalPoint w">W</div>
-				<i id="centerPointer" ref="centerPointer" aria-hidden="true" class="fas fa-location-arrow clickable" @click="recenter"/>
+				<i id="centerPointer" ref="centerPointer" aria-hidden="true" class="fas fa-location-arrow clickable" data-tour="2" @click="recenter"/>
 			</div>
 			<div ref="ghost" :class="{hidden: !activeFloorTile && !activeFurnitureTile && !activeConstructionTile}" :style="ghostBackground" class="ghost"/>
 			<div
