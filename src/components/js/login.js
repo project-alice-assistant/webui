@@ -15,7 +15,7 @@ export default {
 			data.append('username', this.username)
 			data.append('pin', this.pincode)
 			axios({
-				method: 'post',
+				method: 'POST',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/login/`,
 				data: data,
 				headers: {'Content-Type': 'multipart/form-data'}
@@ -32,9 +32,9 @@ export default {
 					}
 
 					axios({
-						method: 'get',
+						method: 'GET',
 						url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/config/`,
-						headers: {'auth': response.data.apiToken }
+						headers: {'auth': response.data.apiToken}
 					}).then(response => {
 						this.$store.commit('setSettings', response.data.config)
 						this.$store.commit('setSettingTemplates', response.data.templates)

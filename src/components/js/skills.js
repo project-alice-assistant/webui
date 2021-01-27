@@ -6,9 +6,8 @@ export default {
 	data: function () {
 		return {
 			shopOpen: false,
-			skills: {},
-			storeSkills: {},
 			skillsToDownload: [],
+			dummySkills: {},
 			menuItems: [
 				{
 					name: this.$t('tooltips.shop'),
@@ -32,9 +31,9 @@ export default {
 						title: this.$t('tours.skills.yourSkills')
 					},
 					content: this.$t('tours.skills.data0'),
-					before: type => new Promise((resolve, reject) => {
+					before: _ => new Promise((resolve) => {
 						// Add a dummy skill for function tour
-						this.skills['dummy'] = {
+						this.dummySkills['dummy'] = {
 							name: 'ProjectAliceDemo',
 							author: 'Alice',
 							delayed: false,
@@ -46,7 +45,7 @@ export default {
 							settings: {dummy: true},
 							updateAvailable: true,
 							version: '1.0.0',
-							aliceMinVersion: '1.0.0-b4',
+							aliceMinVersion: '1.0.0',
 							category: 'system',
 							maintainers: ['project', 'alice']
 						}
@@ -137,11 +136,18 @@ export default {
 			}
 		}
 	},
+	computed: {
+		skillsToDisplay: function () {
+			if (this.$store.state.skillTourCompleted) {
+				return this.$store.state.installedSkills
+			} else {
+				return this.dummySkills
+			}
+		}
+	},
 	mounted: function () {
-		if (!localStorage.getItem('skillsTourCompleted')) {
+		if (!this.$store.state.skillTourCompleted) {
 			this.$tours['skills'].start()
-		} else {
-			this.fetchSkills()
 		}
 
 		setInterval(this.reloadStoreSkills, 5 * 60 * 1000)
@@ -157,13 +163,13 @@ export default {
 				if (msg.topic === C.SKILL_INSTALLED_TOPIC) {
 					const payload = JSON.parse(msg.payloadString)
 					axios({
-						method: 'get',
+						method: 'GET',
 						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/skills/${payload.skillName}/`,
 						headers: {'auth': self.$store.getters.apiToken}
 					}).then(response => {
 						if ('skill' in response.data) {
 							const newSkill = response.data.skill
-							self.skills[newSkill.name] = newSkill
+							self.$set(self.$store.state.installedSkills, newSkill.name, newSkill)
 							self.skillsToDownload.splice(self.skillsToDownload.indexOf(newSkill.name), 1)
 							self.$forceUpdate()
 						}
@@ -180,23 +186,8 @@ export default {
 		this.shopOpen = false
 	},
 	methods: {
-		updateSkillData(skillData) {
-			this.skills[skillData.name] = skillData
-		},
-		fetchSkills: function () {
-			axios({
-				method: 'get',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/`,
-				headers: {'auth': this.$store.getters.apiToken}
-			}).then(response => {
-				if ('skills' in response.data) {
-					this.skills = response.data.skills
-				}
-			})
-		},
 		finishTour: function () {
-			localStorage.setItem('skillsTourCompleted', true)
-			this.fetchSkills()
+			this.$store.commit('setSkillTourCompleted')
 		},
 		toggleShop: function () {
 			if (this.$tours['skills'].currentStep !== -1) return
@@ -204,11 +195,13 @@ export default {
 		},
 		reloadStoreSkills: function () {
 			axios({
-				method: 'get',
+				method: 'GET',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/getStore/`
 			}).then(response => {
 				if ('store' in response.data) {
-					this.storeSkills = response.data.store
+					this.$store.commit('setStoreSkills', response.data['store'])
+				} else {
+					console.error('Error fetching store skills')
 				}
 			})
 		},
@@ -224,7 +217,7 @@ export default {
 				return
 			}
 			axios({
-				method: 'put',
+				method: 'PUT',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/installSkills/`,
 				data: this.skillsToDownload,
 				headers: {'auth': this.$store.getters.apiToken}

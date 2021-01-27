@@ -19,6 +19,11 @@ export default {
 
 		this.ip = localStorage.getItem('host') || '127.0.0.1'
 		this.port = localStorage.getItem('apiPort') || 5001
+
+		if (localStorage.getItem('skillsTourCompleted')) {
+			this.$store.commit('setSkillTourCompleted')
+		}
+
 		this.doConnect()
 	},
 	methods: {
@@ -29,14 +34,17 @@ export default {
 				this.connectMQTT().then(() => {
 					this.loadI18n().then(() => {
 						this.validateToken().then(() => {
-							// Start these pages so that they start logging stuff
-							const lastVisitedPage = localStorage.getItem('showPage') || '/'
-							this.$router.replace('/syslog').then(function () {
-								self.$router.replace('/alicewatch').then(function () {
-									if (lastVisitedPage !== '/alicewatch') {
-										self.$router.replace(lastVisitedPage).then()
-									}
-									self.$store.commit('uiConnected', true)
+							// Load all the data we need throughout the project
+							this.loadData().then(() => {
+								// Start these pages so that they start logging stuff
+								const lastVisitedPage = localStorage.getItem('showPage') || '/'
+								this.$router.replace('/syslog').then(function () {
+									self.$router.replace('/alicewatch').then(function () {
+										if (lastVisitedPage !== '/alicewatch') {
+											self.$router.replace(lastVisitedPage).then()
+										}
+										self.$store.commit('uiConnected', true)
+									})
 								})
 							})
 						})
@@ -54,7 +62,7 @@ export default {
 			let self = this
 			return new Promise(function(resolve, reject) {
 				axios({
-					method: 'get',
+					method: 'GET',
 					url: `http://${self.ip}:${self.port}/api/v1.0.1/utils/config/`,
 					headers: {'auth': localStorage.getItem('apiToken')}
 				}).then(response => {
@@ -81,6 +89,7 @@ export default {
 				axios.get(`http://${self.ip}:${self.port}/api/v1.0.1/utils/mqttConfig/`)
 					.then(response => {
 						let randomNum = Math.floor((Math.random() * 10000000) + 1);
+						// noinspection JSUnresolvedFunction
 						let client = new Paho.Client(response.data.host, Number(response.data.port), 'ProjectAliceInterface' + randomNum)
 						client.onMessageArrived = self.onMessage
 						client.onConnectionLost = self.onConnectionLost
@@ -100,10 +109,10 @@ export default {
 		},
 		validateToken() {
 			let self = this
-			return new Promise(function(resolve, reject) {
+			return new Promise(function (resolve, _reject) {
 				if (localStorage.getItem('apiToken') && localStorage.getItem('username')) {
 					axios({
-						method: 'post',
+						method: 'POST',
 						url: `http://${self.ip}:${self.port}/api/v1.0.1/login/checkToken/`,
 						headers: {'auth': localStorage.getItem('apiToken')}
 					}).then(response => {
@@ -141,6 +150,139 @@ export default {
 		},
 		onMessage: function (msg) {
 			this.$store.commit('mqttMessage', msg)
+		},
+		loadData: function () {
+			let self = this
+			return new Promise(function (resolve) {
+				axios({
+					method: 'GET',
+					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/widgets/pages/`,
+					headers: {'auth': self.$store.getters.apiToken}
+				}).then(response => {
+					if ('pages' in response.data) {
+						self.$store.commit('setWidgetPages', response.data['pages'])
+					} else {
+						console.error('Error fetching widget pages')
+					}
+				}).then(_r => {
+					axios({
+						method: 'GET',
+						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/widgets/templates/`
+					}).then(response => {
+						if ('widgets' in response.data) {
+							self.$store.commit('setWidgetTemplates', response.data['widgets'])
+						} else {
+							console.error('Error fetching widget templates')
+						}
+					})
+				}).then(_r => {
+					axios({
+						method: 'GET',
+						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/widgets/`,
+						headers: {'auth': self.$store.getters.apiToken}
+					}).then(response => {
+						if ('widgets' in response.data) {
+							self.$store.commit('setWidgetInstances', response.data['widgets'])
+						} else {
+							console.error('Error fetching widget instances')
+						}
+					})
+				}).then(_r => {
+					axios({
+						method: 'GET',
+						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/skills/`,
+						headers: {'auth': self.$store.getters.apiToken}
+					}).then(response => {
+						if ('skills' in response.data) {
+							self.$store.commit('setInstalledSkills', response.data['skills'])
+						} else {
+							console.error('Error fetching skills')
+						}
+					})
+				}).then(_r => {
+					axios({
+						method: 'GET',
+						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/skills/getStore/`
+					}).then(response => {
+						if ('store' in response.data) {
+							self.$store.commit('setStoreSkills', response.data['store'])
+						} else {
+							console.error('Error fetching store skills')
+						}
+					})
+				}).then(_r => {
+					axios({
+						method: 'GET',
+						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/floors/`,
+						headers: {'auth': self.$store.getters.apiToken}
+					}).then(response => {
+						if ('data' in response.data) {
+							self.$store.commit('setFloorTiles', response.data['data'])
+						} else {
+							console.error('Error fetching floor tiles')
+						}
+					})
+				}).then(_r => {
+					axios({
+						method: 'GET',
+						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/furniture/tiles/`,
+						headers: {'auth': self.$store.getters.apiToken}
+					}).then(response => {
+						if ('data' in response.data) {
+							self.$store.commit('setFurnitureTiles', response.data['data'])
+						} else {
+							console.error('Error fetching furniture tiles')
+						}
+					})
+				}).then(_r => {
+					axios({
+						method: 'GET',
+						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/constructions/tiles/`,
+						headers: {'auth': self.$store.getters.apiToken}
+					}).then(response => {
+						if ('data' in response.data) {
+							self.$store.commit('setConstructionTiles', response.data['data'])
+						} else {
+							console.error('Error fetching construction tiles')
+						}
+					})
+				}).then(_r => {
+					axios({
+						method: 'GET',
+						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/deviceTypes/`,
+						headers: {'auth': self.$store.getters.apiToken}
+					}).then(response => {
+						if ('types' in response.data) {
+							self.$store.commit('setDeviceTypes', response.data['types'])
+						} else {
+							console.error('Error fetching device types')
+						}
+					})
+				}).then(_r => {
+					axios({
+						method: 'GET',
+						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/`,
+						headers: {'auth': self.$store.getters.apiToken}
+					}).then(response => {
+						if ('data' in response.data) {
+							self.$store.commit('setLocations', response.data['data']['locations'])
+							self.$store.commit('setConstructions', response.data['data']['constructions'])
+							self.$store.commit('setFurnitures', response.data['data']['furnitures'])
+							self.$store.commit('setDeviceLinks', response.data['data']['links'])
+							self.$store.commit('setDevices', response.data['data']['devices'])
+						} else {
+							console.error('Error fetching my home data')
+						}
+					})
+				}).then(_r => {
+				}).then(_r => {
+				}).then(_r => {
+				}).then(_r => {
+				}).then(_r => {
+				}).then(_r => {
+					resolve()
+				})
+			})
 		},
 		onConnected: function () {
 			console.log('Mqtt connected')

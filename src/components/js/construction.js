@@ -26,7 +26,7 @@ export default {
 			}
 
 			axios({
-				method: 'patch',
+				method: 'PATCH',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/constructions/${this.data.id}/`,
 				data: data,
 				headers: {
@@ -43,7 +43,7 @@ export default {
 			if (this.myHome.toolsState.placingConstructions) {
 				this.myHome.setMoveable(event.target, this)
 				this.myHome.moveableItem.setBoundaries(this.$el, 0)
-				const constructions = Array.from(document.querySelectorAll('.construction')).filter((construction, index, array) => {
+				const constructions = Array.from(document.querySelectorAll('.construction')).filter((construction) => {
 					const conId = parseInt(construction.id.substring(4))
 					return !(conId === this.data.id);
 				})
@@ -53,12 +53,12 @@ export default {
 		deleteMe: function (event) {
 			event.stopPropagation()
 			axios({
-				method: 'delete',
+				method: 'DELETE',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/constructions/${this.data.id}/`,
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then(response => {
 				if ('success' in response.data && response.data.success) {
-					this.myHome.$delete(this.myHome.constructions, this.data.id)
+					this.$delete(this.$store.state.constructions, this.data.id)
 				}
 			})
 		}

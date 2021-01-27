@@ -52,7 +52,7 @@ export default {
 			const data = new FormData
 			data.append('cmd', this.cmd)
 			axios({
-				method: 'post',
+				method: 'POST',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/sysCmd/`,
 				data: data,
 				headers: {

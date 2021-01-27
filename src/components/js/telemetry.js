@@ -39,7 +39,7 @@ export default {
 		getUnique: function () {
 			// initial loading of the possible combinations by calling the telemetry/overview API
 			axios({
-				method: 'get',
+				method: 'GET',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/telemetry/overview/`,
 				headers: {
 					'auth': this.$store.getters.apiToken,

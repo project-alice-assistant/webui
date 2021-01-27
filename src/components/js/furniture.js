@@ -27,7 +27,7 @@ export default {
 			}
 
 			axios({
-				method: 'patch',
+				method: 'PATCH',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/furniture/${this.data.id}/`,
 				data: data,
 				headers: {
@@ -44,7 +44,7 @@ export default {
 			if (this.myHome.toolsState.placingFurniture) {
 				this.myHome.setMoveable(event.target, this)
 				this.myHome.moveableItem.setBoundaries(this.$el, 0)
-				const furnitures = Array.from(document.querySelectorAll('.furniture')).filter((furniture, index, array) => {
+				const furnitures = Array.from(document.querySelectorAll('.furniture')).filter((furniture) => {
 					const furId = parseInt(furniture.id.substring(4))
 					return !(furId === this.data.id);
 				})
@@ -54,12 +54,12 @@ export default {
 		deleteMe: function (event) {
 			event.stopPropagation()
 			axios({
-				method: 'delete',
+				method: 'DELETE',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/furniture/${this.data.id}/`,
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then(response => {
 				if ('success' in response.data && response.data.success) {
-					this.myHome.$delete(this.myHome.furnitures, this.data.id)
+					this.$delete(this.$store.state.furnitures, this.data.id)
 				}
 			})
 		}

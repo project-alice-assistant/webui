@@ -11,12 +11,30 @@ export default {
 	},
 	props: [
 		'data',
-		'locations',
-		'constructions',
-		'furnitures',
-		'devices',
 		'myHome'
 	],
+	computed: {
+		locations: function () {
+			return Object.values(this.$store.state.locations).filter(location => {
+				return location.parentLocation === this.data.id
+			})
+		},
+		constructions: function () {
+			return Object.values(this.$store.state.constructions).filter(construction => {
+				return construction.parentLocation === this.data.id
+			})
+		},
+		furnitures: function () {
+			return Object.values(this.$store.state.furnitures).filter(furniture => {
+				return furniture.parentLocation === this.data.id
+			})
+		},
+		devices: function () {
+			return Object.values(this.$store.state.devices).filter(device => {
+				return device.parentLocation === this.data.id
+			})
+		}
+	},
 	methods: {
 		computeCustomStyle: function () {
 			return this.myHome.moveableItem.computeMyHomeCustomStyle(
@@ -34,7 +52,7 @@ export default {
 			}
 
 			axios({
-				method: 'patch',
+				method: 'PATCH',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/${this.data.id}/`,
 				data: data,
 				headers: {
@@ -52,7 +70,7 @@ export default {
 			const self = this
 
 			if (this.myHome.toolsState.paintingFloors && this.myHome.activeFloorTile !== '') {
-				this.myHome.locations[this.data.id].settings['t'] = this.myHome.activeFloorTile
+				this.$store.state.locations[this.data.id].settings['t'] = this.myHome.activeFloorTile
 				this.save()
 			} else if (this.myHome.toolsState.addingDevice && this.myHome.activeDeviceTile !== '') {
 				if (!this.myHome.checkDevicePerLocationLimit(this.myHome.activeDeviceTile, this.data.id)) return
@@ -62,13 +80,13 @@ export default {
 					skillName: this.myHome.activeDeviceTile.skillName,
 					parentLocation: this.data.id,
 					settings: {
-						x: event.layerX - 25,
-						y: event.layerY - 25
+						x: event['layerX'] - 25,
+						y: event['layerY'] - 25
 					}
 				}
 
 				axios({
-					method: 'put',
+					method: 'PUT',
 					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/`,
 					data: data,
 					headers: {
@@ -79,10 +97,10 @@ export default {
 					if (this.checkResponse(response)) {
 						if ('device' in response.data) {
 							let device = response.data['device']
-							this.myHome.$set(this.myHome.devices, device.id, device)
+							this.$set(this.$store.state.devices, device.id, device)
 
 							for (const link of Object.values(response.data.link)) {
-								this.myHome.$set(this.myHome.deviceLinks, link.id, link)
+								this.myHome.$set(this.$store.state.deviceLinks, link.id, link)
 								setTimeout(function () {
 									self.myHome.drawDeviceLinks({specificLinkId: link.id})
 								}, 1000)
@@ -97,8 +115,8 @@ export default {
 				const data = {
 					parentLocation: this.data.id,
 					settings: {
-						x: event.layerX - 25,
-						y: event.layerY - 25,
+						x: event['layerX'] - 25,
+						y: event['layerY'] - 25,
 						w: 50,
 						h: 50,
 						z: 0,
@@ -108,7 +126,7 @@ export default {
 				}
 
 				axios({
-					method: 'put',
+					method: 'PUT',
 					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/furniture/`,
 					data: data,
 					headers: {
@@ -119,7 +137,7 @@ export default {
 					if(this.checkResponse(response)){
 						if ('furniture' in response.data) {
 							let furniture = response.data['furniture']
-							this.myHome.$set(this.myHome.furnitures, furniture.id, furniture)
+							this.$set(this.$store.state.furnitures, furniture.id, furniture)
 						}
 					}
 				})
@@ -128,8 +146,8 @@ export default {
 				const data = {
 					parentLocation: this.data.id,
 					settings: {
-						x: event.layerX - 25,
-						y: event.layerY - 25,
+						x: event['layerX'] - 25,
+						y: event['layerY'] - 25,
 						w: 50,
 						h: 50,
 						r: 0,
@@ -139,7 +157,7 @@ export default {
 				}
 
 				axios({
-					method: 'put',
+					method: 'PUT',
 					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/constructions/`,
 					data: data,
 					headers: {
@@ -150,7 +168,7 @@ export default {
 					if(this.checkResponse(response)) {
 						if ('construction' in response.data) {
 							let construction = response.data['construction']
-							this.myHome.$set(this.myHome.constructions, construction.id, construction)
+							this.$set(this.$store.state.constructions, construction.id, construction)
 						}
 					}
 				})
@@ -165,7 +183,7 @@ export default {
 				}
 
 				axios({
-					method: 'put',
+					method: 'PUT',
 					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/deviceLinks/`,
 					data: data,
 					headers: {
@@ -176,9 +194,9 @@ export default {
 					if(this.checkResponse(response)){
 						if ('link' in response.data) {
 							let link = response.data['link']
-							this.myHome.$set(this.myHome.deviceLinks, link.id, link)
+							this.$set(this.$store.state.deviceLinks, link.id, link)
 							this.myHome.drawDeviceLinks({specificLinkId: link.id})
-							this.showSuccess(this.$t('notifications.success.deviceLinked'))
+							this.showSuccess(this.$t('notifications.successes.deviceLinked'))
 						}
 					} else {
 						this.myHome.setActiveTool('none')
@@ -197,7 +215,7 @@ export default {
 				}
 
 				axios({
-					method: 'delete',
+					method: 'DELETE',
 					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/deviceLinks/`,
 					data: data,
 					headers: {
@@ -220,7 +238,7 @@ export default {
 				this.myHome.moveableItem.setBoundaries(this.$el, 10)
 				const locations = Array.from(document.querySelectorAll('.location')).filter((location, _index, _array) => {
 					const locId = parseInt(location.id.substring(4))
-					return !(locId === this.data.id || this.myHome.locations[locId].parentLocation === this.data.id);
+					return !(locId === this.data.id || this.$store.state.locations[locId].parentLocation === this.data.id);
 				})
 				this.myHome.moveableItem.setGuidelines(locations)
 			}
@@ -240,12 +258,12 @@ export default {
 					cancelText: this.$t('buttons.cancel')
 				})
 				.then(function (dialogue) {
-					if(dialogue.data === ''){
+					if (dialogue.data === '') {
 						self.showError(self.$t('notifications.errors.noLocationEmptyName'))
 						return
 					}
 					self.data.name = dialogue.data
-					self.$set(self.myHome.locations, self.data.id, self.data)
+					self.$set(this.$store.state.locations, self.data.id, self.data)
 					self.$forceUpdate()
 					self.save()
 				})
@@ -253,12 +271,12 @@ export default {
 		deleteMe: function (event) {
 			event.stopPropagation()
 			axios({
-				method: 'delete',
+				method: 'DELETE',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/${this.data.id}/`,
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then(response => {
 				if (this.checkResponse(response)) {
-					this.myHome.$delete(this.locations, this.data.id)
+					this.$delete(this.$store.state.locations, this.data.id)
 					this.showSuccess(this.$t('notifications.successes.locationDeleted'))
 				} else {
 					this.showError(this.$t('notifications.errors.locationDeleted'))
@@ -287,19 +305,19 @@ export default {
 		setPosition: function (target) {
 			try {
 				if (this.targetParentLocation !== 0 && this.data.parentLocation !== this.targetParentLocation) {
-					for (const location of Object.entries(this.myHome.locations)) {
+					for (const location of Object.entries(this.$store.state.locations)) {
 						// Prevent cyclic nesting, parent in child
 						if (location.parentLocation === this.data.id) return
 					}
 
 					const droppedIn = document.querySelector(`#loc_${this.targetParentLocation}`)
-					this.myHome.locations[this.data.id].parentLocation = this.targetParentLocation
-					this.myHome.locations[this.data.id].settings['x'] = parseInt(target.style.left.substring(-2)) - parseInt(droppedIn.style.left.substring(-2))
-					this.myHome.locations[this.data.id].settings['y'] = parseInt(target.style.top.substring(-2)) - parseInt(droppedIn.style.top.substring(-2))
+					this.$store.state.locations[this.data.id].parentLocation = this.targetParentLocation
+					this.$store.state.locations[this.data.id].settings['x'] = parseInt(target.style.left.substring(-2)) - parseInt(droppedIn.style.left.substring(-2))
+					this.$store.state.locations[this.data.id].settings['y'] = parseInt(target.style.top.substring(-2)) - parseInt(droppedIn.style.top.substring(-2))
 					this.targetParentLocation = 0
 				} else {
-					this.myHome.locations[this.data.id].settings['x'] = parseInt(target.style.left.substring(-2))
-					this.myHome.locations[this.data.id].settings['y'] = parseInt(target.style.top.substring(-2))
+					this.$store.state.locations[this.data.id].settings['x'] = parseInt(target.style.left.substring(-2))
+					this.$store.state.locations[this.data.id].settings['y'] = parseInt(target.style.top.substring(-2))
 					return true
 				}
 			} catch (e) {
@@ -339,7 +357,7 @@ export default {
 					return false
 				}
 
-				for (const link of Object.values(this.myHome.deviceLinks)) {
+				for (const link of Object.values(this.$store.state.deviceLinks)) {
 					if (link.deviceId === device.data.id && link.targetLocation === this.data.id) {
 						if (showError) this.showError(this.$t('notifications.successes.deviceAlreadyLinkedToLocation'))
 						return false
@@ -352,7 +370,7 @@ export default {
 			return true
 		},
 		isDeviceLinkedToMe(deviceId) {
-			for (const link of Object.values(this.myHome.deviceLinks)) {
+			for (const link of Object.values(this.$store.state.deviceLinks)) {
 				if (link.deviceId === deviceId && link.targetLocation === this.data.id) {
 					return true
 				}

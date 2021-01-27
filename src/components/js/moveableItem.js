@@ -222,15 +222,15 @@ export default class MoveableItem {
 	getItem(target) {
 		const id = this.getId(target)
 		if (target.classList.contains('location')) {
-			return this.controller.locations[id]
+			return this.controller.$store.state.locations[id]
 		} else if (target.classList.contains('furniture')) {
-			return this.controller.furnitures[id]
+			return this.controller.$store.state.furnitures[id]
 		} else if (target.classList.contains('construction')) {
-			return this.controller.constructions[id]
+			return this.controller.$store.state.constructions[id]
 		} else if (target.classList.contains('device')) {
-			return this.controller.devices[id]
+			return this.controller.$store.state.devices[id]
 		} else if (target.classList.contains('widget')) {
-			return this.controller.widgetInstances[id]
+			return this.controller.$store.state.widgetInstances[id]
 		}
 	}
 

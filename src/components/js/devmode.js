@@ -47,7 +47,7 @@ export default {
 	},
 	mounted: function() {
 		axios({
-			method: 'get',
+			method: 'GET',
 			url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/getStore/`
 		}).then(response => {
 			if ('store' in response.data) {
@@ -212,7 +212,7 @@ export default {
 		},
 		fetchSkills: function () {
 			axios({
-				method: 'get',
+				method: 'GET',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/`,
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then(response => {

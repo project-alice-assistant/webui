@@ -33,7 +33,7 @@ export default {
 	watch: {
 		$route: {
 			immediate: true,
-			handler(to, from) {
+			handler(to) {
 				this.title = this.$t(to.meta.title) || 'Home'
 				document.title = `Project Alice - ${this.title.charAt(0).toUpperCase() + this.title.slice(1)}`
 			}

@@ -88,12 +88,12 @@ Vue.dialog.registerComponent('deviceReplyListSelect', deviceReplyListSelect)
 
 // Jquery use ONLY FOR WIDGETS, DO NOT USE JQUERY FOR __ANYTHING ELSE__
 global.jQuery = require('jquery')
-const $ = global.jQuery
 window.$ = global.jQuery
 
 // Workaround to init v-models
 Vue.directive('init', {
 	bind(el, binding, vnode) {
+		// noinspection JSUnresolvedVariable
 		let vModel = vnode.data.directives.find(d => d.rawName === 'v-model')
 		if (vModel) {
 			vnode.context[vModel.expression] = binding.value

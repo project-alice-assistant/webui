@@ -58,7 +58,7 @@ export default {
 
 			this.controller.setMoveable(event.target, this)
 			this.controller.moveableItem.setBoundaries(this.$el, 10)
-			const widgets = Array.from(document.querySelectorAll('.widget')).filter((widget, index, array) => {
+			const widgets = Array.from(document.querySelectorAll('.widget')).filter((widget) => {
 				return !(parseInt(widget.id.substring(4)) === this.widget.id)
 			})
 			this.controller.moveableItem.setGuidelines(widgets)

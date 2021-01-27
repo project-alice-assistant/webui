@@ -13,9 +13,70 @@ export default new Vuex.Store({
 		fullScreen: false,
 		minimized: false,
 		uiConnected: false,
-		mqttMessage: {}
+		mqttMessage: {},
+		widgetPages: {},
+		widgetTemplates: {},
+		widgetInstances: {},
+		installedSkills: {},
+		storeSkills: {},
+		skillTourCompleted: false,
+		furnitureTiles: [],
+		floorTiles: [],
+		constructionTiles: [],
+		deviceTypes: {},
+		devices: {},
+		deviceLinks: {},
+		furnitures: {},
+		constructions: {},
+		locations: {}
 	},
 	mutations: {
+		setFurnitureTiles(state, data) {
+			state.furnitureTiles = data
+		},
+		setFloorTiles(state, data) {
+			state.floorTiles = data
+		},
+		setConstructionTiles(state, data) {
+			state.constructionTiles = data
+		},
+		setDeviceTypes(state, data) {
+			state.deviceTypes = data
+		},
+		setDevices(state, data) {
+			state.devices = data
+		},
+		setDeviceLinks(state, data) {
+			state.deviceLinks = data
+		},
+		setFurnitures(state, data) {
+			state.furnitures = data
+		},
+		setConstructions(state, data) {
+			state.constructions = data
+		},
+		setLocations(state, data) {
+			state.locations = data
+		},
+		setSkillTourCompleted(state) {
+			state.skillTourCompleted = true
+			localStorage.setItem('skillsTourCompleted', true)
+		},
+		setStoreSkills(state, data) {
+			state.storeSkills = data
+		},
+		setInstalledSkills(state, data) {
+			state.installedSkills = data
+		},
+		setWidgetInstances(state, data) {
+			state.widgetInstances = data
+		},
+		setWidgetTemplates(state, data) {
+			state.widgetTemplates = data
+		},
+		setWidgetPages(state, data) {
+			state.widgetPages = data
+		},
 		setSettings(state, settings) {
 			state.settings = settings
 		},
@@ -68,7 +129,7 @@ export default new Vuex.Store({
 		}
 	},
 	getters: {
-		apiToken: function (state, getters) {
+		apiToken: function (state, _getters) {
 			if (typeof state.loggedInUser === 'object') {
 				return state.loggedInUser.token
 			} else {

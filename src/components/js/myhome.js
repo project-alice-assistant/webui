@@ -54,15 +54,6 @@ export default {
 				placingConstructions: false
 			},
 			newLocationName: '',
-			locations: {},
-			constructions: {},
-			furnitures: {},
-			devices: {},
-			deviceTypes: {},
-			deviceLinks: {},
-			floorTiles: [],
-			furnitureTiles: [],
-			constructionTiles: [],
 			activeFloorTile: '',
 			activeFurnitureTile: '',
 			activeConstructionTile: '',
@@ -99,7 +90,7 @@ export default {
 						highlight: true,
 						placement: 'bottom'
 					},
-					before: type => new Promise((resolve, reject) => {
+					before: _type => new Promise((resolve) => {
 						// Just wait for the default device to be shown at least
 						setTimeout(resolve, 500)
 					}),
@@ -122,6 +113,11 @@ export default {
 		}
 	},
 	computed: {
+		locations: function () {
+			return Object.values(this.$store.state.locations).filter(location => {
+				return location.parentLocation === 0
+			})
+		},
 		ghostBackground: function () {
 			let end = 'locations/floors/floor-80.png'
 			if (this.activeFloorTile) {
@@ -137,14 +133,14 @@ export default {
 		},
 		shownDeviceTypes: function () {
 			let shownList = {}
-			for( const [skill, types] of Object.entries(this.deviceTypes)){
+			for (const [skill, types] of Object.entries(this.$store.state.deviceTypes)) {
 				let possibles = []
-				for(const typ of types){
-					if(this.canAddDevice(typ)){
+				for (const typ of types) {
+					if (this.canAddDevice(typ)) {
 						possibles.push(typ)
 					}
 				}
-				if(possibles.length > 0){
+				if (possibles.length > 0) {
 					shownList[skill] = possibles
 				}
 			}
@@ -209,61 +205,6 @@ export default {
 		this.floorPlanX = parseInt(localStorage.getItem('floorPlanX')) || 0
 		this.floorPlanY = parseInt(localStorage.getItem('floorPlanY')) || 0
 		this.zoomLevel = parseFloat(localStorage.getItem('zoomLevel')) || 1.0
-
-		axios({
-			method: 'get',
-			url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/floors/`,
-			headers: {'auth': this.$store.getters.apiToken}
-		}).then(response => {
-			if ('data' in response.data) {
-				this.floorTiles = response.data.data
-			}
-		})
-
-		axios({
-			method: 'get',
-			url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/furniture/tiles/`,
-			headers: {'auth': this.$store.getters.apiToken}
-		}).then(response => {
-			if ('data' in response.data) {
-				this.furnitureTiles = response.data.data
-			}
-		})
-
-		axios({
-			method: 'get',
-			url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/constructions/tiles/`,
-			headers: {'auth': this.$store.getters.apiToken}
-		}).then(response => {
-			if ('data' in response.data) {
-				this.constructionTiles = response.data.data
-			}
-		})
-
-		axios({
-			method: 'get',
-			url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/deviceTypes/`,
-			headers: {'auth': this.$store.getters.apiToken}
-		}).then(response => {
-			if ('types' in response.data) {
-				this.deviceTypes = response.data.types
-			}
-		})
-
-		axios({
-			method: 'get',
-			url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/`,
-			headers: {'auth': this.$store.getters.apiToken}
-		}).then(response => {
-			if ('data' in response.data) {
-				this.locations = response.data.data.locations
-				this.constructions = response.data.data.constructions
-				this.furnitures = response.data.data.furnitures
-				this.deviceLinks = response.data.data.links
-				this.devices = response.data.data.devices
-				this.positionCenterPointer()
-			}
-		})
 	},
 	mounted: function () {
 		if (!localStorage.getItem('myHomeTourCompleted')) {
@@ -271,6 +212,7 @@ export default {
 		}
 
 		this.areaSelector = this.$refs.areaSelector
+		this.positionCenterPointer()
 
 		let self = this
 		this.$watch(
@@ -313,7 +255,7 @@ export default {
 				return true
 			} else {
 				let count = 0
-				for (const device of Object.values(this.devices)) {
+				for (const device of Object.values(this.$store.state.devices)) {
 					if (device.skillName === deviceType.skillName && device.deviceType === deviceType.deviceTypeName && device.parentLocation === locationId) {
 						count++
 					}
@@ -325,7 +267,7 @@ export default {
 			function (deviceType) {
 				if (deviceType.totalDeviceLimit > 0) {
 					let count = 0
-					for (const device of Object.values(this.devices)) {
+					for (const device of Object.values(this.$store.state.devices)) {
 						if (deviceType.skillName === device.skillName && deviceType.deviceTypeName === device.typeName) {
 							count++
 						}
@@ -337,11 +279,11 @@ export default {
 		getDeviceType: function (device) {
 			const skillName = device.data.skillName.toLowerCase()
 			const deviceTypeName = device.data.typeName.toLowerCase()
-			if (!skillName in this.deviceTypes) {
+			if (!skillName in this.$store.state.deviceTypes) {
 				return null
 			}
 
-			for (const deviceType of this.deviceTypes[skillName]) {
+			for (const deviceType of this.$store.state.deviceTypes[skillName]) {
 				if (deviceType.deviceTypeName.toLowerCase() === deviceTypeName) {
 					return deviceType
 				}
@@ -350,7 +292,7 @@ export default {
 			return null
 		},
 		drawDeviceLinks: function ({specificLinkId, specificDeviceId, specificLocationId} = {}) {
-			for (const link of Object.values(this.deviceLinks)) {
+			for (const link of Object.values(this.$store.state.deviceLinks)) {
 				if ((specificLinkId !== undefined && link.id !== specificLinkId) ||
 					(specificDeviceId !== undefined && link.deviceId !== specificDeviceId) ||
 					(specificLocationId !== undefined && link.targetLocation !== specificLocationId)) continue
@@ -367,7 +309,7 @@ export default {
 			}
 		},
 		newDeviceLink(link, device) {
-			const label = LeaderLine.captionLabel(this.locations[link.targetLocation].name)
+			const label = LeaderLine.captionLabel(this.$store.state.locations[link.targetLocation].name)
 			const targetLocation = document.querySelector(`#loc_${link.targetLocation}`)
 			const line = new LeaderLine(
 				device.$el,
@@ -498,7 +440,7 @@ export default {
 				})
 				.then(function (dialogue) {
 					axios({
-						method: 'get',
+						method: 'GET',
 						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/${dialogue.data}/`,
 						headers: {'auth': self.$store.getters.apiToken}
 					}).then(response => {
@@ -651,7 +593,7 @@ export default {
 				this.setActiveTool('locationsEditMode')
 
 				axios({
-					method: 'put',
+					method: 'PUT',
 					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/`,
 					data: data,
 					headers: {
@@ -661,7 +603,7 @@ export default {
 				}).then(response => {
 					if ('location' in response.data) {
 						let loc = response.data['location']
-						this.$set(this.locations, loc.id, loc)
+						this.$set(this.$store.state.locations, loc.id, loc)
 					}
 				})
 			} else if (this.draggingPlan) {
@@ -676,11 +618,11 @@ export default {
 			const myIndex = data.settings['z']
 			const myNewIndex = myIndex + 1;
 
-			if (myNewIndex > this.locations.length) {
+			if (myNewIndex > this.$store.state.locations.length) {
 				return
 			}
 
-			for (const loc of Object.values(this.locations)) {
+			for (const loc of Object.values(this.$store.state.locations)) {
 				if (loc.settings['z'] === myNewIndex) {
 					loc.settings['z'] -= 1
 					data.settings['z'] = myNewIndex
@@ -706,7 +648,7 @@ export default {
 				return
 			}
 
-			for (const loc of Object.values(this.locations)) {
+			for (const loc of Object.values(this.$store.state.locations)) {
 				if (loc.settings['z'] === myNewIndex) {
 					loc.settings['z'] += 1
 					data.settings['z'] = myNewIndex
@@ -723,7 +665,7 @@ export default {
 			}
 
 			axios({
-				method: 'patch',
+				method: 'PATCH',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/${data.id}/`,
 				data: data,
 				headers: {
@@ -733,7 +675,7 @@ export default {
 			}).then()
 		},
 		checkIfSynonymIsFree(synonym) {
-			for (const location of Object.values(this.locations)) {
+			for (const location of Object.values(this.$store.state.locations)) {
 				if (location.name.toLowerCase() === synonym.toLowerCase()) return false
 
 				for (const locationSynonym of location.synonyms) {
@@ -743,11 +685,11 @@ export default {
 			return true
 		},
 		removeDeviceLink(deviceId, locationId) {
-			for (const link of Object.values(this.deviceLinks)) {
+			for (const link of Object.values(this.$store.state.deviceLinks)) {
 				if (link.deviceId === deviceId && link.targetLocation === locationId) {
 					this.connectionLinks[link.id].remove()
 					delete this.connectionLinks[link.id]
-					delete this.deviceLinks[link.id]
+					this.$delete(this.$store.state.deviceLinks, link.id)
 					return link.id
 				}
 			}
@@ -757,18 +699,18 @@ export default {
 				if (link.deviceId === deviceId) {
 					this.connectionLinks[link.id].remove()
 					delete this.connectionLinks[link.id]
-					delete this.deviceLinks[link.id]
+					this.$delete(this.$store.state.deviceLinks, link.id)
 				}
 			}
 			this.refreshDeviceLinks()
 		},
 		deleteDevice(deviceId) {
-			this.$delete(this.devices, deviceId)
+			this.$delete(this.$store.state.devices, deviceId)
 			this.removeDeviceLinks(deviceId)
 		},
 		getDeviceLinks(deviceId) {
 			let ret = {}
-			for (const link of Object.values(this.deviceLinks)) {
+			for (const link of Object.values(this.$store.state.deviceLinks)) {
 				if (link.deviceId === deviceId) {
 					ret[link.id] = link
 				}

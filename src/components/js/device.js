@@ -50,7 +50,7 @@ export default {
 						clearTimeout(self.checkHeartbeat)
 					}
 				} else if (msg.topic === C.DEVICE_UPDATED_TOPIC) {
-					self.myHome.devices[self.data.id] = payload['device']
+					this.$set(self.$store.state.devices[self.data.id], payload['device'])
 				}
 			}
 		)
@@ -91,7 +91,7 @@ export default {
 
 			const self = this
 			axios({
-				method: 'patch',
+				method: 'PATCH',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/${this.data.id}/`,
 				data: data,
 				headers: {
@@ -238,10 +238,10 @@ export default {
 					const parentLocation = document.querySelector(`#loc_${this.data.parentLocation}`)
 					const droppedIn = document.querySelector(`#loc_${this.targetParentLocation}`)
 					this.myHome.moveableItem.container = droppedIn
-					this.myHome.devices[this.data.id].parentLocation = this.targetParentLocation
-					this.myHome.devices[this.data.id].settings['z'] = parseInt(droppedIn.style['z-index']) + 1
-					this.myHome.devices[this.data.id].settings['x'] = parentLocation.offsetLeft + parseInt(target.style.left.substring(-2)) - droppedIn.offsetLeft
-					this.myHome.devices[this.data.id].settings['y'] = parentLocation.offsetTop + parseInt(target.style.top.substring(-2)) - droppedIn.offsetTop
+					this.$store.state.devices[this.data.id].parentLocation = this.targetParentLocation
+					this.$store.state.devices[this.data.id].settings['z'] = parseInt(droppedIn.style['z-index']) + 1
+					this.$store.state.devices[this.data.id].settings['x'] = parentLocation.offsetLeft + parseInt(target.style.left.substring(-2)) - droppedIn.offsetLeft
+					this.$store.state.devices[this.data.id].settings['y'] = parentLocation.offsetTop + parseInt(target.style.top.substring(-2)) - droppedIn.offsetTop
 					this.targetParentLocation = 0
 				} else {
 					// noinspection ExceptionCaughtLocallyJS
@@ -254,7 +254,7 @@ export default {
 		deleteMe: function (event) {
 			event.stopPropagation()
 			axios({
-				method: 'delete',
+				method: 'DELETE',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/${this.data.id}/`,
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then(response => {

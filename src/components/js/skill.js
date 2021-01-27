@@ -17,20 +17,20 @@ export default {
 		reloadSkill: function () {
 			if (this.$tours['skills'].currentStep !== -1) return
 			axios({
-				method: 'get',
+				method: 'GET',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.skill.name}/reload/`,
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then(response => {
 				if ('skill' in response.data) {
-					this.showSuccess('notifications.successes.reloadTriggered')
-					this.$parent.updateSkillData(response.data.skill)
+					this.showSuccess(this.$parent.$t('notifications.successes.reloadTriggered'))
+					this.$set(this.$store.state.installedSkills, response.data.skill.name, response.data.skill)
 				}
 			})
 		},
 		toggle: function () {
 			if (this.$tours['skills'].currentStep !== -1) return
 			axios({
-				method: 'get',
+				method: 'GET',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.skill.name}/toggleActiveState/`,
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then(() => (this.skill.active = !this.skill.active))
@@ -39,7 +39,7 @@ export default {
 		update: function () {
 			if (this.$tours['skills'].currentStep !== -1) return
 			axios({
-				method: 'get',
+				method: 'GET',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.skill.name}/checkUpdate/`,
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then(() => {
@@ -53,15 +53,15 @@ export default {
 				.confirm(this.$t('dialogs.titles.confirmSkillDeletion'), {okText: this.$t('dialogs.labels.yes'), cancelText: this.$t('dialogs.labels.cancel')})
 				.then(function() {
 					axios({
-						method: 'delete',
+						method: 'DELETE',
 						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/skills/${self.skill.name}/`,
 						headers: {'auth': self.$store.getters.apiToken}
 					}).then(response => {
 						if ('success' in response.data) {
 							if (response.data.success) {
-								self.showSuccess('notifications.successes.skillDeleted')
+								self.showSuccess(this.$parent.$t('notifications.successes.skillDeleted'))
 							} else {
-								self.showError('notifications.errors.skillDeleteFailed ')
+								self.showError(this.$parent.$t('notifications.errors.skillDeleteFailed'))
 							}
 						}
 					})
@@ -89,9 +89,9 @@ export default {
 					},
 					data: JSON.stringify(dialogue.data)
 				}).then((response) => {
-					if (this.checkResponse(response)){
+					if (this.checkResponse(response)) {
 						backup = {}
-						self.$parent.updateSkillData(self.skill)
+						this.$set(this.$store.state.installedSkills, self.skill.name, self.skill)
 					} else {
 						self.skill['settings'] = backup
 					}

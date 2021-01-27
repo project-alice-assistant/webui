@@ -71,7 +71,7 @@ export default {
 			//if no session is available start new one
 			if (this.currentSession === undefined) {
 				axios({
-					method: 'post',
+					method: 'POST',
 					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/dialog/process/`,
 					data: data,
 					headers: {
@@ -87,7 +87,7 @@ export default {
 				//if session is available - continueSession
 				data.append( 'sessionId', this.currentSession)
 				axios({
-					method: 'post',
+					method: 'POST',
 					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/dialog/continue/`,
 					data: data,
 					headers: {

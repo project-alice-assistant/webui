@@ -9,7 +9,6 @@ export default {
 			uid: uuidv4(),
 			controller: this,
 			moveableItem: new MoveableItem(this),
-			tabs: {},
 			menuItems: [
 				{
 					name: this.$t('tooltips.edit'),
@@ -59,8 +58,6 @@ export default {
 			settings: false,
 			addWidgets: false,
 			removeWidgets: false,
-			widgetTemplates: {},
-			widgetInstances: {},
 			activeTabId: 1,
 			selectedWidget: -1,
 			dragAndResizeEnabled: false,
@@ -70,7 +67,7 @@ export default {
 	},
 	computed: {
 		'activePageWidgets': function() {
-			return Object.values(this.widgetInstances).filter(widget => {
+			return Object.values(this.$store.state.widgetInstances).filter(widget => {
 				return widget['page'] === this.activeTabId
 			})
 		}
@@ -85,18 +82,8 @@ export default {
 			}
 		})
 
-		axios({
-			method: 'get',
-			url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/pages/`,
-			headers: {'auth': this.$store.getters.apiToken}
-		}).then(response => {
-			if ('pages' in response.data) {
-				this.tabs = response.data.pages
-				this.fetchWidgetTemplates()
-				this.fetchWidgetInstances()
-				this.activeTabId = parseInt(localStorage.getItem('widgetsActiveTabId')) || 1
-			}
-		})
+		this.activeTabId = parseInt(localStorage.getItem('widgetsActiveTabId')) || 1
+		this.startWidgetsOnPage(this.activeTabId)
 	},
 	activated: function () {
 		this.uid = uuidv4()
@@ -110,7 +97,7 @@ export default {
 			this.moveableItem.setMoveable(target, prop)
 		},
 		startWidgetsOnPage: function (pageId) {
-			for (const widget of Object.values(this.widgetInstances)) {
+			for (const widget of Object.values(this.$store.state.widgetInstances)) {
 				if (widget['page'] === pageId) {
 					this.startWidgetScript(widget)
 				}
@@ -137,31 +124,9 @@ export default {
 		cinemaMode: function () {
 			this.$store.commit('toggleCinemaMode')
 		},
-		fetchWidgetTemplates: function () {
-			axios({
-				method: 'get',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/templates/`
-			}).then(response => {
-				if ('widgets' in response.data) {
-					this.widgetTemplates = response.data['widgets']
-				}
-			})
-		},
-		fetchWidgetInstances: function() {
-			axios({
-				method: 'get',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/`,
-				headers: {'auth': this.$store.getters.apiToken}
-			}).then(response => {
-				if ('widgets' in response.data) {
-					this.widgetInstances = response.data.widgets
-				}
-				this.startWidgetsOnPage(this.activeTabId)
-			})
-		},
 		addWidget: function(skillName, widgetName) {
 			axios({
-				method: 'put',
+				method: 'PUT',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/`,
 				data: {
 					skillName: skillName,
@@ -174,23 +139,23 @@ export default {
 				}
 			}).then(response => {
 				if ('widget' in response.data) {
-					this.$set(this.widgetInstances, response.data['widget']['id'], response.data.widget)
+					this.$set(this.$store.state.widgetInstances, response.data['widget']['id'], response.data.widget)
 					this.startWidgetScript(response.data.widget)
 				}
 			})
 		},
 		removeWidget: function(widgetId) {
 			axios({
-				method: 'delete',
+				method: 'DELETE',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/${widgetId}/`,
 				headers: {
 					'auth': this.$store.getters.apiToken
 				}
 			}).then(response => {
 				if ('success' in response.data && response.data.success) {
-					const listing = this.listOfWidgetOnPage(this.widgetInstances[widgetId]['page'])
-					const hisZIndex = this.widgetInstances[widgetId]['settings']['z']
-					this.$delete(this.widgetInstances, widgetId)
+					const listing = this.listOfWidgetOnPage(this.$store.state.widgetInstances[widgetId]['page'])
+					const hisZIndex = this.$store.state.widgetInstances[widgetId]['settings']['z']
+					this.$delete(this.$store.state.widgetInstances, widgetId)
 
 					for (const w of listing) {
 						if (w.settings['z'] > hisZIndex) {
@@ -261,7 +226,7 @@ export default {
 		},
 		listOfWidgetOnPage(pageId) {
 			let listing = []
-			for (const w of Object.values(this.widgetInstances)) {
+			for (const w of Object.values(this.$store.state.widgetInstances)) {
 				if (w['page'] === pageId) {
 					listing.push(w)
 				}
@@ -284,7 +249,7 @@ export default {
 							headers: {'auth': self.$store.getters.apiToken}
 						}).then(response => {
 							if ('pages' in response.data) {
-								self.$delete(self.tabs, id)
+								self.$delete(self.$store.state.widgetPages, id)
 								self.showSuccess(self.$t('notifications.successes.pageDeleted'))
 								self.activeTabId = 1
 								localStorage.setItem('widgetsActiveTabId', 1)
@@ -318,7 +283,7 @@ export default {
 					}
 				}).then(response => {
 					if ('success' in response.data && response.data.success) {
-						this.tabs[id].icon = icon
+						this.$store.state.widgetPages[id].icon = icon
 					}
 				})
 			}).catch(() =>{})
@@ -331,7 +296,7 @@ export default {
 			}).then(response => {
 				if ('newpage' in response.data) {
 					let page = response.data.newpage
-					this.$set(this.tabs, page.id, page)
+					this.$set(this.$store.state.widgetPages, page.id, page)
 				}
 			})
 		}
@@ -339,7 +304,7 @@ export default {
 	watch: {
 		$route: {
 			immediate: true,
-			handler(to) {
+			handler() {
 				this.moveableItem.destroyMoveable()
 			}
 		}

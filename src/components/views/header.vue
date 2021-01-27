@@ -8,10 +8,10 @@
 			SWP: {{ resources.swp }}%
 		</div>
 		<div class="versionInfo">
-			{{$store.state.settings.aliceVersion}}
+			{{ $store.state.settings['aliceVersion'] }}
 		</div>
 		<div class="channelInfo">
-			{{$store.state.settings.aliceUpdateChannel}}
+			{{ $store.state.settings['aliceUpdateChannel'] }}
 		</div>
 		<div class="updateChannelMarker"></div>
 	</header>

@@ -167,8 +167,6 @@ export default {
 		},
 		utilitySimpleRequest: function(id) {
 			const icon = this.startIcon(id)
-			const self = this
-
 			axios({
 				method: 'GET',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/${id}/`,

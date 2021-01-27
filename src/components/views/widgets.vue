@@ -1,7 +1,7 @@
 <template>
 	<div :key="uid" class="container flexcolumn">
 		<overlay :opened="addWidgets" :visible="addWidgets" @closed="addWidgets = false" animate="zoom-in" :header="$t('dialogs.titles.addWidgets')">
-			<div v-for="(widgets, skillName) in widgetTemplates" :key="skillName">
+			<div v-for="(widgets, skillName) in $store.state.widgetTemplates" :key="skillName">
 				<div class="skillTemplate">{{ skillName }}</div>
 				<div class="widgetTemplate clickable" v-for="widget in widgets" @click="addWidget(skillName, widget)">
 					{{ widget }}
@@ -10,7 +10,7 @@
 		</overlay>
 		<actions-menu :menuItems="menuItems" v-if="$store.state.loggedInUser"/>
 		<tabs
-			:tabs="tabs"
+			:tabs="$store.state.widgetPages"
 			:activeTabId="activeTabId"
 			:addTab="addTab"
 			:removeTab="removeTab"

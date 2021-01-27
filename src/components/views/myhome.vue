@@ -34,7 +34,7 @@
 		<div v-if="locationsEditMode && toolsState.paintingFloors" class="tools sideTools paintFloors">
 			<img
 				alt="unknown"
-				v-for="imageId in floorTiles"
+				v-for="imageId in $store.state.floorTiles"
 				:key="imageId"
 				:class="{selected: imageId === activeFloorTile}"
 				:src="`http://${$store.state.settings['aliceIp']}:${$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/floors/${imageId}.png`"
@@ -44,7 +44,7 @@
 		</div>
 		<div v-if="locationsEditMode && toolsState.placingFurniture" class="tools sideTools placeFurniture">
 			<img
-				v-for="furnitureId in furnitureTiles"
+				v-for="furnitureId in $store.state.furnitureTiles"
 				:key="furnitureId"
 				:class="{selected: furnitureId === activeFurnitureTile}"
 				:src="`http://${$store.state.settings['aliceIp']}:${$store.state.settings['apiPort']}/api/v1.0.1/myHome/furniture/${furnitureId}.png`"
@@ -55,7 +55,7 @@
 		</div>
 		<div v-if="locationsEditMode && toolsState.placingConstructions" class="tools sideTools placeConstructions">
 			<img
-				v-for="conId in constructionTiles"
+				v-for="conId in $store.state.constructionTiles"
 				:key="conId"
 				:class="{selected: conId === activeConstructionTile}"
 				:src="`http://${$store.state.settings['aliceIp']}:${$store.state.settings['apiPort']}/api/v1.0.1/myHome/constructions/${conId}.png`"
@@ -108,13 +108,8 @@
 				</div>
 				<location
 					v-for="location in locations"
-					v-if="location.parentLocation === 0"
 					:key="location.id"
 					:data="location"
-					:locations="locations"
-					:furnitures="furnitures"
-					:constructions="constructions"
-					:devices="devices"
 					:myHome="me"
 				/>
 			</div>
