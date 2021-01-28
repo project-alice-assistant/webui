@@ -25,7 +25,7 @@ export default {
 		})
 
 		document.addEventListener('keyup', function (event) {
-			if (event.key === 'Enter') {
+			if (event.key === 'Enter' || event.key === 'Escape') {
 				if (self.$store.state.fullScreen) {
 					self.$store.commit('stopCinemaMode')
 				}
