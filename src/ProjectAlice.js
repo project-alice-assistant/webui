@@ -21,7 +21,7 @@ export default {
 		}
 
 		document.addEventListener('contextmenu', function (event) {
-			event.preventDefault()
+			//event.preventDefault()
 		})
 
 		document.addEventListener('keyup', function (event) {

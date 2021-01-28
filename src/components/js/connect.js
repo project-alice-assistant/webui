@@ -40,10 +40,11 @@ export default {
 								const lastVisitedPage = localStorage.getItem('showPage') || '/'
 								this.$router.replace('/syslog').then(function () {
 									self.$router.replace('/alicewatch').then(function () {
+										self.$store.commit('uiConnected', true)
+										self.$store.commit('setConnectVue', self)
 										if (lastVisitedPage !== '/alicewatch') {
 											self.$router.replace(lastVisitedPage).then()
 										}
-										self.$store.commit('uiConnected', true)
 									})
 								})
 							})
@@ -151,6 +152,44 @@ export default {
 		onMessage: function (msg) {
 			this.$store.commit('mqttMessage', msg)
 		},
+		loadWidgetTemplates: function () {
+			axios({
+				method: 'GET',
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/templates/`
+			}).then(response => {
+				if ('widgets' in response.data) {
+					this.$store.commit('setWidgetTemplates', response.data['widgets'])
+				} else {
+					console.error('Error fetching widget templates')
+				}
+			})
+		},
+		loadWidgetInstances: function () {
+			axios({
+				method: 'GET',
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/`,
+				headers: {'auth': this.$store.getters.apiToken}
+			}).then(response => {
+				if ('widgets' in response.data) {
+					this.$store.commit('setWidgetInstances', response.data['widgets'])
+				} else {
+					console.error('Error fetching widget instances')
+				}
+			})
+		},
+		loadDeviceTypes: function () {
+			axios({
+				method: 'GET',
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/deviceTypes/`,
+				headers: {'auth': this.$store.getters.apiToken}
+			}).then(response => {
+				if ('types' in response.data) {
+					this.$store.commit('setDeviceTypes', response.data['types'])
+				} else {
+					console.error('Error fetching device types')
+				}
+			})
+		},
 		loadData: function () {
 			let self = this
 			return new Promise(function (resolve) {
@@ -165,28 +204,9 @@ export default {
 						console.error('Error fetching widget pages')
 					}
 				}).then(_r => {
-					axios({
-						method: 'GET',
-						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/widgets/templates/`
-					}).then(response => {
-						if ('widgets' in response.data) {
-							self.$store.commit('setWidgetTemplates', response.data['widgets'])
-						} else {
-							console.error('Error fetching widget templates')
-						}
-					})
+					self.loadWidgetTemplates()
 				}).then(_r => {
-					axios({
-						method: 'GET',
-						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/widgets/`,
-						headers: {'auth': self.$store.getters.apiToken}
-					}).then(response => {
-						if ('widgets' in response.data) {
-							self.$store.commit('setWidgetInstances', response.data['widgets'])
-						} else {
-							console.error('Error fetching widget instances')
-						}
-					})
+					self.loadWidgetInstances()
 				}).then(_r => {
 					axios({
 						method: 'GET',
@@ -247,17 +267,7 @@ export default {
 						}
 					})
 				}).then(_r => {
-					axios({
-						method: 'GET',
-						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/deviceTypes/`,
-						headers: {'auth': self.$store.getters.apiToken}
-					}).then(response => {
-						if ('types' in response.data) {
-							self.$store.commit('setDeviceTypes', response.data['types'])
-						} else {
-							console.error('Error fetching device types')
-						}
-					})
+					self.loadDeviceTypes()
 				}).then(_r => {
 					axios({
 						method: 'GET',
@@ -274,11 +284,6 @@ export default {
 							console.error('Error fetching my home data')
 						}
 					})
-				}).then(_r => {
-				}).then(_r => {
-				}).then(_r => {
-				}).then(_r => {
-				}).then(_r => {
 				}).then(_r => {
 					resolve()
 				})

@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
 	state: {
+		connectVue: null,
 		settings: {},
 		settingTemplates: {},
 		settingCategories: {},
@@ -31,6 +32,9 @@ export default new Vuex.Store({
 		locations: {}
 	},
 	mutations: {
+		setConnectVue(state, data) {
+			state.connectVue = data
+		},
 		setFurnitureTiles(state, data) {
 			state.furnitureTiles = data
 		},
