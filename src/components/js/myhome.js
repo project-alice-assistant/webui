@@ -151,12 +151,10 @@ export default {
 		this.me = this
 		let self = this
 		this.setActiveTool('none')
+
 		document.addEventListener('keyup', function (event) {
-			if (event.key === 'Enter') {
-				if (self.$store.state.fullScreen) {
-					self.$store.commit('stopCinemaMode')
-				}
-			} else if (event.key === 'Escape') {
+			if (self.$route.path.toLowerCase() !== '/myhome') return
+			if (event.key === 'Escape') {
 				if (self.activeConstructionTile !== '' || self.activeFurnitureTile !== '' || self.activeFloorTile !== '' || self.activeDeviceTile !== '' || self.newConnectionLink) {
 					self.activeConstructionTile = ''
 					self.activeFurnitureTile = ''
@@ -175,6 +173,7 @@ export default {
 		})
 
 		document.addEventListener('wheel', function (event) {
+			if (self.$route.path.toLowerCase() !== '/myhome') return
 			if (event.deltaY > 1) {
 				self.zoomLevel = Math.max(self.zoomLevel - 0.05, 0.1)
 			} else {
@@ -185,7 +184,10 @@ export default {
 			self.refreshDeviceLinks()
 		})
 
-		document.addEventListener('contextmenu', function (_event) {
+
+		document.addEventListener('contextmenu', function () {
+			if (self.$route.path.toLowerCase() !== '/myhome') return
+
 			if (self.activeDeviceTile) {
 				self.activeDeviceTile = ''
 			} else if (self.activeConstructionTile) {
@@ -197,8 +199,10 @@ export default {
 			} else if (self.newConnectionLink) {
 				self.newConnectionLink.remove()
 				self.newConnectionLink = null
-			} else {
+			} else if (!self.toolsState.none) {
 				self.setActiveTool('none')
+			} else {
+				self.closeEditor()
 			}
 		})
 
@@ -246,6 +250,9 @@ export default {
 			this.floorPlanX = 0
 			this.floorPlanY = 0
 			this.zoomLevel = 1.0
+			localStorage.setItem('floorPlanX', 0)
+			localStorage.setItem('floorPlanY', 0)
+			localStorage.setItem('zoomLevel', self.zoomLevel)
 			this.refreshDeviceLinks()
 		},
 		checkDevicePerLocationLimit(deviceType, locationId) {

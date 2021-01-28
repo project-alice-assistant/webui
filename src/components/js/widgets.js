@@ -73,15 +73,6 @@ export default {
 		}
 	},
 	created: function() {
-		let self = this
-		document.addEventListener('keyup', function (event) {
-			if (event.key === 'Enter') {
-				if (self.$store.state.fullScreen) {
-					self.$store.commit('stopCinemaMode')
-				}
-			}
-		})
-
 		this.activeTabId = parseInt(localStorage.getItem('widgetsActiveTabId')) || 1
 		this.startWidgetsOnPage(this.activeTabId)
 	},
