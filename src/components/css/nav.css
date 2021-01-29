@@ -6,6 +6,7 @@ nav {
 	margin-right: 2px;
 	box-sizing: border-box;
 	padding: 0 2px 2px 2px;
+	z-index: 4999;
 }
 
 nav.collapsed {
