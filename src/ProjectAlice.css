@@ -175,6 +175,7 @@ header {
 	margin-bottom: 2px;
 	width: 100%;
 	overflow: hidden;
+	z-index: 4999;
 }
 
 #main {
