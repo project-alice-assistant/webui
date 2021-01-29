@@ -702,7 +702,7 @@ export default {
 			}
 		},
 		removeDeviceLinks(deviceId) {
-			for (const link of Object.values(this.deviceLinks)) {
+			for (const link of Object.values(this.$store.state.deviceLinks)) {
 				if (link.deviceId === deviceId) {
 					this.connectionLinks[link.id].remove()
 					delete this.connectionLinks[link.id]

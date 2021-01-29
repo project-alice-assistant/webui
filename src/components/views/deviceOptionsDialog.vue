@@ -26,20 +26,20 @@
 					/>
 				</div>
 				<div v-for="(template, configName) in myConfigTemplates" :key="configName" class="input">
-					<configInput :configName="configName" :holder="parent.myHome.devices[parent.data['id']].deviceConfigs" :template="template"/>
+					<configInput :configName="configName" :holder="$data.parent.$store.state.devices[parent.data['id']].deviceConfigs" :template="template"/>
 				</div>
 			</div>
 		</div>
 		<h4 v-if="parent.myLinks.length > 0">{{ parent.$t('dialogs.titles.deviceLinksSettings') }}</h4>
 		<div v-for="(link, linkId) in parent.myLinks" :key="linkId">
-			<h5>{{ parent.$t('dialogs.titles.linkTo') }}: {{ parent.myHome.locations[parent.myHome.deviceLinks[linkId].targetLocation].name }}</h5>
+			<h5>{{ parent.$t('dialogs.titles.linkTo') }}: {{ $data.parent.$store.state.locations[$data.parent.$store.state.deviceLinks[linkId].targetLocation].name }}</h5>
 			<div class="configLayout">
 				<div class="labels">
 					<label v-for="(template, configName) in myLinkConfigTemplate" :key="configName" v-tooltip="template.description" :for="configName">{{ configName }}</label>
 				</div>
 				<div class="inputs">
 					<div v-for="(template, configName) in myLinkConfigTemplate" :key="configName" class="input">
-						<configInput :configName="configName" :holder="parent.myHome.deviceLinks[linkId].configs" :template="template"/>
+						<configInput :configName="configName" :holder="$data.parent.$store.state.deviceLinks[linkId].configs" :template="template"/>
 					</div>
 				</div>
 			</div>
@@ -73,23 +73,23 @@ export default {
 		},
 		configValue() {
 			return (configName) => {
-				return this.parent.myHome.devices[this.parent.data['id']].deviceConfigs[configName] || ''
+				return this.data.deviceConfigs[configName] || ''
 			}
 		},
 		displayName: {
 			get: function () {
-				return this.parent.myHome.devices[this.parent.data['id']].deviceConfigs['displayName']
+				return this.data.deviceConfigs['displayName']
 			},
 			set: function (value) {
-				return this.parent.myHome.devices[this.parent.data['id']].deviceConfigs['displayName'] = value
+				return this.$data.parent.$store.state.devices[this.parent.data['id']].deviceConfigs['displayName'] = value
 			}
 		},
 		heartbeatRate: {
 			get: function () {
-				return this.parent.myHome.devices[this.parent.data['id']].deviceConfigs['heartbeatRate']
+				return this.data.deviceConfigs['heartbeatRate']
 			},
 			set: function (value) {
-				return this.parent.myHome.devices[this.parent.data['id']].deviceConfigs['heartbeatRate'] = value
+				return this.$data.parent.$store.state.devices[this.parent.data['id']].deviceConfigs['heartbeatRate'] = value
 			}
 		}
 	},
