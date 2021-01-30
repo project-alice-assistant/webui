@@ -24,7 +24,7 @@ export default {
 			this.$store.commit('setSkillTourCompleted')
 		}
 
-		this.doConnect().then('Project Alice Web Interface connected and ready')
+		this.doConnect().then(console.log('Project Alice Web Interface connected and ready'))
 	},
 	methods: {
 		async doConnect() {
