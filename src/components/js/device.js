@@ -52,8 +52,7 @@ export default {
 					}
 				} else if (msg.topic === C.DEVICE_UPDATED_TOPIC) {
 					this.$set(self.$store.state.devices[self.data.id], payload['device'])
-					this.timestamp = Date.now()
-					this.$forceUpdate()
+					this.$set(this.timestamp, Date.now())
 				}
 			}
 		)
