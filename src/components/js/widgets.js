@@ -66,15 +66,20 @@ export default {
 		}
 	},
 	computed: {
-		'activePageWidgets': function() {
+		'activePageWidgets': function () {
 			return Object.values(this.$store.state.widgetInstances).filter(widget => {
 				return widget['page'] === this.activeTabId
 			})
 		}
 	},
-	created: function() {
+	created: function () {
 		this.activeTabId = parseInt(localStorage.getItem('widgetsActiveTabId')) || 1
-		this.startWidgetsOnPage(this.activeTabId)
+	},
+	mounted: function () {
+		const self = this
+		setTimeout(function () {
+			self.startWidgetsOnPage(this.activeTabId)
+		}, 500)
 	},
 	activated: function () {
 		this.uid = uuidv4()

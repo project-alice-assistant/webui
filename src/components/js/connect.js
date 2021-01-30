@@ -24,44 +24,40 @@ export default {
 			this.$store.commit('setSkillTourCompleted')
 		}
 
-		this.doConnect()
+		this.doConnect().then('Project Alice Web Interface connected and ready')
 	},
 	methods: {
-		doConnect() {
+		async doConnect() {
 			this.connecting = true
 			let self = this
-			this.connect().then(() => {
-				this.connectMQTT().then(() => {
-					this.loadI18n().then(() => {
-						this.validateToken().then(() => {
-							// Load all the data we need throughout the project
-							this.loadData().then(() => {
-								// Start these pages so that they start logging stuff
-								const lastVisitedPage = localStorage.getItem('showPage') || '/'
-								this.$router.replace('/syslog').then(function () {
-									self.$router.replace('/alicewatch').then(function () {
-										self.$store.commit('uiConnected', true)
-										self.$store.commit('setConnectVue', self)
-										if (lastVisitedPage !== '/alicewatch') {
-											self.$router.replace(lastVisitedPage).then()
-										}
-									})
-								})
-							})
+			Promise.all([
+				self.connect(),
+				self.connectMQTT(),
+				self.loadI18n(),
+				self.validateToken()
+			]).then(() => {
+				self.loadData().then(() => {
+					// Start these pages so that they start logging stuff
+					const lastVisitedPage = localStorage.getItem('showPage') || '/'
+					self.$router.replace('/syslog').then(function () {
+						self.$router.replace('/alicewatch').then(function () {
+							self.$store.commit('uiConnected', true)
+							self.$store.commit('setConnectVue', self)
+							if (lastVisitedPage !== '/alicewatch') {
+								self.$router.replace(lastVisitedPage).then()
+							}
 						})
-					}).catch(reason => {
-						console.error(reason)
 					})
 				}).catch(reason => {
 					console.error(reason)
 				})
 			}).catch(reason => {
-				console.error(reason)
+				reject(Error('Failed connecting: ' + reason))
 			}).finally(() => self.connecting = false)
 		},
-		connect() {
+		async connect() {
 			let self = this
-			return new Promise(function(resolve, reject) {
+			return new Promise(function (resolve, reject) {
 				axios({
 					method: 'GET',
 					url: `http://${self.ip}:${self.port}/api/v1.0.1/utils/config/`,
@@ -86,7 +82,7 @@ export default {
 		},
 		connectMQTT() {
 			let self = this
-			return new Promise(function(resolve, reject) {
+			return new Promise(function (resolve, reject) {
 				axios.get(`http://${self.ip}:${self.port}/api/v1.0.1/utils/mqttConfig/`)
 					.then(response => {
 						let randomNum = Math.floor((Math.random() * 10000000) + 1);
@@ -127,7 +123,10 @@ export default {
 							localStorage.removeItem('username')
 							localStorage.removeItem('apiToken')
 						}
-					}).finally(() => resolve())
+						resolve()
+					}).catch(reason => {
+						reject(Error('Failed validating token: ' + reason))
+					})
 				} else {
 					resolve()
 				}
@@ -135,64 +134,80 @@ export default {
 		},
 		loadI18n() {
 			let self = this
-			return new Promise(function(resolve, reject) {
-				axios.get(`http://${self.ip}:${self.port}/api/v1.0.1/utils/i18n/`)
-					.then(response => {
-						for (const [lang, data] of Object.entries(response.data['data'])) {
-							self.$i18n.setLocaleMessage(lang, data)
-						}
-						self.$i18n.locale = self.$store.state.settings['activeLanguage']
-						resolve()
-					})
-					.catch(reason => {
-						reject(Error('Failed loading i18n: ' + reason))
-					})
+			return new Promise(function (resolve, reject) {
+				axios({
+					method: 'GET',
+					url: `http://${self.ip}:${self.port}/api/v1.0.1/utils/i18n/`
+				}).then(response => {
+					for (const [lang, data] of Object.entries(response.data['data'])) {
+						self.$i18n.setLocaleMessage(lang, data)
+					}
+					self.$i18n.locale = self.$store.state.settings['activeLanguage']
+					resolve()
+				}).catch(reason => {
+					reject(Error('Failed loading i18n: ' + reason))
+				})
 			})
 		},
-		onMessage: function (msg) {
-			this.$store.commit('mqttMessage', msg)
-		},
 		loadWidgetTemplates: function () {
-			axios({
-				method: 'GET',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/templates/`
-			}).then(response => {
-				if ('widgets' in response.data) {
-					this.$store.commit('setWidgetTemplates', response.data['widgets'])
-				} else {
-					console.error('Error fetching widget templates')
-				}
+			const self = this
+			return new Promise(function (resolve, reject) {
+				axios({
+					method: 'GET',
+					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/widgets/templates/`
+				}).then(response => {
+					if ('widgets' in response.data) {
+						self.$store.commit('setWidgetTemplates', response.data['widgets'])
+						resolve()
+					} else {
+						reject(Error('Error fetching widget templates'))
+					}
+				}).catch(reason => {
+					reject(Error('Failed loading widget templates: ' + reason))
+				})
 			})
 		},
 		loadWidgetInstances: function () {
-			axios({
-				method: 'GET',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/`,
-				headers: {'auth': this.$store.getters.apiToken}
-			}).then(response => {
-				if ('widgets' in response.data) {
-					this.$store.commit('setWidgetInstances', response.data['widgets'])
-				} else {
-					console.error('Error fetching widget instances')
-				}
+			const self = this
+			return new Promise(function (resolve, reject) {
+				axios({
+					method: 'GET',
+					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/widgets/`,
+					headers: {'auth': self.$store.getters.apiToken}
+				}).then(response => {
+					if ('widgets' in response.data) {
+						self.$store.commit('setWidgetInstances', response.data['widgets'])
+						resolve()
+					} else {
+						reject(Error('Error fetching widget instances'))
+					}
+				}).catch(reason => {
+					reject(Error('Failed loading widget instances: ' + reason))
+				})
 			})
 		},
 		loadDeviceTypes: function () {
-			axios({
-				method: 'GET',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/deviceTypes/`,
-				headers: {'auth': this.$store.getters.apiToken}
-			}).then(response => {
-				if ('types' in response.data) {
-					this.$store.commit('setDeviceTypes', response.data['types'])
-				} else {
-					console.error('Error fetching device types')
-				}
+			const self = this
+			return new Promise(function (resolve, reject) {
+				axios({
+					method: 'GET',
+					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/deviceTypes/`,
+					headers: {'auth': self.$store.getters.apiToken}
+				}).then(response => {
+					if ('types' in response.data) {
+						self.$store.commit('setDeviceTypes', response.data['types'])
+						resolve()
+					} else {
+						reject(Error('Error fetching device types'))
+					}
+				}).catch(reason => {
+					reject(Error('Failed loading device types: ' + reason))
+				})
 			})
 		},
-		loadData: function () {
-			let self = this
-			return new Promise(function (resolve) {
+		loadWidgetPages: function () {
+			const self = this
+			return new Promise(function (resolve, reject) {
 				axios({
 					method: 'GET',
 					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/widgets/pages/`,
@@ -200,92 +215,150 @@ export default {
 				}).then(response => {
 					if ('pages' in response.data) {
 						self.$store.commit('setWidgetPages', response.data['pages'])
+						resolve()
 					} else {
-						console.error('Error fetching widget pages')
+						reject(Error('Error fetching widget pages'))
 					}
-				}).then(_r => {
-					self.loadWidgetTemplates()
-				}).then(_r => {
-					self.loadWidgetInstances()
-				}).then(_r => {
-					axios({
-						method: 'GET',
-						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/skills/`,
-						headers: {'auth': self.$store.getters.apiToken}
-					}).then(response => {
-						if ('skills' in response.data) {
-							self.$store.commit('setInstalledSkills', response.data['skills'])
-						} else {
-							console.error('Error fetching skills')
-						}
-					})
-				}).then(_r => {
-					axios({
-						method: 'GET',
-						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/skills/getStore/`
-					}).then(response => {
-						if ('store' in response.data) {
-							self.$store.commit('setStoreSkills', response.data['store'])
-						} else {
-							console.error('Error fetching store skills')
-						}
-					})
-				}).then(_r => {
-					axios({
-						method: 'GET',
-						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/floors/`,
-						headers: {'auth': self.$store.getters.apiToken}
-					}).then(response => {
-						if ('data' in response.data) {
-							self.$store.commit('setFloorTiles', response.data['data'])
-						} else {
-							console.error('Error fetching floor tiles')
-						}
-					})
-				}).then(_r => {
-					axios({
-						method: 'GET',
-						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/furniture/tiles/`,
-						headers: {'auth': self.$store.getters.apiToken}
-					}).then(response => {
-						if ('data' in response.data) {
-							self.$store.commit('setFurnitureTiles', response.data['data'])
-						} else {
-							console.error('Error fetching furniture tiles')
-						}
-					})
-				}).then(_r => {
-					axios({
-						method: 'GET',
-						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/constructions/tiles/`,
-						headers: {'auth': self.$store.getters.apiToken}
-					}).then(response => {
-						if ('data' in response.data) {
-							self.$store.commit('setConstructionTiles', response.data['data'])
-						} else {
-							console.error('Error fetching construction tiles')
-						}
-					})
-				}).then(_r => {
-					self.loadDeviceTypes()
-				}).then(_r => {
-					axios({
-						method: 'GET',
-						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/`,
-						headers: {'auth': self.$store.getters.apiToken}
-					}).then(response => {
-						if ('data' in response.data) {
-							self.$store.commit('setLocations', response.data['data']['locations'])
-							self.$store.commit('setConstructions', response.data['data']['constructions'])
-							self.$store.commit('setFurnitures', response.data['data']['furnitures'])
-							self.$store.commit('setDeviceLinks', response.data['data']['links'])
-							self.$store.commit('setDevices', response.data['data']['devices'])
-						} else {
-							console.error('Error fetching my home data')
-						}
-					})
-				}).then(_r => {
+				}).catch(reason => {
+					reject(Error('Failed loading widget pages: ' + reason))
+				})
+			})
+		},
+		loadInstalledSkills: function () {
+			const self = this
+			return new Promise(function (resolve, reject) {
+				axios({
+					method: 'GET',
+					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/skills/`,
+					headers: {'auth': self.$store.getters.apiToken}
+				}).then(response => {
+					if ('skills' in response.data) {
+						self.$store.commit('setInstalledSkills', response.data['skills'])
+						resolve()
+					} else {
+						reject(Error('Error fetching skills'))
+					}
+				}).catch(reason => {
+					reject(Error('Failed loading installed skills: ' + reason))
+				})
+			})
+		},
+		loadStore: function () {
+			const self = this
+			return new Promise(function (resolve, reject) {
+				axios({
+					method: 'GET',
+					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/skills/getStore/`
+				}).then(response => {
+					if ('store' in response.data) {
+						self.$store.commit('setStoreSkills', response.data['store'])
+						resolve()
+					} else {
+						reject(Error('Error fetching store skills'))
+					}
+				}).catch(reason => {
+					reject(Error('Failed loading store: ' + reason))
+				})
+			})
+		},
+		loadFloorTiles: function () {
+			const self = this
+			return new Promise(function (resolve, reject) {
+				axios({
+					method: 'GET',
+					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/floors/`,
+					headers: {'auth': self.$store.getters.apiToken}
+				}).then(response => {
+					if ('data' in response.data) {
+						self.$store.commit('setFloorTiles', response.data['data'])
+						resolve()
+					} else {
+						reject(Error('Error fetching floor tiles'))
+					}
+				}).catch(reason => {
+					reject(Error('Failed loading floor tiles: ' + reason))
+				})
+			})
+		},
+		loadConstructionTiles: function () {
+			const self = this
+			return new Promise(function (resolve, reject) {
+				axios({
+					method: 'GET',
+					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/constructions/tiles/`,
+					headers: {'auth': self.$store.getters.apiToken}
+				}).then(response => {
+					if ('data' in response.data) {
+						self.$store.commit('setConstructionTiles', response.data['data'])
+						resolve()
+					} else {
+						reject(Error('Error fetching construction tiles'))
+					}
+				}).catch(reason => {
+					reject(Error('Failed loading construction tiles: ' + reason))
+				})
+			})
+		},
+		loadFurnitureTiles: function () {
+			const self = this
+			return new Promise(function (resolve, reject) {
+				axios({
+					method: 'GET',
+					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/furniture/tiles/`,
+					headers: {'auth': self.$store.getters.apiToken}
+				}).then(response => {
+					if ('data' in response.data) {
+						self.$store.commit('setFurnitureTiles', response.data['data'])
+						resolve()
+					} else {
+						reject(Error('Error fetching furniture tiles'))
+					}
+				}).catch(reason => {
+					reject(Error('Failed loading furniture tiles: ' + reason))
+				})
+			})
+		},
+		loadMyHome: function () {
+			const self = this
+			return new Promise(function (resolve, reject) {
+				axios({
+					method: 'GET',
+					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/`,
+					headers: {'auth': self.$store.getters.apiToken}
+				}).then(response => {
+					if ('data' in response.data) {
+						self.$store.commit('setLocations', response.data['data']['locations'])
+						self.$store.commit('setConstructions', response.data['data']['constructions'])
+						self.$store.commit('setFurnitures', response.data['data']['furnitures'])
+						self.$store.commit('setDeviceLinks', response.data['data']['links'])
+						self.$store.commit('setDevices', response.data['data']['devices'])
+						resolve()
+					} else {
+						reject(Error('Error fetching my home data'))
+					}
+				}).catch(reason => {
+					reject(Error('Failed loading myHome data: ' + reason))
+				})
+			})
+		},
+		loadData: function () {
+			const self = this
+			return new Promise(function (resolve, reject) {
+				Promise.all([
+					self.loadWidgetPages(),
+					self.loadDeviceTypes(),
+					self.loadWidgetTemplates(),
+					self.loadWidgetInstances(),
+					self.loadInstalledSkills(),
+					self.loadStore(),
+					self.loadFloorTiles(),
+					self.loadConstructionTiles(),
+					self.loadFurnitureTiles(),
+					self.loadMyHome()
+				]).then(() => {
 					resolve()
+				}).catch(reason => {
+					reject(Error('Failed loading data: ' + reason))
 				})
 			})
 		},
@@ -315,6 +388,9 @@ export default {
 		},
 		onConnectionLost: function () {
 			console.log('Mqtt connection lost')
+		},
+		onMessage: function (msg) {
+			this.$store.commit('mqttMessage', msg)
 		}
 	}
 }
