@@ -10,7 +10,8 @@ export default {
 			targetParentLocation: 0,
 			checkHeartbeat: null,
 			myLinks: {},
-			hovered: false
+			hovered: false,
+			timestamp: Date.now()
 		}
 	},
 	props: [
@@ -51,6 +52,7 @@ export default {
 					}
 				} else if (msg.topic === C.DEVICE_UPDATED_TOPIC) {
 					this.$set(self.$store.state.devices[self.data.id], payload['device'])
+					this.timestamp = Date.now()
 				}
 			}
 		)
@@ -60,6 +62,9 @@ export default {
 		this.$store.state.mqtt.unsubscribe(C.DEVICE_HEARTBEAT_TOPIC)
 		this.$store.state.mqtt.unsubscribe(C.DEVICE_UPDATED_TOPIC)
 		this.unwatch()
+	},
+	activated: function () {
+		this.timestamp = Date.now()
 	},
 	methods: {
 		openSettings: function () {
