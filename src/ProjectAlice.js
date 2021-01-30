@@ -20,9 +20,11 @@ export default {
 			this.$store.commit('startMinimized')
 		}
 
-		document.addEventListener('contextmenu', function (event) {
-			//event.preventDefault()
-		})
+		if (process.env.NODE_ENV === 'production') {
+			document.addEventListener('contextmenu', function (event) {
+				event.preventDefault()
+			})
+		}
 
 		document.addEventListener('keyup', function (event) {
 			if (event.key === 'Enter' || event.key === 'Escape') {
