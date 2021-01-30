@@ -400,6 +400,9 @@ export default {
 		},
 		cinemaMode: function () {
 			this.$store.commit('toggleCinemaMode')
+			if (this.$store.state.fullScreen) {
+				this.showInfo(this.$t('notifications.info.theaterModeExplain'))
+			}
 		},
 		setLocationsEditMode: function () {
 			this.locationsEditMode = true
