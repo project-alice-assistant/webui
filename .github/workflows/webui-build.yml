@@ -18,10 +18,10 @@ jobs:
           npm test
       - name: 🔧 Inject slug/short variables
         uses: rlespinasse/github-slug-action@v3.x
-      - name: 🚀 Deploying on builds_$env:GITHUB_REF_SLUG
+      - name: 🚀 Deploying on 'builds_${{ env.GITHUB_REF_SLUG }}'
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
           GITHUB_TOKEN: ${{ secrets.COVERSALL_REPO_TOKEN }}
-          BRANCH: builds_$env:GITHUB_REF_SLUG
+          BRANCH: 'builds_${{ env.GITHUB_REF_SLUG }}'
           FOLDER: dist
           CLEAN: true
