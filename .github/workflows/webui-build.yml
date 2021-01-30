@@ -16,7 +16,7 @@ jobs:
       - name: 🔧 Install, build and test
         run: |
           npm install
-          npm run build --mode production
+          npm run build
           npm test
       - name: 🚀 Deploying on 'builds_${{ env.GITHUB_REF_SLUG }}'
         uses: JamesIves/github-pages-deploy-action@3.7.1
