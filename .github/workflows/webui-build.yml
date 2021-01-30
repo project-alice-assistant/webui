@@ -1,26 +1,25 @@
 name: WebUI build
 
 on:
-  push:
-    branches: [ master ]
+  push
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout 🛎️
+      - name: 🛎️ Checkout
         uses: actions/checkout@v2
-      - name: Setup node 🔧
+      - name: 🔧 Setup node
         uses: actions/setup-node@master
-      - name: Install, build and test 🔧
+      - name: 🔧 Install, build and test
         run: |
           npm install
           npm run build
           npm test
-      - name: Deploy 🚀
+      - name: 🚀 Deploying on builds_${GITHUB_REF##*/}
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
           GITHUB_TOKEN: ${{ secrets.COVERSALL_REPO_TOKEN }}
-          BRANCH: builds
+          BRANCH: builds_${GITHUB_REF##*/}
           FOLDER: dist
           CLEAN: true
