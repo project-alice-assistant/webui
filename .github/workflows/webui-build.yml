@@ -14,9 +14,9 @@ jobs:
         uses: actions/setup-node@master
       - name: Install, build and test 🔧
         run: |
-          run: npm install
-          run: npm run build
-          run: npm test
+          npm install
+          npm run build
+          npm test
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
