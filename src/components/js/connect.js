@@ -55,7 +55,7 @@ export default {
 				reject(Error('Failed connecting: ' + reason))
 			}).finally(() => self.connecting = false)
 		},
-		async connect() {
+		connect() {
 			let self = this
 			return new Promise(function (resolve, reject) {
 				axios({
