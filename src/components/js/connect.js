@@ -31,9 +31,9 @@ export default {
 			this.connecting = true
 			let self = this
 			Promise.all([
+				self.loadI18n(),
 				self.connect(),
 				self.connectMQTT(),
-				self.loadI18n(),
 				self.validateToken()
 			]).then(() => {
 				self.loadData().then(() => {
@@ -173,7 +173,6 @@ export default {
 				axios({
 					method: 'GET',
 					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/widgets/`,
-					headers: {'auth': self.$store.getters.apiToken}
 				}).then(response => {
 					if ('widgets' in response.data) {
 						self.$store.commit('setWidgetInstances', response.data['widgets'])
@@ -192,7 +191,6 @@ export default {
 				axios({
 					method: 'GET',
 					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/deviceTypes/`,
-					headers: {'auth': self.$store.getters.apiToken}
 				}).then(response => {
 					if ('types' in response.data) {
 						self.$store.commit('setDeviceTypes', response.data['types'])
@@ -211,7 +209,6 @@ export default {
 				axios({
 					method: 'GET',
 					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/widgets/pages/`,
-					headers: {'auth': self.$store.getters.apiToken}
 				}).then(response => {
 					if ('pages' in response.data) {
 						self.$store.commit('setWidgetPages', response.data['pages'])
@@ -230,7 +227,6 @@ export default {
 				axios({
 					method: 'GET',
 					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/skills/`,
-					headers: {'auth': self.$store.getters.apiToken}
 				}).then(response => {
 					if ('skills' in response.data) {
 						self.$store.commit('setInstalledSkills', response.data['skills'])
@@ -267,7 +263,6 @@ export default {
 				axios({
 					method: 'GET',
 					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/floors/`,
-					headers: {'auth': self.$store.getters.apiToken}
 				}).then(response => {
 					if ('data' in response.data) {
 						self.$store.commit('setFloorTiles', response.data['data'])
@@ -286,7 +281,6 @@ export default {
 				axios({
 					method: 'GET',
 					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/constructions/tiles/`,
-					headers: {'auth': self.$store.getters.apiToken}
 				}).then(response => {
 					if ('data' in response.data) {
 						self.$store.commit('setConstructionTiles', response.data['data'])
@@ -305,7 +299,6 @@ export default {
 				axios({
 					method: 'GET',
 					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/furniture/tiles/`,
-					headers: {'auth': self.$store.getters.apiToken}
 				}).then(response => {
 					if ('data' in response.data) {
 						self.$store.commit('setFurnitureTiles', response.data['data'])
@@ -323,8 +316,7 @@ export default {
 			return new Promise(function (resolve, reject) {
 				axios({
 					method: 'GET',
-					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/`,
-					headers: {'auth': self.$store.getters.apiToken}
+					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/`
 				}).then(response => {
 					if ('data' in response.data) {
 						self.$store.commit('setLocations', response.data['data']['locations'])
