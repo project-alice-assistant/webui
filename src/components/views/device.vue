@@ -3,7 +3,6 @@
 		:id="`dev_${data.id}`"
 		:ref="`dev_${data.id}`"
 		:style="computeCustomStyle()"
-		:key="deviceRefreshUid"
 		v-tooltip="data.deviceConfigs.displayName"
 		class="device clickable"
 		@click="handleClick"

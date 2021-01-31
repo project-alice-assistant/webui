@@ -11,8 +11,7 @@ export default {
 			targetParentLocation: 0,
 			checkHeartbeat: null,
 			myLinks: {},
-			hovered: false,
-			deviceRefreshUid: uuidv4()
+			hovered: false
 		}
 	},
 	props: [
@@ -53,7 +52,6 @@ export default {
 					}
 				} else if (msg.topic === C.DEVICE_UPDATED_TOPIC) {
 					self.$set(self.$store.state.devices, payload['device']['id'], payload['device'])
-					self.deviceRefreshUid = uuidv4()
 				}
 			}
 		)
@@ -81,7 +79,7 @@ export default {
 		computeCustomStyle: function () {
 			return this.myHome.moveableItem.computeMyHomeCustomStyle(
 				this.data,
-				`background: url('http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/${this.data.id}/device.png') no-repeat; background-size: 100% 100%;`
+				`background-image: url('http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/${this.data.id}/${uuidv4()}/device.png'); background-position: center center; background-size: contain; background-repeat: no-repeat;`
 			)
 		},
 		save: function () {
