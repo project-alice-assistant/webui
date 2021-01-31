@@ -31,11 +31,11 @@ export default {
 			this.connecting = true
 			let self = this
 			Promise.all([
-				self.loadI18n(),
 				self.connect(),
 				self.connectMQTT(),
 				self.validateToken()
 			]).then(() => {
+				self.loadI18n()
 				self.loadData().then(() => {
 					// Start these pages so that they start logging stuff
 					const lastVisitedPage = localStorage.getItem('showPage') || '/'
@@ -139,10 +139,10 @@ export default {
 					method: 'GET',
 					url: `http://${self.ip}:${self.port}/api/v1.0.1/utils/i18n/`
 				}).then(response => {
+					self.$i18n.locale = self.$store.state.settings['activeLanguage']
 					for (const [lang, data] of Object.entries(response.data['data'])) {
 						self.$i18n.setLocaleMessage(lang, data)
 					}
-					self.$i18n.locale = self.$store.state.settings['activeLanguage']
 					resolve()
 				}).catch(reason => {
 					reject(Error('Failed loading i18n: ' + reason))
