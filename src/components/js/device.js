@@ -52,7 +52,7 @@ export default {
 						clearTimeout(self.checkHeartbeat)
 					}
 				} else if (msg.topic === C.DEVICE_UPDATED_TOPIC) {
-					self.$store.commit('setDevice', payload['device'])
+					self.$set(self.$store.state.devices, payload['device']['id'], payload['device'])
 					self.deviceRefreshUid = uuidv4()
 				}
 			}
