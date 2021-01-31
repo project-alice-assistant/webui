@@ -1,5 +1,6 @@
 import axios from 'axios'
 import * as C from '@/utils/constants'
+import {v4 as uuidv4} from 'uuid'
 
 // noinspection DuplicatedCode
 export default {
@@ -11,7 +12,7 @@ export default {
 			checkHeartbeat: null,
 			myLinks: {},
 			hovered: false,
-			timestamp: Date.now()
+			deviceRefreshUid: uuidv4()
 		}
 	},
 	props: [
@@ -51,8 +52,8 @@ export default {
 						clearTimeout(self.checkHeartbeat)
 					}
 				} else if (msg.topic === C.DEVICE_UPDATED_TOPIC) {
-					this.$set(self.$store.state.devices[self.data.id], payload['device'])
-					this.$set(this.timestamp, Date.now())
+					self.$store.commit('setDevice', payload['device'])
+					self.deviceRefreshUid = uuidv4()
 				}
 			}
 		)
@@ -62,9 +63,6 @@ export default {
 		this.$store.state.mqtt.unsubscribe(C.DEVICE_HEARTBEAT_TOPIC)
 		this.$store.state.mqtt.unsubscribe(C.DEVICE_UPDATED_TOPIC)
 		this.unwatch()
-	},
-	activated: function () {
-		this.timestamp = Date.now()
 	},
 	methods: {
 		openSettings: function () {
@@ -146,7 +144,7 @@ export default {
 					headers: {'auth': this.$store.getters.apiToken}
 				}).then(response => {
 					if ('success' in response.data) {
-						if (!response.data.success) {
+						if (!response.data.success || !'ret' in response.data) {
 							this.showError(this.$t('notifications.errors.somethingWentWrong'))
 							console.error(response.data.message)
 						} else {

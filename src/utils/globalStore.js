@@ -50,6 +50,9 @@ export default new Vuex.Store({
 		setDevices(state, data) {
 			state.devices = data
 		},
+		setDevice(state, data) {
+			state.devices[data.id] = data
+		},
 		setDeviceLinks(state, data) {
 			state.deviceLinks = data
 		},

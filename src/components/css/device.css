@@ -1,8 +1,11 @@
 .device {
+	align-content: center;
 	align-items: center;
 	box-sizing: border-box;
 	display: flex;
 	justify-content: center;
+	justify-items: center;
+	overflow-x: visible;
 	position: absolute;
 }
 
@@ -11,12 +14,23 @@
 }
 
 .deviceState {
+	align-content: center;
+	display: flex;
+	flex-direction: row;
 	font-size: 1.5em;
+	justify-content: center;
 	left: 0;
+	margin-left: -100%;
+	overflow: hidden;
+	pointer-events: none;
 	position: absolute;
 	text-shadow: 2px 2px 15px var(--accent);
-	top: -1em;
-	width: auto;
+	top: -1.5em;
+	width: 6em;
+}
+
+.deviceState > span > i {
+	margin: 5px;
 }
 
 .deviceTool {
