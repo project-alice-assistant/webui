@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import PortalVue from 'portal-vue'
 import skills from '@/components/views/skills'
 import scenarios from '@/components/views/scenarios'
 import login from '@/components/views/login'
@@ -14,6 +15,7 @@ import widgets from '@/components/views/widgets'
 import telemetry from '@/components/views/telemetry'
 
 Vue.use(VueRouter)
+Vue.use(PortalVue)
 
 const routes = [
 	{
