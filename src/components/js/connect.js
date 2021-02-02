@@ -17,7 +17,7 @@ export default {
 		if (this.remember === 'true') this.remember = true
 		if (this.remember === 'false') this.remember = false
 
-		this.ip = localStorage.getItem('host') || '127.0.0.1'
+		this.ip = localStorage.getItem('host') || window.location.hostname || '127.0.0.1'
 		this.port = localStorage.getItem('apiPort') || 5001
 
 		if (localStorage.getItem('skillsTourCompleted')) {
