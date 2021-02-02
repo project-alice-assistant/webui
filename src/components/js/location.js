@@ -353,18 +353,18 @@ export default {
 				const deviceType = this.myHome.getDeviceType(device)
 
 				if (!deviceType.allowLocationLinks) {
-					if (showError) this.showError(this.$t('notifications.successes.cannotLinkDevice'))
+					if (showError) this.showError(this.$t('notifications.errors.cannotLinkDevice'))
 					return false
 				}
 
 				for (const link of Object.values(this.$store.state.deviceLinks)) {
 					if (link.deviceId === device.data.id && link.targetLocation === this.data.id) {
-						if (showError) this.showError(this.$t('notifications.successes.deviceAlreadyLinkedToLocation'))
+						if (showError) this.showError(this.$t('notifications.errors.deviceAlreadyLinkedToLocation'))
 						return false
 					}
 				}
 			} catch {
-				if (showError) this.showError(this.$t('notifications.successes.unexpectedServerError'))
+				if (showError) this.showError(this.$t('notifications.errors.unexpectedServerError'))
 				return false
 			}
 			return true

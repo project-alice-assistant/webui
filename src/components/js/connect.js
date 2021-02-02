@@ -227,6 +227,7 @@ export default {
 				axios({
 					method: 'GET',
 					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/skills/`,
+					headers: {'auth': localStorage.getItem('apiToken')}
 				}).then(response => {
 					if ('skills' in response.data) {
 						self.$store.commit('setInstalledSkills', response.data['skills'])
@@ -316,7 +317,8 @@ export default {
 			return new Promise(function (resolve, reject) {
 				axios({
 					method: 'GET',
-					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/`
+					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/`,
+					headers: {'auth': localStorage.getItem('apiToken')}
 				}).then(response => {
 					if ('data' in response.data) {
 						self.$store.commit('setLocations', response.data['data']['locations'])
