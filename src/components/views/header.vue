@@ -13,9 +13,9 @@
 		<div class="channelInfo">
 			{{ $store.state.settings['aliceUpdateChannel'] }}
 		</div>
-		<div class="updateChannelMarker"></div>
+		<div class="updateChannelMarker"/>
 	</header>
 </template>
 
-<style src="../css/header.css" scoped></style>
-<script src="../js/header.js"></script>
+<style scoped src="../css/header.css"/>
+<script src="../js/header.js"/>

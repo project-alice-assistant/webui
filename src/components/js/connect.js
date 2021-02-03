@@ -66,6 +66,7 @@ export default {
 					self.$store.commit('setSettings', response.data.config)
 					self.$store.commit('setSettingTemplates', response.data.templates)
 					self.$store.commit('setSettingCategories', response.data.categories)
+					window.sessionStorage.setItem('aliceSettings', JSON.stringify(response.data.config))
 					if (self.remember) {
 						localStorage.setItem('host', self.ip)
 						localStorage.setItem('apiPort', self.port)

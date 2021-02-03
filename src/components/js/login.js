@@ -39,6 +39,7 @@ export default {
 						this.$store.commit('setSettings', response.data.config)
 						this.$store.commit('setSettingTemplates', response.data.templates)
 						this.$store.commit('setSettingCategories', response.data.categories)
+						window.sessionStorage.setItem('aliceSettings', JSON.stringify(response.data.config))
 					})
 
 					this.$router.replace('/').then()
