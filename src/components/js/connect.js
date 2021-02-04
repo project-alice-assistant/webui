@@ -55,6 +55,19 @@ export default {
 				reject(Error('Failed connecting: ' + reason))
 			}).finally(() => self.connecting = false)
 		},
+		storeSessionSettings: function () {
+			window.sessionStorage.setItem('aliceSettings', JSON.stringify({
+				'mqttHost': this.$store.state.settings['mqttHost'],
+				'activeCountryCode': this.$store.state.settings['activeCountryCode'],
+				'activeLanguage': this.$store.state.settings['activeLanguage'],
+				'apiPort': this.$store.state.settings['activeCountryCode'],
+				'mqttPort': this.$store.state.settings['mqttPort'],
+				'mqttPassword': this.$store.state.settings['mqttPassword'],
+				'mqttTLSFile': this.$store.state.settings['mqttTLSFile'],
+				'mqttUser': this.$store.state.settings['mqttUser'],
+				'timezone': this.$store.state.settings['timezone'],
+			}))
+		},
 		connect() {
 			let self = this
 			return new Promise(function (resolve, reject) {
@@ -66,7 +79,7 @@ export default {
 					self.$store.commit('setSettings', response.data.config)
 					self.$store.commit('setSettingTemplates', response.data.templates)
 					self.$store.commit('setSettingCategories', response.data.categories)
-					window.sessionStorage.setItem('aliceSettings', JSON.stringify(response.data.config))
+					self.storeSessionSettings()
 					if (self.remember) {
 						localStorage.setItem('host', self.ip)
 						localStorage.setItem('apiPort', self.port)
