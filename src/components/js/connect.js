@@ -71,7 +71,8 @@ export default {
 			window.sessionStorage.setItem('aliceSettings', JSON.stringify({
 				'activeCountryCode': this.$store.state.settings['activeCountryCode'],
 				'activeLanguage': this.$store.state.settings['activeLanguage'],
-				'apiPort': this.$store.state.settings['activeCountryCode'],
+				'apiPort': this.$store.state.settings['apiPort'],
+				'aliceIp': this.$store.state.settings['aliceIp'],
 				'timezone': this.$store.state.settings['timezone']
 			}))
 		},
