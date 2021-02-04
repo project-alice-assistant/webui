@@ -30,11 +30,6 @@ export default {
 		this.$store.state.mqtt.unsubscribe(C.RESOURCE_USAGE_TOPIC)
 		this.unwatch()
 	},
-	methods: {
-		exposeMqtt: function () {
-			return 'lol'
-		}
-	},
 	watch: {
 		$route: {
 			immediate: true,

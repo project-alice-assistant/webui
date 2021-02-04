@@ -1,6 +1,7 @@
 import axios from 'axios'
 import Paho from 'paho-mqtt'
 import * as C from '@/utils/constants'
+import jsLoader from '@/utils/jsLoader'
 
 export default {
 	name: 'connect',
@@ -35,6 +36,7 @@ export default {
 				self.connectMQTT(),
 				self.validateToken()
 			]).then(() => {
+				self.loadDynamicScripts()
 				self.loadI18n()
 				self.loadData().then(() => {
 					// Start these pages so that they start logging stuff
@@ -52,20 +54,25 @@ export default {
 					console.error(reason)
 				})
 			}).catch(reason => {
-				reject(Error('Failed connecting: ' + reason))
+				console.error('Failed connecting: ' + reason)
 			}).finally(() => self.connecting = false)
+		},
+		loadDynamicScripts: function () {
+			const self = this
+			return new Promise(function (resolve, reject) {
+				jsLoader(`http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/utils/pahows/`)
+					.then(resolve())
+					.catch((error) => {
+						reject(error)
+					})
+			})
 		},
 		storeSessionSettings: function () {
 			window.sessionStorage.setItem('aliceSettings', JSON.stringify({
-				'mqttHost': this.$store.state.settings['mqttHost'],
 				'activeCountryCode': this.$store.state.settings['activeCountryCode'],
 				'activeLanguage': this.$store.state.settings['activeLanguage'],
 				'apiPort': this.$store.state.settings['activeCountryCode'],
-				'mqttPort': this.$store.state.settings['mqttPort'],
-				'mqttPassword': this.$store.state.settings['mqttPassword'],
-				'mqttTLSFile': this.$store.state.settings['mqttTLSFile'],
-				'mqttUser': this.$store.state.settings['mqttUser'],
-				'timezone': this.$store.state.settings['timezone'],
+				'timezone': this.$store.state.settings['timezone']
 			}))
 		},
 		connect() {
@@ -99,7 +106,16 @@ export default {
 			return new Promise(function (resolve, reject) {
 				axios.get(`http://${self.ip}:${self.port}/api/v1.0.1/utils/mqttConfig/`)
 					.then(response => {
-						let randomNum = Math.floor((Math.random() * 10000000) + 1);
+						let settings = window.sessionStorage.getItem('aliceSettings')
+						if (settings) {
+							settings = JSON.parse(settings)
+						} else {
+							settings = {}
+						}
+						settings['mqttHost'] = response.data.host
+						settings['mqttPort'] = Number(response.data.port)
+						window.sessionStorage.setItem('aliceSettings', JSON.stringify(settings))
+						let randomNum = Math.floor((Math.random() * 10000000) + 1)
 						// noinspection JSUnresolvedFunction
 						let client = new Paho.Client(response.data.host, Number(response.data.port), 'ProjectAliceInterface' + randomNum)
 						client.onMessageArrived = self.onMessage

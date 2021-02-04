@@ -1,6 +1,7 @@
 import axios from 'axios'
 import {v4 as uuidv4} from 'uuid'
 import MoveableItem from './moveableItem'
+import jsLoader from '@/utils/jsLoader';
 
 export default {
 	name: 'pa-widgets',
@@ -77,11 +78,9 @@ export default {
 	},
 	mounted: function () {
 		const self = this
-		this.loadScript(`http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/pahows/`).then(() => {
-			setTimeout(function () {
-				self.startWidgetsOnPage(self.activeTabId)
-			}, 500)
-		})
+		setTimeout(function () {
+			self.startWidgetsOnPage(self.activeTabId)
+		}, 500)
 	},
 	activated: function () {
 		this.uid = uuidv4()
@@ -105,35 +104,10 @@ export default {
 			const uuid = uuidv4()
 			widget.taggedHtml = widget.html.replace(/data-ref="(.*?)"/gi, `data-ref="$1_${uuid}"`)
 			const src = `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/resources/${widget.skill}/${widget.name}`
-			this.loadScript(`${src}.js`).then(() => {
+			jsLoader(`${src}.js`).then(() => {
 				// noinspection JSUnresolvedVariable
 				let cls = eval(`${widget.skill}_${widget.name}`)
 				new cls(uuid, widget.id)
-			})
-		},
-		loadScript: function (src) {
-			return new Promise(function (resolve, reject) {
-				let shouldAppend = false
-				let el = document.querySelector(`script[src="${src}"]`)
-				if (!el) {
-					el = document.createElement('script')
-					el.type = 'module'
-					el.async = true
-					el.src = src
-					shouldAppend = true
-				} else if (el.hasAttribute('data-loaded')) {
-					resolve(el)
-					return
-				}
-
-				el.addEventListener('error', reject)
-				el.addEventListener('abort', reject)
-				el.addEventListener('load', function loadScriptHandler() {
-					el.setAttribute('data-loaded', true)
-					resolve(el)
-				})
-
-				if (shouldAppend) document.head.appendChild(el);
 			})
 		},
 		changePage: function (id) {
