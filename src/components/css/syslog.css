@@ -22,6 +22,10 @@
 	padding: 10px;
 	overflow: hidden;
 	overflow-y: auto;
+	-moz-user-select: text;
+	-ms-user-select: text;
+	-webkit-user-select: text;
+	user-select: text;
 }
 
 .terminalInput {
