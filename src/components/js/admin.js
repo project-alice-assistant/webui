@@ -134,7 +134,7 @@ export default {
 			}).then(function() {
 				setTimeout(() =>{
 					icon.classList.add('green')
-					self.$router.replace('/syslog').then()
+					self.$router.replace('/syslog').catch(err => {})
 				}, 2000)
 			}).catch(function() {
 				setTimeout(() => {
