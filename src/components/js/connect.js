@@ -69,16 +69,21 @@ export default {
 		},
 		storeSessionSettings: function () {
 			let settings = window.sessionStorage.getItem('aliceSettings')
-			if(settings){
-				return;
-			}
-			window.sessionStorage.setItem('aliceSettings', JSON.stringify({
+			let defSettings = {
 				'activeCountryCode': this.$store.state.settings['activeCountryCode'],
 				'activeLanguage': this.$store.state.settings['activeLanguage'],
 				'apiPort': this.$store.state.settings['apiPort'],
 				'aliceIp': this.$store.state.settings['aliceIp'],
 				'timezone': this.$store.state.settings['timezone']
-			}))
+			}
+			// due to asynchronity sometimes MQTT is faster and overwrites - need to combine!
+			if(settings) {
+				settings = JSON.parse(settings)
+				settings = Object.assign({}, settings, defSettings);
+			} else {
+				settings = defSettings
+			}
+			window.sessionStorage.setItem('aliceSettings', JSON.stringify(settings))
 		},
 		connect() {
 			let self = this
