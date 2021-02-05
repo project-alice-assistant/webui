@@ -77,10 +77,7 @@ export default {
 		this.activeTabId = parseInt(localStorage.getItem('widgetsActiveTabId')) || 1
 	},
 	mounted: function () {
-		const self = this
-		setTimeout(function () {
-			self.startWidgetsOnPage(self.activeTabId)
-		}, 500)
+		setTimeout(() => this.startWidgetsOnPage(self.activeTabId), 500)
 	},
 	activated: function () {
 		this.uid = uuidv4()
