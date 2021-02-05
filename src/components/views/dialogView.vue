@@ -1,7 +1,7 @@
 <template>
 	<div class="dialogView">
 		<div class="messageContainer" id="messageContainer">
-			<SpeechBubble v-for="(msg, key) in msgs" :key="key" :msg="msg"/>
+			<SpeechBubble v-for="(msg, key) in msgs" :key="key" :aliceGender="$store.state.settings['ttsType']" :msg="msg"/>
 			<SpeechBubble v-if="currentSpeech !== undefined" :key="msgs.length" :msg="currentSpeech"/>
 		</div>
 		<div class="dvInput">
