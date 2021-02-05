@@ -68,6 +68,10 @@ export default {
 			})
 		},
 		storeSessionSettings: function () {
+			let settings = window.sessionStorage.getItem('aliceSettings')
+			if(settings){
+				return;
+			}
 			window.sessionStorage.setItem('aliceSettings', JSON.stringify({
 				'activeCountryCode': this.$store.state.settings['activeCountryCode'],
 				'activeLanguage': this.$store.state.settings['activeLanguage'],
