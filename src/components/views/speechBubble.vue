@@ -1,7 +1,7 @@
 <template>
 <div>
 	<div v-if="msg.topic === 'hermes/hotword/#/detected'" class="userSpeech male extend"> Hey Alice!</div>
-	<div v-if="msg.topic === 'hermes/tts/say'" class="aliceSpeech extend">
+	<div v-if="msg.topic === 'hermes/tts/say'" :class="aliceGender" class="aliceSpeech extend">
 		{{ JSON.parse(msg.payloadString)['text'] }}
 	</div>
 	<div v-if="msg.topic === 'hermes/nlu/query'" class="userSpeech male extend">
@@ -23,7 +23,8 @@ export default {
 		return {}
 	},
 	props: [
-		'msg'
+		'msg',
+		'aliceGender'
 	]
 }
 </script>
