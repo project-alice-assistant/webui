@@ -13,7 +13,11 @@
 		<div class="channelInfo">
 			{{ $store.state.settings['aliceUpdateChannel'] }}
 		</div>
-		<div class="updateChannelMarker"/>
+		<div class="notifications">
+			<i aria-hidden="false" class="fas fa-bell clickable notificationIcon"/>
+			<div :class="{initialHidden: true}" class="notificationHolder">
+			</div>
+		</div>
 	</header>
 </template>
 
