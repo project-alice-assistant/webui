@@ -67,7 +67,7 @@ export default {
 
 			const data = new FormData
 			data.append('query', this.say)
-			data.append('siteId', 'Test')
+			data.append('deviceUid', 'Test')
 			//if no session is available start new one
 			if (this.currentSession === undefined) {
 				axios({

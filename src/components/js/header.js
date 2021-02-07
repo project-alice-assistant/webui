@@ -4,6 +4,13 @@ export default {
 	name: 'pa-header',
 	data() {
 		return {
+			notifications: {
+				1: {
+					'type': 'alert',
+					'data': 'This is an alert',
+					'time': '1980523655'
+				}
+			},
 			title: '',
 			unwatch: {},
 			resources: {

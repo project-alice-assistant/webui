@@ -26,6 +26,7 @@ import ConfigInput from './components/views/configInput'
 import Construction from './components/views/construction'
 import Device from './components/views/device'
 import Widget from './components/views/widget'
+import Notification from './components/views/notification'
 
 import 'vuejs-dialog/dist/vuejs-dialog.min.css'
 import 'vue-tour/dist/vue-tour.css'
@@ -77,6 +78,7 @@ Vue.component('construction', Construction)
 Vue.component('device', Device)
 Vue.component('configInput', ConfigInput)
 Vue.component('widget', Widget)
+Vue.component('notification', Notification)
 
 Vue.dialog.registerComponent('fontawesomePromptDialog', faIconOption)
 Vue.dialog.registerComponent('widgetOptionsPromptDialog', widgetOption)
