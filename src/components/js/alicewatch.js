@@ -43,13 +43,19 @@ export default {
 			}
 		)
 	},
-	updated: function() {
+	activated: function () {
 		if (this.follow) {
 			let terminal = this.$el.querySelector('#terminal')
 			terminal.scrollTop = terminal.scrollHeight
 		}
 	},
-	beforeDestroy: function() {
+	updated: function () {
+		if (this.follow) {
+			let terminal = this.$el.querySelector('#terminal')
+			terminal.scrollTop = terminal.scrollHeight
+		}
+	},
+	beforeDestroy: function () {
 		this.$store.state.mqtt.unsubscribe(C.ALICE_WATCH_TOPIC)
 		this.unwatch()
 	},
