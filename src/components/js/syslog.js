@@ -37,7 +37,7 @@ export default {
 			}
 		)
 	},
-	activated() {
+	activated: function () {
 		if (this.follow) {
 			let terminal = this.$el.querySelector('#terminal')
 			terminal.scrollTop = terminal.scrollHeight

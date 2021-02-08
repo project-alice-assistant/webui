@@ -51,18 +51,22 @@ export default {
 			}
 		)
 	},
-	updated: function() {
+	activated: function () {
 		let terminal = this.$el.querySelector('#messageContainer')
 		terminal.scrollTop = terminal.scrollHeight
 	},
-	beforeDestroy: function() {
+	updated: function () {
+		let terminal = this.$el.querySelector('#messageContainer')
+		terminal.scrollTop = terminal.scrollHeight
+	},
+	beforeDestroy: function () {
 		this.$store.state.mqtt.unsubscribe(C.NLU_QUERY_TOPIC)
 		this.$store.state.mqtt.unsubscribe(C.SAY_TOPIC)
 		this.$store.state.mqtt.unsubscribe(C.SESSION_ENDED_TOPIC)
 		this.unwatch()
 	},
 	methods: {
-		sendQuery: function() {
+		sendQuery: function () {
 			if (this.say === '') return
 
 			const data = new FormData
