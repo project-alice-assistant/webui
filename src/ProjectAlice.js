@@ -1,5 +1,6 @@
 import paMain from './components/views/main'
 import paConnect from './components/views/connect'
+import {v4 as uuidv4} from 'uuid'
 
 // noinspection JSUnusedGlobalSymbols
 export default {
@@ -14,6 +15,10 @@ export default {
 
 		if (localStorage.getItem('fullscreen') === 'true') {
 			this.$store.commit('startCinemaMode')
+		}
+
+		if (!localStorage.getItem('interfaceUid')) {
+			this.$store.commit('setInterfaceUid', uuidv4())
 		}
 
 		if (localStorage.getItem('minimized') === 'true') {

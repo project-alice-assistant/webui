@@ -36,26 +36,86 @@ export default {
 				self.connectMQTT(),
 				self.validateToken()
 			]).then(() => {
-				self.loadDynamicScripts()
-				self.loadI18n()
-				self.loadData().then(() => {
-					// Start these pages so that they start logging stuff
-					const lastVisitedPage = localStorage.getItem('showPage') || '/'
-					self.$router.replace('/syslog').then(function () {
-						self.$router.replace('/alicewatch').then(function () {
-							self.$store.commit('uiConnected', true)
-							self.$store.commit('setConnectVue', self)
-							if (lastVisitedPage !== '/alicewatch') {
-								self.$router.replace(lastVisitedPage).then()
-							}
+				self.helloAlice().then().finally(() => {
+					self.startHeartbeat()
+					self.loadDynamicScripts()
+					self.loadI18n()
+					self.loadData().then(() => {
+						// Start these pages so that they start logging stuff
+						const lastVisitedPage = localStorage.getItem('showPage') || '/'
+						self.$router.replace('/syslog').then(function () {
+							self.$router.replace('/alicewatch').then(function () {
+								self.$store.commit('uiConnected', true)
+								self.$store.commit('setConnectVue', self)
+								if (lastVisitedPage !== '/alicewatch') {
+									self.$router.replace(lastVisitedPage).then()
+								}
+							})
 						})
+					}).catch(reason => {
+						console.error(reason)
 					})
-				}).catch(reason => {
-					console.error(reason)
 				})
 			}).catch(reason => {
 				console.error('Failed connecting: ' + reason)
 			}).finally(() => self.connecting = false)
+		},
+		startHeartbeat: function () {
+			const self = this
+			setInterval(function () {
+				if (localStorage.getItem('interfaceUid')) {
+					self.$store.state.mqtt.publish(
+						C.DEVICE_HEARTBEAT_TOPIC,
+						JSON.stringify({
+							uid: localStorage.getItem('interfaceUid')
+						})
+					)
+				}
+			}, 5000)
+		},
+		helloAlice: function () {
+			const self = this
+			const uid = localStorage.getItem('interfaceUid')
+			if (uid && uid !== '' && localStorage.getItem('apiToken') && localStorage.getItem('apiToken') !== '') {
+				return new Promise(function (resolve, reject) {
+					axios({
+						method: 'GET',
+						url: `http://${self.ip}:${self.port}/api/v1.0.1/devices/${uid}/hello/`,
+					}).then(response => {
+						if ('deviceId' in response.data) {
+							resolve()
+						} else {
+							axios({
+								method: 'PUT',
+								url: `http://${self.ip}:${self.port}/api/v1.0.1/devices/${uid}/`,
+								data: {
+									locationId: 1,
+									skillName: 'AliceCore',
+									deviceType: 'WebInterface'
+								},
+								headers: {
+									'auth': localStorage.getItem('apiToken'),
+									'content-type': 'application/json'
+								}
+							}).then(response => {
+								if ('device' in response.data) {
+									resolve()
+								} else {
+									reject(new Error(`Error adding interface device ${response.data['message']}`))
+								}
+							}).catch(reason => {
+								reject(new Error('Something went wrong adding interface device ' + reason))
+							})
+						}
+					}).catch(reason => {
+						reject(new Error('Error greeting Alice ' + reason))
+					})
+				})
+			} else {
+				return new Promise(function (resolve, _reject) {
+					resolve()
+				})
+			}
 		},
 		loadDynamicScripts: function () {
 			const self = this
@@ -93,9 +153,9 @@ export default {
 					url: `http://${self.ip}:${self.port}/api/v1.0.1/utils/config/`,
 					headers: {'auth': localStorage.getItem('apiToken')}
 				}).then(response => {
-					self.$store.commit('setSettings', response.data.config)
-					self.$store.commit('setSettingTemplates', response.data.templates)
-					self.$store.commit('setSettingCategories', response.data.categories)
+					self.$store.commit('setSettings', response.data['config'])
+					self.$store.commit('setSettingTemplates', response.data['templates'])
+					self.$store.commit('setSettingCategories', response.data['categories'])
 					self.storeSessionSettings()
 					if (self.remember) {
 						localStorage.setItem('host', self.ip)

@@ -29,9 +29,14 @@ export default new Vuex.Store({
 		deviceLinks: {},
 		furnitures: {},
 		constructions: {},
-		locations: {}
+		locations: {},
+		interfaceUid: ''
 	},
 	mutations: {
+		setInterfaceUid(state, data) {
+			state.interfaceUid = data
+			localStorage.setItem('interfaceUid', data)
+		},
 		setConnectVue(state, data) {
 			state.connectVue = data
 		},
