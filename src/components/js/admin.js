@@ -170,7 +170,10 @@ export default {
 			axios({
 				method: 'GET',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/${id}/`,
-				headers: {'auth': this.$store.getters.apiToken}
+				headers: {
+					'auth': this.$store.getters.apiToken,
+					'uid': localStorage.getItem('interfaceUid')
+				}
 			}).then(response => {
 				if ('success' in response.data && response.data['success']) {
 					setTimeout(() => {
