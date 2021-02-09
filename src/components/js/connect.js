@@ -27,6 +27,13 @@ export default {
 
 		this.doConnect().then(console.log('Project Alice Web Interface connected and ready'))
 	},
+	beforeDestroy: function () {
+		axios({
+			method: 'PUT',
+			url: `http://${self.ip}:${self.port}/api/v1.0.1/devices/${localStorage.getItem('interfaceUid')}/bye/`,
+			headers: {'auth': localStorage.getItem('apiToken')}
+		}).then()
+	},
 	methods: {
 		async doConnect() {
 			this.connecting = true
@@ -99,7 +106,7 @@ export default {
 								}
 							}).then(response => {
 								if ('device' in response.data) {
-									resolve()
+									return self.helloAlice()
 								} else {
 									reject(new Error(`Error adding interface device ${response.data['message']}`))
 								}
