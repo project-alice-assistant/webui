@@ -194,6 +194,7 @@ export default {
 					icon.classList.remove('red')
 					icon.classList.remove('green')
 				}, 4000)
+				this.$router.replace('/dialogView').then()
 			})
 		},
 		startIcon: function(id) {
