@@ -88,9 +88,6 @@ Vue.dialog.registerComponent('addDevicePromptDialog', addDeviceDialog)
 Vue.dialog.registerComponent('deviceOptionsPromptDialog', deviceOptions)
 Vue.dialog.registerComponent('deviceReplyListSelect', deviceReplyListSelect)
 
-// Jquery use ONLY FOR WIDGETS, DO NOT USE JQUERY FOR __ANYTHING ELSE__
-global.jQuery = require('jquery')
-window.$ = global.jQuery
 
 // Workaround to init v-models
 Vue.directive('init', {

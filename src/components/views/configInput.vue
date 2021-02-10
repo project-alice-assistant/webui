@@ -53,12 +53,12 @@
 	</select>
 	<VueToggles
 		v-else-if="template['dataType'] === 'boolean'"
-		:checked-text="$t('tooltips.yes')"
-		:unchecked-text="$t('tooltips.no')"
-		:value="configName"
+		:checked-text="parent.$t('tooltips.yes')"
+		:unchecked-text="parent.$t('tooltips.no')"
+		:value="configValue"
 		checkedBg="var(--windowBG)"
 		uncheckedBg="var(--windowBG)"
-		@click="configName = !configName"
+		@click="configValue = !configValue"
 	/>
 	<div v-else-if="template['dataType'] === 'range'" class="rangeInput">
 		<input
