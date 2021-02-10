@@ -123,8 +123,16 @@ export default {
 			this.myHome.removeDroppable()
 
 			if (this.myHome.devicesEditMode && this.myHome.toolsState.linkingDevices && this.myHome.newConnectionLink === null && this.data.parentLocation !== 0) {
+				if (!this.myHome.getDeviceType(this).allowLocationLinks) {
+					this.showError(this.$t('notifications.errors.cannotLinkDevice'))
+					return
+				}
 				this.myHome.newConnectionLine(this)
 			} else if (this.myHome.devicesEditMode && this.myHome.toolsState.unlinkingDevices && this.myHome.newConnectionLink === null) {
+				if (!this.myHome.getDeviceType(this).allowLocationLinks) {
+					this.showError(this.$t('notifications.errors.cannotLinkDevice'))
+					return
+				}
 				this.myHome.newDisconnectionLine(this)
 			} else if (this.myHome.toolsState.unlinkingDevices && this.myHome.newConnectionLink !== null) {
 

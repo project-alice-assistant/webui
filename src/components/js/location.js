@@ -359,7 +359,7 @@ export default {
 
 				for (const link of Object.values(this.$store.state.deviceLinks)) {
 					if (link.deviceId === device.data.id && link.targetLocation === this.data.id) {
-						if (showError) this.showError(this.$t('notifications.errors.deviceAlreadyLinkedToLocation'))
+						if (showError) this.showInfo(this.$t('notifications.info.deviceAlreadyLinkedToLocation'))
 						return false
 					}
 				}
