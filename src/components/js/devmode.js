@@ -42,7 +42,8 @@ export default {
 			skillConflictingSkills: '',
 			skillRequiredManagers: '',
 			skillWidgets: '',
-			skillScenarioNodes: ''
+			skillScenarioNodes: '',
+			skillDevices: ''
 		}
 	},
 	mounted: function() {
@@ -133,6 +134,7 @@ export default {
 			data.append('skillRequiredManagers', this.$refs.skillRequiredManagers.value)
 			data.append('skillWidgets', this.$refs.skillWidgets.value)
 			data.append('skillScenarioNodes', this.$refs.skillScenarioNodes.value)
+			data.append('skillDevices', this.$refs.skillDevices.value)
 			data.append('fr', this.french)
 			data.append('de', this.german)
 			data.append('it', this.italian)

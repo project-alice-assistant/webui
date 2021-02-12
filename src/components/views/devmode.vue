@@ -22,6 +22,7 @@
 						<label for="skillRequiredManagers">{{ $t('labels.skillRequiredManagers') }}</label>
 						<label for="skillWidgets">{{ $t('labels.skillWidgets') }}</label>
 						<label for="skillScenarioNodes">{{ $t('labels.skillScenarioNodes') }}</label>
+						<label for="skillDevices">{{ $t('labels.skillDevices') }}</label>
 						<label style="justify-content: flex-end;"><i ref="animatedIcon" class="fas fa-spinner fa-pulse fa-2x initialHidden" aria-hidden="true"/></label>
 					</div>
 					<div class="inputs longInputs">
@@ -172,10 +173,13 @@
 							<input type="text" id="skillScenarioNodes" ref="skillScenarioNodes" class="inputValid" :placeholder="$t('devMode.listExplain')" :disabled="created">
 						</div>
 						<div class="input">
-							<button v-if="!created && allValid && !waiting" @click="createSkill">{{$t('buttons.create')}}</button>
-							<button v-if="!waiting" @click="reset">{{$t('buttons.reset')}}</button>
-							<button v-if="created && !uploaded && !waiting" @click="uploadSkill">{{$t('buttons.uploadToGithub')}}</button>
-							<button v-if="created && uploaded && !waiting" @click="checkOnGithub">{{$t('buttons.checkOnGithub')}}</button>
+							<input id="skillDevices" ref="skillDevices" :disabled="created" :placeholder="$t('devMode.listExplain')" class="inputValid" type="text">
+						</div>
+						<div class="input">
+							<button v-if="!created && allValid && !waiting" @click="createSkill">{{ $t('buttons.create') }}</button>
+							<button v-if="!waiting" @click="reset">{{ $t('buttons.reset') }}</button>
+							<button v-if="created && !uploaded && !waiting" @click="uploadSkill">{{ $t('buttons.uploadToGithub') }}</button>
+							<button v-if="created && uploaded && !waiting" @click="checkOnGithub">{{ $t('buttons.checkOnGithub') }}</button>
 						</div>
 					</div>
 				</div>
