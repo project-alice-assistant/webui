@@ -81,6 +81,16 @@ export default {
 	},
 	created: function () {
 		this.activeTabId = parseInt(localStorage.getItem('widgetsActiveTabId')) || 1
+
+		document.addEventListener('keyup', function (event) {
+			if (event.key === 'm') {
+				this.dragAndResizeEnabled = !this.dragAndResizeEnabled
+				this.settings = false
+			} else if (event.key === 's') {
+				this.settings = !this.settings
+				this.dragAndResizeEnabled = false
+			}
+		})
 	},
 	mounted: function () {
 		setTimeout(() => this.startWidgetsOnPage(self.activeTabId), 500)
