@@ -31,7 +31,7 @@ export default {
 		axios({
 			method: 'PUT',
 			url: `http://${self.ip}:${self.port}/api/v1.0.1/devices/${localStorage.getItem('interfaceUid')}/bye/`,
-			headers: {'auth': localStorage.getItem('apiToken')}
+			headers: {'auth': this.$store.getters.apiToken}
 		}).then()
 	},
 	methods: {
@@ -83,7 +83,7 @@ export default {
 		helloAlice: function () {
 			const self = this
 			const uid = localStorage.getItem('interfaceUid')
-			if (uid && uid !== '' && localStorage.getItem('apiToken') && localStorage.getItem('apiToken') !== '') {
+			if (uid && uid !== '' && self.$store.state.loggedInUser) {
 				return new Promise(function (resolve, reject) {
 					axios({
 						method: 'GET',
@@ -101,7 +101,7 @@ export default {
 									deviceType: 'WebInterface'
 								},
 								headers: {
-									'auth': localStorage.getItem('apiToken'),
+									'auth': self.$store.getters.apiToken,
 									'content-type': 'application/json'
 								}
 							}).then(response => {
@@ -158,7 +158,7 @@ export default {
 				axios({
 					method: 'GET',
 					url: `http://${self.ip}:${self.port}/api/v1.0.1/utils/config/`,
-					headers: {'auth': localStorage.getItem('apiToken')}
+					headers: {'auth': self.$store.getters.apiToken}
 				}).then(response => {
 					self.$store.commit('setSettings', response.data['config'])
 					self.$store.commit('setSettingTemplates', response.data['templates'])
@@ -334,7 +334,7 @@ export default {
 				axios({
 					method: 'GET',
 					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/skills/`,
-					headers: {'auth': localStorage.getItem('apiToken')}
+					headers: {'auth': self.$store.getters.apiToken}
 				}).then(response => {
 					if ('skills' in response.data) {
 						self.$store.commit('setInstalledSkills', response.data['skills'])
@@ -425,7 +425,7 @@ export default {
 				axios({
 					method: 'GET',
 					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/`,
-					headers: {'auth': localStorage.getItem('apiToken')}
+					headers: {'auth': self.$store.getters.apiToken}
 				}).then(response => {
 					if ('data' in response.data) {
 						self.$store.commit('setLocations', response.data['data']['locations'])
