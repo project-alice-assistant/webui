@@ -119,7 +119,7 @@ export default new Vuex.Store({
 			localStorage.setItem('fullscreen', state.fullScreen)
 		},
 		startMagicMirrorMode(state) {
-			state.fullScreen = false
+			state.fullScreen = true
 			localStorage.setItem('fullscreen', state.fullScreen)
 			state.magicMirrorMode = true
 			localStorage.setItem('magicMirrorMode', state.magicMirrorMode)
