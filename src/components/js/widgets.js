@@ -82,13 +82,20 @@ export default {
 	created: function () {
 		this.activeTabId = parseInt(localStorage.getItem('widgetsActiveTabId')) || 1
 
+		const self = this
 		document.addEventListener('keyup', function (event) {
 			if (event.key === 'm') {
-				this.dragAndResizeEnabled = !this.dragAndResizeEnabled
-				this.settings = false
+				self.moveableItem.destroyMoveable()
+				self.dragAndResizeEnabled = !self.dragAndResizeEnabled
+				self.settings = false
 			} else if (event.key === 's') {
-				this.settings = !this.settings
-				this.dragAndResizeEnabled = false
+				self.moveableItem.destroyMoveable()
+				self.settings = !self.settings
+				self.dragAndResizeEnabled = false
+			} else if (event.key === 'Escape') {
+				self.moveableItem.destroyMoveable()
+				self.settings = false
+				self.dragAndResizeEnabled = false
 			}
 		})
 	},
