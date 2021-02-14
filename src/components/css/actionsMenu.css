@@ -29,6 +29,10 @@
 	top: 0;
 }
 
+.magicMirrorMode {
+	display: none !important;
+}
+
 .extend {
 	animation-name: action-menu-extend;
 }

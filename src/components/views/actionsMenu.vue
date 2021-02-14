@@ -5,7 +5,8 @@
 			extend: extend,
 			retract: retract,
 			extended: isExtended,
-			cinemaMode: $store.state.fullScreen
+			cinemaMode: $store.state.fullScreen,
+			magicMirrorMode: $store.state.magicMirrorMode
 		}"
 		@animationend="animationEnd"
 	>

@@ -17,7 +17,9 @@
 			:renameTab="renameTab"
 			:onChange="changePage"
 		/>
-		<div :key="activeTabId" class="tab_page" @click="moveableItem.destroyMoveable()">
+		<div :key="activeTabId" :class="{
+			magicMirrorMode: $store.state.magicMirrorMode
+		}" class="tab_page" @click="moveableItem.destroyMoveable()">
 			<widget
 				v-for="widget in activePageWidgets"
 				:key="widget.id"

@@ -13,7 +13,9 @@ export default {
 		const self = this
 		this.$i18n.locale = 'en'
 
-		if (localStorage.getItem('fullscreen') === 'true') {
+		if (localStorage.getItem('magicMirrorMode') === 'true') {
+			this.$store.commit('startMagicMirrorMode')
+		} else if (localStorage.getItem('fullscreen') === 'true') {
 			this.$store.commit('startCinemaMode')
 		}
 
@@ -33,7 +35,9 @@ export default {
 
 		document.addEventListener('keyup', function (event) {
 			if (event.key === 'Enter' || event.key === 'Escape') {
-				if (self.$store.state.fullScreen) {
+				if (self.$store.state.magicMirrorMode) {
+					self.$store.commit('stopMagicMirrorMode')
+				} else if (self.$store.state.fullScreen) {
 					self.$store.commit('stopCinemaMode')
 				}
 			}

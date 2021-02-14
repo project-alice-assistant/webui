@@ -34,6 +34,12 @@ export default {
 					callback: this.cinemaMode
 				},
 				{
+					name: this.$t('tooltips.magicMirrorMode'),
+					icon: 'fas fa-magic',
+					isToggle: true,
+					callback: this.magicMirrorMode
+				},
+				{
 					name: this.$t('tooltips.settings'),
 					icon: 'fas fa-cog',
 					activeClass: 'yellow',
@@ -120,7 +126,13 @@ export default {
 				this.showInfo(this.$t('notifications.info.theaterModeExplain'))
 			}
 		},
-		addWidget: function(skillName, widgetName) {
+		magicMirrorMode: function () {
+			this.$store.commit('toggleMagicMirrorMode')
+			if (this.$store.state.fullScreen) {
+				this.showInfo(this.$t('notifications.info.magicMirrorModeExplain'))
+			}
+		},
+		addWidget: function (skillName, widgetName) {
 			axios({
 				method: 'PUT',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/`,
