@@ -1,6 +1,6 @@
 <template>
 	<div :class="{
-		magicMirrorMode: parent.$store.state.magicMirrorMode
+		magicMirrorMode: $store.state.magicMirrorMode
 	}" class="tabs">
 		<div v-for="tab in tabs" :key="tab.id" :class="{active: activeTabId === tab.id}" class="tab clickable"
 				 @click="handleClick(tab.id)"
