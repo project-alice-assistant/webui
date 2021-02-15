@@ -16,6 +16,7 @@
 			:removeTab="removeTab"
 			:renameTab="renameTab"
 			:onChange="changePage"
+			:parent="this"
 		/>
 		<div :key="activeTabId" :class="{
 			magicMirrorMode: $store.state.magicMirrorMode
