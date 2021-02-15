@@ -127,11 +127,15 @@ export default {
 		loadDynamicScripts: function () {
 			const self = this
 			return new Promise(function (resolve, reject) {
-				jsLoader(`http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/utils/pahows/`)
-					.then(resolve())
-					.catch((error) => {
+				jsLoader(`http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/utils/Widget/`).then(() => {
+					jsLoader(`http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/utils/pahows/`).then(
+						resolve()
+					).catch((error) => {
 						reject(error)
 					})
+				}).catch((error) => {
+					reject(error)
+				})
 			})
 		},
 		storeSessionSettings: function () {
