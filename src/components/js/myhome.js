@@ -587,8 +587,8 @@ export default {
 					settings: {
 						x: this.areaSelectorStartX,
 						y: this.areaSelectorStartY,
-						w: this.areaSelectorW || 150,
-						h: this.areaSelectorH || 150
+						w: Math.max(this.areaSelectorW || 150, 50),
+						h: Math.max(this.areaSelectorH || 150, 50)
 					}
 				}
 

@@ -40,7 +40,7 @@
 		/>
 		<svg class="locationName" viewBox="0 0 100 100">
 			<text
-				v-if="myHome.locationsEditMode"
+				v-if="myHome.locationsEditMode && !myHome.toolsState.placingFurniture && !myHome.toolsState.placingConstructions"
 				:class="{clickable: myHome.locationsEditMode && !myHome.toolsState.addingLocation && !myHome.toolsState.paintingFloors}"
 				text-anchor="middle"
 				x="50"

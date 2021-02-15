@@ -244,7 +244,7 @@ export default {
 			}
 		},
 		rename: function (event) {
-			if (this.myHome.moveableItem.timeout === Math.floor(new Date().getTime()/250) || !this.myHome.locationsEditMode || this.myHome.toolsState.addingLocation || this.myHome.toolsState.paintingFloors) return
+			if (this.myHome.moveableItem.timeout === Math.floor(new Date().getTime() / 250) || !this.myHome.locationsEditMode || this.myHome.toolsState.addingLocation || this.myHome.toolsState.paintingFloors || this.myHome.toolsState.placingFurniture) return
 			event.stopPropagation()
 
 			let self = this
