@@ -3,7 +3,7 @@
 			<iframe
 				v-show="$route.name === 'Scenarios'"
 				id="nodered"
-				:src="`//${this.$store.state.settings['aliceIp']}:1880`"
+				:src="`//${$store.state.settings['aliceIp']}:1880`"
 				title="nodered">
 			</iframe>
 		</portal-target>
