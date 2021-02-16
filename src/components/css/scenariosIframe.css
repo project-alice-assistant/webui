@@ -4,7 +4,7 @@
 }
 
 #nodered {
-	background: var(--mainBG)
+	background: var(--mainBG);
 	border: none;
 	height: 100%;
 	min-height: 100%;
