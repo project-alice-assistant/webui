@@ -30,23 +30,33 @@
 	width: 100%;
 	height: 25px;
 	background-color: var(--secondary);
-	display: flex;
-	align-content: center;
-	align-items: center;
 	box-sizing: border-box;
-	text-transform: uppercase;
-	flex-direction: row;
+}
+
+.skillNameeee {
+	align-items: center;
+	display: flex;
+	font-size: 1em;
+	height: 22px;
+	margin-left: 5px;
+	max-height: 22px;
+	max-width: 220px;
+	width: 220px;
 }
 
 .skillName {
-	height: 22px;
-	max-height: 22px;
-	width: 220px;
-	max-width: 220px;
-	margin-left: 5px;
-	display: flex;
-	align-items: center;
-	font-size: 1em;
+	height: 21px;
+	margin: 2px;
+	max-height: 21px;
+	max-width: 250px;
+	width: 250px;
+}
+
+.skillName text {
+	fill: var(--text);
+	pointer-events: none;
+	text-anchor: start;
+	text-shadow: 2px 2px 2px var(--accent);
 }
 
 .skillIcon {

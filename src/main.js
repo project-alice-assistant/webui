@@ -12,8 +12,6 @@ import VueDialog from 'vuejs-dialog'
 import VueTooltip from 'v-tooltip'
 import VueSimpleMarkdown from 'vue-simple-markdown'
 import VueI18n from 'vue-i18n'
-import LoadScript from 'vue-plugin-load-script'
-import VueResizeText from 'vue-resize-text'
 
 import Skill from './components/views/skill'
 import StoreSkill from './components/views/storeSkill'
@@ -62,8 +60,6 @@ Vue.use(VueTour)
 Vue.use(VueTooltip)
 Vue.use(VueSimpleMarkdown)
 Vue.use(VueI18n)
-Vue.use(LoadScript)
-Vue.use(VueResizeText)
 
 Vue.component('VueToggles', VueToggles)
 Vue.component('skill', Skill)

@@ -1,7 +1,9 @@
 <template>
 	<div class="skill">
 		<div class="skillTitle">
-			<div v-resize-text="{ratio: 1.3, minFontSize: '8px', delay: 200}" class="skillName">{{ skill.name }}</div>
+			<svg class="skillName">
+				<text y="15">{{ skill.name }}</text>
+			</svg>
 			<div class="skillIcon"><i :class="skill.icon" aria-hidden="true"/></div>
 		</div>
 		<div class="skillAuthor">
