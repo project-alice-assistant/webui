@@ -5,7 +5,7 @@
 			<div class="dg-content" v-html="parent.$t('dialogs.bodies.enterNewIcon')"/>
 			<form autocomplete="off" class="dg-form" data-children-count="1" v-on:submit.prevent>
 				<label for="dg-input-elem">{{ parent.$t('dialogs.labels.faExample') }}</label><br/><br/>
-				<input type="text" autocomplete="off" id="dg-input-elem" v-model="icon" @input="update"/>
+				<input type="text" autocomplete="off" id="dg-input-elem" v-model="iconInput" @input="update"/>
 			</form>
 		</div>
 		<div class="dg-content-footer">
@@ -28,9 +28,18 @@ export default {
 	data: function() {
 		return {
 			parent: this.options['parent'],
-			icon: 'fas fa-biohazard'
+			iconInput: this.options['current'] || 'fas fa-biohazard'
 		}
 	},
+	computed: {
+		icon: function () {
+			const regex = /<i class="(.*)"><\/i>/;
+			const matches = regex.exec(this.iconInput)
+			if(matches){
+				return matches[1]
+			}
+			return this.iconInput
+	} },
 	methods: {
 		handleConfirm() {
 			this.proceed(this.icon)

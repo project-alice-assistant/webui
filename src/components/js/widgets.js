@@ -293,7 +293,8 @@ export default {
 			const message = {}
 			const options = {
 				view: 'fontawesomePromptDialog',
-				parent: this
+				parent: this,
+				current: this.$store.state.widgetPages[id].icon
 			}
 
 			this.$dialog.prompt(message, options).then(dialogue => {
