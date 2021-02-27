@@ -7,14 +7,17 @@
 				<label
 					:for="settingName"
 					v-for="(settingTemplate, settingName) in options['skill']['settingsTemplate']"
+					v-if="settingTemplate['display'] !== 'hidden'"
 					v-tooltip="settingTemplate['description']"
 					:class="settingTemplate['dataType'] === 'longstring' ? 'textAreaLabel' : ''"
-				>
+				> <!--v-for-if-->
 					{{ settingName }}:
 				</label>
 			</div>
 			<div class="inputs">
-				<div class="input" v-for="(settingTemplate, settingName) in options['skill']['settingsTemplate']">
+				<div class="input"
+						 v-for="(settingTemplate, settingName) in options['skill']['settingsTemplate']"
+						 v-if="settingTemplate['display'] !== 'hidden'"> <!--v-for-if-->
 					<input
 						:id="settingName"
 						type="text"
