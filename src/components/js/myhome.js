@@ -341,9 +341,11 @@ export default {
 				}
 			)
 			device.myLinks[link.id] = line
-			this.connectionLinks[link.id] = line
+			if(device.data['parentLocation'] !== link.targetLocation) {
+				this.connectionLinks[link.id] = line
+			}
 
-			if (this.devicesEditMode) {
+			if (this.devicesEditMode && device.data['parentLocation'] !== link.targetLocation) {
 				line.show('draw')
 			}
 		},
