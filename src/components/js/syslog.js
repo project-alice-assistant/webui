@@ -25,10 +25,10 @@ export default {
 	created: function() {
 		let self = this
 		this.unwatch = this.$store.watch(
-			function(state) {
+			function (state) {
 				return state.mqttMessage
 			},
-			function(msg) {
+			function (msg) {
 				if (msg.topic === C.SYSLOG_TOPIC) {
 					let payload = JSON.parse(msg.payloadString)
 					payload.msg = htmlFormatter(payload.msg)
@@ -37,18 +37,24 @@ export default {
 			}
 		)
 	},
-	updated: function() {
+	activated: function () {
 		if (this.follow) {
 			let terminal = this.$el.querySelector('#terminal')
 			terminal.scrollTop = terminal.scrollHeight
 		}
 	},
-	beforeDestroy: function() {
+	updated: function () {
+		if (this.follow) {
+			let terminal = this.$el.querySelector('#terminal')
+			terminal.scrollTop = terminal.scrollHeight
+		}
+	},
+	beforeDestroy: function () {
 		this.$store.state.mqtt.unsubscribe(C.SYSLOG_TOPIC)
 		this.unwatch()
 	},
 	methods: {
-		sendCmd: function() {
+		sendCmd: function () {
 			const data = new FormData
 			data.append('cmd', this.cmd)
 			axios({

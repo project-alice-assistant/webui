@@ -36,9 +36,11 @@ export default {
 						url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/config/`,
 						headers: {'auth': response.data.apiToken}
 					}).then(response => {
-						this.$store.commit('setSettings', response.data.config)
-						this.$store.commit('setSettingTemplates', response.data.templates)
-						this.$store.commit('setSettingCategories', response.data.categories)
+						this.$store.commit('setSettings', response.data['config'])
+						this.$store.commit('setSettingTemplates', response.data['templates'])
+						this.$store.commit('setSettingCategories', response.data['categories'])
+						this.$store.state.connectVue.storeSessionSettings()
+						this.$store.state.connectVue.helloAlice().then(this.$store.state.connectVue.startHeartbeat())
 					})
 
 					this.$router.replace('/').then()

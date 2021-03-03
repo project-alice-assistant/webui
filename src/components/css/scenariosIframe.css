@@ -1,0 +1,13 @@
+#scenarios-portal-target {
+	height: 100%;
+	width: 100%;
+}
+
+#nodered {
+	background: var(--mainBG);
+	border: none;
+	height: 100%;
+	min-height: 100%;
+	overflow: hidden;
+	width: 100%;
+}

@@ -171,17 +171,17 @@ export default {
 							const newSkill = response.data.skill
 							self.$set(self.$store.state.installedSkills, newSkill.name, newSkill)
 							self.skillsToDownload.splice(self.skillsToDownload.indexOf(newSkill.name), 1)
-							self.$store.state.connectVue.loadWidgetTemplates()
-							self.$store.state.connectVue.loadDeviceTypes()
+							self.$store.state.connectVue.loadWidgetTemplates().then()
+							self.$store.state.connectVue.loadDeviceTypes().then()
 							self.$forceUpdate()
 						}
 					})
 				} else if (msg.topic === C.SKILL_DELETED_TOPIC) {
 					const payload = JSON.parse(msg.payloadString)
 					self.$delete(self.$store.state.installedSkills, payload.skillName)
-					self.$store.state.connectVue.loadWidgetTemplates()
-					self.$store.state.connectVue.loadDeviceTypes()
-					self.$store.state.connectVue.loadWidgetInstances()
+					self.$store.state.connectVue.loadWidgetTemplates().then()
+					self.$store.state.connectVue.loadDeviceTypes().then()
+					self.$store.state.connectVue.loadWidgetInstances().then()
 					self.$forceUpdate()
 				}
 			}

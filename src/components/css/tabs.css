@@ -11,6 +11,10 @@
 	padding-left: 15px;
 }
 
+.tabs.magicMirrorMode {
+	display: none;
+}
+
 .tab {
 	display: flex;
 	justify-content: center;
@@ -46,4 +50,8 @@
 	box-sizing: border-box;
 	flex-flow: column;
 	padding: 5px;
+}
+
+.tab_page.magicMirrorMode {
+	background-color: black !important;
 }

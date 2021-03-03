@@ -1,6 +1,7 @@
 import axios from 'axios'
 import {v4 as uuidv4} from 'uuid'
 import MoveableItem from './moveableItem'
+import jsLoader from '@/utils/jsLoader';
 
 export default {
 	name: 'pa-widgets',
@@ -31,6 +32,12 @@ export default {
 					icon: 'fas fa-person-booth',
 					isToggle: true,
 					callback: this.cinemaMode
+				},
+				{
+					name: this.$t('tooltips.magicMirrorMode'),
+					icon: 'fas fa-magic',
+					isToggle: true,
+					callback: this.magicMirrorMode
 				},
 				{
 					name: this.$t('tooltips.settings'),
@@ -66,15 +73,34 @@ export default {
 		}
 	},
 	computed: {
-		'activePageWidgets': function() {
+		'activePageWidgets': function () {
 			return Object.values(this.$store.state.widgetInstances).filter(widget => {
 				return widget['page'] === this.activeTabId
 			})
 		}
 	},
-	created: function() {
+	created: function () {
 		this.activeTabId = parseInt(localStorage.getItem('widgetsActiveTabId')) || 1
-		this.startWidgetsOnPage(this.activeTabId)
+
+		const self = this
+		document.addEventListener('keyup', function (event) {
+			if (event.key === 'm') {
+				self.moveableItem.destroyMoveable()
+				self.dragAndResizeEnabled = !self.dragAndResizeEnabled
+				self.settings = false
+			} else if (event.key === 's') {
+				self.moveableItem.destroyMoveable()
+				self.settings = !self.settings
+				self.dragAndResizeEnabled = false
+			} else if (event.key === 'Escape') {
+				self.moveableItem.destroyMoveable()
+				self.settings = false
+				self.dragAndResizeEnabled = false
+			}
+		})
+	},
+	mounted: function () {
+		setTimeout(() => this.startWidgetsOnPage(self.activeTabId), 500)
 	},
 	activated: function () {
 		this.uid = uuidv4()
@@ -97,9 +123,8 @@ export default {
 		startWidgetScript: function (widget) {
 			const uuid = uuidv4()
 			widget.taggedHtml = widget.html.replace(/data-ref="(.*?)"/gi, `data-ref="$1_${uuid}"`)
-
 			const src = `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/resources/${widget.skill}/${widget.name}`
-			this.$loadScript(`${src}.js`).then(() => {
+			jsLoader(`${src}.js`).then(() => {
 				// noinspection JSUnresolvedVariable
 				let cls = eval(`${widget.skill}_${widget.name}`)
 				new cls(uuid, widget.id)
@@ -114,8 +139,17 @@ export default {
 		},
 		cinemaMode: function () {
 			this.$store.commit('toggleCinemaMode')
+			if (this.$store.state.fullScreen) {
+				this.showInfo(this.$t('notifications.info.theaterModeExplain'))
+			}
 		},
-		addWidget: function(skillName, widgetName) {
+		magicMirrorMode: function () {
+			this.$store.commit('toggleMagicMirrorMode')
+			if (this.$store.state.fullScreen) {
+				this.showInfo(this.$t('notifications.info.magicMirrorModeExplain'))
+			}
+		},
+		addWidget: function (skillName, widgetName) {
 			axios({
 				method: 'PUT',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/`,
@@ -259,7 +293,8 @@ export default {
 			const message = {}
 			const options = {
 				view: 'fontawesomePromptDialog',
-				parent: this
+				parent: this,
+				current: this.$store.state.widgetPages[id].icon
 			}
 
 			this.$dialog.prompt(message, options).then(dialogue => {

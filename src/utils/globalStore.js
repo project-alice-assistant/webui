@@ -12,6 +12,7 @@ export default new Vuex.Store({
 		mqtt: null,
 		loggedInUser: false,
 		fullScreen: false,
+		magicMirrorMode: false,
 		minimized: false,
 		uiConnected: false,
 		mqttMessage: {},
@@ -29,9 +30,14 @@ export default new Vuex.Store({
 		deviceLinks: {},
 		furnitures: {},
 		constructions: {},
-		locations: {}
+		locations: {},
+		interfaceUid: ''
 	},
 	mutations: {
+		setInterfaceUid(state, data) {
+			state.interfaceUid = data
+			localStorage.setItem('interfaceUid', data)
+		},
 		setConnectVue(state, data) {
 			state.connectVue = data
 		},
@@ -112,9 +118,27 @@ export default new Vuex.Store({
 			state.fullScreen = false
 			localStorage.setItem('fullscreen', state.fullScreen)
 		},
+		startMagicMirrorMode(state) {
+			state.fullScreen = true
+			localStorage.setItem('fullscreen', state.fullScreen)
+			state.magicMirrorMode = true
+			localStorage.setItem('magicMirrorMode', state.magicMirrorMode)
+		},
+		stopMagicMirrorMode(state) {
+			state.fullScreen = false
+			localStorage.setItem('fullscreen', state.fullScreen)
+			state.magicMirrorMode = false
+			localStorage.setItem('magicMirrorMode', state.magicMirrorMode)
+		},
 		toggleCinemaMode(state) {
 			state.fullScreen = !state.fullScreen
 			localStorage.setItem('fullscreen', state.fullScreen)
+		},
+		toggleMagicMirrorMode(state) {
+			state.fullScreen = !state.fullScreen
+			localStorage.setItem('fullscreen', state.fullScreen)
+			state.magicMirrorMode = !state.magicMirrorMode
+			localStorage.setItem('magicMirrorMode', state.magicMirrorMode)
 		},
 		startMinimized(state) {
 			state.minimized = true

@@ -1,6 +1,5 @@
 <template>
-	<iframe id="nodered" title="nodered" :src="'//'+this.$store.state.settings['aliceIp']+':1880'"></iframe>
+    <portal to="scenarios-iframe"></portal>
 </template>
 
-<style src="../css/scenarios.css" scoped></style>
 <script src="../js/scenarios.js"></script>

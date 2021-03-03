@@ -26,7 +26,7 @@
 					/>
 				</div>
 				<div v-for="(template, configName) in myConfigTemplates" :key="configName" class="input">
-					<configInput :configName="configName" :holder="$data.parent.$store.state.devices[parent.data['id']].deviceConfigs" :template="template"/>
+					<configInput :configName="configName" :holder="$data.parent.$store.state.devices[parent.data['id']].deviceConfigs" :parent="parent" :template="template"/>
 				</div>
 			</div>
 		</div>

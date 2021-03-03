@@ -244,7 +244,7 @@ export default {
 			}
 		},
 		rename: function (event) {
-			if (this.myHome.moveableItem.timeout === Math.floor(new Date().getTime()/250) || !this.myHome.locationsEditMode || this.myHome.toolsState.addingLocation || this.myHome.toolsState.paintingFloors) return
+			if (this.myHome.moveableItem.timeout === Math.floor(new Date().getTime() / 250) || !this.myHome.locationsEditMode || this.myHome.toolsState.addingLocation || this.myHome.toolsState.paintingFloors || this.myHome.toolsState.placingFurniture) return
 			event.stopPropagation()
 
 			let self = this
@@ -353,18 +353,18 @@ export default {
 				const deviceType = this.myHome.getDeviceType(device)
 
 				if (!deviceType.allowLocationLinks) {
-					if (showError) this.showError(this.$t('notifications.successes.cannotLinkDevice'))
+					if (showError) this.showError(this.$t('notifications.errors.cannotLinkDevice'))
 					return false
 				}
 
 				for (const link of Object.values(this.$store.state.deviceLinks)) {
 					if (link.deviceId === device.data.id && link.targetLocation === this.data.id) {
-						if (showError) this.showError(this.$t('notifications.successes.deviceAlreadyLinkedToLocation'))
+						if (showError) this.showInfo(this.$t('notifications.info.deviceAlreadyLinkedToLocation'))
 						return false
 					}
 				}
 			} catch {
-				if (showError) this.showError(this.$t('notifications.successes.unexpectedServerError'))
+				if (showError) this.showError(this.$t('notifications.errors.unexpectedServerError'))
 				return false
 			}
 			return true

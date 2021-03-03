@@ -1,5 +1,6 @@
 import axios from 'axios'
 import * as C from '@/utils/constants'
+import {v4 as uuidv4} from 'uuid'
 
 // noinspection DuplicatedCode
 export default {
@@ -50,7 +51,7 @@ export default {
 						clearTimeout(self.checkHeartbeat)
 					}
 				} else if (msg.topic === C.DEVICE_UPDATED_TOPIC) {
-					this.$set(self.$store.state.devices[self.data.id], payload['device'])
+					self.$set(self.$store.state.devices, payload['device']['id'], payload['device'])
 				}
 			}
 		)
@@ -78,7 +79,7 @@ export default {
 		computeCustomStyle: function () {
 			return this.myHome.moveableItem.computeMyHomeCustomStyle(
 				this.data,
-				`background: url('http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/${this.data.id}/device.png') no-repeat; background-size: 100% 100%;`
+				`background-image: url('http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/${this.data.id}/${uuidv4()}/device.png'); background-position: center center; background-size: contain; background-repeat: no-repeat;`
 			)
 		},
 		save: function () {
@@ -122,8 +123,16 @@ export default {
 			this.myHome.removeDroppable()
 
 			if (this.myHome.devicesEditMode && this.myHome.toolsState.linkingDevices && this.myHome.newConnectionLink === null && this.data.parentLocation !== 0) {
+				if (!this.myHome.getDeviceType(this).allowLocationLinks) {
+					this.showError(this.$t('notifications.errors.cannotLinkDevice'))
+					return
+				}
 				this.myHome.newConnectionLine(this)
 			} else if (this.myHome.devicesEditMode && this.myHome.toolsState.unlinkingDevices && this.myHome.newConnectionLink === null) {
+				if (!this.myHome.getDeviceType(this).allowLocationLinks) {
+					this.showError(this.$t('notifications.errors.cannotLinkDevice'))
+					return
+				}
 				this.myHome.newDisconnectionLine(this)
 			} else if (this.myHome.toolsState.unlinkingDevices && this.myHome.newConnectionLink !== null) {
 
@@ -141,7 +150,7 @@ export default {
 					headers: {'auth': this.$store.getters.apiToken}
 				}).then(response => {
 					if ('success' in response.data) {
-						if (!response.data.success) {
+						if (!response.data.success || !'ret' in response.data) {
 							this.showError(this.$t('notifications.errors.somethingWentWrong'))
 							console.error(response.data.message)
 						} else {

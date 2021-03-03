@@ -26,7 +26,7 @@ export default {
 			return (categoryName) => {
 				let settings = {}
 				for (const [settingName, settingTemplate] of Object.entries(this.$store.state.settingTemplates)) {
-					if (settingTemplate['display'] !== 'hidden' && settingTemplate['category'].toLowerCase() === categoryName.toLowerCase() && this.checkSettingVisibility(settingName)) {
+					if (!settingTemplate['hidden'] && settingTemplate['category'].toLowerCase() === categoryName.toLowerCase() && this.checkSettingVisibility(settingName)) {
 						settings[settingName] = settingTemplate
 					}
 				}
@@ -132,9 +132,9 @@ export default {
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/${id}/`,
 				headers: {'auth': this.$store.getters.apiToken},
 			}).then(function() {
-				setTimeout(() =>{
+				setTimeout(() => {
 					icon.classList.add('green')
-					self.$router.replace('/syslog').then()
+					self.$router.replace('/syslog').catch()
 				}, 2000)
 			}).catch(function() {
 				setTimeout(() => {
@@ -170,7 +170,10 @@ export default {
 			axios({
 				method: 'GET',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/${id}/`,
-				headers: {'auth': this.$store.getters.apiToken}
+				headers: {
+					'auth': this.$store.getters.apiToken,
+					'uid': localStorage.getItem('interfaceUid')
+				}
 			}).then(response => {
 				if ('success' in response.data && response.data['success']) {
 					setTimeout(() => {
@@ -191,6 +194,7 @@ export default {
 					icon.classList.remove('red')
 					icon.classList.remove('green')
 				}, 4000)
+				this.$router.replace('/dialogView').then()
 			})
 		},
 		startIcon: function(id) {

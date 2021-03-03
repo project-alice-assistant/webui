@@ -1,7 +1,11 @@
 import * as C from '@/utils/constants'
+import paScenariosIframe from '../views/scenariosIframe'
 
 export default {
 	name: 'pa-content',
+	components: {
+		paScenariosIframe
+	},
 	data: function() {
 		return {
 			connected: true,

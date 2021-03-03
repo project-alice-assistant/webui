@@ -341,9 +341,11 @@ export default {
 				}
 			)
 			device.myLinks[link.id] = line
-			this.connectionLinks[link.id] = line
+			if(device.data['parentLocation'] !== link.targetLocation) {
+				this.connectionLinks[link.id] = line
+			}
 
-			if (this.devicesEditMode) {
+			if (this.devicesEditMode && device.data['parentLocation'] !== link.targetLocation) {
 				line.show('draw')
 			}
 		},
@@ -400,6 +402,9 @@ export default {
 		},
 		cinemaMode: function () {
 			this.$store.commit('toggleCinemaMode')
+			if (this.$store.state.fullScreen) {
+				this.showInfo(this.$t('notifications.info.theaterModeExplain'))
+			}
 		},
 		setLocationsEditMode: function () {
 			this.locationsEditMode = true
@@ -584,8 +589,8 @@ export default {
 					settings: {
 						x: this.areaSelectorStartX,
 						y: this.areaSelectorStartY,
-						w: this.areaSelectorW || 150,
-						h: this.areaSelectorH || 150
+						w: Math.max(this.areaSelectorW || 150, 50),
+						h: Math.max(this.areaSelectorH || 150, 50)
 					}
 				}
 

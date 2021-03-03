@@ -12,8 +12,6 @@ import VueDialog from 'vuejs-dialog'
 import VueTooltip from 'v-tooltip'
 import VueSimpleMarkdown from 'vue-simple-markdown'
 import VueI18n from 'vue-i18n'
-import LoadScript from 'vue-plugin-load-script'
-import VueResizeText from 'vue-resize-text'
 
 import Skill from './components/views/skill'
 import StoreSkill from './components/views/storeSkill'
@@ -26,6 +24,7 @@ import ConfigInput from './components/views/configInput'
 import Construction from './components/views/construction'
 import Device from './components/views/device'
 import Widget from './components/views/widget'
+import Notification from './components/views/notification'
 
 import 'vuejs-dialog/dist/vuejs-dialog.min.css'
 import 'vue-tour/dist/vue-tour.css'
@@ -61,8 +60,6 @@ Vue.use(VueTour)
 Vue.use(VueTooltip)
 Vue.use(VueSimpleMarkdown)
 Vue.use(VueI18n)
-Vue.use(LoadScript)
-Vue.use(VueResizeText)
 
 Vue.component('VueToggles', VueToggles)
 Vue.component('skill', Skill)
@@ -77,6 +74,7 @@ Vue.component('construction', Construction)
 Vue.component('device', Device)
 Vue.component('configInput', ConfigInput)
 Vue.component('widget', Widget)
+Vue.component('notification', Notification)
 
 Vue.dialog.registerComponent('fontawesomePromptDialog', faIconOption)
 Vue.dialog.registerComponent('widgetOptionsPromptDialog', widgetOption)
@@ -86,9 +84,6 @@ Vue.dialog.registerComponent('addDevicePromptDialog', addDeviceDialog)
 Vue.dialog.registerComponent('deviceOptionsPromptDialog', deviceOptions)
 Vue.dialog.registerComponent('deviceReplyListSelect', deviceReplyListSelect)
 
-// Jquery use ONLY FOR WIDGETS, DO NOT USE JQUERY FOR __ANYTHING ELSE__
-global.jQuery = require('jquery')
-window.$ = global.jQuery
 
 // Workaround to init v-models
 Vue.directive('init', {
