@@ -2,6 +2,7 @@ import axios from 'axios'
 import Paho from 'paho-mqtt'
 import * as C from '@/utils/constants'
 import jsLoader from '@/utils/jsLoader'
+import AudioPlayer from '@/utils/audioPlayer'
 
 export default {
 	name: 'connect',
@@ -10,7 +11,8 @@ export default {
 			connecting: false,
 			port: 5001,
 			ip: '',
-			remember: false
+			remember: false,
+			audioPlayer: new AudioPlayer()
 		}
 	},
 	created: function () {
@@ -487,6 +489,7 @@ export default {
 			this.$store.state.mqtt.subscribe(C.SKILL_UPDATING_TOPIC)
 			this.$store.state.mqtt.subscribe(C.SKILL_INSTALLED_TOPIC)
 			this.$store.state.mqtt.subscribe(C.SKILL_DELETED_TOPIC)
+			this.$store.state.mqtt.subscribe(C.PLAY_BYTES_TOPIC.replace('{}', localStorage.getItem('interfaceUid')))
 		},
 		onConnectionFailed: function (_msg) {
 			console.log('Mqtt connection failed')
@@ -495,7 +498,11 @@ export default {
 			console.log('Mqtt connection lost')
 		},
 		onMessage: function (msg) {
-			this.$store.commit('mqttMessage', msg)
+			if (msg.topic.includes('playBytes')) {
+				this.audioPlayer.playBytes(msg.payloadBytes)
+			} else {
+				this.$store.commit('mqttMessage', msg)
+			}
 		}
 	}
 }
