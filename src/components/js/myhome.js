@@ -136,7 +136,7 @@ export default {
 			for (const [skill, types] of Object.entries(this.$store.state.deviceTypes)) {
 				let possibles = []
 				for (const typ of types) {
-					if (this.canAddDevice(typ)) {
+					if (this.canAddDevice(typ) && typ.deviceTypeName.toLowerCase() !== 'webinterface') {
 						possibles.push(typ)
 					}
 				}
