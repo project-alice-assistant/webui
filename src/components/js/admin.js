@@ -67,10 +67,7 @@ export default {
 			}
 		},
 		checkCategoryVisibility: function (categoryName) {
-			const parent = document.querySelector(`#${categoryName.toLowerCase().replace(' ', '_')}`)
-			if (parent !== null) {
-				return parent.querySelector('.input') !== null
-			}
+			return Object.keys(this.categorySettings(categoryName)).length > 0;
 		},
 		checkSettingVisibility: function (settingName) {
 			let visible = true
