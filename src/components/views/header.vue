@@ -13,8 +13,8 @@
 		<div class="channelInfo">
 			{{ $store.state.settings['aliceUpdateChannel'] }}
 		</div>
-		<div class="notifications">
-			<i aria-hidden="false" class="fas fa-bell clickable notificationIcon"/>
+		<div class="notifications" v-if="notifications">
+			<i aria-hidden="false" class="fas fa-envelope clickable notificationIcon"/>
 			<div :class="{initialHidden: true}" class="notificationHolder">
 				<notification v-for="(notification, id) in notifications" :key="id" :notification="notification"></notification>
 			</div>
