@@ -104,7 +104,7 @@ export default {
 					self.myHome.removeDeviceLinks(self.data.id)
 
 					for (const link of Object.values(response.data.links)) {
-						this.myHome.$set(this.myHome.deviceLinks, link.id, link)
+						self.myHome.$set(self.myHome.$store.state.deviceLinks, link.id, link)
 					}
 
 					self.showSuccess(self.$t('notifications.successes.deviceSaved'))
