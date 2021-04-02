@@ -69,7 +69,8 @@ export default {
 			selectedWidget: -1,
 			dragAndResizeEnabled: false,
 			hasTitle: true,
-			jsImports: ''
+			jsImports: '',
+			loadedClasses: []
 		}
 	},
 	computed: {
@@ -109,6 +110,9 @@ export default {
 		this.dragAndResizeEnabled = false
 		this.startWidgetsOnPage(this.activeTabId)
 	},
+	deactivated: function() {
+		this.stopAllWidgets()
+	},
 	methods: {
 		setMoveable: function (target, prop) {
 			this.moveableItem.setMoveable(target, prop)
@@ -124,16 +128,27 @@ export default {
 			const uuid = uuidv4()
 			widget.taggedHtml = widget.html.replace(/data-ref="(.*?)"/gi, `data-ref="$1_${uuid}"`)
 			const src = `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/resources/${widget.skill}/${widget.name}`
+			let self = this
 			jsLoader(`${src}.js`).then(() => {
 				// noinspection JSUnresolvedVariable
 				let cls = eval(`${widget.skill}_${widget.name}`)
-				new cls(uuid, widget.id)
+				let inst = new cls(uuid, widget.id)
+				self.loadedClasses.push(inst)
 			})
+		},
+		stopAllWidgets: function (){
+			while(this.loadedClasses && this.loadedClasses.length) {
+				let inst = this.loadedClasses.pop()
+				if(typeof inst.stop === 'function') {
+					inst.stop()
+				}
+			}
 		},
 		changePage: function (id) {
 			this.moveableItem.destroyMoveable()
 			this.activeTabId = id
 			this.$forceUpdate()
+			this.stopAllWidgets()
 			this.startWidgetsOnPage(this.activeTabId)
 			localStorage.setItem('widgetsActiveTabId', this.activeTabId)
 		},
