@@ -51,6 +51,9 @@ export default {
 	methods: {
 		dismissNotification: function(id) {
 			this.$delete(this.notifications, id)
+			if (Object.keys(this.notifications).length === 0) {
+				this.notificationsDisplayToggle = false
+			}
 		}
 	}
 }
