@@ -4,13 +4,8 @@ export default {
 	name: 'pa-header',
 	data() {
 		return {
-			notifications: {
-				1: {
-					'type': 'alert',
-					'data': 'This is an alert',
-					'time': '1980523655'
-				}
-			},
+			notifications: {},
+			notificationsDisplayToggle: false,
 			title: '',
 			unwatch: {},
 			resources: {
@@ -27,8 +22,15 @@ export default {
 				return state.mqttMessage
 			},
 			function(msg) {
+				let payload =JSON.parse(msg.payloadString)
 				if (msg.topic === C.RESOURCE_USAGE_TOPIC) {
-					self.resources = JSON.parse(msg.payloadString)
+					self.resources = payload
+				} else if (msg.topic === C.UI_NOTIFICATION_TOPIC) {
+					if (payload.hasOwnProperty('key') && payload['key']) {
+						self.notifications[payload['key']] = payload
+					} else {
+						self.notifications[Object.keys(self.notifications).length + 1] = payload
+					}
 				}
 			}
 		)
@@ -44,6 +46,11 @@ export default {
 				this.title = this.$t(to.meta.title) || 'Home'
 				document.title = `Project Alice - ${this.title.charAt(0).toUpperCase() + this.title.slice(1)}`
 			}
+		}
+	},
+	methods: {
+		dismissNotification: function(id) {
+			this.$delete(this.notifications, id)
 		}
 	}
 }

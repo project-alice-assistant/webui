@@ -13,10 +13,10 @@
 		<div class="channelInfo">
 			{{ $store.state.settings['aliceUpdateChannel'] }}
 		</div>
-		<div class="notifications" v-if="notifications">
-			<i aria-hidden="false" class="fas fa-envelope clickable notificationIcon"/>
-			<div :class="{initialHidden: true}" class="notificationHolder">
-				<notification v-for="(notification, id) in notifications" :key="id" :notification="notification"></notification>
+		<div class="notifications" v-if="Object.keys(notifications).length !== 0">
+			<i aria-hidden="false" class="fas fa-envelope clickable notificationIcon" @click="notificationsDisplayToggle = !notificationsDisplayToggle"/>
+			<div class="notificationHolder" v-if="notificationsDisplayToggle">
+				<notification v-for="(notification, id) in notifications" :key="id" :notification="notification" :id="id"/>
 			</div>
 		</div>
 	</header>

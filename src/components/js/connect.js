@@ -471,6 +471,7 @@ export default {
 		},
 		onConnected: function () {
 			console.log('Mqtt connected')
+			this.$store.state.mqtt.subscribe(C.UI_NOTIFICATION_TOPIC)
 			this.$store.state.mqtt.subscribe(C.RESOURCE_USAGE_TOPIC)
 			this.$store.state.mqtt.subscribe(C.CORE_HEARTBEAT_TOPIC)
 			this.$store.state.mqtt.subscribe(C.DEVICE_HEARTBEAT_TOPIC)
