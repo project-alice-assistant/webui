@@ -89,7 +89,7 @@ export default {
 				return this.data.deviceConfigs['heartbeatRate']
 			},
 			set: function (value) {
-				return this.$data.parent.$store.state.devices[this.parent.data['id']].deviceConfigs['heartbeatRate'] = value
+				return this.$data.parent.$store.state.devices[this.parent.data['id']].deviceConfigs['heartbeatRate'] = parseInt(value)
 			}
 		}
 	},
