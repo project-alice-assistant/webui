@@ -87,7 +87,7 @@ export default {
 				parentLocation: this.data.parentLocation,
 				settings: this.data.settings,
 				deviceConfigs: this.data.deviceConfigs,
-				linksConfigs: this.myHome.getDeviceLinks(this.data.id)
+				linkConfigs: this.myHome.getDeviceLinks(this.data.id)
 			}
 
 			const self = this
