@@ -90,6 +90,9 @@
 				@mousedown="mouseDown"
 				@mousemove="mouseMove"
 				@mouseup="handleClick"
+				@touchstart="mouseDown"
+				@touchmove="mouseMove"
+				@touchend="handleClick"
 			>
 				<div id="center" ref="center"/>
 				<div

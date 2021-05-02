@@ -500,8 +500,8 @@ export default {
 			} else if (event.target.classList.contains('floorPlan') && this.toolsState.none) {
 				event.target.classList.add('grabbed')
 				this.draggingPlan = true
-				this.draggingPlanStartX = event.clientX
-				this.draggingPlanStartY = event.clientY
+				this.draggingPlanStartX = event.clientX ? event.clientX : event.changedTouches[0].clientX
+				this.draggingPlanStartY = event.clientY ? event.clientY : event.changedTouches[0].clientY
 			}
 		},
 		mouseMove: function (event) {
@@ -509,11 +509,13 @@ export default {
 				if (!this.clicked) return
 				this.drawSelectionArea(event.offsetX, event.offsetY)
 			} else if (this.draggingPlan) {
-				this.floorPlanX += event.clientX - this.draggingPlanStartX
-				this.floorPlanY += event.clientY - this.draggingPlanStartY
+				let clientX = event.clientX ? event.clientX : event.changedTouches[0].clientX
+				let clientY = event.clientY ? event.clientY : event.changedTouches[0].clientY
+				this.floorPlanX += clientX - this.draggingPlanStartX
+				this.floorPlanY += clientY - this.draggingPlanStartY
 
-				this.draggingPlanStartX = event.clientX
-				this.draggingPlanStartY = event.clientY
+				this.draggingPlanStartX = clientX
+				this.draggingPlanStartY = clientY
 				this.refreshDeviceLinks()
 				this.positionCenterPointer()
 			} else if ((this.toolsState.paintingFloors && this.activeFloorTile !== '')
