@@ -497,7 +497,7 @@ export default {
 				this.areaSelectorStartX = event.offsetX
 				this.areaSelectorStartY = event.offsetY
 				this.drawSelectionArea(this.areaSelectorStartX, this.areaSelectorStartY)
-			} else if (event.target.classList.contains('floorPlan') && this.toolsState.none) {
+			} else if (this.toolsState.none && event.target.classList.contains('floorPlan') || ( !this.locationsEditMode && event.target.classList.contains('location') ) ) {
 				event.target.classList.add('grabbed')
 				this.draggingPlan = true
 				this.draggingPlanStartX = event.clientX ? event.clientX : event.changedTouches[0].clientX
