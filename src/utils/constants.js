@@ -2,6 +2,7 @@ export const RESOURCE_USAGE_TOPIC = 'projectalice/devices/resourceUsage'
 export const CORE_HEARTBEAT_TOPIC = 'projectalice/devices/coreHeartbeat'
 export const DEVICE_HEARTBEAT_TOPIC = 'projectalice/devices/heartbeat'
 export const DEVICE_UPDATED_TOPIC = 'projectalice/devices/updated'
+export const DEVICE_DELETED_TOPIC = 'projectalice/devices/deleted'
 export const CORE_RECONNECTION_TOPIC = 'projectalice/devices/coreReconnection'
 export const CORE_DISCONNECTION_TOPIC = 'projectalice/devices/coreDisconnection'
 

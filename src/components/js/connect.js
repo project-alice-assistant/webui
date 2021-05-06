@@ -476,6 +476,7 @@ export default {
 			this.$store.state.mqtt.subscribe(C.CORE_HEARTBEAT_TOPIC)
 			this.$store.state.mqtt.subscribe(C.DEVICE_HEARTBEAT_TOPIC)
 			this.$store.state.mqtt.subscribe(C.DEVICE_UPDATED_TOPIC)
+			this.$store.state.mqtt.subscribe(C.DEVICE_DELETED_TOPIC)
 			this.$store.state.mqtt.subscribe(C.CORE_DISCONNECTION_TOPIC)
 			this.$store.state.mqtt.subscribe(C.CORE_RECONNECTION_TOPIC)
 			this.$store.state.mqtt.subscribe(C.ALICE_WATCH_TOPIC)

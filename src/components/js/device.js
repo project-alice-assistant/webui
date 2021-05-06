@@ -52,6 +52,8 @@ export default {
 					}
 				} else if (msg.topic === C.DEVICE_UPDATED_TOPIC) {
 					self.$set(self.$store.state.devices, payload['device']['id'], payload['device'])
+				} else if (msg.topic === C.DEVICE_DELETED_TOPIC) {
+					self.$delete(self.$store.state.devices, payload['id'])
 				}
 			}
 		)
@@ -60,6 +62,7 @@ export default {
 		this.$store.state.mqtt.unsubscribe(C.CORE_HEARTBEAT_TOPIC)
 		this.$store.state.mqtt.unsubscribe(C.DEVICE_HEARTBEAT_TOPIC)
 		this.$store.state.mqtt.unsubscribe(C.DEVICE_UPDATED_TOPIC)
+		this.$store.state.mqtt.unsubscribe(C.DEVICE_DELETED_TOPIC)
 		this.unwatch()
 	},
 	methods: {
