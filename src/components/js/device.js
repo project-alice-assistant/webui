@@ -158,58 +158,7 @@ export default {
 							console.error(response.data.message)
 						} else {
 							const ret = response.data['ret']
-							if (ret['action'] === 'info_notification') {
-								this.showInfo(this.$t(ret['data']))
-							} else if (ret['action'] === 'success_notification') {
-								this.showSuccess(this.$t(ret['data']))
-							} else if (ret['action'] === 'error_notification') {
-								this.showError(this.$t(ret['data']))
-							} else if (ret['action'] === 'navigate') {
-								window.open(ret['data'], '_blank');
-							} else if (ret['action'] === 'answer_string') {
-								this.$dialog.prompt({
-									title: this.$t(ret['data']['title']),
-									body: this.$t(ret['data']['body']),
-									okText: this.$t('buttons.ok'),
-									cancelText: this.$t('buttons.cancel'),
-								}).then(function (dialog) {
-									axios({
-										method: 'POST',
-										url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/${self.data.id}/reply/`,
-										data: {
-											secret: ret['reply']['secret'],
-											concerns: ret['reply']['concerns'],
-											answer: dialog.data
-										},
-										headers: {
-											'auth': self.$store.getters.apiToken,
-											'content-type': 'application/json'
-										}
-									})
-								}).catch()
-							} else if (ret['action'] === 'list_select') {
-								const options = {
-									view: 'deviceReplyListSelect',
-									data: ret['data'],
-									parent: this
-								}
-
-								this.$dialog.prompt({}, options).then(function (dialog) {
-									axios({
-										method: 'POST',
-										url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/${self.data.id}/reply/`,
-										data: {
-											secret: ret['reply']['secret'],
-											concerns: ret['reply']['concerns'],
-											answer: dialog.data
-										},
-										headers: {
-											'auth': self.$store.getters.apiToken,
-											'content-type': 'application/json'
-										}
-									})
-								}).catch()
-							}
+							this.handleDeviceClickReaction(ret)
 						}
 					} else {
 						this.showError(this.$t('notifications.errors.somethingWentWrong'))
