@@ -42,9 +42,11 @@ export default {
 
 					self.data.connected = true
 
-					self.checkHeartbeat = setTimeout(function () {
-						self.data.connected = false
-					}, self.data.deviceConfigs['heartbeatRate'] * 2500)
+					if(self.data.deviceConfigs['heartbeatRate'] > 0) {
+						self.checkHeartbeat = setTimeout(function () {
+							self.data.connected = false
+						}, self.data.deviceConfigs['heartbeatRate'] * 2500)
+					}
 				} else if (msg.topic === C.CORE_DISCONNECTION_TOPIC) {
 					self.data.connected = false
 					if (self.checkHeartbeat !== null) {
