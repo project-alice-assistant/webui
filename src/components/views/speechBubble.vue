@@ -2,7 +2,7 @@
 <div>
 	<div v-if="msg.topic === 'hermes/hotword/#/detected'" class="userSpeech male extend"> Hey Alice!</div>
 	<div v-if="msg.topic === 'hermes/tts/say'" :class="aliceGender" class="aliceSpeech extend">
-		{{ JSON.parse(msg.payloadString)['text'] }}
+		{{ removeTags(JSON.parse(msg.payloadString)['text']) }}
 	</div>
 	<div v-if="msg.topic === 'hermes/nlu/query'" class="userSpeech male extend">
 		{{ JSON.parse(msg.payloadString)['input'] }}
@@ -25,7 +25,13 @@ export default {
 	props: [
 		'msg',
 		'aliceGender'
-	]
+	],
+	methods: {
+		removeTags: function (msg){
+			let regex = /(<([^>]+)>)/ig;
+			return msg.replace(regex, "");
+		}
+	}
 }
 </script>
 
