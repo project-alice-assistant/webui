@@ -74,11 +74,11 @@ export default {
 			try {
 				if(that.fullSpecifiedY1){
 					that.fullSpecifiedY1.forEach(function (comb){
-						that.addDataToGraph('Y1',comb['type'],comb['locationID'], comb['location'], comb['deviceId'], comb['device'])
+						that.addDataToGraph('Y1',comb['type'],comb['locationId'], comb['location'], comb['deviceId'], comb['device'])
 					})
 					if(that.fullSpecifiedY2) {
 						that.fullSpecifiedY2.forEach(function (comb) {
-							that.addDataToGraph('Y2',comb['type'],comb['locationID'], comb['location'], comb['deviceId'], comb['device'])
+							that.addDataToGraph('Y2',comb['type'],comb['locationId'], comb['location'], comb['deviceId'], comb['device'])
 						})
 						if(that.fullSpecifiedY2.length > 0 && that.options.scales.yAxes.length < 2) {
 							that.options.scales.yAxes.push({
