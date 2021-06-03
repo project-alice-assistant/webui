@@ -194,17 +194,28 @@ export default {
 			this.myHome.refreshDeviceLinks()
 			throw true
 		},
+		calcGlobalOffset: function (locId) {
+			if(locId === 0){
+				return [0,0]
+			}
+			let parentLoc = this.$store.state.locations[locId]
+			let recursive = this.calcGlobalOffset(parentLoc.parentLocation)
+			return [parentLoc.settings.x+recursive[0], parentLoc.settings.y+recursive[1]]
+		},
 		setPosition: function (target, _clientX, _clientY) {
 			try {
 				if (this.targetParentLocation !== 0 && this.data.parentLocation !== this.targetParentLocation) {
 					// noinspection DuplicatedCode
-					const parentLocation = document.querySelector(`#loc_${this.data.parentLocation}`)
+					let parentLoc = this.calcGlobalOffset(this.data.parentLocation)
+					let newParentLoc = this.calcGlobalOffset(this.targetParentLocation)
+
 					const droppedIn = document.querySelector(`#loc_${this.targetParentLocation}`)
 					this.myHome.moveableItem.container = droppedIn
 					this.$store.state.devices[this.data.id].parentLocation = this.targetParentLocation
 					this.$store.state.devices[this.data.id].settings['z'] = parseInt(droppedIn.style['z-index']) + 1
-					this.$store.state.devices[this.data.id].settings['x'] = parentLocation.offsetLeft + parseInt(target.style.left.substring(-2)) - droppedIn.offsetLeft
-					this.$store.state.devices[this.data.id].settings['y'] = parentLocation.offsetTop + parseInt(target.style.top.substring(-2)) - droppedIn.offsetTop
+
+					this.$store.state.devices[this.data.id].settings['x'] = parentLoc[0] + parseInt(target.style.left.substring(-2)) - newParentLoc[0]
+					this.$store.state.devices[this.data.id].settings['y'] = parentLoc[1] + parseInt(target.style.top.substring(-2)) - newParentLoc[1]
 					this.targetParentLocation = 0
 				} else {
 					// noinspection ExceptionCaughtLocallyJS
