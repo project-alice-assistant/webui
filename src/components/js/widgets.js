@@ -132,7 +132,7 @@ export default {
 			jsLoader(`${src}.js`).then(() => {
 				// noinspection JSUnresolvedVariable
 				let cls = eval(`${widget.skill}_${widget.name}`)
-				let inst = new cls(uuid, widget.id)
+				let inst = new cls(uuid, widget.id, widget)
 				self.loadedClasses.push(inst)
 			})
 		},
@@ -208,10 +208,13 @@ export default {
 		},
 		saveWidget(widget) {
 			const self = this
+			let dataJson = {}
+			dataJson['settings'] = widget.settings
+			dataJson['configs'] = widget.configs
 			axios({
 				method: 'PATCH',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/${widget.id}/`,
-				data: JSON.stringify(widget.settings),
+				data: JSON.stringify(dataJson),
 				headers: {
 					'auth': this.$store.getters.apiToken,
 					'content-type': 'application/json'

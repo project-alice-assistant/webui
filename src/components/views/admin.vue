@@ -1,7 +1,12 @@
 <!--suppress HtmlFormInputWithoutLabel -->
 <template>
 	<div class="container flexcolumn">
-		<tabs :activeTabId="activeTabId" :parent="this" :tabs="tabs"/>
+		<tabs
+			:activeTabId="activeTabId"
+			:parent="this"
+			:tabs="tabs"
+			:store="$store"
+		/>
 		<div v-if="activeTabId === 1" class="tab_page">
 			<div class="settingsContainer">
 				<div class="settingsCategory">
@@ -17,121 +22,11 @@
 				>
 					<div class="title">{{ category.toUpperCase() }}</div>
 					<div class="configLayout">
-						<div class="labels">
-							<label
-								v-for="(settingTemplate, settingName) in categorySettings(category)"
-								:class="settingTemplate['dataType'] === 'longstring' ? 'textAreaLabel' : ''"
-								v-tooltip="settingTemplate['description']"
-								:for="settingName"
-								:id="`label_${settingName}`"
-							>
-								{{ settingName }}:
-							</label>
-						</div>
-						<div class="inputs">
-							<div
-								v-for="(settingTemplate, settingName) in categorySettings(category)"
-								class="input"
-								:id="`input_${settingName}`"
-							>
-								<input
-									v-if="settingTemplate['dataType'] === 'string' && !settingTemplate['isSensitive']"
-									:id="settingName"
-									v-model="$store.state.settings[settingName]"
-									v-init="$store.state.settings[settingName]"
-									:placeholder="settingTemplate['defaultValue']"
-									@change="checkSetters(settingName)"
-									type="text"
-								/>
-								<input
-									v-if="settingTemplate['dataType'] === 'string' && settingTemplate['isSensitive']"
-									:id="settingName"
-									v-model="$store.state.settings[settingName]"
-									v-init="$store.state.settings[settingName]"
-									:placeholder="settingTemplate['defaultValue']"
-									@change="checkSetters(settingName)"
-									type="password"
-								/>
-								<input
-									v-if="settingTemplate['dataType'] === 'email'"
-									:id="settingName"
-									v-model="$store.state.settings[settingName]"
-									v-init="$store.state.settings[settingName]"
-									:placeholder="settingTemplate['defaultValue']"
-									@change="checkSetters(settingName)"
-									type="email"
-								/>
-								<input
-									v-if="settingTemplate['dataType'] === 'integer' && !settingTemplate['isSensitive']"
-									:id="settingName"
-									v-model="$store.state.settings[settingName]"
-									v-init="$store.state.settings[settingName]"
-									:placeholder="settingTemplate['defaultValue']"
-									@change="checkSetters(settingName)"
-									type="number"
-								/>
-								<input
-									v-if="settingTemplate['dataType'] === 'integer' && settingTemplate['isSensitive']"
-									:id="settingName"
-									v-model="$store.state.settings[settingName]"
-									:placeholder="settingTemplate['defaultValue']"
-									@change="checkSetters(settingName)"
-									type="password"
-								/>
-								<select
-									v-if="settingTemplate['dataType'] === 'list'"
-									:id="settingName"
-									v-model="$store.state.settings[settingName]"
-									@change="checkSetters(settingName)"
-								>
-									<option
-										v-if="settingTemplate['values'].constructor === Object"
-										v-for="(value, text) in settingTemplate['values']" v-bind:value="value"
-									>
-										{{ text }}
-									</option>
-									<option
-										v-if="settingTemplate['values'].constructor === Array"
-										v-for="value in settingTemplate['values']" v-bind:value="value"
-									>
-										{{value}}
-									</option>
-								</select>
-								<VueToggles
-									v-if="settingTemplate['dataType'] === 'boolean'"
-									:id="settingName"
-									:checked-text="$t('tooltips.yes')"
-									:unchecked-text="$t('tooltips.no')"
-									:value="$store.state.settings[settingName]"
-									checkedBg="var(--windowBG)"
-									uncheckedBg="var(--windowBG)"
-									@click="$store.state.settings[settingName] = !$store.state.settings[settingName]"
-									@change="checkSetters(settingName)"
-								/>
-								<div v-if="settingTemplate['dataType'] === 'range'" class="rangeInput">
-									<input
-										:id="settingName"
-										v-model="$store.state.settings[settingName]"
-										v-init="$store.state.settings[settingName]"
-										:max="settingTemplate['max']"
-										:min="settingTemplate['min']"
-										:placeholder="settingTemplate['defaultValue']"
-										:step="settingTemplate['step']"
-										type="range"
-										@change="checkSetters(settingName)"
-									/>
-								</div>
-								<textarea
-									v-if="settingTemplate['dataType'] === 'longstring'"
-									:id="settingName"
-									v-model="$store.state.settings[settingName]"
-									v-init="$store.state.settings[settingName]"
-									:placeholder="settingTemplate['defaultValue']"
-									@change="checkSetters(settingName)"
-								/>
-								<span v-if="settingTemplate['dataType'] === 'range'" class="inputRangeValue">{{ $store.state.settings[settingName] }}</span>
-							</div>
-						</div>
+						<configLine v-for="(template, configName) in categorySettings(category)"
+												:configName="configName"
+												:holder="$store.state.settings"
+												:translate="(val) => $t(val)"
+												:template="template"/>
 					</div>
 					<div>
 						<reactive-icon data-success="false" icon="far fa-save" tooltip="tooltips.save" :onClick="save" :timing="[1, 2]"/>

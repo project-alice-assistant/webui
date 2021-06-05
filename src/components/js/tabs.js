@@ -7,7 +7,8 @@ export default {
 		'removeTab',
 		'renameTab',
 		'activeTabId',
-		'parent'
+		'parent',
+		'store'
 	],
 	methods: {
 		handleClick: function (id) {

@@ -16,7 +16,8 @@ export default {
 	methods: {
 		openSettings: function () {
 			let self = this
-			let backup = {...this.widget.settings}
+			let backupsettings = {...this.widget.settings}
+			let backupconfigs = {...this.widget.configs}
 			this.settings = false
 
 			const message = {}
@@ -27,21 +28,26 @@ export default {
 			}
 
 			this.$dialog.prompt(message, options).then(dialogue => {
+				let dataJson = {}
+				dataJson['settings'] = dialogue.data.settings
+				dataJson['configs'] = dialogue.data.configs
 				axios({
 					method: 'PATCH',
 					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/widgets/${self.widget.id}/`,
-					data: JSON.stringify(dialogue.data.settings),
+					data: JSON.stringify(dataJson),
 					headers: {
 						'auth': self.$store.getters.apiToken,
 						'content-type': 'application/json'
 					}
 				}).catch(() => {
-					this.widget.settings = backup
+					this.widget.settings = backupsettings
+					this.widget.configs = backupconfigs
 				}).finally(() => {
 					this.settings = true
 				})
 			}).catch(() => {
-				this.widget.settings = backup
+				this.widget.settings = backupsettings
+				this.widget.configs = backupconfigs
 				this.settings = true
 			})
 		},

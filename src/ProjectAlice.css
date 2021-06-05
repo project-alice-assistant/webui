@@ -402,10 +402,11 @@ button:active {
 	position: relative;
 	display: flex;
 	flex: 1;
-	flex-direction: row;
+	flex-direction: column;
 	width: 100%;
 	box-sizing: border-box;
-	padding: 15px;
+	//padding: 15px;
+	overflow: hidden;
 }
 
 .configLayout > .labels {

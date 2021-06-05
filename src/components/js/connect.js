@@ -286,6 +286,7 @@ export default {
 				axios({
 					method: 'GET',
 					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/widgets/`,
+					headers: {'auth': self.$store.getters.apiToken}
 				}).then(response => {
 					if ('widgets' in response.data) {
 						self.$store.commit('setWidgetInstances', response.data['widgets'])

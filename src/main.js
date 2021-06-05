@@ -20,6 +20,7 @@ import Tabs from './components/views/tabs'
 import ReactiveIcon from './components/views/reactiveIcon'
 import Location from './components/views/location'
 import Furniture from './components/views/furniture'
+import ConfigLine from './components/views/configLine'
 import ConfigInput from './components/views/configInput'
 import Construction from './components/views/construction'
 import Device from './components/views/device'
@@ -73,6 +74,7 @@ Vue.component('furniture', Furniture)
 Vue.component('construction', Construction)
 Vue.component('device', Device)
 Vue.component('configInput', ConfigInput)
+Vue.component('configLine', ConfigLine)
 Vue.component('widget', Widget)
 Vue.component('notification', Notification)
 
