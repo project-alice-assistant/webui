@@ -32,25 +32,25 @@ export default {
 				"defaultValue": false,
 				"dataType"    : "boolean",
 				"isSensitive" : false,
-				"description" : "Show the "
+				"description" : "Show the title of the widget"
 			}
 			template['borders'] = {
 				"defaultValue": false,
 				"dataType"    : "boolean",
 				"isSensitive" : false,
-				"description" : "Show the "
+				"description" : "Show a shadow drop/border"
 			}
 			template['background'] = {
 				"defaultValue": '#000000',
 				"dataType"    : "color2rgba",
 				"isSensitive" : false,
-				"description" : "Show the "
+				"description" : "The background color of the widget"
 			}
 			template['background-opacity'] = {
 				"defaultValue": false,
 				"dataType"    : "range2rgba",
 				"isSensitive" : false,
-				"description" : "Show the ",
+				"description" : "The opacity of the widget",
 				"min" : "0",
 				"max":"1",
 				"step":"0.1",
@@ -60,7 +60,7 @@ export default {
 				"defaultValue": 1,
 				"dataType"    : "range",
 				"isSensitive" : false,
-				"description" : "Show the ",
+				"description" : "Relative font size in this widget",
 				"min" : "0.25",
 				"max":"5",
 				"step":"0.01",
@@ -70,7 +70,7 @@ export default {
 				"defaultValue": '#FFFFFF',
 				"dataType"    : "color",
 				"isSensitive" : false,
-				"description" : "Show the "
+				"description" : "Color of the text in the widget"
 			}
 			return template
 		},
