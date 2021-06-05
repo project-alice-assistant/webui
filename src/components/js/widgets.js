@@ -133,6 +133,7 @@ export default {
 				// noinspection JSUnresolvedVariable
 				let cls = eval(`${widget.skill}_${widget.name}`)
 				let inst = new cls(uuid, widget.id, widget)
+				widget.instance = inst
 				self.loadedClasses.push(inst)
 			})
 		},

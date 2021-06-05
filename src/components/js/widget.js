@@ -44,6 +44,10 @@ export default {
 					this.widget.configs = backupconfigs
 				}).finally(() => {
 					this.settings = true
+					//
+					try {
+						self.widget.instance.refresh()
+					} catch(e){}
 				})
 			}).catch(() => {
 				this.widget.settings = backupsettings

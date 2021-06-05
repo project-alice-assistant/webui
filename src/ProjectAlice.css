@@ -545,3 +545,14 @@ button:active {
 	0% { opacity: 1; }
 	100% { opacity: 0; }
 }
+
+.dg-actions {
+	margin-top: 1em;
+}
+.dg-actions button {
+	padding: 0 1em 0 1em;
+}
+
+.spacedText {
+	margin: 5em;
+}
