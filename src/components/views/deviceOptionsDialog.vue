@@ -3,18 +3,9 @@
 	<div class="custom-view-wrapper">
 		<h3>{{ parent.$t('dialogs.titles.deviceSettings') }}</h3>
 		<h4>{{ parent.$t('dialogs.titles.generalSettings') }}</h4>
-		<div class="configLayout">
-			<configLine v-for="(template, configName) in genericDeviceTemplates"
-									:configName="configName"
-									:holder="$data.parent.$store.state.devices[parent.data['id']].deviceConfigs"
-									:translate="(val) => parent.$t(val)"
-									:template="template"/>
-			<configLine v-for="(template, configName) in myConfigTemplates"
-									:configName="configName"
-									:holder="$data.parent.$store.state.devices[parent.data['id']].deviceConfigs"
-									:translate="(val) => parent.$t(val)"
-									:template="template"/>
-		</div>
+		<config :templates="deviceTemplates"
+						:holder="$data.parent.$store.state.devices[parent.data['id']].deviceConfigs"
+						:translate="(val) => parent.$t(val)"/>
 		<h4 v-if="parent.myLinks.length > 0">{{ parent.$t('dialogs.titles.deviceLinksSettings') }}</h4>
 		<div v-for="(link, linkId) in parent.myLinks" :key="linkId">
 			<h5>{{ parent.$t('dialogs.titles.linkTo') }}: {{

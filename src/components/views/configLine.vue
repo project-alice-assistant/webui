@@ -23,7 +23,8 @@ export default {
 		min-width: 20em;
 	}
 	.dg-container >* label {
-		min-width: 50%;
+		max-width: 50%;
+		min-width: 46%;
 	}
 	.configLine {
 		clear:both;
@@ -32,5 +33,6 @@ export default {
 		width:100%;
 		padding:.5em;
 		align-items: center;
+		flex-wrap: wrap;
 	}
 </style>

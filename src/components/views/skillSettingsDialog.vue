@@ -2,16 +2,15 @@
 <template>
 	<div class="custom-view-wrapper">
 		<h3>{{parent.$t('dialogs.titles.skillSettings')}}</h3>
-		<div class="configLayout">
-				<configLine v-for="(template, configName) in options['skill']['settingsTemplate']"
-										:configName="configName"
-										:holder="options['skill']['settings']"
-										:translate="(val) => parent.$t(val)"
-										:template="template"/>
-		</div>
+		<div>
+		<config
+			:templates="options['skill']['settingsTemplate']"
+			:holder="options['skill']['settings']"
+			:translate="(val) => parent.$t(val)"/>
 		<div>
 			<button @click="handleDismiss">{{parent.$t('buttons.cancel')}}</button>
-			<button class="dg-pull-right" @click="handleConfirm">{{parent.$t('buttons.confirm')}}</button>
+			<button @click="handleConfirm">{{parent.$t('buttons.confirm')}}</button>
+		</div>
 		</div>
 	</div>
 </template>

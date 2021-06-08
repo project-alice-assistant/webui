@@ -27,6 +27,7 @@ export default new Vuex.Store({
 		constructionTiles: [],
 		deviceTypes: {},
 		devices: {},
+		newSkillSettings: {},
 		deviceLinks: {},
 		furnitures: {},
 		constructions: {},

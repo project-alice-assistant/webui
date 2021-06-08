@@ -8,33 +8,16 @@
 			:store="$store"
 		/>
 		<div v-if="activeTabId === 1" class="tab_page">
-			<div class="settingsContainer">
-				<div class="settingsCategory">
-					<div class="title">{{ $t('labels.searchSetting') }}</div>
-					<div class="configLayout">
-						<input v-model="settingSearchKeyword" :placeholder="$t('labels.keyword')" type="text"/>
-					</div>
-				</div>
-				<div
-					v-for="category in settingsCategories"
-					:id="category.toLowerCase().replace(' ', '_')"
-					class="settingsCategory"
-				>
-					<div class="title">{{ category.toUpperCase() }}</div>
-					<div class="configLayout">
-						<configLine v-for="(template, configName) in categorySettings(category)"
-												:configName="configName"
-												:holder="$store.state.settings"
-												:translate="(val) => $t(val)"
-												:template="template"/>
-					</div>
-					<div>
-						<reactive-icon data-success="false" icon="far fa-save" tooltip="tooltips.save" :onClick="save" :timing="[1, 2]"/>
-					</div>
-				</div>
-			</div>
+			<config
+				:templates="$store.state.settingTemplates"
+				:holder="$store.state.settings"
+				:translate="(val) => $t(val)"
+				:validator="false"
+				:byCategory="true"
+				:includeFilter="true"
+				:actions="actions"/>
 		</div>
-		<div v-if="activeTabId === 2" class="tab_page">
+		<div v-else-if="activeTabId === 2" class="tab_page">
 			<div class="container flexrow">
 				<div class="utility clickable" @click="utilityRequestAndRedirect('restart')">
 					<p class="utilityIcon">

@@ -209,7 +209,6 @@ header {
 	height: 100%;
 	overflow: hidden;
 	box-sizing: border-box;
-	padding-bottom: 15px;
 }
 
 .flexrow {

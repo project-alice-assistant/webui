@@ -1,18 +1,36 @@
 <!--suppress HtmlFormInputWithoutLabel -->
 <template>
-	<input
-		v-if="template['dataType'] === 'string' && !template['isSensitive']"
-		v-model="configValue"
-		v-init="configValue"
-		:placeholder="template['defaultValue']"
-		type="text"
-	/>
+	<div class="centerLine">
+		<VueToggles
+			v-if="template['dataType'] === 'boolean'"
+			:checked-text="translate('tooltips.yes')"
+			:unchecked-text="translate('tooltips.no')"
+			:value="configValue"
+			checkedBg="var(--windowBG)"
+			uncheckedBg="var(--windowBG)"
+			:uncheckedColor="( missing() ? 'red' : 'white' )"
+			:dotColor="( missing() ? 'red' : 'white' )"
+			@click="configValue = !configValue"
+		/>
+		<input
+			v-else-if="template['dataType'] === 'string' && !template['isSensitive']"
+			v-model="configValue"
+			v-init="configValue"
+			:placeholder="template['defaultValue']"
+			:class="{missing: missing(), invalid: !valid()}"
+			:minlength="template['min']"
+			:maxlength="template['max']"
+			type="text"
+		/>
 	<input
 		v-else-if="template['dataType'] === 'string' && template['isSensitive']"
 		v-model="configValue"
 		v-init="configValue"
 		:placeholder="template['defaultValue']"
+		:class="{missing: missing()}"
 		type="password"
+		:minlength="template['min']"
+		:maxlength="template['max']"
 	/>
 	<input
 		v-else-if="template['dataType'] === 'email'"
@@ -51,15 +69,6 @@
 			{{ value }}
 		</option>
 	</select>
-	<VueToggles
-		v-else-if="template['dataType'] === 'boolean'"
-		:checked-text="translate('tooltips.yes')"
-		:unchecked-text="translate('tooltips.no')"
-		:value="configValue"
-		checkedBg="var(--windowBG)"
-		uncheckedBg="var(--windowBG)"
-		@click="configValue = !configValue"
-	/>
 	<div v-else-if="template['dataType'] === 'range'" class="rangeInput">
 		<input
 			v-model="configValue"
@@ -90,6 +99,7 @@
 						v-model="configValue"
 						v-init="configValue"
 						:placeholder="template['defaultValue']"
+						:class="{missing: missing()}"
 	/>
 	<input v-else-if="template['dataType'] === 'color'"
 				 type="color"
@@ -107,7 +117,8 @@
 				 v-init="configValue"
 				 :placeholder="template['defaultValue']"
 				 type="text"
-	/>
+	/><span/>
+	</div>
 </template>
 
 <script src="../js/configInput.js"/>
@@ -124,4 +135,52 @@
 		align-items: center;
 		align-content: stretch;
 	}
+
+	input:valid{
+		border: 1px dotted green;
+	}
+
+	input:invalid,
+	textarea:invalid,
+	textarea.invalid,
+	input.invalid {
+		border: 1px dashed yellow;
+	}
+
+	input:invalid+span:after,
+	.invalid+span:after {
+		margin-left: .5em;
+		display: inline-block;
+		font-style: normal;
+		font-variant: normal;
+		text-rendering: auto;
+		-webkit-font-smoothing: antialiased;
+		font-family: "Font Awesome 5 Free"; font-weight: 900; content: "\f071";
+		color: yellow;
+	}
+
+	.missing+span:after{
+		margin-left: .5em;
+		display: inline-block;
+		font-style: normal;
+		font-variant: normal;
+		text-rendering: auto;
+		-webkit-font-smoothing: antialiased;
+		font-family: "Font Awesome 5 Free";
+		font-weight: 900;
+		color: red;
+		content: "\f12a";
+	}
+
+	input.missing,
+	textarea.missing {
+		border: 1px dashed red;
+	}
+
+	.centerLine{
+		display: flex;
+		align-items: center;
+	}
+
+
 </style>

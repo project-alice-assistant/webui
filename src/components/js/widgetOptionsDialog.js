@@ -1,4 +1,5 @@
 import VueDialogMixin from 'vuejs-dialog/dist/vuejs-dialog-mixin.min.js'
+import widget from "@/components/js/widget";
 
 export default {
 	mixins: [VueDialogMixin],

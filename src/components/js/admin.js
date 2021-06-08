@@ -18,7 +18,10 @@ export default {
 					'position': 1
 				}
 			},
-			categoriesVisibility: ''
+			categoriesVisibility: '',
+			actions: {
+				'save' : { 'action': this.save }
+			}
 		}
 	},
 	computed: {
@@ -26,7 +29,7 @@ export default {
 			return (categoryName) => {
 				let settings = {}
 				for (const [settingName, settingTemplate] of Object.entries(this.$store.state.settingTemplates)) {
-					if (settingTemplate['display'] != 'hidden' && settingTemplate['category'].toLowerCase() === categoryName.toLowerCase() && this.checkSettingVisibility(settingName)) {
+					if (settingTemplate['display'] !== 'hidden' && categoryName === '' || settingTemplate['category'].toLowerCase() === categoryName.toLowerCase() && this.checkConfigVisibility(settingName)) {
 						settings[settingName] = settingTemplate
 					}
 				}
