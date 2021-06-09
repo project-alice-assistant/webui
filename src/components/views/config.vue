@@ -24,7 +24,8 @@
 													:configName="configName"
 													:holder="holder"
 													:translate="(val) => $t(val)"
-													:template="template"/>
+													:template="template"
+													:confPrefix="confPrefix"/>
 						</div>
 					</div>
 				</div>
@@ -87,7 +88,8 @@ export default {
 		'waiting',
 		'success',
 		'failed',
-		'textButtons' //should the action bar have text or icons?
+		'textButtons', //should the action bar have text or icons?
+		'confPrefix' //prefix that should be removed from the config values
 	],
 	data: function() {
 		return {searchKeyword : ''}

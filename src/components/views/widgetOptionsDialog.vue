@@ -9,7 +9,7 @@
 		<div v-if="activeTabId === 1" class="tab_page">
 			<div class="configLayout">
 				<div v-if="Object.keys(widget.configs).length === 0" class="spacedText">No widget specific configuration</div>
-				<config :templates="widget.configs"
+				<config :templates="widget['configTemplate']"
 								:holder="widget.configs"
 								:translate="(val) => parent.$t(val)"/>
 			</div>

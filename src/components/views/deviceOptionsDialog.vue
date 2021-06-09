@@ -11,11 +11,9 @@
 			<h5>{{ parent.$t('dialogs.titles.linkTo') }}: {{
 					$data.parent.$store.state.locations[$data.parent.$store.state.deviceLinks[linkId].targetLocation].name
 				}}</h5>
-			<configLine v-for="(template, configName) in myLinkConfigTemplates"
-									:configName="configName"
-									:holder="$data.parent.$store.state.deviceLinks[linkId].configs"
-									:parent="parent"
-									:template="template"/>
+			<config :templates="myLinkConfigTemplates"
+							:holder="$data.parent.$store.state.deviceLinks[linkId]"
+							:translate="(val) => parent.$t(val)"/>
 		</div>
 		<button @click="handleDismiss">{{ parent.$t('buttons.cancel') }}</button>
 		<button class="dg-pull-right" @click="handleConfirm">{{ parent.$t('buttons.confirm') }}</button>

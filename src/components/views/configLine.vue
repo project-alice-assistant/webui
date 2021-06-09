@@ -1,6 +1,6 @@
 <template>
 	<div class="configLine">
-		<label :key="configName" v-tooltip="template.description">{{ configName }}</label>
+		<label :key="configName" v-tooltip="template.description">{{ configName.replace(/([A-Z])/g, ' $1').trim().replace(confPrefix, '') }}</label>
 		<configInput :configName="configName" :holder="holder" :translate="translate" :template="template"/>
 	<br/></div>
 </template>
@@ -12,7 +12,8 @@ export default {
 		'template',
 		'configName',
 		'holder',
-		'translate'
+		'translate',
+		'confPrefix'
 	]
 }
 </script>

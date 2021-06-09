@@ -31,7 +31,8 @@
 				  											'condition': created && uploaded && !waiting
 				  											}
 				  											}"
-					:text-buttons="true"/>
+					:text-buttons="true"
+				  :conf-prefix="'skill '"/>
 				<span style="margin-left: 15px;" ref="skillNameExists" class="red initialHidden">{{$t('devMode.skillAlreadyExists')}}</span>
 		</div>
 		<div v-if="activeTabId === 2" class="tab_page yscroll">
