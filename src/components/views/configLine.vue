@@ -1,6 +1,6 @@
 <template>
 	<div class="configLine">
-		<label :key="configName" v-tooltip="template.description">{{ configName.replace(/([A-Z])/g, ' $1').trim().replace(confPrefix, '') }}</label>
+		<label :key="configName" v-tooltip="template.description">{{ this.formatName(configName) }}</label>
 		<configInput :configName="configName" :holder="holder" :translate="translate" :template="template"/>
 	<br/></div>
 </template>
@@ -14,7 +14,13 @@ export default {
 		'holder',
 		'translate',
 		'confPrefix'
-	]
+	],
+	methods: {
+		formatName: function (name) {
+			let temp = name.replace(/((?<=[a-z])[A-Z]|[A-Z](?=[a-z]))/g, " $1").trim().replace(this.confPrefix, '')
+			return temp.charAt(0).toUpperCase() + temp.slice(1);
+		}
+	}
 }
 </script>
 
