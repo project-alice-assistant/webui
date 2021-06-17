@@ -68,7 +68,7 @@ export default {
 				"unit":"em"
 			}
 			template['font-color'] = {
-				"defaultValue": '#FFFFFF',
+				"defaultValue": '#D1D1D1',
 				"dataType"    : "color",
 				"isSensitive" : false,
 				"description" : "Color of the text in the widget"
