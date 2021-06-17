@@ -42,7 +42,7 @@ export default class MoveableItem {
 	}
 
 	computeWidgetCustomStyle(widget) {
-		let style = `color: ${widget.settings['color']};`
+		let style = `color: ${widget.settings['font-color']};`
 		style += `background-color: ${widget.settings['rgba']};`
 		style += `font-size: ${widget.settings['font-size']}em;`
 		style += `top: ${widget.settings['y']}px;`
