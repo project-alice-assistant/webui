@@ -343,12 +343,12 @@ export default {
 					"allowDouble" : false,
 					"highlights"  : [
 						{ 'slot' : "city",
-						  'color': "green",
+						  'color': "#006600",
 						  'pattern': '{.*:=>city}'}, //IDEA: pattern as a way to generalize and enable easier editing?
 						{ 'slot' :"country",
-							'color':"orange"},
+							'color':"#cc8400"},
 						{ 'slot' :"continent",
-							'color':"lightblue"}]
+							'color':"#1b4958"}]
 			}
 			}
 		}

@@ -9,7 +9,7 @@
 				:placeholder="template['placeholder']"
 				name="newListItem"
 				type="text"
-				@keyup="validateItem"
+				@keyup="handleInput"
 				@keyup.enter="addItem"
 			>
 		</div>
@@ -42,7 +42,7 @@
 				:placeholder="template['placeholder']"
 				name="newListItem"
 				type="text"
-				@keyup="validateItem"
+				@keyup="handleInput"
 				@keyup.enter="addItem"
 				class="longInput"
 				@scroll="handleScroll"
@@ -80,7 +80,10 @@ export default {
 		}
 	},
 	computed: {
-		highlightText: function (){
+		highlightText (){
+			/*
+			* compute the highlights for the underlay of the textarea input
+			* */
 			let temp = this.newItem.replace(/\n$/g, '\n\n')
 			for(let [key, slot] of Object.entries(this.newItemSlots)){
 				let regex = new RegExp("(^(?:.*<.*>)*?[^<]*?)(.?"+key+".?)")
@@ -95,6 +98,10 @@ export default {
 	},
 	methods: {
 		makeSlot(slot) {
+			/*
+			 * a button or shortcut was pressed to make either the current selection
+			 * or the word around or right before the cursor to a slot value
+			 */
 			this.moveSelectionToFullWord()
 			this.makeSlotFullMarked(slot)
 			this.moveCursorToSelectionEnd()
@@ -111,15 +118,18 @@ export default {
 			this.$refs.newListItem.focus()
 		},
 		moveSelectionToFullWord() {
+			/*
+			* mark a full word if there is currently no selection
+			* move the start of the selection to the last space in front of the current cursor position
+			* move the end of the selection to the first space after the current cursor position
+			*/
 			if( this.$refs.newListItem.selectionStart === this.$refs.newListItem.selectionEnd ){
-				let start = this.$refs.newListItem.value.slice(0, this.$refs.newListItem.selectionStart).lastIndexOf(" ")
-				if(start === -1){
-					start = 0
-				} else {
-					start += 1
-				}
-				this.$refs.newListItem.selectionStart = start
+				// no matter if no result was found (-1) or if we found a result, we have to add 1 to the starting position
+				// -> we start AFTER the space!
+				this.$refs.newListItem.selectionStart = 1 + this.$refs.newListItem.value.slice(0, this.$refs.newListItem.selectionStart).lastIndexOf(" ")
 				let end = this.$refs.newListItem.value.slice(this.$refs.newListItem.selectionEnd).indexOf(" ")
+				// if we don't find any more space after: use the last character
+				// if we found one we have to take into account that we didn't start at 0 but selectionEnd
 				if(end === -1){
 					end = this.$refs.newListItem.value.length
 				} else {
@@ -129,6 +139,10 @@ export default {
 			}
 		},
 		makeSlotFullMarked(slot) {
+			/*
+			* assumes the slot is currently selected.
+			* This can be caused by the user manually selecting it, or by calling moveSelectionToFullWord before this func.
+			*/
 			let word = this.$refs.newListItem.value.slice(this.$refs.newListItem.selectionStart, this.$refs.newListItem.selectionEnd)
 			if(word === '') return
 			let val = {}
@@ -138,23 +152,39 @@ export default {
 			this.$set(this.newItemSlots, word, val)
 		},
 		addItem: function (e) {
+			/*
+			* The user pressed enter -> the current input should be added to the list
+			* This is used for the default (string) list as well as for the utterances list!
+			*/
+			//ignore empty inputs
 			if (this.newItem.length <= 0 || this.newItem === undefined) return
+			//make sure the result list is initialized
 			if (this.items === undefined){
 				this.items = []
 			}
-			if (!this.validateItem(e)) {
-				return
-			}
-			e.target.setCustomValidity("")
+			//make sure the input item is valid
+			if (!this.handleInput(e)) return
+
+			//transform to the final form and  add the new item to the front of the list
 			this.items.unshift(this.prepareForStore(this.newItem))
+			//clear the input
 			this.newItem = ''
+			//tell vue that the value has changed
 			this.$emit('input', this.items)
 
 		},
 		prepareForStore(input){
+			/*
+			* prepare the input for storing - called for both generic and utterances list
+			* currently only used for utterances, as newItemSlots is always empty for generic input
+			*/
 			let output = input
 			for(let [key, slot] of Object.entries(this.newItemSlots)){
+				//REGEX: find the FIRST occurrence of key that is NOT inside of <> brackets
+				//capturing everything before key as $1 and the key itself as $2
 				let regex = new RegExp("(^(?:.*<.*>)*?[^<]*?)("+key+")")
+				//Test if the slot still exists, replace with the correct utterance form if it does
+				//delete it from the list if it couldn't be found anymore.
 				if(regex.test(output)) {
 					output = output.replace(regex, "$1{$2:=>"+slot['slot']+"}")
 				} else {
@@ -163,7 +193,12 @@ export default {
 			}
 			return output
 		},
-		validateItem: function (e) {
+		handleInput(e) {
+			/*
+			* handle shortcuts (when alt+number is pressed)
+			* check if the current input is valid
+			* called after ever key push, explicitly called after pressing enter
+			* */
 			if (e['altKey'] && e['code'].slice(0,5) === 'Digit') {
 				if(e['key'] === "0"){
 					this.clearSlot()
@@ -172,6 +207,7 @@ export default {
 					this.makeSlot(slot)
 				}
 			}
+			//check if that value already exists in the list
 			if (!this.allowDouble && this.items.includes(this.newItem)){
 				e.target.setCustomValidity("This value already exists")
 				e.target.reportValidity()
@@ -182,21 +218,28 @@ export default {
 			return true
 		},
 		removeItem(item) {
+			/*
+			* Remove one line of the final list
+			* called on button press (-) next to the list item
+			*/
 			this.items = this.items.filter(it => it !== item)
 			this.$emit('input', this.items)
 		},
 		formatUtterance(item) {
+			/*
+			* Format a list item containing {key:=>slot}
+			*/
 			let temp = item.replace(/\n$/g, '\n\n')
 			for(let mark of this.template['highlights']){
+				//REGEX: find and capture ALL occurrences of {$1:=>slot}
+				// making sure no other :=> is allowed inside $1 to prevent capturing two slots as one
 				let regex = new RegExp("{([^(:=>)]*?):=>"+mark['slot']+"}", "g")
 				temp = temp.replace(regex,"<mark style='background-color:"+mark['color']+";'>$1</mark>")
 			}
 			return temp
 		},
-		handleInput(e) {
-		},
 		handleScroll(e) {
-			e
+			//TODO! scroll both the highlights and the rest synchronously
 		}
 	}
 }
