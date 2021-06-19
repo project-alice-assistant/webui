@@ -18,7 +18,7 @@
 					<div v-for="category in categories"
 							:id="category.toLowerCase().replace(' ', '_')"
 							class="settingsCategory">
-						<div class="title">{{ category.toUpperCase() }}</div>
+						<div class="title">{{ category.replace(/([A-Z])/g, ' $1').trim().toUpperCase() }}</div>
 						<div class="configLayout">
 							<configLine v-for="(template, configName) in templatesForCategory(category)"
 													:configName="configName"

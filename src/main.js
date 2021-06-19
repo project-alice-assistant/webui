@@ -22,6 +22,7 @@ import Location from './components/views/location'
 import Furniture from './components/views/furniture'
 import ConfigLine from './components/views/configLine'
 import ConfigInput from './components/views/configInput'
+import ConfigInputList from './components/views/configInputList'
 import Config from './components/views/config'
 import Construction from './components/views/construction'
 import Device from './components/views/device'
@@ -76,6 +77,7 @@ Vue.component('construction', Construction)
 Vue.component('device', Device)
 Vue.component('configInput', ConfigInput)
 Vue.component('configLine', ConfigLine)
+Vue.component('configInputList', ConfigInputList)
 Vue.component('config', Config)
 Vue.component('widget', Widget)
 Vue.component('notification', Notification)

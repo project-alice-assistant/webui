@@ -325,7 +325,31 @@ export default {
 					"dataType"    : "text",
 					"description" : "",
 					"category"		: "additionalInformation"
-				}
+				},
+				'skillIntents': {
+					"defaultValue": [],
+					"dataType"		: "userList",
+					"subType"			: "string",
+					"description" : "The intents this skill will be able to handle",
+					"category"		: "testarea (unused!)",
+					"allowDouble" : false
+				},
+				'skillTestUtterances': {
+					"defaultValue": [],
+					"dataType"		: "userList",
+					"subType"			: "utterance",
+					"description" : "A collection of utterances this skill should recognize",
+					"category"		: "testarea (unused!)",
+					"allowDouble" : false,
+					"highlights"  : [
+						{ 'slot' : "city",
+						  'color': "green",
+						  'pattern': '{.*:=>city}'}, //IDEA: pattern as a way to generalize and enable easier editing?
+						{ 'slot' :"country",
+							'color':"orange"},
+						{ 'slot' :"continent",
+							'color':"lightblue"}]
+			}
 			}
 		}
 	}
