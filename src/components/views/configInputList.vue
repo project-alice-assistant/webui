@@ -2,7 +2,6 @@
 <div>
 	<div v-if="template['subType'] === 'string'">
 		<div>
-			<label for="newItem">{{ template['name'] }}</label>
 			<input
 				id="newListItem"
 				v-model="newItem"
@@ -15,7 +14,7 @@
 		</div>
 		<div class="list">
 			<div
-				v-for="item in holder"
+				v-for="item of Object.keys(value)"
 				:key="`itm_${item}`"
 				class="listItem"
 			>
@@ -26,7 +25,6 @@
 	</div>
 	<div v-else>
 		<div>
-			<label for="newItem">{{ template['name'] }}</label>
 			<button v-for="(high, index) in template['highlights']"
 							:style="'background-color: '+ high['color'] +';'"
 							@click.prevent="makeSlot(high)">
@@ -51,7 +49,7 @@
 		</div>
 		<div class="list">
 			<div
-				v-for="item in holder"
+				v-for="item of Object.keys(value)"
 				:key="`itm_${item}`"
 				class="listItem"
 			>
@@ -69,7 +67,6 @@ export default {
 	name: "configInputList",
 	props: [
 		'template',
-		'holder',
 		'value',
 		'allowDouble'
 	],
@@ -246,6 +243,10 @@ export default {
 </script>
 
 <style scoped>
+.stretched > textarea {
+	width: 100%;
+	background: red;
+}
 .list {
 	background: var(--mainBG);
 	overflow: auto;

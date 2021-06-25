@@ -113,7 +113,6 @@
 				 @input="hex2rgba"
 	/>
 	<configInputList v-else-if="template['dataType'] === 'userList'"
-				 :holder="configValue"
 				 v-model="configValue"
 				 v-init="configValue"
 				 :template="template"/>

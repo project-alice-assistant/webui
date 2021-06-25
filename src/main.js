@@ -15,6 +15,7 @@ import VueI18n from 'vue-i18n'
 
 import Skill from './components/views/skill'
 import StoreSkill from './components/views/storeSkill'
+import EditSkillTile from './components/views/editSkillTile'
 import ActionsMenu from './components/views/actionsMenu'
 import Tabs from './components/views/tabs'
 import ReactiveIcon from './components/views/reactiveIcon'
@@ -67,6 +68,7 @@ Vue.use(VueI18n)
 Vue.component('VueToggles', VueToggles)
 Vue.component('skill', Skill)
 Vue.component('storeSkill', StoreSkill)
+Vue.component('editSkillTile', EditSkillTile)
 Vue.component('actionsMenu', ActionsMenu)
 Vue.component('tabs', Tabs)
 Vue.component('reactive-icon', ReactiveIcon)

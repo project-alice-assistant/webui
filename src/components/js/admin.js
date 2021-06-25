@@ -132,13 +132,15 @@ export default {
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/${id}/`,
 				headers: {'auth': this.$store.getters.apiToken},
 			}).then(function() {
+				icon.classList.add('green')
 				setTimeout(() => {
-					icon.classList.add('green')
+					icon.classList.remove('fa-spin')
 					self.$router.replace('/syslog').catch(err => {}) //unused but required!
 				}, 2000)
 			}).catch(function() {
+				icon.classList.add('red')
 				setTimeout(() => {
-					icon.classList.add('red')
+					icon.classList.remove('fa-spin')
 				}, 2000)
 			}).finally(() => {
 				setTimeout(() => {

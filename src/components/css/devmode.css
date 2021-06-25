@@ -3,3 +3,43 @@
 	height: 250px;
 	width: 300px;
 }
+.stretched {
+	width: 100%;
+	height: 100%;
+}
+.stretched >>> textarea {
+	width: 100%;
+	height: 100%;
+}
+.utility {
+	display: flex;
+	flex-direction: column;
+	width: 200px;
+	max-width: 200px;
+	height: 200px;
+	max-height: 200px;
+	background-color: var(--windowBG);
+	margin: 15px;
+	transition: var(--shortAnimation);
+}
+
+.utility:hover {
+	transform: var(--lightLift);
+}
+
+.utilityIcon {
+	display: flex;
+	margin: 0;
+	font-size: 5em;
+	height: 150px;
+	min-height: 150px;
+	justify-content: center;
+	align-items: center;
+}
+
+.utilityName {
+	display: flex;
+	margin: 0;
+	font-size: 1.25em;
+	justify-content: center;
+}

@@ -212,6 +212,7 @@ header {
 }
 
 .flexrow {
+	display:flex;
 	flex-direction: row;
 	flex-wrap: wrap;
 	align-content: flex-start;
@@ -289,6 +290,10 @@ input:focus, textarea:focus {
 	color: yellow;
 }
 
+.blue {
+	color: #4444FF;
+}
+
 .black {
 	color: black;
 }
@@ -341,6 +346,21 @@ button:active {
 	flex: 1;
 	align-content: center;
 	align-items: center;
+}
+
+.flexHalf{
+	width: 50%;
+	flex-grow: 2;
+	flex-shrink: 2;
+}
+
+.nowrap {
+	flex-wrap: nowrap;
+}
+
+.contained {
+	background: var(--secondary);
+	padding: 1em;
 }
 
 .vue-toggles {
@@ -554,4 +574,7 @@ button:active {
 
 .spacedText {
 	margin: 5em;
+}
+.vue-simple-markdown {
+	white-space: normal !important;
 }

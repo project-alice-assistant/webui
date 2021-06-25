@@ -8,8 +8,12 @@ export default {
 		}
 	},
 	props: [
-		'menuItems'
+		'menuItems',
+		'alwaysExtended'
 	],
+	mounted() {
+		this.isExtended = this.alwaysExtended
+	},
 	methods: {
 		toggle: function(item) {
 			this.isExtended = !this.isExtended

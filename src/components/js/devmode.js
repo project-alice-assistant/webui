@@ -2,18 +2,49 @@ import axios from 'axios'
 
 export default {
 	name: 'devmode',
-	data: () => { return {
-			activeTabId: 1,
+	data: function () { return {
+			activeTabId: 'settings',
 			tabs: {
-				1: {
-					'icon': 'fas fa-plus-circle',
-					'id': 1,
+				settings: {
+					'icon': 'fas fa-cogs',
+					'id': 'settings',
 					'position': 0
 				},
-				2: {
-					'icon': 'fas fa-edit',
-					'id': 2,
+				training: {
+					'icon': 'fas fa-train',
+					'id': 'training',
 					'position': 1
+				},
+				configTemplate: {
+					'icon': 'fas fa-cog',
+					'id': 'configTemplate',
+					'position': 2
+				},
+				instructions: {
+					'icon': 'fas fa-chalkboard-teacher',
+					'id': 'instructions',
+					'position': 3,
+					'onChangeTo': this.loadInstruction
+				},
+				talk: {
+					'icon': 'fas fa-comment',
+					'id': 'talk',
+					'position': 4
+				},
+				devices: {
+					'icon': 'fas fa-microchip',
+					'id': 'devices',
+					'position': 5
+				},
+				widgets: {
+					'icon': 'fas fa-window-maximize',
+					'id': 'widgets',
+					'position': 6
+				},
+				cloud: {
+					'icon': 'fas fa-cloud',
+					'id': 'cloud',
+					'position': 7
 				}
 			},
 			values: {},
@@ -24,7 +55,33 @@ export default {
 			failed: false,
 			created: false,
 			uploaded: false,
-			githubUrl: ''
+			githubUrl: '',
+			editingSkill: null,
+			createNew: false,
+			currentLang: 'en',
+			changedSkill: {},
+			backedUpSkill: {},
+			noWatch: false,
+			menuItems: [
+				{
+					name: "close",
+					icon: 'fas fa-times-circle',
+					isToggle: false,
+					callback: this.stopEditingSkill
+				},
+				{
+					name: "save",
+					icon: 'fas fa-save',
+					isToggle: true,
+					callback: this.saveSkill
+				}
+			],
+			newSkillTile: {
+				name: 'Create New Skill',
+				author: 'You!',
+				description: 'Start here for creating your own skill!',
+				modified: true
+			}
 		}
 	},
 	mounted: function() {
@@ -39,10 +96,41 @@ export default {
 			}
 		})
 		this.fetchSkills()
+		this.currentLang = this.$store.state.settings['activeLanguage']
 	},
 	computed: {
 		allValid : function () {
 			return document.querySelectorAll('.invalid, .missing').length <= 0;
+		}
+	},
+	watch: {
+		currentLang: function (newVal, oldVal){
+			if(this.activeTabId == 'instructions'){
+				if(this.noWatch) return
+				this.noWatch = true
+				let self = this
+				if(this.backedUpSkill && this.backedUpSkill.instructions && this.backedUpSkill.instructions != this.changedSkill.instructions){
+					this.$dialog.confirm({
+						title: "Your changes will be lost!",
+						body: "Close to return to "+oldVal+" or continue to "+newVal+"?",
+						okText: "Okilidoki",
+						cancelText: this.$t('buttons.cancel'),
+					}).then(function (dialog) {
+						self.loadInstruction()
+						self.noWatch = false
+					}).catch(function (dialog){
+						self.currentLang = oldVal
+						self.$nextTick(() => {
+							//delay as watch will be called at the end of THIS tick with noWatch already changed
+							self.noWatch = false
+						});
+						}
+					)
+				} else {
+					this.loadInstruction()
+					this.noWatch = false
+				}
+			}
 		}
 	},
 	methods: {
@@ -162,6 +250,34 @@ export default {
 				self.setFailed()
 			})
 		},
+		loadInstruction(){
+			const data = {"lang": this.currentLang }
+			let self = this
+			this.setWaiting()
+			axios({
+				method: 'POST',
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.editingSkill.name}/getInstructions/`,
+				data: data,
+				headers: {
+					'auth': this.$store.getters.apiToken,
+					'content-type': 'application/json'
+				}
+			}).then(function(response) {
+				if ('success' in response.data) {
+					if (response.data['success']) {
+						self.setSuccess()
+						self.changedSkill.instructions = response.data['instruction']
+						self.backedUpSkill.instructions = self.changedSkill.instructions
+					}
+					else {
+						self.setFailed(response.data['message'] || "Unknown Error")
+					}
+				}
+			}).catch(function(e) {
+				console.log(e)
+				self.setFailed()
+			})
+		},
 		checkOnGithub: function(event) {
 			event.preventDefault()
 			if (!this.uploaded || !this.githubUrl) {
@@ -192,8 +308,111 @@ export default {
 				}
 			})
 		},
-		configTemplate: function () {
-			return { 'skillName' : {
+		startEditingSkill(skill){
+			this.editingSkill = skill
+		},
+		stopEditingSkill(){
+			this.editingSkill = null
+		},
+		saveSkill(){
+			if(this.changedSkill.instructions != this.backedUpSkill.instructions){
+				let self = this
+				let data = {
+					'lang': this.currentLang,
+					'instruction': this.changedSkill.instructions
+				}
+				axios({
+					method: 'PATCH',
+					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.editingSkill.name}/setInstructions/`,
+					data: data,
+					headers: {
+						'auth': this.$store.getters.apiToken,
+						'content-type': 'application/json'
+					}
+				}).then(function(response) {
+					if ('success' in response.data) {
+						if (response.data['success']) {
+							self.setSuccess()
+							self.changedSkill.instructions = response.data['instruction']
+							self.backedUpSkill.instructions = self.changedSkill.instructions
+						}
+						else {
+							self.setFailed(response.data['message'] || "Unknown Error")
+						}
+					}
+				}).catch(function(e) {
+					console.log(e)
+					self.setFailed()
+				})
+
+			}
+		},
+		utilityRequest(id) {
+			const icon = this.startIcon(id)
+			const self = this
+
+			axios({
+				method: 'GET',
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.editingSkill.name}/${id}/`,
+				headers: {'auth': this.$store.getters.apiToken},
+			}).then(function() {
+				icon.classList.add('green')
+				if(id === 'setModified') {
+					self.editingSkill.modified = true
+				} else if( id === 'revert'){
+					self.editingSkill.modified = false
+				}
+				setTimeout(() => {
+					icon.classList.remove('fa-spin')
+				}, 2000)
+			}).catch(function(e) {
+				console.log(e)
+				icon.classList.add('red')
+				setTimeout(() => {
+					icon.classList.remove('fa-spin')
+					self.showError(self.$t('notifications.errors.somethingWentWrong'))
+				}, 2000)
+			}).finally(() => {
+				setTimeout(() => {
+					icon.classList.remove('red')
+					icon.classList.remove('green')
+				}, 4000)
+			})
+		},
+		startIcon(id) {
+			const icon = document.querySelector(`#utility${id.charAt(0).toUpperCase() + id.slice(1)}`)
+			icon.classList.add('fa-spin')
+			return icon
+		},
+		intentsTemplate(){
+			return { 'intents': {
+						"defaultValue": [],
+						"dataType"		: "userList",
+						"subType"			: "string",
+						"description" : "The intents this skill will be able to handle",
+						"category"		: "Intents",
+						"allowDouble" : false
+					},
+					'utterances': {
+						"defaultValue": [],
+						"dataType"		: "userList",
+						"subType"			: "utterance",
+						"description" : "A collection of utterances this skill should recognize",
+						"category"		: "Intents",
+						"allowDouble" : false,
+						"highlights"  : [
+							{ 'slot' : "city",
+								'color': "#006600",
+								'pattern': '{.*:=>city}'}, //IDEA: pattern as a way to generalize and enable easier editing?
+							{ 'slot' :"country",
+								'color':"#cc8400"},
+							{ 'slot' :"continent",
+								'color':"#1b4958"}]
+				}
+			}
+		},
+		configTemplate(){
+			return { 'name' : {
 					"defaultValue": '',
 					"dataType"    : "string",
 					"description" : "class=\"inputError\" @input=\"validateTextInput(5, 20, true, $event)\" :disabled=\"created\"",
@@ -203,7 +422,7 @@ export default {
 					"max"					: 20,
 					"noSpace"			: true
 				},
-			'skillSpeakableName' : {
+			'speakableName' : {
 				"defaultValue": '',
 				"dataType"    : "string",
 				"description" : "",
@@ -212,7 +431,7 @@ export default {
 				"min"					: 5,
 				"max"					: 50
 			},
-			'skillDescription' : {
+			'description' : {
 				"defaultValue": '',
 				"dataType"    : "longstring",
 				"description" : "",
@@ -221,7 +440,7 @@ export default {
 				"min"					: 20,
 				"max"					: 200
 			},
-			'skillCategory' : {
+			'category' : {
 				"defaultValue": 'assistance',
 				"dataType"    : "list",
 				"description" : "",
@@ -260,96 +479,66 @@ export default {
 					"description" : "",
 					"category"		: "language"
 				},
-				'skillPipRequirements': {
+				'pipreq': {
 					"defaultValue": '',
 					"dataType"    : "text",
 					"description" : "",
 					"category"		: "requirements"
 				},
-				'skillSystemRequirements': {
+				'sysreq': {
 					"defaultValue": '',
 					"dataType"    : "text",
 					"description" : "",
 					"category"		: "requirements"
 				},
-				'skillOnline': {
+				'conditionOnline': {
 					"defaultValue": false,
 					"dataType"    : "boolean",
 					"description" : "",
 					"category"		: "requirements"
 				},
-				'skillArbitrary': {
+				'conditionASRArbitrary': {
 					"defaultValue": false,
 					"dataType"    : "boolean",
 					"description" : "",
 					"category"		: "requirements"
 				},
-				'skillRequiredSkills': {
+				'conditionSkill': {
 					"defaultValue": '',
 					"dataType"    : "text",
 					"description" : "",
 					"category"		: "requirements"
 				},
-				'skillConflictingSkills': {
+				'conditionNotSkill': {
 					"defaultValue": '',
 					"dataType"    : "text",
 					"description" : "",
 					"category"		: "requirements"
 				},
-				'skillRequiredManagers': {
+				'conditionActiveManager': {
 					"defaultValue": '',
 					"dataType"    : "text",
 					"description" : "",
 					"category"		: "requirements"
 				},
-				'skillInstructions': {
-					"defaultValue": false,
-					"dataType"    : "boolean",
-					"description" : "",
-					"category"		: "additionalInformation"
-				},
-				'skillWidgets': {
+				'widgets': {
 					"defaultValue": '',
 					"dataType"    : "text",
 					"description" : "",
 					"category"		: "additionalInformation"
 				},
-				'skillScenarioNodes': {
+				'nodes': {
 					"defaultValue": '',
 					"dataType"    : "text",
 					"description" : "",
 					"category"		: "additionalInformation"
 				},
-				'skillDevices': {
+				'devices': {
 					"defaultValue": '',
 					"dataType"    : "text",
 					"description" : "",
 					"category"		: "additionalInformation"
-				},
-				'skillIntents': {
-					"defaultValue": [],
-					"dataType"		: "userList",
-					"subType"			: "string",
-					"description" : "The intents this skill will be able to handle",
-					"category"		: "testarea (unused!)",
-					"allowDouble" : false
-				},
-				'skillTestUtterances': {
-					"defaultValue": [],
-					"dataType"		: "userList",
-					"subType"			: "utterance",
-					"description" : "A collection of utterances this skill should recognize",
-					"category"		: "testarea (unused!)",
-					"allowDouble" : false,
-					"highlights"  : [
-						{ 'slot' : "city",
-						  'color': "#006600",
-						  'pattern': '{.*:=>city}'}, //IDEA: pattern as a way to generalize and enable easier editing?
-						{ 'slot' :"country",
-							'color':"#cc8400"},
-						{ 'slot' :"continent",
-							'color':"#1b4958"}]
-			}
+				}
 			}
 		}
 	}
