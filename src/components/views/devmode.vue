@@ -54,21 +54,14 @@
 			</div>
 			<div v-else-if="activeTabId === 'training'"  class="tab_page">
 				<actions-menu :menuItems="menuItems" :alwaysExtended="true"/>
-				<configLine :configName="'intents'"
-										:holder="editingSkill"
-										:translate="(val) => $t(val)"
-										:template="{name:'intents',
-																dataType:'userList',
-																subType:'string'}"/>
-				2. configure intents, add slots<br/>
-				3. add utterances<br/>
-				4. trigger training?
+				<dialogTemplateEditor ref="dialogTemplateEditor" :editingSkill="editingSkill"/>
 			</div>
 			<div v-else-if="activeTabId === 'configTemplate'" class="tab_page">
 				<actions-menu :menuItems="menuItems" :alwaysExtended="true"/>
 				1. edit template file for active skill:<br/>
 				2. edit instructions file in "fancy" markdown editor with preview<br/>
 				3. ?? <br/>
+
 				4. profit!
 			</div>
 			<div v-else-if="activeTabId === 'instructions'" class="tab_page">

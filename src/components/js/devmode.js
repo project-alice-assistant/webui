@@ -57,6 +57,8 @@ export default {
 			uploaded: false,
 			githubUrl: '',
 			editingSkill: null,
+			editingIntent: null,
+			editingSlotType: null,
 			createNew: false,
 			currentLang: 'en',
 			changedSkill: {},
@@ -101,6 +103,22 @@ export default {
 	computed: {
 		allValid : function () {
 			return document.querySelectorAll('.invalid, .missing').length <= 0;
+		},
+		intentDefinition: function () {
+			for(const intent of Object.values(this.changedSkill.dialogTemplate.intents)){
+				console.log(intent)
+				console.log("intent " + intent.name)
+				if(intent.name === this.editingIntent){
+					return intent
+				}
+			}
+		},
+		intentContainedSlots: function () {
+			let ret = []
+			for(const slot of Object.values(this.intentDefinition.slots)){
+				ret.push(slot.name)
+			}
+			return ret
 		}
 	},
 	watch: {
@@ -251,6 +269,7 @@ export default {
 			})
 		},
 		loadInstruction(){
+			// load the instructions for the currently selected skill and language
 			const data = {"lang": this.currentLang }
 			let self = this
 			this.setWaiting()
@@ -346,6 +365,7 @@ export default {
 				})
 
 			}
+			this.$refs.dialogTemplateEditor.save()
 		},
 		utilityRequest(id) {
 			const icon = this.startIcon(id)

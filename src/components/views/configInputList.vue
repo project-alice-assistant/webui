@@ -1,6 +1,31 @@
 <template>
 <div>
-	<div v-if="template['subType'] === 'string'">
+	<div v-if="template['subType'] === 'dict'">
+		<div>
+			<input
+				id="newListItem"
+				v-model="newItem"
+				:placeholder="template['placeholder']"
+				name="newListItem"
+				type="text"
+				@keyup="handleInput"
+				@keyup.enter="addItem"
+			>
+		</div>
+		<div v-if="value" class="list">
+			<div
+				v-for="item of Object.values(value)"
+				:key="`itm_${item[template.dictKey]}`"
+				class="listItem"
+				:class="{'selected':selectedItem === item[template.dictKey]}"
+				@click="$emit('item-selected', item[template.dictKey])"
+			>
+				<i aria-hidden="true" class="fas fa-minus-circle fa-pull-left clickable"
+					 @click="removeItem(item)"/>{{ item[template.dictKey] }}
+			</div>
+		</div>
+	</div>
+	<div v-else-if="template['subType'] === 'string'">
 		<div>
 			<input
 				id="newListItem"
@@ -14,9 +39,11 @@
 		</div>
 		<div class="list">
 			<div
-				v-for="item of Object.keys(value)"
+				v-for="item of Object.values(value)"
 				:key="`itm_${item}`"
 				class="listItem"
+				:class="{'selected':selectedItem === item}"
+				@click="$emit('item-selected', item)"
 			>
 				<i aria-hidden="true" class="fas fa-minus-circle fa-pull-left clickable"
 					 @click="removeItem(item)"/>{{ item }}
@@ -49,7 +76,7 @@
 		</div>
 		<div class="list">
 			<div
-				v-for="item of Object.keys(value)"
+				v-for="item of Object.values(value)"
 				:key="`itm_${item}`"
 				class="listItem"
 			>
@@ -68,11 +95,11 @@ export default {
 	props: [
 		'template',
 		'value',
-		'allowDouble'
+		'allowDouble',
+		'selectedItem'
 	],
 	data: function () {
 		return { newItem : "",
-						 items : [],
 						 newItemSlots: {}
 		}
 	},
@@ -156,18 +183,24 @@ export default {
 			//ignore empty inputs
 			if (this.newItem.length <= 0 || this.newItem === undefined) return
 			//make sure the result list is initialized
-			if (this.items === undefined){
-				this.items = []
+			if (this.value === undefined){
+				this.value = []
 			}
 			//make sure the input item is valid
 			if (!this.handleInput(e)) return
 
-			//transform to the final form and  add the new item to the front of the list
-			this.items.unshift(this.prepareForStore(this.newItem))
+			if(this.template.subType === 'dict'){
+				let newVal = this.template.dictTemplate
+				newVal[this.template.dictKey] = this.newItem
+				this.value.unshift(newVal)
+			} else {
+				//transform to the final form and  add the new item to the front of the list
+				this.value.unshift(this.prepareForStore(this.newItem))
+			}
 			//clear the input
 			this.newItem = ''
 			//tell vue that the value has changed
-			this.$emit('input', this.items)
+			this.$emit('input', this.value)
 
 		},
 		prepareForStore(input){
@@ -205,10 +238,18 @@ export default {
 				}
 			}
 			//check if that value already exists in the list
-			if (!this.allowDouble && this.items.includes(this.newItem)){
-				e.target.setCustomValidity("This value already exists")
-				e.target.reportValidity()
-				return false
+			if (this.template.subType === 'dict'){
+				if (!this.allowDouble && this.value.some(e => e[this.template.dictKey] === this.newItem)) {
+					e.target.setCustomValidity("This value already exists")
+					e.target.reportValidity()
+					return false
+				}
+			} else {
+				if (!this.allowDouble && this.value.includes(this.newItem)) {
+					e.target.setCustomValidity("This value already exists")
+					e.target.reportValidity()
+					return false
+				}
 			}
 			e.target.setCustomValidity("")
 			e.target.reportValidity()
@@ -219,8 +260,8 @@ export default {
 			* Remove one line of the final list
 			* called on button press (-) next to the list item
 			*/
-			this.items = this.items.filter(it => it !== item)
-			this.$emit('input', this.items)
+			this.value = this.value.filter(it => it !== item)
+			this.$emit('input', this.value)
 		},
 		formatUtterance(item) {
 			/*
@@ -315,5 +356,8 @@ export default {
 	left: 0.5em;
 	position: relative;
 	text-align-last: left;
+}
+.selected{
+	background: var(--secondary);
 }
 </style>
