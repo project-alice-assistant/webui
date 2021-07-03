@@ -54,7 +54,16 @@
 			</div>
 			<div v-else-if="activeTabId === 'training'"  class="tab_page">
 				<actions-menu :menuItems="menuItems" :alwaysExtended="true"/>
-				<dialogTemplateEditor ref="dialogTemplateEditor" :editingSkill="editingSkill"/>
+				<select v-model="currentLang">
+					<option value="en">English</option>
+					<option value="de">German</option>
+					<option value="fr">French</option>
+					<option value="it">Italian</option>
+					<option value="pl">Polish</option>
+				</select>
+				<dialogTemplateEditor ref="dialogTemplateEditor"
+															:editingSkill="editingSkill"
+															:currentLang="currentLang"/>
 			</div>
 			<div v-else-if="activeTabId === 'configTemplate'" class="tab_page">
 				<actions-menu :menuItems="menuItems" :alwaysExtended="true"/>

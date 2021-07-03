@@ -123,7 +123,7 @@ export default {
 	},
 	watch: {
 		currentLang: function (newVal, oldVal){
-			if(this.activeTabId == 'instructions'){
+			if(this.activeTabId === 'instructions'){
 				if(this.noWatch) return
 				this.noWatch = true
 				let self = this
@@ -147,6 +147,32 @@ export default {
 				} else {
 					this.loadInstruction()
 					this.noWatch = false
+				}
+			} else if (this.activeTabId === 'training'){
+				if(this.noWatch) return
+				this.noWatch = true
+				let self = this
+				if(this.$refs.dialogTemplateEditor.isModified()){
+					this.$dialog.confirm({
+						title: "Your changes will be lost!",
+						body: "Close to return to "+oldVal+" or continue to "+newVal+"?",
+						okText: "Okilidoki",
+						cancelText: this.$t('buttons.cancel'),
+					}).then(function (dialog) {
+						self.$refs.dialogTemplateEditor.reload()
+						self.noWatch = false
+					}).catch(function (dialog){
+							self.currentLang = oldVal
+							self.$nextTick(() => {
+								self.noWatch = false
+							});
+						}
+					)
+				} else {
+					this.$nextTick(() => {
+						self.$refs.dialogTemplateEditor.reload()
+						self.noWatch = false
+					})
 				}
 			}
 		}

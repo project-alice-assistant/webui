@@ -124,17 +124,18 @@ import axios from "axios";
 
 export default {
 	name: "dialogTemplateEditor",
-	props: ['editingSkill'],
+	props: ['editingSkill',
+					'currentLang'],
 	data: function () {
 		return {
 			dialogTemplate: {},
 			backupTemplate: {},
 			editingIntent: null,
 			editingSlotType: null,
-			currentLang: 'en',
 			newValue: "",
 			newSynonymCSV: "",
-			newSlotName: ""
+			newSlotName: "",
+			noWatch: false
 		}
 	},
 	mounted() {
@@ -147,6 +148,12 @@ export default {
 		}
 	},
 	methods: {
+		isModified(){
+			return JSON.stringify(this.backupTemplate) !== JSON.stringify(this.dialogTemplate)
+		},
+		reload(){
+			this.loadDialogTemplate()
+		},
 		renameSlot(intent, slot){
 			self = this
 			this.$dialog.prompt({
@@ -295,7 +302,7 @@ export default {
 						// $emit('success ')self.setSuccess()
 
 						self.dialogTemplate = JSON.parse(response.data['dialogTemplate'])
-						self.backupTemplate = self.dialogTemplate
+						self.backupTemplate = JSON.parse(response.data['dialogTemplate'])
 					}
 					else {
 						// $emit('failed')self.setFailed(response.data['message'] || "Unknown Error")
