@@ -52,10 +52,11 @@
 	</div>
 	<div v-else>
 		<div>
-			<button v-for="(high, index) in template['highlights']"
-							:style="'background-color: '+ high['color'] +';'"
+			<button v-for="(high, index) in template.highlights"
+							v-if="high.slot != ''"
+							:style="'background-color: '+ high.color +';'"
 							@click.prevent="makeSlot(high)">
-				<div v-if="index<9" class="slotNumber">alt+{{index+1}}:</div>{{ high['slot'] }}
+				<div v-if="index<9" class="slotNumber">alt+{{index+1}}:</div>{{ high.slot }}
 			</button>
 			<button @click.prevent="clearSlot()"><div class="slotNumber">alt+0:</div>None</button>
 			<div class="backdrop">
@@ -64,7 +65,7 @@
 				id="newListItem"
 				ref="newListItem"
 				v-model="newItem"
-				:placeholder="template['placeholder']"
+				:placeholder="template.placeholder"
 				name="newListItem"
 				type="text"
 				@keyup="handleInput"
@@ -358,6 +359,6 @@ export default {
 	text-align-last: left;
 }
 .selected{
-	background: var(--secondary);
+	background: var(--windowBG);
 }
 </style>

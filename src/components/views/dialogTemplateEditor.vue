@@ -40,12 +40,26 @@
 					<div v-for="intent of Object.values(dialogTemplate.intents)"
 							 v-if="intent.name === editingIntent">
 						<h3>{{ intent.name }}</h3>
+						<h4>Settings</h4>
 						<div class="configLine">
 							<label>enabled By Default</label><input v-model="intent.enabledByDefault" type="checkbox"/>
 						</div>
-<!--						<div class="configLine">
-							<label>add Slot</label><input v-model="addSlotType" type="text"/>
-						</div>-->
+						<h4>Slots</h4>
+						<label>Name</label>
+						<label>SlotType</label>
+						<label>Required?</label>
+						<label>Missing Question</label>
+						<div v-for="slot of Object.values(intent.slots)" class="configLine">
+							<button @click="removeSlotFromIntent(intent, slot)"><i class="fas fa-minus-circle size-15x"></i></button>
+							<input v-model="slot.name" @input="changeSlotName"/>
+							<input v-model="slot.type"/>
+							<input v-model="slot.required" type="checkbox"/>
+							<input v-model="slot.missingQuestion"/>
+						</div>
+						<div class="configLine">
+							<button @click="addEmptySlot(intent.slots)"><i class="fas fa-plus-circle size-15x"></i></button>
+						</div>
+						<h4>Utterances</h4>
 					<configInputList v-model="intent.utterances"
 													 v-init="intent.utterances"
 													 :template="{name:'intents',
@@ -140,12 +154,38 @@ export default {
 				}
 			}
 		},
+		addEmptySlot(slots){
+			slots.push({'name':'', 'type':'', 'required':false, 'missingQuestion':''})
+		},
+		changeSlotName(oldVal, newVal){
+			console.log(oldVal)
+			console.log(newVal)
+			let regex = new RegExp("{([^(:=>)]*?):=>"+slot.name+"}", "g")
+			for(let ind in Object.values(intent.utterances)){
+				intent.utterances[ind] = intent.utterances[ind].replace(regex,"{$1:=>"+newVal+"}")
+			}
+			intent.slots = intent.slots.filter(v => v != slot);
+		},
+		removeSlotFromIntent(intent, slot){
+			this.$dialog.confirm({
+				title: "Mind the consequences!",
+				body: "Deleting a slot will remove all occurrences in the utterances",
+				okText: "Delete",
+				cancelText: this.$t('buttons.cancel'),
+			}).then(function (dialog) {
+
+				let regex = new RegExp("{([^(:=>)]*?):=>"+slot.name+"}", "g")
+				for(let ind in Object.values(intent.utterances)){
+					intent.utterances[ind] = intent.utterances[ind].replace(regex,"$1")
+				}
+				intent.slots = intent.slots.filter(v => v != slot);
+			}).catch(() => {})
+		},
 		getSlotColor(index){
-			return ['#1b4958', '#005000', 'orange', 'yellow', 'red'][index]
+			return ['#1b4958', '#005000', '#cc8400', 'yellow', 'red'][index]
 		},
 		getHighlights(intent){
 			let ret = []
-			console.log(intent)
 			let index = 0
 			for(const i of Object.values(intent.slots)){
 				let slot = {}

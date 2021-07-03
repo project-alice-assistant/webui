@@ -359,7 +359,7 @@ button:active {
 }
 
 .contained {
-	background: var(--secondary);
+	background: var(--windowBG);
 	padding: 1em;
 }
 
