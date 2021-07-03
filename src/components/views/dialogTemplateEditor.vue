@@ -46,18 +46,25 @@
 						</div>
 						<h4>Slots</h4>
 						<label>Name</label>
-						<label>SlotType</label>
+						<label>SlotType</label> <!-- TODO: link to inputs missing! -->
 						<label>Required?</label>
 						<label>Missing Question</label>
 						<div v-for="slot of Object.values(intent.slots)" class="configLine">
 							<button @click="removeSlotFromIntent(intent, slot)"><i class="fas fa-minus-circle size-15x"></i></button>
-							<input v-model="slot.name" @input="changeSlotName"/>
+							<div class="likeInput clickable" @click="renameSlot(intent, slot)">
+								{{slot.name}}
+								<i class="fas fa-pen"></i>
+							</div>
 							<input v-model="slot.type"/>
 							<input v-model="slot.required" type="checkbox"/>
 							<input v-model="slot.missingQuestion"/>
 						</div>
 						<div class="configLine">
-							<button @click="addEmptySlot(intent.slots)"><i class="fas fa-plus-circle size-15x"></i></button>
+							<button @click="addSlot(intent.slots)"><i class="fas fa-plus-circle size-15x"></i></button>
+							<input @keypress.enter="addSlot(intent.slots)"
+										 v-model="newSlotName"
+										 ref="newSlotInput"
+										 @input="resetValidity"/>
 						</div>
 						<h4>Utterances</h4>
 					<configInputList v-model="intent.utterances"
@@ -126,7 +133,8 @@ export default {
 			editingSlotType: null,
 			currentLang: 'en',
 			newValue: "",
-			newSynonymCSV: ""
+			newSynonymCSV: "",
+			newSlotName: ""
 		}
 	},
 	mounted() {
@@ -139,6 +147,38 @@ export default {
 		}
 	},
 	methods: {
+		renameSlot(intent, slot){
+			self = this
+			this.$dialog.prompt({
+					title: 'What should the slot be named?',
+					body: slot.name
+				}, {
+					promptHelp: '',
+					okText: this.$t('buttons.ok'),
+					cancelText: this.$t('buttons.cancel')
+				})
+				.then(function (dialogue) {
+					if (dialogue.data === '') {
+						self.showError('The name must not be empty!')
+						return
+					}
+					if(intent.slots.filter(a => a.name === dialogue.data).length){
+						self.showError('That name is already taken!')
+						return
+					}
+					let old = slot.name
+					slot.name = dialogue.data
+
+					let regex = new RegExp("{([^(:=>)]*?):=>"+old+"}", "g")
+					for(let ind in Object.values(intent.utterances)){
+						intent.utterances[ind] = intent.utterances[ind].replace(regex,"{$1:=>"+slot.name+"}")
+					}
+				})
+		},
+		resetValidity(e){
+			e.target.setCustomValidity("")
+			e.target.reportValidity()
+		},
 		addValue(){
 			for(const slotNum in this.dialogTemplate.slotTypes){
 				if( this.dialogTemplate.slotTypes[slotNum].name === this.editingSlotType){
@@ -154,17 +194,21 @@ export default {
 				}
 			}
 		},
-		addEmptySlot(slots){
-			slots.push({'name':'', 'type':'', 'required':false, 'missingQuestion':''})
-		},
-		changeSlotName(oldVal, newVal){
-			console.log(oldVal)
-			console.log(newVal)
-			let regex = new RegExp("{([^(:=>)]*?):=>"+slot.name+"}", "g")
-			for(let ind in Object.values(intent.utterances)){
-				intent.utterances[ind] = intent.utterances[ind].replace(regex,"{$1:=>"+newVal+"}")
+		addSlot(slots){
+			if(this.newSlotName === ""){
+				this.$refs.newSlotInput[0].setCustomValidity("Please provide a slot name!")
+				this.$refs.newSlotInput[0].reportValidity()
+				return
 			}
-			intent.slots = intent.slots.filter(v => v != slot);
+			if(slots.filter(a => a.name === this.newSlotName).length){
+				this.$refs.newSlotInput[0].setCustomValidity("That slot name already exists!")
+				this.$refs.newSlotInput[0].reportValidity()
+				return
+			}
+			this.$refs.newSlotInput[0].setCustomValidity("")
+			this.$refs.newSlotInput[0].reportValidity()
+			slots.push({'name':this.newSlotName, 'type':'', 'required':false, 'missingQuestion':''})
+			this.newSlotName = ""
 		},
 		removeSlotFromIntent(intent, slot){
 			this.$dialog.confirm({
@@ -236,7 +280,7 @@ export default {
 		loadDialogTemplate(){
 			const data = {"lang": this.currentLang }
 			let self = this
-			// $emit('wating') instead of this.setWaiting()
+			// $emit('waiting') instead of this.setWaiting()
 			axios({
 				method: 'POST',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.editingSkill.name}/getDialogTemplate/`,

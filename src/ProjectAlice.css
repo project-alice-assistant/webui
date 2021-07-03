@@ -256,6 +256,18 @@ input, select, textarea {
 	min-width: 200px;
 	height: 2em;
 }
+.likeInput {
+	background-color: var(--mainBG);
+	border: 1px dotted #636363;
+	box-sizing: content-box;
+	color: var(--text);
+	outline: none;
+	padding: 5px;
+	width: auto;
+	min-width: 200px;
+	height: 2em;
+	text-align: center;
+}
 
 input:hover, textarea:hover {
 	border: dotted 1px;
