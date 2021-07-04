@@ -37,7 +37,7 @@
 			<div class="contained">
 				<div v-if="editingIntent === null && editingSlotType === null">Please select an intent for adding slots and utterances!</div>
 				<div v-else-if="editingIntent !== null">
-					<div v-for="intent of Object.values(dialogTemplate.intents)"
+					<div v-for="(intent, key) in dialogTemplate.intents"
 							 v-if="intent.name === editingIntent">
 						<h3>{{ intent.name }}</h3>
 						<h4>Settings</h4>
@@ -49,7 +49,7 @@
 						<label>SlotType</label> <!-- TODO: link to inputs missing! -->
 						<label>Required?</label>
 						<label>Missing Question</label>
-						<div v-for="slot of Object.values(intent.slots)" class="configLine">
+						<div v-for="(slot, key) of intent.slots" class="configLine">
 							<button @click="removeSlotFromIntent(intent, slot)"><i class="fas fa-minus-circle size-15x"></i></button>
 							<div class="likeInput clickable" @click="renameSlot(intent, slot)">
 								{{slot.name}}
@@ -79,7 +79,7 @@
 					</div>
 				</div>
 				<div v-else>
-					<div v-for="slot of Object.values(dialogTemplate.slotTypes)"
+					<div v-for="(slot, key) in dialogTemplate.slotTypes"
 						v-if="slot.name === editingSlotType">
 						<h3>{{ slot.name }}</h3>
 						<div class="configLine">
@@ -101,7 +101,7 @@
 							<br/>
 							<br/>
 						</div>
-							<div v-for="val of Object.values(slot.values)"
+							<div v-for="(val, key) in slot.values"
 								 class="slotLine">
 							<input v-model="val.value"/>
 							<span v-if="slot.useSynonyms">
@@ -238,11 +238,14 @@ export default {
 		getHighlights(intent){
 			let ret = []
 			let index = 0
-			for(const i of Object.values(intent.slots)){
-				let slot = {}
-				slot.slot = i.name
-				slot.color = this.getSlotColor(index++)
-				ret.push(slot)
+			if(intent.slots) {
+				for (const i of intent.slots) {
+
+					let slot = {}
+					slot.slot = i.name
+					slot.color = this.getSlotColor(index++)
+					ret.push(slot)
+				}
 			}
 			return ret
 		},

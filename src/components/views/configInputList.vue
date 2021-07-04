@@ -14,7 +14,7 @@
 		</div>
 		<div v-if="value" class="list">
 			<div
-				v-for="item of Object.values(value)"
+				v-for="(item, key) in value"
 				:key="`itm_${item[template.dictKey]}`"
 				class="listItem"
 				:class="{'selected':selectedItem === item[template.dictKey]}"
@@ -39,7 +39,7 @@
 		</div>
 		<div class="list">
 			<div
-				v-for="item of Object.values(value)"
+				v-for="(item, key) in value"
 				:key="`itm_${item}`"
 				class="listItem"
 				:class="{'selected':selectedItem === item}"
