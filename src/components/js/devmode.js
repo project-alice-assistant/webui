@@ -391,7 +391,38 @@ export default {
 				})
 
 			}
-			this.$refs.dialogTemplateEditor.save()
+			if(this.$refs.dialogTemplateEditor){
+				this.$refs.dialogTemplateEditor.save()
+			}
+			if(this.$refs.configTemplateEditor && this.$refs.configTemplateEditor.prepareSave()) {
+				let self = this
+				let data = {
+					'lang': this.currentLang,
+					'configTemplate': this.editingSkill.settingsTemplate
+				}
+				axios({
+					method: 'PATCH',
+					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.editingSkill.name}/setConfigTemplate/`,
+					data: data,
+					headers: {
+						'auth': this.$store.getters.apiToken,
+						'content-type': 'application/json'
+					}
+				}).then(function (response) {
+					if ('success' in response.data) {
+						if (response.data['success']) {
+							self.setSuccess()
+							self.editingSkill.settingsTemplate = response.data['configTemplate']
+						} else {
+							self.setFailed(response.data['message'] || "Unknown Error")
+						}
+					}
+				}).catch(function (e) {
+					console.log(e)
+					self.setFailed()
+				})
+			}
+
 		},
 		utilityRequest(id) {
 			const icon = this.startIcon(id)

@@ -46,6 +46,7 @@
 			/>
 			<div v-if="activeTabId === 'settings' || activeTabId === undefined"  class="tab_page">
 				<actions-menu :menuItems="menuItems" :alwaysExtended="true"/>
+				<div class="size-2x WIP"><i class="fas fa-hard-hat red"></i> Work In Progress - no save possible! <i class="fas fa-hard-hat red"></i><br/></div>
 				<config :holder="editingSkill"
 								:templates="configTemplate()"
 								:translate="(val) => $t(val)"
@@ -54,6 +55,7 @@
 			</div>
 			<div v-else-if="activeTabId === 'training'"  class="tab_page">
 				<actions-menu :menuItems="menuItems" :alwaysExtended="true"/>
+				<div class="size-2x WIP"><i class="fas fa-hard-hat yellow"></i> Work In Progress - use carefully! <i class="fas fa-hard-hat yellow"></i><br/></div>
 				<select v-model="currentLang">
 					<option value="en">English</option>
 					<option value="de">German</option>
@@ -66,14 +68,18 @@
 															:currentLang="currentLang"/>
 			</div>
 			<div v-else-if="activeTabId === 'configTemplate'" class="tab_page">
+				<div class="size-2x WIP"><i class="fas fa-hard-hat yellow"></i> Work In Progress - use carefully! <i class="fas fa-hard-hat yellow"></i><br/></div>
 				<actions-menu :menuItems="menuItems" :alwaysExtended="true"/>
-				1. edit template file for active skill:<br/>
-				2. edit instructions file in "fancy" markdown editor with preview<br/>
-				3. ?? <br/>
-
-				4. profit!
+				<h1>Custom Config</h1>
+				Add custom config settings for your skill and configure their required information.<br/>
+				Until this dialog will be smart enough to support you in the creation, see the definition here:
+				<a href="https://docs.projectalice.io/skill-development/files-in-depth.html#skill-configuration-file">docs.ProjectAlice.io</a><br/>
+				<simple-json-editor v-model="editingSkill.settingsTemplate"
+														:configTemplate="{}"
+													  ref="configTemplateEditor"/>
 			</div>
 			<div v-else-if="activeTabId === 'instructions'" class="tab_page">
+				<div class="size-2x WIP"><i class="fas fa-hard-hat yellow"></i> Work In Progress - use carefully! <i class="fas fa-hard-hat yellow"></i><br/></div>
 				<actions-menu :menuItems="menuItems" :alwaysExtended="true"/>
 				<select v-model="currentLang">
 					<option value="en">English</option>
@@ -107,6 +113,7 @@
 			<div v-else-if="activeTabId === 'cloud'" class="tab_page">
 				<actions-menu :menuItems="menuItems" :alwaysExtended="true"/>
 					<div v-if="editingSkill.modified" class="container flexrow">
+						<div class="size-2x WIP"><i class="fas fa-hard-hat red"></i> Work In Progress - no github functionality live! <i class="fas fa-hard-hat red"></i><br/></div>
 						<div class="utility clickable" @click="utilityRequest('revert')">
 							<p class="utilityIcon">
 								<i id="utilityRevert" class="fas fa-undo-alt"/>
@@ -123,7 +130,6 @@
 								{{ $t('skill.utilities.upload') }}
 							</p>
 						</div>
-						#TODO: Bump Version to? Ask Min. Version?
 					</div>
 					<div v-else class="container flexrow">
 						<div class="utility clickable" @click="utilityRequest('setModified')">
