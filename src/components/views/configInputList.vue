@@ -240,7 +240,7 @@ export default {
 			}
 			//check if that value already exists in the list
 			if (this.template.subType === 'dict'){
-				if (!this.allowDouble && this.value.some(e => e[this.template.dictKey] === this.newItem)) {
+				if (!this.allowDouble && this.value && this.value.some(e => e[this.template.dictKey] === this.newItem)) {
 					e.target.setCustomValidity("This value already exists")
 					e.target.reportValidity()
 					return false

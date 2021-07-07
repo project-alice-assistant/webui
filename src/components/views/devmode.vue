@@ -105,10 +105,17 @@
 			</div>
 			<div v-else-if="activeTabId === 'talk'">
 				<actions-menu :menuItems="menuItems" :alwaysExtended="true"/>
-				1. Select active Language:<br/>
-				2. edit talk file. <br/>
-				3. ?? <br/>
-				4. profit!
+				<div class="size-2x WIP"><i class="fas fa-hard-hat red"></i> Work In Progress - this is just a placeholder! <i class="fas fa-hard-hat red"></i><br/></div>
+				<select v-model="currentLang">
+					<option value="en">English</option>
+					<option value="de">German</option>
+					<option value="fr">French</option>
+					<option value="it">Italian</option>
+					<option value="pl">Polish</option>
+				</select>
+				<talkFileEditor  ref="talkFileEditor"
+													 :editingSkill="editingSkill"
+													 :currentLang="currentLang"/>
 			</div>
 			<div v-else-if="activeTabId === 'cloud'" class="tab_page">
 				<actions-menu :menuItems="menuItems" :alwaysExtended="true"/>
