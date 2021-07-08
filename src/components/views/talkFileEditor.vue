@@ -3,6 +3,7 @@
 	<h1>Talk Files</h1>
 	Here is the place to define all the stuff Alice should be able to say with your skill.<br/>
 	Further more this is the place to go to when you want to translate the output to a different language.<br/>
+	For detailed information, have a look at <a href="https://docs.projectalice.io/skill-development/files-in-depth.html#talk-files">docs.ProjectAlice.io</a>
 	<br/>
 	<div v-if="missingInLang.length > 0">
 		<div class="red">

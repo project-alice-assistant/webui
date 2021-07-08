@@ -151,14 +151,17 @@
 				</div>
 			<div v-else-if="activeTabId === 'devices'">
 				<actions-menu :menuItems="menuItems" :alwaysExtended="true"/>
-				1. create new device types <br/>
-				2. edit device type config template<br/>
-				3. upload image for devicetype
+				<div class="size-2x WIP"><i class="fas fa-hard-hat red"></i> Work In Progress - not yet available! <i class="fas fa-hard-hat red"></i><br/></div>
+				Creation of own device types via the web interface is not yet possible!<br/>
+				To add device types please create the files manually.<br/>
+				You can find help on <a href="https://docs.projectalice.io/skill-development/going-further.html#devices">docs.ProjectAlice.io</a>
 			</div>
 			<div v-else-if="activeTabId === 'widgets'">
 				<actions-menu :menuItems="menuItems" :alwaysExtended="true"/>
-				1. create new empty widget<br/>
-				2. edit widget type config template
+				<div class="size-2x WIP"><i class="fas fa-hard-hat red"></i> Work In Progress - not yet available! <i class="fas fa-hard-hat red"></i><br/></div>
+				Creation of own widgets via the web interface is not yet possible!<br/>
+				To add widgets please create the files manually.<br/>
+				You can find help on <a href="https://docs.projectalice.io/skill-development/going-further.html#widgets">docs.ProjectAlice.io</a>
 			</div>
 
 		</div>
