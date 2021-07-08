@@ -1,6 +1,8 @@
 <template>
 	<div class="container flexcolumn">
 		<div v-if="createNew" class="settingsContainer">
+			<actions-menu :menuItems="menuItems" :alwaysExtended="false"/>
+			<div class="size-2x WIP"><i class="fas fa-hard-hat red"></i> Work In Progress - currently no skill creation via UI is possible! <i class="fas fa-hard-hat red"></i><br/></div>
 				<config
 					:templates="configTemplate()"
 					:holder="values"
@@ -46,8 +48,9 @@
 			/>
 			<div v-if="activeTabId === 'settings' || activeTabId === undefined"  class="tab_page">
 				<actions-menu :menuItems="menuItems" :alwaysExtended="true"/>
-				<div class="size-2x WIP"><i class="fas fa-hard-hat red"></i> Work In Progress - no save possible! <i class="fas fa-hard-hat red"></i><br/></div>
-				<config :holder="editingSkill"
+				<div class="size-2x WIP"><i class="fas fa-hard-hat red"></i> Work In Progress - no save of skill core settings possible! <i class="fas fa-hard-hat red"></i><br/></div>
+				<config v-if="changedSkill.installFile"
+								:holder="changedSkill.installFile"
 								:templates="configTemplate()"
 								:translate="(val) => $t(val)"
 								:validator="false"

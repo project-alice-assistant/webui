@@ -8,7 +8,8 @@ export default {
 				settings: {
 					'icon': 'fas fa-cogs',
 					'id': 'settings',
-					'position': 0
+					'position': 0,
+					'onChangeTo': this.loadInstallFile
 				},
 				training: {
 					'icon': 'fas fa-train',
@@ -221,9 +222,9 @@ export default {
 
 			const data = new FormData()
 			data.append('skillName', this.values['skillName'])
-			data.append('skillSpeakableName', this.values['skillSpeakableName'])
-			data.append('skillDescription', this.values['skillDescription'])
-			data.append('skillCategory', this.values['skillCategory'])
+			data.append('skillSpeakableName', this.values['speakableName'])
+			data.append('skillDescription', this.values['desc'])
+			data.append('skillCategory', this.values['category'])
 			data.append('skillPipRequirements', this.values['skillPipRequirements'])
 			data.append('skillSystemRequirements', this.values['.skillSystemRequirements'])
 			data.append('skillRequiredSkills', this.values['.skillRequiredSkills'])
@@ -323,6 +324,35 @@ export default {
 				self.setFailed()
 			})
 		},
+		loadInstallFile(){
+			// load the instructions for the currently selected skill and language
+			const data = {}
+			let self = this
+			this.setWaiting()
+			axios({
+				method: 'POST',
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.editingSkill.name}/getInstallFile/`,
+				data: data,
+				headers: {
+					'auth': this.$store.getters.apiToken,
+					'content-type': 'application/json'
+				}
+			}).then(function(response) {
+				if ('success' in response.data) {
+					if (response.data['success']) {
+						self.setSuccess()
+						self.$set(self.changedSkill, 'installFile', response.data['installFile'])
+						self.backedUpSkill.installFile = response.data['installFile']
+					}
+					else {
+						self.setFailed(response.data['message'] || "Unknown Error")
+					}
+				}
+			}).catch(function(e) {
+				console.log(e)
+				self.setFailed()
+			})
+		},
 		checkOnGithub: function(event) {
 			event.preventDefault()
 			if (!this.uploaded || !this.githubUrl) {
@@ -355,9 +385,11 @@ export default {
 		},
 		startEditingSkill(skill){
 			this.editingSkill = skill
+			this.loadInstallFile()
 		},
 		stopEditingSkill(){
 			this.editingSkill = null
+			this.createNew = false
 		},
 		saveSkill(){
 			if(this.changedSkill.instructions != this.backedUpSkill.instructions){
@@ -495,7 +527,7 @@ export default {
 			return { 'name' : {
 					"defaultValue": '',
 					"dataType"    : "string",
-					"description" : "class=\"inputError\" @input=\"validateTextInput(5, 20, true, $event)\" :disabled=\"created\"",
+					"description" : "The name of this intent as it can be found written in the store and folders.",
 					"obligatory"  : true,
 					"category"		: "general",
 					"min"					: 5,
@@ -503,7 +535,7 @@ export default {
 					"noSpace"			: true
 				},
 			'speakableName' : {
-				"defaultValue": '',
+				"defaultValue": 'A name for the skill that is speakable for Alice - use spaces, but be careful with punctuation',
 				"dataType"    : "string",
 				"description" : "",
 				"obligatory"  : true,
@@ -511,10 +543,10 @@ export default {
 				"min"					: 5,
 				"max"					: 50
 			},
-			'description' : {
+			'desc' : {
 				"defaultValue": '',
 				"dataType"    : "longstring",
-				"description" : "",
+				"description" : "A short description of that skill. It will be shown in the store",
 				"obligatory"  : true,
 				"category"		: "general",
 				"min"					: 20,
@@ -523,15 +555,15 @@ export default {
 			'category' : {
 				"defaultValue": 'assistance',
 				"dataType"    : "list",
-				"description" : "",
-				"values"  : ["weather", "information", "entertainment", "music", "game", "kid", "automation", "assistance",
-					"security", "planning", "shopping", "organisation", "household", "health"],
+				"description" : "The category your skill belongs into.",
+				"values"  : ["assistance", "automation", "entertainment", "game", "health", "household", "information", "kid",
+					"music", "organisation", "planning", "robotics", "security", "shopping", "weather"],
 				"category"		: "general"
 			},
 				'english': {
 					"defaultValue": true,
 					"dataType"    : "boolean",
-					"description" : "",
+					"description" : "English must be supported. A skill without english translation won't be accepted in the store.",
 					"obligatory"  : true,
 					"category"		: "language"
 				},
@@ -559,65 +591,47 @@ export default {
 					"description" : "",
 					"category"		: "language"
 				},
-				'pipreq': {
+				'pipRequirements': {
 					"defaultValue": '',
 					"dataType"    : "text",
-					"description" : "",
+					"description" : "The python requirements to be installed by pip",
 					"category"		: "requirements"
 				},
 				'sysreq': {
 					"defaultValue": '',
 					"dataType"    : "text",
-					"description" : "",
+					"description" : "The system requirements to be installed by apt-get",
 					"category"		: "requirements"
 				},
 				'conditionOnline': {
 					"defaultValue": false,
 					"dataType"    : "boolean",
-					"description" : "",
+					"description" : "Does this skill require internet to perform its task?",
 					"category"		: "requirements"
 				},
 				'conditionASRArbitrary': {
 					"defaultValue": false,
 					"dataType"    : "boolean",
-					"description" : "",
+					"description" : "Is an arbitrary ASR capturing required for this skill?",
 					"category"		: "requirements"
 				},
 				'conditionSkill': {
 					"defaultValue": '',
 					"dataType"    : "text",
-					"description" : "",
+					"description" : "Are other skills required to run this skill?",
 					"category"		: "requirements"
 				},
 				'conditionNotSkill': {
 					"defaultValue": '',
 					"dataType"    : "text",
-					"description" : "",
+					"description" : "Are there skills this skill won't be able to run with?",
 					"category"		: "requirements"
 				},
 				'conditionActiveManager': {
 					"defaultValue": '',
 					"dataType"    : "text",
-					"description" : "",
+					"description" : "Is there a specific manager required in Alice?",
 					"category"		: "requirements"
-				},
-				'widgets': {
-					"defaultValue": '',
-					"dataType"    : "text",
-					"description" : "",
-					"category"		: "additionalInformation"
-				},
-				'nodes': {
-					"defaultValue": '',
-					"dataType"    : "text",
-					"description" : "",
-					"category"		: "additionalInformation"
-				},
-				'devices': {
-					"defaultValue": '',
-					"dataType"    : "text",
-					"description" : "",
-					"category"		: "additionalInformation"
 				}
 			}
 		}
