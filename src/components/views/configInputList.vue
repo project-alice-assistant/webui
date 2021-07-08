@@ -3,7 +3,7 @@
 	<div v-if="template['subType'] === 'dict'">
 		<div>
 			<input
-				id="newListItem"
+				ref="newListItem"
 				v-model="newItem"
 				:placeholder="template['placeholder']"
 				name="newListItem"
@@ -28,7 +28,7 @@
 	<div v-else-if="template['subType'] === 'string'">
 		<div>
 			<input
-				id="newListItem"
+				ref="newListItem"
 				v-model="newItem"
 				:placeholder="template['placeholder']"
 				name="newListItem"
@@ -62,7 +62,6 @@
 			<div class="backdrop">
 				<div class="highlights" v-html="highlightText"></div>
 			<input
-				id="newListItem"
 				ref="newListItem"
 				v-model="newItem"
 				:placeholder="template.placeholder"
