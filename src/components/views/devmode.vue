@@ -105,7 +105,7 @@
 			</div>
 			<div v-else-if="activeTabId === 'talk'">
 				<actions-menu :menuItems="menuItems" :alwaysExtended="true"/>
-				<div class="size-2x WIP"><i class="fas fa-hard-hat red"></i> Work In Progress - this is just a placeholder! <i class="fas fa-hard-hat red"></i><br/></div>
+				<div class="size-2x WIP"><i class="fas fa-hard-hat yellow"></i> Work In Progress - use carefully! <i class="fas fa-hard-hat yellow"></i><br/></div>
 				<select v-model="currentLang">
 					<option value="en">English</option>
 					<option value="de">German</option>

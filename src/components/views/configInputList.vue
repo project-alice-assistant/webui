@@ -193,16 +193,14 @@ export default {
 			if(this.template.subType === 'dict'){
 				let newVal = this.template.dictTemplate
 				newVal[this.template.dictKey] = this.newItem
-				this.value.unshift(newVal)
+
+				this.$emit('input', [newVal, ...this.value])
 			} else {
 				//transform to the final form and  add the new item to the front of the list
-				this.value.unshift(this.prepareForStore(this.newItem))
+				this.$emit('input', [this.prepareForStore(this.newItem), ...this.value])
 			}
 			//clear the input
 			this.newItem = ''
-			//tell vue that the value has changed
-			this.$emit('input', this.value)
-
 		},
 		prepareForStore(input){
 			/*
@@ -246,7 +244,7 @@ export default {
 					return false
 				}
 			} else {
-				if (!this.allowDouble && this.value.includes(this.newItem)) {
+				if (!this.allowDouble && Array.isArray(this.value) && this.value.includes(this.newItem)) {
 					e.target.setCustomValidity("This value already exists")
 					e.target.reportValidity()
 					return false
@@ -261,8 +259,7 @@ export default {
 			* Remove one line of the final list
 			* called on button press (-) next to the list item
 			*/
-			this.value = this.value.filter(it => it !== item)
-			this.$emit('input', this.value)
+			this.$emit('input', this.value.filter(it => it !== item))
 		},
 		formatUtterance(item) {
 			/*

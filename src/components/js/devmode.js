@@ -394,6 +394,9 @@ export default {
 			if(this.$refs.dialogTemplateEditor){
 				this.$refs.dialogTemplateEditor.save()
 			}
+			if(this.$refs.talkFileEditor){
+				this.$refs.talkFileEditor.save()
+			}
 			if(this.$refs.configTemplateEditor && this.$refs.configTemplateEditor.prepareSave()) {
 				let self = this
 				let data = {

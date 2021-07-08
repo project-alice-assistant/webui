@@ -515,6 +515,10 @@ button:active {
 	border-color: red;
 }
 
+.inputErrorImp {
+	border-color: red !important;
+}
+
 .inputValid {
 	border-color: green;
 }
