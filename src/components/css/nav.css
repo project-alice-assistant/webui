@@ -30,17 +30,25 @@ button {
 
 .lastItem {
 	margin-top: auto;
+	position: fixed;
+	left: 2px;
+	bottom: 2px;
+	width: 146px;
 }
 
 nav.minimized {
-	width: 50px;
+	width: var(--minSidebarWidth);
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-content: flex-start;
+	justify-content: space-between;
 }
 
 button.minimized {
 	display: flex;
 	width: 100%;
-	min-width: 100%;
-	max-width: 100%;
+	min-width: var(--minNormalWidth);
+	max-width: var(--minNormalWidth);
 	height: 46px;
 	min-height: 46px;
 	max-height: 46px;
@@ -66,11 +74,15 @@ button.minimized {
 	animation-timing-function: ease;
 }
 
+.fullSize {
+	min-width: var(--minFullWidth) !important;
+}
+
 @keyframes changeSize {
 	from {
 		width: 150px;
 	}
 	to {
-		width: 50px;
+		width: var(--minSidebarWidth);
 	}
 }

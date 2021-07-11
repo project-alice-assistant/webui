@@ -24,6 +24,38 @@
 	/* ANIMATION */
 	--shortAnimation: all .15s ease-in-out;
 	--lightLift: translate3d(-2px, -2px, 0px);
+
+	/* Nav settings */
+	--minSidebarWidth: 50px;
+	--minFullWidth: 46px;
+	--minNormalWidth: 46px;
+
+}
+@media only screen and (max-height: 627px) {
+	:root {
+		/* Nav settings small screen*/
+		--minSidebarWidth: 100px;
+		--minFullWidth: 96px;
+		--minNormalWidth: 46px;
+	}
+}
+
+@media only screen and (max-height: 387px) {
+	:root {
+		/* Nav settings small screen*/
+		--minSidebarWidth: 150px;
+		--minFullWidth: 146px;
+		--minNormalWidth: 46px;
+	}
+}
+
+@media only screen and (max-height: 291px) {
+	:root {
+		/* Nav settings small screen*/
+		--minSidebarWidth: 200px;
+		--minFullWidth: 196px;
+		--minNormalWidth: 46px;
+	}
 }
 
 /* ============================ FONTS ============================ */

@@ -43,6 +43,12 @@ export default {
 			}
 		})
 
+		window.addEventListener(
+			'resize', (e) => {
+				self.$store.commit('setWindowHeight', e)
+			}
+		)
+
 		if (!this.$store.state.uiConnected) {
 			if (this.$router.currentRoute.path !== '/connect') {
 				this.$router.replace('/connect').then()

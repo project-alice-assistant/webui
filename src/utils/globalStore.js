@@ -32,7 +32,8 @@ export default new Vuex.Store({
 		furnitures: {},
 		constructions: {},
 		locations: {},
-		interfaceUid: ''
+		interfaceUid: '',
+		windowHeight: window.innerHeight
 	},
 	mutations: {
 		setInterfaceUid(state, data) {
@@ -155,6 +156,9 @@ export default new Vuex.Store({
 		},
 		uiConnected(state, connected) {
 			state.uiConnected = connected
+		},
+		setWindowHeight(state) {
+			state.windowHeight = window.innerHeight;
 		}
 	},
 	getters: {

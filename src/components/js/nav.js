@@ -6,6 +6,11 @@ export default {
 			animateExtend: false
 		}
 	},
+	computed: {
+		forceMinimized() {
+			return this.$store.state.windowHeight <= 627
+		}
+	},
 	methods: {
 		logout: function() {
 			this.$store.commit('userLogout')
