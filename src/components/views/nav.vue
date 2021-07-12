@@ -66,7 +66,7 @@
 			<button v-else v-tooltip="$t('nav.login')" class="minimized"><i aria-hidden="true" class="fas fa-sign-in-alt"/>
 			</button>
 		</router-link>
-		<a class="nav-link lastItem" @click="logout" v-if="this.$store.state.loggedInUser">
+		<a class="nav-link lastItem" @click="logout" v-if="this.$store.state.loggedInUser" :class="{fullSize: $store.state.minimized || forceMinimized }">
 			<button v-if="!$store.state.minimized && !forceMinimized">{{ $t('nav.logout') }}</button>
 			<button v-else v-tooltip="$t('nav.logout')" class="minimized fullSize"><i aria-hidden="true" class="fas fa-sign-out-alt"/>
 			</button>

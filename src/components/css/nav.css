@@ -75,6 +75,8 @@ button.minimized {
 }
 
 .fullSize {
+	width: var(--minFullWidth) !important;
+	max-width: var(--minFullWidth) !important;
 	min-width: var(--minFullWidth) !important;
 }
 
