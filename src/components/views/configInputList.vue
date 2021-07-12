@@ -25,6 +25,13 @@
 			</div>
 		</div>
 	</div>
+	<div v-else-if="template['subType'] === 'toggles'">
+		{{template['name']}}
+		<config :subConfig="true"
+						:templates="template['values']"
+						:translate="()=>'yeah'"
+						:holder="togglesHolder"></config>
+	</div>
 	<div v-else-if="template['subType'] === 'string'">
 		<div>
 			<input
@@ -99,8 +106,21 @@ export default {
 		'selectedItem'
 	],
 	data: function () {
-		return { newItem : "",
-						 newItemSlots: {}
+		return { newItem      : "",
+						 newItemSlots : {},
+			       togglesHolder: {}
+		}
+	},
+	created(){
+		console.log(this.value)
+		this.togglesHolder = this.value[this.template['category']]
+	},
+	watch: {
+		togglesHolder: {
+			deep: true,
+			handler() {
+				this.$emit('input', Object.keys(this.togglesHolder).filter(k => this.togglesHolder[k]))
+			}
 		}
 	},
 	computed: {

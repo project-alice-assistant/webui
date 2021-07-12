@@ -10,7 +10,8 @@
 			uncheckedBg="var(--windowBG)"
 			:uncheckedColor="( missing() ? 'red' : 'white' )"
 			:dotColor="( missing() ? 'red' : 'white' )"
-			@click="configValue = !configValue"
+			@click="$emit('input',!configValue); configValue = !configValue;"
+			:readonly="template['readonly']"
 		/>
 		<input
 			v-else-if="template['dataType'] === 'string' && !template['isSensitive']"
@@ -21,6 +22,7 @@
 			:minlength="template['min']"
 			:maxlength="template['max']"
 			type="text"
+			:readonly="template['readonly']"
 		/>
 	<input
 		v-else-if="template['dataType'] === 'string' && template['isSensitive']"
@@ -38,6 +40,7 @@
 		v-init="configValue"
 		:placeholder="template['defaultValue']"
 		type="email"
+		:readonly="template['readonly']"
 	/>
 	<input
 		v-else-if="template['dataType'] === 'integer' && !template['isSensitive']"
@@ -45,6 +48,7 @@
 		v-init="configValue"
 		:placeholder="template['defaultValue']"
 		type="number"
+		:readonly="template['readonly']"
 	/>
 	<input
 		v-else-if="template['dataType'] === 'integer' && template['isSensitive']"
@@ -52,6 +56,14 @@
 		:placeholder="template['defaultValue']"
 		type="password"
 	/>
+	<span v-else-if="template['dataType'] === 'faIcon'"
+				class="centerLine">
+		<input
+			v-model="configValue"
+			:placeholder="template['defaultValue']"
+			type="text"
+		/> <i :class="icon" aria-hidden="true" class="fa-2x" style="margin-left: .33em;"/>
+	</span>
 	<select
 		v-else-if="template['dataType'] === 'list'"
 		v-model="configValue"
@@ -138,6 +150,9 @@
 		display: flex;
 		align-items: center;
 		align-content: stretch;
+	}
+	input:read-only {
+		color: var(--windowBG);
 	}
 
 	input:valid{

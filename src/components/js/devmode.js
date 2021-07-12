@@ -149,32 +149,6 @@ export default {
 					this.loadInstruction()
 					this.noWatch = false
 				}
-			} else if (this.activeTabId === 'training'){
-				if(this.noWatch) return
-				this.noWatch = true
-				let self = this
-				if(this.$refs.dialogTemplateEditor.isModified()){
-					this.$dialog.confirm({
-						title: "Your changes will be lost!",
-						body: "Close to return to "+oldVal+" or continue to "+newVal+"?",
-						okText: "Okilidoki",
-						cancelText: this.$t('buttons.cancel'),
-					}).then(function (dialog) {
-						self.$refs.dialogTemplateEditor.reload()
-						self.noWatch = false
-					}).catch(function (dialog){
-							self.currentLang = oldVal
-							self.$nextTick(() => {
-								self.noWatch = false
-							});
-						}
-					)
-				} else {
-					this.$nextTick(() => {
-						self.$refs.dialogTemplateEditor.reload()
-						self.noWatch = false
-					})
-				}
 			}
 		}
 	},
@@ -532,7 +506,8 @@ export default {
 					"category"		: "general",
 					"min"					: 5,
 					"max"					: 20,
-					"noSpace"			: true
+					"noSpace"			: true,
+					"readonly"    : true
 				},
 			'speakableName' : {
 				"defaultValue": 'A name for the skill that is speakable for Alice - use spaces, but be careful with punctuation',
@@ -552,6 +527,12 @@ export default {
 				"min"					: 20,
 				"max"					: 200
 			},
+			'icon' : {
+				"defaultValue": 'fa-biohazard',
+				"dataType"    : "faIcon",
+				"description" : "The icon representing that skill.",
+				"category"		: "general"
+			},
 			'category' : {
 				"defaultValue": 'assistance',
 				"dataType"    : "list",
@@ -560,46 +541,62 @@ export default {
 					"music", "organisation", "planning", "robotics", "security", "shopping", "weather"],
 				"category"		: "general"
 			},
-				'english': {
-					"defaultValue": true,
-					"dataType"    : "boolean",
-					"description" : "English must be supported. A skill without english translation won't be accepted in the store.",
-					"obligatory"  : true,
-					"category"		: "language"
+				'conditions': {
+					"subConfig": true,
+					"dataType" : "userList",
+					"subType"  : "toggles",
+					"category" : "lang",
+					"values"   : {
+						'english': {
+						"defaultValue": true,
+						"dataType"    : "boolean",
+						"description" : "English must be supported. A skill without english translation won't be accepted in the store.",
+						"obligatory"  : true,
+						"category"		: "language"
+						},
+						'german': {
+							"defaultValue": false,
+							"dataType"    : "boolean",
+							"description" : "",
+							"category"		: "language"
+						},
+						'french': {
+							"defaultValue": false,
+							"dataType"    : "boolean",
+							"description" : "",
+							"category"		: "language"
+						},
+						'italian': {
+							"defaultValue": false,
+							"dataType"    : "boolean",
+							"description" : "",
+							"category"		: "language"
+						},
+						'polish': {
+							"defaultValue": false,
+							"dataType": "boolean",
+							"description": "",
+							"category": "language"
+						}
+					}
 				},
-				'german': {
-					"defaultValue": false,
-					"dataType"    : "boolean",
-					"description" : "",
-					"category"		: "language"
-				},
-				'french': {
-					"defaultValue": false,
-					"dataType"    : "boolean",
-					"description" : "",
-					"category"		: "language"
-				},
-				'italian': {
-					"defaultValue": false,
-					"dataType"    : "boolean",
-					"description" : "",
-					"category"		: "language"
-				},
-				'polish': {
-					"defaultValue": false,
-					"dataType"    : "boolean",
-					"description" : "",
-					"category"		: "language"
+				'aliceMinVersion': {
+					"defaultValue": '1.0.0-rc1',
+					"dataType"    : "string",
+					"description" : "The minimum version alice needs to use that skill - if you don't know, be sure and use your current version!",
+					"category"		: "requirements"
 				},
 				'pipRequirements': {
 					"defaultValue": '',
-					"dataType"    : "text",
+					"dataType"    : "userList",
+					"subType"     : "string",
 					"description" : "The python requirements to be installed by pip",
 					"category"		: "requirements"
 				},
 				'sysreq': {
 					"defaultValue": '',
-					"dataType"    : "text",
+					"dataType"    : "userList",
+					"subType"     : "string",
 					"description" : "The system requirements to be installed by apt-get",
 					"category"		: "requirements"
 				},

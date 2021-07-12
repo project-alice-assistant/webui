@@ -1,13 +1,13 @@
 <template>
-	<form class="settingsContainer" ref="data" @keypress.enter.prevent>
-		<div :class="{ 'waiting' : waiting || success || failed, 'waitHidden' : !waiting && !success && !failed }">
+	<component :is="subConfig ? 'div' : 'form'" class="settingsContainer" ref="data" @keypress.enter.prevent>
+		<div v-if="!subConfig" :class="{ 'waiting' : waiting || success || failed, 'waitHidden' : !waiting && !success && !failed }">
 			<div class="centered">
 				<i v-if="waiting" ref="animatedIcon" class="fas fa-spinner fa-pulse fa-4x" aria-hidden="true"/>
 				<i v-else-if="success" ref="animatedIcon" class="fas fa-check fa-4x green" aria-hidden="true"/>
 				<i v-else-if="failed" ref="animatedIcon" class="fas fa-exclamation-triangle fa-4x red" aria-hidden="true"/>
 			</div>
 		</div>
-		<div class="settingsArea">
+		<div class="settingsArea" :class="{noOverflow: subConfig}">
 				<div v-if="includeFilter" class="settingsCategory">
 					<div class="title">{{ $t('labels.searchSetting') }}</div>
 					<div class="configLayout">
@@ -71,7 +71,7 @@
 				</div>
 			</div>
 		</div>
-	</form>
+	</component>
 </template>
 
 <script>
@@ -89,7 +89,8 @@ export default {
 		'success',
 		'failed',
 		'textButtons', //should the action bar have text or icons?
-		'confPrefix' //prefix that should be removed from the config values
+		'confPrefix', //prefix that should be removed from the config values
+		'subConfig' //this config is only part of a bigger config - don't include the framework
 	],
 	data: function() {
 		return {searchKeyword : ''}
@@ -266,5 +267,8 @@ button {
 	height: 100%;
 	padding-bottom: 25%;
 	background-color: rgba(64,64,64,0.0);
+}
+.noOverflow {
+	overflow: hidden;
 }
 </style>

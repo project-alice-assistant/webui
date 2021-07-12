@@ -15,6 +15,15 @@ export default {
 				this.$set(this.holder, this.configName, value)
 				return true
 			}
+		},
+		icon() {
+			const regex = /<i class="(.*)"><\/i>/;
+			const matches = regex.exec(this.holder[this.configName])
+			if (matches) {
+				this.$set(this.holder, this.configName, matches[1])
+				return matches[1]
+			}
+			return this.holder[this.configName]
 		}
 	},
 	methods: {

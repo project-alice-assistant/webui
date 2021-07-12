@@ -1,6 +1,6 @@
 <template>
 	<div class="configLine">
-		<label :key="configName" v-tooltip="template.description">{{ this.formatName(configName) }}</label>
+		<label v-if="!template['subConfig']" :key="configName" v-tooltip="template.description">{{ this.formatName(configName) }}</label>
 		<configInput :configName="configName" :holder="holder" :translate="translate" :template="template"/>
 	<br/></div>
 </template>

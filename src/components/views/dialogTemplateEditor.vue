@@ -1,8 +1,8 @@
 <template>
-	<div>
-		<div class="flexrow">
-			<div>
-				<label>Intents</label>
+	<div class="settingsContainer">
+		<div class="flexrow nowrap stretched yscroll">
+			<div class="leftBar">
+				<label class="categoryHead">Intents</label>
 				<configInputList v-if="dialogTemplate"
 												 v-model="dialogTemplate.intents"
 												 v-init="dialogTemplate.intents"
@@ -17,7 +17,7 @@
 												 :allow-double="false"
 												 @item-selected="selectIntent"
 												 :selectedItem="editingIntent"/>
-				<label>SlotTypes</label>
+				<label class="categoryHead">SlotTypes</label>
 				<configInputList v-if="dialogTemplate"
 												 v-model="dialogTemplate.slotTypes"
 												 v-init="dialogTemplate.slotTypes"
@@ -34,17 +34,17 @@
 												 @item-selected="selectSlotType"
 												 :selectedItem="editingSlotType"/>
 			</div>
-			<div class="contained">
+			<div class="contained" style="width: 100%;overflow: inherit;">
 				<div v-if="editingIntent === null && editingSlotType === null">Please select an intent for adding slots and utterances!</div>
 				<div v-else-if="editingIntent !== null">
 					<div v-for="(intent, key) in dialogTemplate.intents"
 							 v-if="intent.name === editingIntent">
-						<h3>{{ intent.name }}</h3>
-						<h4>Settings</h4>
+						<h1 class="clickable" @click="renameIntent(intent)">{{ intent.name }} <i class="fas fa-pen"></i></h1>
+						<h3>Settings</h3>
 						<div class="configLine">
 							<label>enabled By Default</label><input v-model="intent.enabledByDefault" type="checkbox"/>
 						</div>
-						<h4>Slots</h4>
+						<h3>Slots</h3>
 						<label>Name</label>
 						<label>SlotType</label> <!-- TODO: link to inputs missing! -->
 						<label>Required?</label>
@@ -128,8 +128,8 @@ export default {
 					'currentLang'],
 	data: function () {
 		return {
-			dialogTemplate: {},
-			backupTemplate: {},
+			dialogTemplates: {},
+			backupTemplates: {},
 			editingIntent: null,
 			editingSlotType: null,
 			newValue: "",
@@ -145,6 +145,9 @@ export default {
 		newSynonyms: function () {
 			if(this.newSynonymCSV.trim() === "") return []
 			return this.newSynonymCSV.split(",")
+		},
+		dialogTemplate(){
+			return this.dialogTemplates[this.currentLang]
 		}
 	},
 	methods: {
@@ -153,6 +156,29 @@ export default {
 		},
 		reload(){
 			this.loadDialogTemplate()
+		},
+		renameIntent(intent){
+			self = this
+			this.$dialog.prompt({
+				title: 'What should the intent be named? The intent will be renamed for all languages.',
+				body: intent.name
+			}, {
+				promptHelp: '',
+				okText: this.$t('buttons.ok'),
+				cancelText: this.$t('buttons.cancel')
+			})
+				.then(function (dialogue) {
+					if (dialogue.data === '') {
+						self.showError('The name must not be empty!')
+						return
+					}
+					if(self.dialogTemplate.intents.filter(a => a.name === dialogue.data).length){
+						self.showError('That name is already taken!')
+						return
+					}
+					intent.name = dialogue.data
+					self.editingIntent = intent.name
+				})
 		},
 		renameSlot(intent, slot){
 			self = this
@@ -259,9 +285,10 @@ export default {
 		},
 		save(){
 			let self = this
+			for(const lang of Object.keys(this.dialogTemplates)){
 			let data = {
-				'lang': this.currentLang,
-				'dialogTemplate': this.dialogTemplate
+					'lang': lang,
+					'dialogTemplate': this.dialogTemplates[lang]
 			}
 			axios({
 				method: 'PATCH',
@@ -286,9 +313,10 @@ export default {
 				console.log(e)
 				// $emit('failed')self.setFailed(response.data['message'] || "Unknown Error")
 			})
+			}
 		},
 		loadDialogTemplate(){
-			const data = {"lang": this.currentLang }
+			const data = {}
 			let self = this
 			// $emit('waiting') instead of this.setWaiting()
 			axios({
@@ -304,8 +332,8 @@ export default {
 					if (response.data['success']) {
 						// $emit('success ')self.setSuccess()
 
-						self.dialogTemplate = JSON.parse(response.data['dialogTemplate'])
-						self.backupTemplate = JSON.parse(response.data['dialogTemplate'])
+						self.dialogTemplates = response.data['dialogTemplates']
+						self.backupTemplates = response.data['dialogTemplates']
 					}
 					else {
 						// $emit('failed')self.setFailed(response.data['message'] || "Unknown Error")
@@ -335,5 +363,19 @@ export default {
 	padding:.5em;
 	align-items: center;
 	flex-wrap: wrap;
+}
+.categoryHead {
+	background-color: var(--accent);
+	width: 100%;
+	text-align: center;
+	line-height: 2em;
+}
+.leftBar{
+	display: flex;
+	flex-direction: column;
+}
+.stretched{
+	width: 100%;
+	height: 100%;
 }
 </style>

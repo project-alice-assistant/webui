@@ -1,6 +1,6 @@
 <template>
-	<div>
-		<textarea v-model="stringified"></textarea>
+	<div class="settingsContainer">
+		<textarea v-model="stringified" class="stretched"></textarea>
 		<!--<div class="configLayout">
 			<div v-for="(slot, skey) of value" class="configLine">
 				<button @click="removeSlotFromIntent(intent, slot)"><i class="fas fa-minus-circle size-15x"></i></button>
@@ -58,5 +58,9 @@ export default {
 </script>
 
 <style scoped>
+.stretched{
+	width: 100%;
+	height: 100%;
+}
 
 </style>
