@@ -9,11 +9,20 @@ export default {
 	computed: {
 		configValue: {
 			get: function () {
-				return this.holder[this.configName]
+				if(this.template['subConfig']) {
+					return this.holder[this.configName][this.template['category']]
+				} else {
+					return this.holder[this.configName]
+				}
 			},
 			set: function (value) {
-				this.$set(this.holder, this.configName, value)
-				return true
+				if(this.template['subConfig']) {
+					this.$set(this.holder[this.configName], this.template['category'], value)
+					return true
+				} else {
+					this.$set(this.holder, this.configName, value)
+					return true
+				}
 			}
 		},
 		icon() {

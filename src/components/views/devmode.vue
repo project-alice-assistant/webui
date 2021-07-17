@@ -48,13 +48,14 @@
 			/>
 			<div v-if="activeTabId === 'settings' || activeTabId === undefined"  class="tab_page">
 				<actions-menu :menuItems="menuItems" :alwaysExtended="true"/>
-				<div class="size-2x WIP"><i class="fas fa-hard-hat red"></i> Work In Progress - no save of skill core settings possible! <i class="fas fa-hard-hat red"></i><br/></div>
+				<div class="size-2x WIP"><i class="fas fa-hard-hat yellow"></i> Work In Progress - use carefully! <i class="fas fa-hard-hat yellow"></i><br/></div>
 				<config v-if="changedSkill.installFile"
 								:holder="changedSkill.installFile"
 								:templates="configTemplate()"
 								:translate="(val) => $t(val)"
 								:validator="false"
-								:byCategory="true"/>
+								:byCategory="true"
+								:waiting="waiting"/>
 			</div>
 			<div v-else-if="activeTabId === 'training'"  class="tab_page">
 				<actions-menu :menuItems="menuItems" :alwaysExtended="true"/>
@@ -68,7 +69,9 @@
 				</select>
 				<dialogTemplateEditor ref="dialogTemplateEditor"
 															:editingSkill="editingSkill"
-															:currentLang="currentLang"/>
+															:currentLang="currentLang"
+															v-on::waiting="waiting = true"
+															v-on::success="waiting = false"/>
 			</div>
 			<div v-else-if="activeTabId === 'configTemplate'" class="tab_page">
 				<div class="size-2x WIP"><i class="fas fa-hard-hat yellow"></i> Work In Progress - use carefully! <i class="fas fa-hard-hat yellow"></i><br/></div>

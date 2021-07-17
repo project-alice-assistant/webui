@@ -7,7 +7,7 @@
 				<i v-else-if="failed" ref="animatedIcon" class="fas fa-exclamation-triangle fa-4x red" aria-hidden="true"/>
 			</div>
 		</div>
-		<div class="settingsArea" :class="{noOverflow: subConfig}">
+		<div v-if="!waiting" class="settingsArea" :class="{noOverflow: subConfig}">
 				<div v-if="includeFilter" class="settingsCategory">
 					<div class="title">{{ $t('labels.searchSetting') }}</div>
 					<div class="configLayout">

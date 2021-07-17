@@ -318,7 +318,7 @@ export default {
 		loadDialogTemplate(){
 			const data = {}
 			let self = this
-			// $emit('waiting') instead of this.setWaiting()
+			this.$emit('waiting')
 			axios({
 				method: 'POST',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.editingSkill.name}/getDialogTemplate/`,
@@ -351,9 +351,6 @@ export default {
 <style scoped>
 .slotLine {
 	display: flex;
-}
->>> input {
-	margin: .3em;
 }
 .configLine {
 	clear:both;

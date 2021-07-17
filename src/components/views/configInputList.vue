@@ -1,7 +1,8 @@
 <template>
 <div>
 	<div v-if="template['subType'] === 'dict'">
-		<div>
+		<div class="inputIconContainer">
+			<i class="fas fa-plus-circle clickable" @click="addItem"></i>
 			<input
 				ref="newListItem"
 				v-model="newItem"
@@ -26,14 +27,14 @@
 		</div>
 	</div>
 	<div v-else-if="template['subType'] === 'toggles'">
-		{{template['name']}}
 		<config :subConfig="true"
 						:templates="template['values']"
-						:translate="()=>'yeah'"
+						:translate="$t"
 						:holder="togglesHolder"></config>
 	</div>
 	<div v-else-if="template['subType'] === 'string'">
-		<div>
+		<div class="inputIconContainer">
+			<i class="fas fa-plus-circle clickable" @click="addItem"></i>
 			<input
 				ref="newListItem"
 				v-model="newItem"
@@ -111,9 +112,16 @@ export default {
 			       togglesHolder: {}
 		}
 	},
-	created(){
-		console.log(this.value)
-		this.togglesHolder = this.value[this.template['category']]
+	mounted(){
+		if(this.template['subType'] === 'toggles' && this.value != undefined) {
+			if(!this.$t){
+				alert("list of toggles are not allowed when there is no $t")
+			}
+			this.togglesHolder = {}
+			for(const key of this.value) {
+				this.$set(this.togglesHolder, key, true)
+			}
+		}
 	},
 	watch: {
 		togglesHolder: {
@@ -201,7 +209,10 @@ export default {
 			* This is used for the default (string) list as well as for the utterances list!
 			*/
 			//ignore empty inputs
-			if (this.newItem.length <= 0 || this.newItem === undefined) return
+			if (this.newItem.length <= 0 || this.newItem === undefined) {
+				this.$refs.newListItem.focus()
+				return
+			}
 			//make sure the result list is initialized
 			if (this.value === undefined){
 				this.value = []
@@ -220,6 +231,7 @@ export default {
 			}
 			//clear the input
 			this.newItem = ''
+			this.$refs.newListItem.focus()
 		},
 		prepareForStore(input){
 			/*
@@ -258,19 +270,19 @@ export default {
 			//check if that value already exists in the list
 			if (this.template.subType === 'dict'){
 				if (!this.allowDouble && this.value && this.value.some(e => e[this.template.dictKey] === this.newItem)) {
-					e.target.setCustomValidity("This value already exists")
-					e.target.reportValidity()
+					this.$refs.newListItem.setCustomValidity("This value already exists")
+					this.$refs.newListItem.reportValidity()
 					return false
 				}
 			} else {
 				if (!this.allowDouble && Array.isArray(this.value) && this.value.includes(this.newItem)) {
-					e.target.setCustomValidity("This value already exists")
-					e.target.reportValidity()
+					this.$refs.newListItem.setCustomValidity("This value already exists")
+					this.$refs.newListItem.reportValidity()
 					return false
 				}
 			}
-			e.target.setCustomValidity("")
-			e.target.reportValidity()
+			this.$refs.newListItem.setCustomValidity("")
+			this.$refs.newListItem.reportValidity()
 			return true
 		},
 		removeItem(item) {
@@ -376,5 +388,18 @@ export default {
 }
 .selected{
 	background: var(--windowBG);
+}
+.inputIconContainer{
+	position: relative;
+}
+.inputIconContainer > input{
+	position: relative;
+	left: 0;
+	padding-left: 2em;
+}
+.inputIconContainer i{
+	position: absolute;
+	margin:.75em .4em;
+	z-index: 1;
 }
 </style>

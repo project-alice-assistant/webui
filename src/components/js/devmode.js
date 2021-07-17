@@ -298,6 +298,36 @@ export default {
 				self.setFailed()
 			})
 		},
+		saveInstructions(){
+			let self = this
+			let data = {
+				'lang': this.currentLang,
+				'instruction': this.changedSkill.instructions
+			}
+			axios({
+				method: 'PATCH',
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.editingSkill.name}/setInstructions/`,
+				data: data,
+				headers: {
+					'auth': this.$store.getters.apiToken,
+					'content-type': 'application/json'
+				}
+			}).then(function(response) {
+				if ('success' in response.data) {
+					if (response.data['success']) {
+						self.setSuccess()
+						self.changedSkill.instructions = response.data['instruction']
+						self.backedUpSkill.instructions = self.changedSkill.instructions
+					}
+					else {
+						self.setFailed(response.data['message'] || "Unknown Error")
+					}
+				}
+			}).catch(function(e) {
+				console.log(e)
+				self.setFailed()
+			})
+		},
 		loadInstallFile(){
 			// load the instructions for the currently selected skill and language
 			const data = {}
@@ -326,6 +356,36 @@ export default {
 				console.log(e)
 				self.setFailed()
 			})
+		},
+		saveInstallFile(){
+				let self = this
+				let data = {
+					'installFile': this.changedSkill.installFile
+				}
+				console.log(data)
+				axios({
+					method: 'PATCH',
+					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.editingSkill.name}/setInstallFile/`,
+					data: data,
+					headers: {
+						'auth': this.$store.getters.apiToken,
+						'content-type': 'application/json'
+					}
+				}).then(function(response) {
+					if ('success' in response.data) {
+						if (response.data['success']) {
+							self.setSuccess()
+							self.changedSkill.installFile = JSON.parse(response.data['installFile'])
+							self.backedUpSkill.installFile = JSON.parse(response.data['installFile'])
+						}
+						else {
+							self.setFailed(response.data['message'] || "Unknown Error")
+						}
+					}
+				}).catch(function(e) {
+					console.log(e)
+					self.setFailed()
+				})
 		},
 		checkOnGithub: function(event) {
 			event.preventDefault()
@@ -367,35 +427,13 @@ export default {
 		},
 		saveSkill(){
 			if(this.changedSkill.instructions != this.backedUpSkill.instructions){
-				let self = this
-				let data = {
-					'lang': this.currentLang,
-					'instruction': this.changedSkill.instructions
-				}
-				axios({
-					method: 'PATCH',
-					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.editingSkill.name}/setInstructions/`,
-					data: data,
-					headers: {
-						'auth': this.$store.getters.apiToken,
-						'content-type': 'application/json'
-					}
-				}).then(function(response) {
-					if ('success' in response.data) {
-						if (response.data['success']) {
-							self.setSuccess()
-							self.changedSkill.instructions = response.data['instruction']
-							self.backedUpSkill.instructions = self.changedSkill.instructions
-						}
-						else {
-							self.setFailed(response.data['message'] || "Unknown Error")
-						}
-					}
-				}).catch(function(e) {
-					console.log(e)
-					self.setFailed()
-				})
-
+				this.saveInstructions()
+			}
+			if(this.changedSkill.instalLFile != this.backedUpSkill.installFile){
+				this.saveInstallFile()
+			}
+			if(this.$refs.installFileEditor){
+				this.$refs.installFileEditor.save()
 			}
 			if(this.$refs.dialogTemplateEditor){
 				this.$refs.dialogTemplateEditor.save()
@@ -527,8 +565,15 @@ export default {
 				"min"					: 20,
 				"max"					: 200
 			},
+			'version' : {
+				"defaultValue": '0.0.1',
+				"dataType"    : "string",
+				"description" : "The version of this skill. Increase this on every update.",
+				"obligatory"  : true,
+				"category"		: "general"
+			},
 			'icon' : {
-				"defaultValue": 'fa-biohazard',
+				"defaultValue": 'fas fa-biohazard',
 				"dataType"    : "faIcon",
 				"description" : "The icon representing that skill.",
 				"category"		: "general"
@@ -547,32 +592,38 @@ export default {
 					"subType"  : "toggles",
 					"category" : "lang",
 					"values"   : {
-						'english': {
+						'en': {
 						"defaultValue": true,
 						"dataType"    : "boolean",
 						"description" : "English must be supported. A skill without english translation won't be accepted in the store.",
 						"obligatory"  : true,
 						"category"		: "language"
 						},
-						'german': {
+						'de': {
 							"defaultValue": false,
 							"dataType"    : "boolean",
 							"description" : "",
 							"category"		: "language"
 						},
-						'french': {
+						'fr': {
 							"defaultValue": false,
 							"dataType"    : "boolean",
 							"description" : "",
 							"category"		: "language"
 						},
-						'italian': {
+						'it': {
 							"defaultValue": false,
 							"dataType"    : "boolean",
 							"description" : "",
 							"category"		: "language"
 						},
-						'polish': {
+						'pt': {
+							"defaultValue": false,
+							"dataType"    : "boolean",
+							"description" : "",
+							"category"		: "language"
+						},
+						'pl': {
 							"defaultValue": false,
 							"dataType": "boolean",
 							"description": "",
@@ -614,19 +665,22 @@ export default {
 				},
 				'conditionSkill': {
 					"defaultValue": '',
-					"dataType"    : "text",
+					"dataType"    : "userList",
+					"subType"     : "string",
 					"description" : "Are other skills required to run this skill?",
 					"category"		: "requirements"
 				},
 				'conditionNotSkill': {
 					"defaultValue": '',
-					"dataType"    : "text",
+					"dataType"    : "userList",
+					"subType"     : "string",
 					"description" : "Are there skills this skill won't be able to run with?",
 					"category"		: "requirements"
 				},
 				'conditionActiveManager': {
 					"defaultValue": '',
-					"dataType"    : "text",
+					"dataType"    : "userList",
+					"subType"     : "string",
 					"description" : "Is there a specific manager required in Alice?",
 					"category"		: "requirements"
 				}

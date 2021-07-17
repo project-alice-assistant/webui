@@ -39,7 +39,6 @@ export default {
 	},
 	methods: {
 		json2string(){
-			console.log("go")
 			this.stringified = JSON.stringify(this.value, null, 2)
 		},
 		string2json(){
