@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="yscroll">
 	<h1>Talk Files</h1>
 	Here is the place to define all the stuff Alice should be able to say with your skill.<br/>
 	Further more this is the place to go to when you want to translate the output to a different language.<br/>
@@ -19,8 +19,8 @@
 	<div v-else class="clickable" @click="showRaw=true">
 		<i class="fas fa-caret-right"></i> Click here to show the raw talk file
 	</div>
-	<div v-for="(val,key) in talkFiles[currentLang]">
-		<div class="configLine">
+	<div v-for="(val,key) in talkFiles[currentLang]" class="talkCard">
+		<div class="lineContainer">
 			<button @click="removeTalk(key)"><i class="fas fa-minus-circle size-15x"></i></button>
 			<div class="likeInput clickable" @click="rename(key)">{{key}} <i class="fas fa-pen"></i></div>
 		</div>
@@ -221,5 +221,30 @@ export default {
 </script>
 
 <style scoped>
-
+.talkCard {
+	background-color: var(--windowBG);
+	margin: 1em;
+	padding: 1em;
+	border: 1px solid var(--accent);
+}
+.lineContainer {
+	display: grid;
+	grid-auto-flow: column;
+	grid-auto-columns: 3rem 1fr;
+	gap:.3em;
+	align-items: center;
+	margin: .2em 0;
+	overflow: hidden;
+	padding: 0 .5em 0 0;
+	background-color: var(--mainBG);
+}
+.lineContainer * {
+	min-width: 14rem;
+	margin: 0;
+	box-sizing: border-box;
+}
+.lineContainer *:first-child {
+	min-width: 3rem;
+	margin: .1em;
+}
 </style>
