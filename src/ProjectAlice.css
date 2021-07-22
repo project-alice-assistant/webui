@@ -268,9 +268,10 @@ header {
 	color: var(--hover);
 }
 
-a:link, a:visited, a:active {
+a, a:link, a:visited, a:active {
 	color: var(--text);
 	text-decoration: none;
+	text-shadow: 0 0 .5em var(--hover);
 }
 
 a:hover {

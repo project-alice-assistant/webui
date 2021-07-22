@@ -10,23 +10,29 @@
 		There are talks missing in this language!
 		</div>
 		Click to add them: <br/>
-		<span class="clickable" v-for="miss in missingInLang" @click="addTalk(miss)"><i class="fas fa-plus-circle"/>{{miss}} </span>
+		<a v-for="miss in missingInLang" @click="addTalk(miss)"><i class="fas fa-plus-circle"/>{{miss}} </a>
 	</div>
 	<div v-if="showRaw">
-		<div class="clickable" @click="showRaw=false"><i class="fas fa-caret-down"></i> Raw talk file:</div>
+		<a @click="showRaw=false"><i class="fas fa-caret-down"></i> Raw talk file:</a><br/>
 		<textarea v-model="stringified" :class="{inputErrorImp: !this.stringValid}"></textarea>
 	</div>
-	<div v-else class="clickable" @click="showRaw=true">
+	<a v-else @click="showRaw=true">
 		<i class="fas fa-caret-right"></i> Click here to show the raw talk file
-	</div>
+	</a>
 	<div v-for="(val,key) in talkFiles[currentLang]" class="talkCard">
 		<div class="lineContainer">
 			<button @click="removeTalk(key)"><i class="fas fa-minus-circle size-15x"></i></button>
 			<div class="likeInput clickable" @click="rename(key)">{{key}} <i class="fas fa-pen"></i></div>
 		</div>
-		<div v-for="(v2,k2) in val">{{k2}}:
-			<configInputList v-model="talkFiles[currentLang][key][k2]"
-											 :template="{name:k2,
+		<div class="inputBlock"><label>Default:</label>
+			<configInputList v-model="talkFiles[currentLang][key]['default']"
+											 :template="{name:'default',
+																	 dataType:'userList',
+																	 subType:'string'}"/>
+		</div>
+		<div class="inputBlock"><label>Short:</label>
+			<configInputList v-model="talkFiles[currentLang][key]['short']"
+											 :template="{name:'default',
 																	 dataType:'userList',
 																	 subType:'string'}"/>
 		</div>
@@ -246,5 +252,8 @@ export default {
 .lineContainer *:first-child {
 	min-width: 3rem;
 	margin: .1em;
+}
+.inputBlock {
+	margin: 1em;
 }
 </style>

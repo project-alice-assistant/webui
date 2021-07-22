@@ -82,7 +82,6 @@
 																		highlights: getHighlights(intent)}"
 													 @item-selected="selectIntent"
 													 :selectedItem="editingIntent"/><br/>
-					4. trigger training?
 					</div>
 				</div>
 				<div v-else class="slotDefinition">
@@ -416,6 +415,7 @@ export default {
 }
 * > .lineContainer{
 	background-color: var(--accent);
+	padding: .5em;
 }
 * > .lineContainer ~ .lineContainer{
 	background-color: var(--mainBG);

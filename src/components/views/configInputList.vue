@@ -67,20 +67,22 @@
 				<div v-if="index<9" class="slotNumber">alt+{{index+1}}:</div>{{ high.slot }}
 			</button>
 			<button @click.prevent="clearSlot()"><div class="slotNumber">alt+0:</div>None</button>
-			<div class="backdrop">
+			<div class="backdrop inputIconContainer">
+				<i class="fas fa-plus-circle clickable" @click="addItem"></i>
 				<div class="highlights" v-html="highlightText"></div>
-			<input
-				ref="newListItem"
-				v-model="newItem"
-				:placeholder="template.placeholder"
-				name="newListItem"
-				type="text"
-				@keyup="handleInput"
-				@keyup.enter="addItem"
-				class="longInput"
-				@scroll="handleScroll"
-				@input="handleInput"
-			/></div>
+				<input
+					ref="newListItem"
+					v-model="newItem"
+					:placeholder="template.placeholder"
+					name="newListItem"
+					type="text"
+					@keyup="handleInput"
+					@keyup.enter="addItem"
+					class="longInput"
+					@scroll="handleScroll"
+					@input="handleInput"
+				/>
+			</div>
 		</div>
 		<div class="list">
 			<div
@@ -323,6 +325,7 @@ export default {
 }
 .listItem {
 	padding: 0.4em;
+	border-block: 1px dotted var(--accent);
 }
 .longInput{
 	position: absolute;
@@ -350,6 +353,12 @@ export default {
 	text-shadow: none;
 	text-align: start;
 	margin:auto;
+}
+.inputIconContainer > .highlights {
+	position: absolute;
+	color: red;
+	left: 0;
+	padding-left: 2.1em;
 }
 .highlights {
 	color: transparent;
@@ -391,11 +400,15 @@ export default {
 }
 .inputIconContainer{
 	position: relative;
+	width: 100%;
 }
 .inputIconContainer > input{
 	position: relative;
 	left: 0;
 	padding-left: 2em;
+	box-sizing: border-box;
+	width: 100%;
+	min-height: 3em;
 }
 .inputIconContainer i{
 	position: absolute;
