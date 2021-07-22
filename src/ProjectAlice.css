@@ -321,6 +321,25 @@ input:focus, textarea:focus {
 	border: var(--hover) dotted 1px;
 }
 
+input:read-only:focus,
+input:read-only {
+	color: var(--windowBG);
+	border: 1px dotted;
+}
+
+input:read-only+span:after{
+	margin-left: -1.5em;
+	display: inline-block;
+	font-style: normal;
+	font-variant: normal;
+	text-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+	font-family: "Font Awesome 5 Free";
+	font-weight: 900;
+	color: var(--secondary);
+	content: "\f023";
+}
+
 /* ======================= COLOR MARKINGS ======================== */
 .red, .disabled, .warning, .saveFailed, .logError, .logRed {
 	color: red;
@@ -357,7 +376,7 @@ button {
 	text-transform: uppercase;
 	overflow: hidden;
 	border-radius: unset;
-	min-width: 100px;
+	min-width: 6.25rem;
 	padding: 0;
 	cursor: pointer;
 }

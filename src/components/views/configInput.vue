@@ -152,25 +152,6 @@
 		align-content: stretch;
 	}
 
-	input:read-only:focus,
-	input:read-only {
-		color: var(--windowBG);
-		border: 1px dotted;
-	}
-
-	input:read-only+span:after{
-		margin-left: -1.5em;
-		display: inline-block;
-		font-style: normal;
-		font-variant: normal;
-		text-rendering: auto;
-		-webkit-font-smoothing: antialiased;
-		font-family: "Font Awesome 5 Free";
-		font-weight: 900;
-		color: var(--secondary);
-		content: "\f023";
-	}
-
 	input:valid{
 		border: 1px dotted green;
 	}

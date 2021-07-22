@@ -29,6 +29,7 @@
 																										matchingStrictness: null,
 																										automaticallyExtensible: false,
 																										useSynonyms: true,
+																										technicalValue: false,
 																										values: [] } }"
 												 :allow-double="false"
 												 @item-selected="selectSlotType"
@@ -45,11 +46,14 @@
 							<label>enabled By Default</label><input v-model="intent.enabledByDefault" type="checkbox"/>
 						</div>
 						<h3>Slots</h3>
-						<label>Name</label>
-						<label>SlotType</label> <!-- TODO: link to inputs missing! -->
-						<label>Required?</label>
-						<label>Missing Question</label>
-						<div v-for="(slot, key) of intent.slots" class="configLine">
+						<div class="lineContainer">
+							<label></label>
+							<label>Name</label>
+							<label>SlotType</label> <!-- TODO: link to inputs missing! -->
+							<label>Required?</label>
+							<label>Missing Question</label>
+						</div>
+						<div v-for="(slot, key) of intent.slots" class="lineContainer">
 							<button @click="removeSlotFromIntent(intent, slot)"><i class="fas fa-minus-circle size-15x"></i></button>
 							<div class="likeInput clickable" @click="renameSlot(intent, slot)">
 								{{slot.name}}
@@ -59,12 +63,15 @@
 							<input v-model="slot.required" type="checkbox"/>
 							<input v-model="slot.missingQuestion"/>
 						</div>
-						<div class="configLine">
+						<div class="lineContainer">
 							<button @click="addSlot(intent.slots)"><i class="fas fa-plus-circle size-15x"></i></button>
 							<input @keypress.enter="addSlot(intent.slots)"
 										 v-model="newSlotName"
 										 ref="newSlotInput"
 										 @input="resetValidity"/>
+							<div></div>
+							<div></div>
+							<div></div>
 						</div>
 						<h4>Utterances</h4>
 					<configInputList v-model="intent.utterances"
@@ -78,18 +85,21 @@
 					4. trigger training?
 					</div>
 				</div>
-				<div v-else>
+				<div v-else class="slotDefinition">
 					<div v-for="(slot, key) in dialogTemplate.slotTypes"
 						v-if="slot.name === editingSlotType">
 						<h3>{{ slot.name }}</h3>
 						<div class="configLine">
-						<label>matching Strictness</label><input v-model="slot.matchingStrictness" type="checkbox"/>
+						<label>Matching Strictness</label><input v-model="slot.matchingStrictness" type="checkbox"/>
 						</div>
 						<div class="configLine">
 						<label>Automatically Extensible</label><input v-model="slot.automaticallyExtensible" type="checkbox"/><br/>
 						</div>
 						<div class="configLine">
 						<label>Use Synonyms</label><input v-model="slot.useSynonyms" type="checkbox"/><br/>
+						</div>
+						<div class="configLine">
+							<label>Technical Value</label><input v-model="slot.technicalValue" type="checkbox"/><br/>
 						</div>
 						<div>
 							<input ref="new-val-input" v-model="newValue" placeholder="new Value" @keyup.enter="addValue"/>
@@ -103,7 +113,7 @@
 						</div>
 							<div v-for="(val, key) in slot.values"
 								 class="slotLine">
-							<input v-model="val.value"/>
+							<div class="inputWrapper"><input v-model="val.value" :readonly="slot.technicalValue"/><span></span></div>
 							<span v-if="slot.useSynonyms">
 								<configInputList  v-model="val.synonyms"
 														 			v-init="val.synonyms"
@@ -349,6 +359,9 @@ export default {
 </script>
 
 <style scoped>
+.slotDefinition >>> label {
+	width: 16.5em;
+}
 .slotLine {
 	display: flex;
 }
@@ -374,5 +387,46 @@ export default {
 .stretched{
 	width: 100%;
 	height: 100%;
+}
+.inputWrapper {
+	display: flex;
+	align-items: baseline;
+}
+.lineContainer {
+	display: grid;
+	grid-auto-flow: column;
+	grid-auto-columns: 3rem 1fr 1fr 5rem 1fr;
+	gap:.3em;
+	align-items: center;
+	margin: .2em 0;
+	overflow: hidden;
+	padding: 0 .5em 0 0;
+}
+.lineContainer * {
+	min-width: 14rem;
+	margin: 0;
+	box-sizing: border-box;
+}
+.lineContainer *:first-child {
+	min-width: 3rem;
+	margin: .1em;
+}
+.lineContainer *:nth-child(4) {
+	min-width: 5rem;
+}
+* > .lineContainer{
+	background-color: var(--accent);
+}
+* > .lineContainer ~ .lineContainer{
+	background-color: var(--mainBG);
+}
+@media only screen and (max-width: 1192px) {
+	.lineContainer {
+		grid-auto-flow: row;
+		width: 15em;
+		align-content: center;
+		grid-auto-columns: auto;
+		padding: .5em;
+	}
 }
 </style>
