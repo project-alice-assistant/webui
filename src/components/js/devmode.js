@@ -16,21 +16,21 @@ export default {
 					'id': 'training',
 					'position': 1
 				},
+				talk: {
+					'icon': 'fas fa-comment',
+					'id': 'talk',
+					'position': 2
+				},
 				configTemplate: {
 					'icon': 'fas fa-cog',
 					'id': 'configTemplate',
-					'position': 2
+					'position': 3
 				},
 				instructions: {
 					'icon': 'fas fa-chalkboard-teacher',
 					'id': 'instructions',
-					'position': 3,
+					'position': 4,
 					'onChangeTo': this.loadInstruction
-				},
-				talk: {
-					'icon': 'fas fa-comment',
-					'id': 'talk',
-					'position': 4
 				},
 				devices: {
 					'icon': 'fas fa-microchip',
@@ -67,16 +67,22 @@ export default {
 			noWatch: false,
 			menuItems: [
 				{
+					name: "save",
+					icon: 'fas fa-save',
+					isToggle: false,
+					callback: this.saveSkill
+				},
+				{
+					name: "help",
+					icon: 'fas fa-question-circle',
+					isToggle: false,
+					callback: this.showHelp
+				},
+				{
 					name: "close",
 					icon: 'fas fa-times-circle',
 					isToggle: false,
 					callback: this.stopEditingSkill
-				},
-				{
-					name: "save",
-					icon: 'fas fa-save',
-					isToggle: true,
-					callback: this.saveSkill
 				}
 			],
 			newSkillTile: {
@@ -153,6 +159,33 @@ export default {
 		}
 	},
 	methods: {
+		showHelp(){
+			switch(this.activeTabId) {
+				case 'settings':
+					window.open('https://docs.projectalice.io/skill-development/your-first-skill.html#your-first-skill')
+					break;
+				case 'training':
+					window.open('https://docs.projectalice.io/skill-development/files-in-depth.html#dialog-templates')
+					break;
+				case 'configTemplate':
+					window.open('https://docs.projectalice.io/skill-development/files-in-depth.html#skill-configuration-file')
+					break;
+				case 'instructions':
+					alert("No help available")
+					break;
+				case 'talk':
+					window.open('https://docs.projectalice.io/skill-development/files-in-depth.html#talk-files')
+					break;
+				case 'devices':
+					window.open('https://docs.projectalice.io/skill-development/going-further.html#devices')
+					break;
+				case 'widgets':
+					window.open('https://docs.projectalice.io/skill-development/going-further.html#widgets')
+					break;
+				default:
+					alert('Unknown help requested')
+			}
+		},
 		startCapture: function() {
 			console.log('start')
 			navigator.mediaDevices.getUserMedia({video: true, audio: true, width: { min: 1280 }, height: { min: 720 }}).then((stream) => {

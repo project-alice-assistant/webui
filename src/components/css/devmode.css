@@ -43,3 +43,15 @@
 	font-size: 1.25em;
 	justify-content: center;
 }
+
+>>> .categoryHead {
+	background-color: var(--accent);
+	width: 100%;
+	text-align: center;
+	line-height: 2em;
+}
+
+>>> .leftBar{
+	display: flex;
+	flex-direction: column;
+}

@@ -1,42 +1,68 @@
 <template>
-<div class="yscroll">
-	<h1>Talk Files</h1>
-	Here is the place to define all the stuff Alice should be able to say with your skill.<br/>
-	Further more this is the place to go to when you want to translate the output to a different language.<br/>
-	For detailed information, have a look at <a href="https://docs.projectalice.io/skill-development/files-in-depth.html#talk-files">docs.ProjectAlice.io</a>
-	<br/>
-	<div v-if="missingInLang.length > 0">
-		<div class="red">
-		There are talks missing in this language!
+	<div class="flexrow nowrap stretched yscroll">
+		<div class="leftBar">
+			<label class="categoryHead">Talks</label>
+			<configInputList v-if="talkFiles[currentLang]"
+											 v-model="talkFiles[currentLang]"
+											 v-init="talkFiles[currentLang]"
+											 :template="{name:'intents',
+																		dataType:'userList',
+																		subType:'keyForDict',
+																		dictTemplate: { default: [],
+																										short: [] } }"
+											 :allow-double="false"
+											 @item-selected="selectTalk"
+											 :selectedItem="editingTalk"/>
+
 		</div>
-		Click to add them: <br/>
-		<a v-for="miss in missingInLang" @click="addTalk(miss)"><i class="fas fa-plus-circle"/>{{miss}} </a>
-	</div>
-	<div v-if="showRaw">
-		<a @click="showRaw=false"><i class="fas fa-caret-down"></i> Raw talk file:</a><br/>
-		<textarea v-model="stringified" :class="{inputErrorImp: !this.stringValid}"></textarea>
-	</div>
-	<a v-else @click="showRaw=true">
-		<i class="fas fa-caret-right"></i> Click here to show the raw talk file
-	</a>
-	<div v-for="(val,key) in talkFiles[currentLang]" class="talkCard">
-		<div class="lineContainer">
-			<button @click="removeTalk(key)"><i class="fas fa-minus-circle size-15x"></i></button>
-			<div class="likeInput clickable" @click="rename(key)">{{key}} <i class="fas fa-pen"></i></div>
+		<div class="contained" style="width: 100%;overflow: inherit;">
+			<div v-if="!editingTalk">
+				<h1>Talk Files</h1>
+				Here is the place to define all the stuff Alice should be able to say with your skill.<br/>
+				Further more this is the place to go to when you want to translate the output to a different language.<br/>
+				For detailed information, have a look at <a href="https://docs.projectalice.io/skill-development/files-in-depth.html#talk-files">docs.ProjectAlice.io</a>
+				<br/>
+			<div v-if="missingInLang.length > 0">
+				<div class="red">
+				There are talks missing in this language!
+				</div>
+				Click to add them: <br/>
+				<a v-for="miss in missingInLang" @click="addTalk(miss)"><i class="fas fa-plus-circle"/>{{miss}} </a>
+			</div>
+			<div v-if="showRaw">
+				<a @click="showRaw=false"><i class="fas fa-caret-down"></i> Raw talk file:</a><br/>
+				<textarea v-model="stringified" :class="{inputErrorImp: !this.stringValid}"></textarea>
+			</div>
+			<a v-else @click="showRaw=true">
+				<i class="fas fa-caret-right"></i> Click here to show the raw talk file
+			</a>
 		</div>
-		<div class="inputBlock"><label>Default:</label>
-			<configInputList v-model="talkFiles[currentLang][key]['default']"
-											 :template="{name:'default',
+	<div v-for="(val,key) in talkFiles[currentLang]" v-if="key == editingTalk">
+		<h1 class="clickable" @click="rename(key)">{{ key }} <i class="fas fa-pen"></i></h1>
+		<div v-if="talkFiles[currentLang][key]['default'] === undefined">
+			<div class="inputBlock"><label>Default:</label>
+				<configInputList v-model="talkFiles[currentLang][key]"
+												 :template="{name:'default',
 																	 dataType:'userList',
 																	 subType:'string'}"/>
+			</div>
 		</div>
-		<div class="inputBlock"><label>Short:</label>
-			<configInputList v-model="talkFiles[currentLang][key]['short']"
-											 :template="{name:'default',
-																	 dataType:'userList',
-																	 subType:'string'}"/>
+		<div v-else>
+			<div class="inputBlock"><label>Default:</label>
+				<configInputList v-model="talkFiles[currentLang][key]['default']"
+												 :template="{name:'default',
+																		 dataType:'userList',
+																		 subType:'string'}"/>
+			</div>
+			<div class="inputBlock"><label>Short:</label>
+				<configInputList v-model="talkFiles[currentLang][key]['short']"
+												 :template="{name:'default',
+																		 dataType:'userList',
+																		 subType:'string'}"/>
+			</div>
 		</div>
 	</div>
+		</div>
 </div>
 </template>
 
@@ -54,7 +80,8 @@ export default {
 			stringified: "",
 			stringValid: true,
 			noWatch: false,
-			showRaw: false
+			showRaw: false,
+			editingTalk: ""
 		}
 	},
 	watch: {
@@ -105,6 +132,9 @@ export default {
 		}
 	},
 	methods:{
+		selectTalk(talk){
+			this.editingTalk = talk
+		},
 		addTalk(talk){
 			this.$set(this.talkFiles[this.currentLang], talk, { 'default': [], 'short': [] })
 		},
@@ -227,32 +257,6 @@ export default {
 </script>
 
 <style scoped>
-.talkCard {
-	background-color: var(--windowBG);
-	margin: 1em;
-	padding: 1em;
-	border: 1px solid var(--accent);
-}
-.lineContainer {
-	display: grid;
-	grid-auto-flow: column;
-	grid-auto-columns: 3rem 1fr;
-	gap:.3em;
-	align-items: center;
-	margin: .2em 0;
-	overflow: hidden;
-	padding: 0 .5em 0 0;
-	background-color: var(--mainBG);
-}
-.lineContainer * {
-	min-width: 14rem;
-	margin: 0;
-	box-sizing: border-box;
-}
-.lineContainer *:first-child {
-	min-width: 3rem;
-	margin: .1em;
-}
 .inputBlock {
 	margin: 1em;
 }

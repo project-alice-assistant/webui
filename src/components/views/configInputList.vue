@@ -58,6 +58,32 @@
 			</div>
 		</div>
 	</div>
+	<div v-else-if="template['subType'] === 'keyForDict'">
+		<div class="inputIconContainer">
+			<i class="fas fa-plus-circle clickable" @click="addItem"></i>
+			<input
+				ref="newListItem"
+				v-model="newItem"
+				:placeholder="template['placeholder']"
+				name="newListItem"
+				type="text"
+				@keyup="handleInput"
+				@keyup.enter="addItem"
+			>
+		</div>
+		<div class="list">
+			<div
+				v-for="(item, key) in value"
+				:key="`itm_${key}`"
+				class="listItem"
+				:class="{'selected':selectedItem === key}"
+				@click="$emit('item-selected', key)"
+			>
+				<i aria-hidden="true" class="fas fa-minus-circle fa-pull-left clickable"
+					 @click="removeItem(key)"/>{{ key }}
+			</div>
+		</div>
+	</div>
 	<div v-else>
 		<div>
 			<button v-for="(high, index) in template.highlights"
@@ -227,6 +253,8 @@ export default {
 				newVal[this.template.dictKey] = this.newItem
 
 				this.$emit('input', [newVal, ...this.value])
+			} else if (this.template.subType === 'keyForDict') {
+				this.$set(this.value, this.newItem, this.template.dictTemplate)
 			} else {
 				//transform to the final form and  add the new item to the front of the list
 				this.$emit('input', [this.prepareForStore(this.newItem), ...this.value])
@@ -292,7 +320,11 @@ export default {
 			* Remove one line of the final list
 			* called on button press (-) next to the list item
 			*/
-			this.$emit('input', this.value.filter(it => it !== item))
+			if(this.template.subType === 'keyForDict'){
+				this.$delete(this.value, item)
+			} else {
+				this.$emit('input', this.value.filter(it => it !== item))
+			}
 		},
 		formatUtterance(item) {
 			/*

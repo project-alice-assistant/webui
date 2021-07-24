@@ -373,16 +373,6 @@ export default {
 	align-items: center;
 	flex-wrap: wrap;
 }
-.categoryHead {
-	background-color: var(--accent);
-	width: 100%;
-	text-align: center;
-	line-height: 2em;
-}
-.leftBar{
-	display: flex;
-	flex-direction: column;
-}
 .stretched{
 	width: 100%;
 	height: 100%;
