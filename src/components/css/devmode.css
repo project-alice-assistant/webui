@@ -55,3 +55,29 @@
 	display: flex;
 	flex-direction: column;
 }
+
+
+.waiting {
+	transition: 0s;
+	z-index: 998;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(64,64,64,0.75);
+	padding-top: 20%;
+	padding-bottom: 25%;
+}
+.waitHidden {
+	pointer-events: none;
+	transition: 1s;
+	z-index: 998;
+	position: absolute;
+	top: -100px;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	padding-bottom: 25%;
+	background-color: rgba(64,64,64,0.0);
+}

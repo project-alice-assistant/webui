@@ -204,8 +204,8 @@ export default {
 				}
 			}
 		},
-		setWaiting: function() {
-			this.waiting = true
+		setWaiting: function(v = true) {
+			this.waiting = v
 		},
 		setSuccess: function() {
 			this.waiting = false
@@ -318,9 +318,9 @@ export default {
 			}).then(function(response) {
 				if ('success' in response.data) {
 					if (response.data['success']) {
-						self.setSuccess()
 						self.changedSkill.instructions = response.data['instruction']
 						self.backedUpSkill.instructions = self.changedSkill.instructions
+						self.setWaiting(false)
 					}
 					else {
 						self.setFailed(response.data['message'] || "Unknown Error")
@@ -377,11 +377,10 @@ export default {
 			}).then(function(response) {
 				if ('success' in response.data) {
 					if (response.data['success']) {
-						self.setSuccess()
 						self.$set(self.changedSkill, 'installFile', response.data['installFile'])
 						self.backedUpSkill.installFile = response.data['installFile']
-					}
-					else {
+						self.setWaiting(false)
+					}	else {
 						self.setFailed(response.data['message'] || "Unknown Error")
 					}
 				}

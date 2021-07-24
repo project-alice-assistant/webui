@@ -1,5 +1,12 @@
 <template>
 	<div class="container flexcolumn">
+		<div :class="{ 'waiting' : waiting || success || failed, 'waitHidden' : !waiting && !success && !failed }">
+			<div class="centered">
+				<i v-if="waiting" ref="animatedIcon" class="fas fa-spinner fa-pulse fa-4x" aria-hidden="true"/>
+				<i v-else-if="success" ref="animatedIcon" class="fas fa-check fa-4x green" aria-hidden="true"/>
+				<i v-else-if="failed" ref="animatedIcon" class="fas fa-exclamation-triangle fa-4x red" aria-hidden="true"/>
+			</div>
+		</div>
 		<div v-if="createNew" class="settingsContainer">
 			<actions-menu :menuItems="menuItems" :alwaysExtended="false"/>
 			<div class="size-2x WIP"><i class="fas fa-hard-hat red"></i> Work In Progress - currently no skill creation via UI is possible! <i class="fas fa-hard-hat red"></i><br/></div>
@@ -70,8 +77,7 @@
 				<dialogTemplateEditor ref="dialogTemplateEditor"
 															:editingSkill="editingSkill"
 															:currentLang="currentLang"
-															v-on::waiting="waiting = true"
-															v-on::success="waiting = false"/>
+															v-on:waiting="function(v) { waiting = v }"/>
 			</div>
 			<div v-else-if="activeTabId === 'configTemplate'" class="tab_page">
 				<div class="size-2x WIP"><i class="fas fa-hard-hat yellow"></i> Work In Progress - use carefully! <i class="fas fa-hard-hat yellow"></i><br/></div>
@@ -121,7 +127,8 @@
 				</select>
 				<talkFileEditor  ref="talkFileEditor"
 													 :editingSkill="editingSkill"
-													 :currentLang="currentLang"/>
+													 :currentLang="currentLang"
+												   v-on:waiting="function(v) { waiting = v }"/>
 			</div>
 			<div v-else-if="activeTabId === 'cloud'" class="tab_page">
 				<actions-menu :menuItems="menuItems" :alwaysExtended="true"/>

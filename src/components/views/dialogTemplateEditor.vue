@@ -327,7 +327,7 @@ export default {
 		loadDialogTemplate(){
 			const data = {}
 			let self = this
-			this.$emit('waiting')
+			this.$emit('waiting', true)
 			axios({
 				method: 'POST',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.editingSkill.name}/getDialogTemplate/`,
@@ -339,18 +339,17 @@ export default {
 			}).then(function(response) {
 				if ('success' in response.data) {
 					if (response.data['success']) {
-						// $emit('success ')self.setSuccess()
-
 						self.dialogTemplates = response.data['dialogTemplates']
 						self.backupTemplates = response.data['dialogTemplates']
+						self.$emit('waiting', false)
 					}
 					else {
-						// $emit('failed')self.setFailed(response.data['message'] || "Unknown Error")
+						self.$emit('failed')
 					}
 				}
 			}).catch(function(e) {
 				console.log(e)
-				// $emit('failed')self.setFailed(response.data['message'] || "Unknown Error")
+				self.$emit('failed')
 			})
 		},
 	}

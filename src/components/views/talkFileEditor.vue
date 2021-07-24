@@ -189,7 +189,7 @@ export default {
 		loadFiles(){
 			const data = {}
 			let self = this
-			// $emit('waiting') instead of this.setWaiting()
+			self.$emit('waiting', true)
 			axios({
 				method: 'POST',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.editingSkill.name}/getTalkFiles/`,
@@ -201,17 +201,18 @@ export default {
 			}).then(function(response) {
 				if ('success' in response.data) {
 					if (response.data['success']) {
-						// $emit('success ')self.setSuccess()
-
 						self.talkFiles = response.data['talkFiles']
 						self.talkFilesBackup = JSON.parse(JSON.stringify(response.data['talkFiles']))
+						self.$emit('waiting', false)
 					}
 					else {
+						self.$emit('failed')
 						// $emit('failed')self.setFailed(response.data['message'] || "Unknown Error")
 					}
 				}
 			}).catch(function(e) {
 				console.log(e)
+				self.$emit('failed')
 				// $emit('failed')self.setFailed(response.data['message'] || "Unknown Error")
 			})
 		},
