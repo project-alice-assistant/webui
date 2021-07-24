@@ -72,6 +72,7 @@
 					<option value="de">German</option>
 					<option value="fr">French</option>
 					<option value="it">Italian</option>
+					<option value="pt">Portuguese</option>
 					<option value="pl">Polish</option>
 				</select>
 				<dialogTemplateEditor ref="dialogTemplateEditor"
@@ -98,6 +99,7 @@
 					<option value="de">German</option>
 					<option value="fr">French</option>
 					<option value="it">Italian</option>
+					<option value="pt">Portuguese</option>
 					<option value="pl">Polish</option>
 				</select>
 				<div class="flexrow vcentered yscroll">
@@ -117,12 +119,13 @@
 			</div>
 			<div v-else-if="activeTabId === 'talk'" class="tab_page">
 				<actions-menu :menuItems="menuItems" :alwaysExtended="true"/>
-				<div class="size-2x WIP"><i class="fas fa-hard-hat yellow"></i> Work In Progress - use carefully! <i class="fas fa-hard-hat yellow"></i><br/></div>
+				<div class="WIP"><i class="fab fa-hotjar yellow"></i> new feature - handle with care! <i class="fab fa-hotjar yellow"></i><br/></div>
 				<select v-model="currentLang">
 					<option value="en">English</option>
 					<option value="de">German</option>
 					<option value="fr">French</option>
 					<option value="it">Italian</option>
+					<option value="pt">Portuguese</option>
 					<option value="pl">Polish</option>
 				</select>
 				<talkFileEditor  ref="talkFileEditor"

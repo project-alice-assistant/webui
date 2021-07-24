@@ -7,6 +7,7 @@
 	--secondary: #343434;
 	--text: #d1d1d1;
 	--windowBG: #636363;
+	--danger: #FF0000;
 
 	/* FONTS */
 	--normal: 'Orkney', Arial, sans-serif;
@@ -385,6 +386,11 @@ button {
 button:hover {
 	background-color: var(--accent);
 	color: var(--hover);
+}
+
+button:hover.danger {
+	background-color: var(--accent);
+	color: var(--danger);
 }
 
 button:active {

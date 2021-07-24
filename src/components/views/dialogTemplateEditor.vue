@@ -36,7 +36,17 @@
 												 :selectedItem="editingSlotType"/>
 			</div>
 			<div class="contained" style="width: 100%;overflow: inherit;">
-				<div v-if="editingIntent === null && editingSlotType === null">Please select an intent for adding slots and utterances!</div>
+				<div v-if="editingIntent === null && editingSlotType === null">
+					<h1>Training Data</h1>
+					<p>Here you can define the dialog templates.</p>
+					<p>Start by choosing your active language, then click on one of the intents
+						on the left side, or add a new one!</p>
+					<p>The second part are the slot types. These define the values alice will extract from the spoken words.
+						You can edit them on the left side as well!</p>
+					<p>You can always find more detailed help by clicking the <i class="fas fa-question-circle"></i> in the top right,
+						this will lead you to the corresponding page of
+					<a href="https://docs.projectalice.io/skill-development/files-in-depth.html#dialog-templates">docs.ProjectAlice.io</a></p>
+				</div>
 				<div v-else-if="editingIntent !== null">
 					<div v-for="(intent, key) in dialogTemplate.intents"
 							 v-if="intent.name === editingIntent">

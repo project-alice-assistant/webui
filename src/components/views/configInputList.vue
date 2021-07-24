@@ -73,6 +73,16 @@
 		</div>
 		<div class="list">
 			<div
+				v-for="(item, key) in proposedItems"
+				:key="`itm_${item}`"
+				class="listItem"
+				:class="{'selected':selectedItem === item}"
+				@click="$emit('item-selected', item)"
+			>
+				<i aria-hidden="true" class="fas fa-plus-circle fa-pull-left clickable red"
+					 @click="addItemVal(item)"/>{{ item }}
+			</div>
+			<div
 				v-for="(item, key) in value"
 				:key="`itm_${key}`"
 				class="listItem"
@@ -132,7 +142,8 @@ export default {
 		'template',
 		'value',
 		'allowDouble',
-		'selectedItem'
+		'selectedItem',
+		'proposedItems'
 	],
 	data: function () {
 		return { newItem      : "",
@@ -231,6 +242,10 @@ export default {
 			val['color'] = slot['color']
 			this.$set(this.newItemSlots, word, val)
 		},
+		addItemVal: function (v) {
+			this.newItem = v
+			this.addItem()
+		},
 		addItem: function (e) {
 			/*
 			* The user pressed enter -> the current input should be added to the list
@@ -289,7 +304,7 @@ export default {
 			* check if the current input is valid
 			* called after ever key push, explicitly called after pressing enter
 			* */
-			if (e['altKey'] && e['code'].slice(0,5) === 'Digit') {
+			if (e && e['altKey'] && e['code'].slice(0,5) === 'Digit') {
 				if(e['key'] === "0"){
 					this.clearSlot()
 				} else {

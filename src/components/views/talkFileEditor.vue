@@ -10,6 +10,7 @@
 																		subType:'keyForDict',
 																		dictTemplate: { default: [],
 																										short: [] } }"
+											 :proposedItems="missingInLang"
 											 :allow-double="false"
 											 @item-selected="selectTalk"
 											 :selectedItem="editingTalk"/>
@@ -19,49 +20,65 @@
 			<div v-if="!editingTalk">
 				<h1>Talk Files</h1>
 				Here is the place to define all the stuff Alice should be able to say with your skill.<br/>
-				Further more this is the place to go to when you want to translate the output to a different language.<br/>
+				Furthermore this is the place to go to when you want to translate the output to a different language.<br/>
 				For detailed information, have a look at <a href="https://docs.projectalice.io/skill-development/files-in-depth.html#talk-files">docs.ProjectAlice.io</a>
+				or click on the <i class="fas fa-question-circle"></i> on the top right.
+
+				<p>You may switch between the languages, without saving - but don't move to another tab!</p>
 				<br/>
 			<div v-if="missingInLang.length > 0">
 				<div class="red">
-				There are talks missing in this language!
+					There are talks missing in this language!
 				</div>
-				Click to add them: <br/>
-				<a v-for="miss in missingInLang" @click="addTalk(miss)"><i class="fas fa-plus-circle"/>{{miss}} </a>
+				Add them by clicking the <i class="fas fa-plus-circle red"></i> in the list to the left
 			</div>
+			<br/>
 			<div v-if="showRaw">
 				<a @click="showRaw=false"><i class="fas fa-caret-down"></i> Raw talk file:</a><br/>
 				<textarea v-model="stringified" :class="{inputErrorImp: !this.stringValid}"></textarea>
 			</div>
 			<a v-else @click="showRaw=true">
-				<i class="fas fa-caret-right"></i> Click here to show the raw talk file
+				<i class="fas fa-caret-right"></i> Click here to show and edit the raw talk file
 			</a>
 		</div>
-	<div v-for="(val,key) in talkFiles[currentLang]" v-if="key == editingTalk">
-		<h1 class="clickable" @click="rename(key)">{{ key }} <i class="fas fa-pen"></i></h1>
-		<div v-if="talkFiles[currentLang][key]['default'] === undefined">
-			<div class="inputBlock"><label>Default:</label>
-				<configInputList v-model="talkFiles[currentLang][key]"
-												 :template="{name:'default',
-																	 dataType:'userList',
-																	 subType:'string'}"/>
+			<div v-else-if="editingTalk && selectedExists">
+				<div v-for="(val,key) in talkFiles[currentLang]" v-if="key == editingTalk">
+					<h1 class="clickable" @click="rename(key)">{{ key }} <i class="fas fa-pen"></i></h1>
+					<div v-if="talkFiles[currentLang][key]['default'] === undefined">
+						<div class="inputBlock"><label>Default:</label>
+							<configInputList v-model="talkFiles[currentLang][key]"
+															 :template="{name:'default',
+																				 dataType:'userList',
+																				 subType:'string'}"/>
+						</div>
+					</div>
+					<div v-else>
+						<div class="inputBlock"><label>Default:</label>
+							<configInputList v-model="talkFiles[currentLang][key]['default']"
+															 :template="{name:'default',
+																					 dataType:'userList',
+																					 subType:'string'}"/>
+						</div>
+						<div class="inputBlock"><label>Short:</label>
+							<configInputList v-model="talkFiles[currentLang][key]['short']"
+															 :template="{name:'default',
+																					 dataType:'userList',
+																					 subType:'string'}"/>
+						</div>
+					</div>
+				</div>
 			</div>
-		</div>
-		<div v-else>
-			<div class="inputBlock"><label>Default:</label>
-				<configInputList v-model="talkFiles[currentLang][key]['default']"
-												 :template="{name:'default',
-																		 dataType:'userList',
-																		 subType:'string'}"/>
+			<div v-else>
+				<h1>{{ editingTalk }}</h1>
+				<p>This talk is missing for the current language, but exists for others!</p>
+				<p>Add it by clicking on the plus in the list!</p>
+				<p>To delete it from all languages - click here:</p>
+				<button @click="removeTalk(editingTalk)" class="danger">
+					<i class="fas fa-skull-crossbones size-2x"></i>
+					Yes - Delete in all languages
+					<i class="fas fa-skull-crossbones size-2x"></i>
+				</button>
 			</div>
-			<div class="inputBlock"><label>Short:</label>
-				<configInputList v-model="talkFiles[currentLang][key]['short']"
-												 :template="{name:'default',
-																		 dataType:'userList',
-																		 subType:'string'}"/>
-			</div>
-		</div>
-	</div>
 		</div>
 </div>
 </template>
@@ -129,6 +146,9 @@ export default {
 		},
 		missingInLang(){
 			return this.allSlots.filter(a => !this.talkFiles[this.currentLang].hasOwnProperty(a))
+		},
+		selectedExists(){
+			return !this.missingInLang.includes(this.editingTalk)
 		}
 	},
 	methods:{
@@ -176,7 +196,7 @@ export default {
 			let self = this
 			this.$dialog.confirm({
 				title: "Delete for all languages?",
-				body: "When you are sure there is no use for this talk, you should delete it for all languages!",
+				body: "This will delete the talk for all languages!",
 				okText: "Delete",
 				cancelText: this.$t('buttons.cancel'),
 			}).then(function (dialog) {
@@ -225,6 +245,7 @@ export default {
 		},
 		saveLang(language){
 			let self = this
+			self.$emit('waiting')
 			let data = {
 				'lang': language,
 				'talkFile': this.talkFiles[language]
@@ -240,17 +261,17 @@ export default {
 			}).then(function(response) {
 				if ('success' in response.data) {
 					if (response.data['success']) {
-						// $emit('success ')self.setSuccess()
+						self.$emit('success')
 						self.talkFiles[language] = JSON.parse(response.data['talkFile'])
 						self.talkFilesBackup[language] = JSON.parse(response.data['talkFile'])
 					}
 					else {
-						// $emit('failed')self.setFailed(response.data['message'] || "Unknown Error")
+						self.$emit('failed', response.data['message'] || "Unknown Error")
 					}
 				}
 			}).catch(function(e) {
 				console.log(e)
-				// $emit('failed')self.setFailed(response.data['message'] || "Unknown Error")
+				self.$emit('failed', "Unknown Error")
 			})
 		},
 	}
