@@ -457,6 +457,30 @@ export default {
 			this.editingSkill = null
 			this.createNew = false
 		},
+		createPR(){
+			let gitUser = this.$store.state.settings['githubUsername']
+			if(!gitUser){
+				alert("please maintain a github user!")
+			} else {
+
+				self = this
+				this.$dialog.prompt({
+					title: 'Please name your Pull Request',
+					body: 'Make sure you have Uploaded all your changes and changed the skills Version!'
+						  + 'The name should be short and precisely describe your changes'
+				}, {
+					promptHelp: '',
+					okText: this.$t('buttons.ok'),
+					cancelText: this.$t('buttons.cancel')
+				})
+					.then(function (dialogue) {
+						let prTitle = dialogue.data
+						window.open('https://github.com/project-alice-assistant/skill_'
+							+ self.editingSkill.name + '/compare/master...' + gitUser + ':master'
+							+ '?diff=split&quick_pull=1&title=' + prTitle)
+					})
+			}
+		},
 		saveSkill(){
 			if(this.changedSkill.instructions != this.backedUpSkill.instructions){
 				this.saveInstructions()

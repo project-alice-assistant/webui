@@ -136,8 +136,10 @@
 			<div v-else-if="activeTabId === 'cloud'" class="tab_page">
 				<actions-menu :menuItems="menuItems" :alwaysExtended="true"/>
 					<div v-if="editingSkill.modified" class="container flexrow">
-						<div class="size-2x WIP"><i class="fas fa-hard-hat red"></i> Work In Progress - no github functionality live! <i class="fas fa-hard-hat red"></i><br/></div>
-						<div class="utility clickable" @click="utilityRequest('revert')">
+						<div style="width: 100%; padding: 1em;">
+							<div class="size-2x WIP"> <i class="fas fa-hard-hat red"></i> <i class="fas fa-bomb red"></i> Work In Progress - highly experimental! <i class="fas fa-bomb red"></i> <i class="fas fa-hard-hat red"></i><br/></div>
+						</div>
+							<div class="utility clickable" @click="utilityRequest('revert')">
 							<p class="utilityIcon">
 								<i id="utilityRevert" class="fas fa-undo-alt"/>
 							</p>
@@ -151,6 +153,14 @@
 							</p>
 							<p class="utilityName">
 								{{ $t('skill.utilities.upload') }}
+							</p>
+						</div>
+						<div class="utility clickable" @click="createPR()">
+							<p class="utilityIcon">
+								<i id="utilityCreatePR" class="fas fa-share-alt"/>
+							</p>
+							<p class="utilityName">
+								{{ $t('skill.utilities.createPR') }}
 							</p>
 						</div>
 					</div>
