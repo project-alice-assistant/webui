@@ -329,7 +329,7 @@ input:read-only {
 	border: 1px dotted;
 }
 
-input:read-only+span:after{
+input:read-only[type=text]+span:after{
 	margin-left: -1.5em;
 	display: inline-block;
 	font-style: normal;
