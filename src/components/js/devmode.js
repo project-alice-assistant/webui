@@ -485,7 +485,7 @@ export default {
 			if(this.changedSkill.instructions != this.backedUpSkill.instructions){
 				this.saveInstructions()
 			}
-			if(this.changedSkill.instalLFile != this.backedUpSkill.installFile){
+			if(this.changedSkill.installFile != this.backedUpSkill.installFile){
 				this.saveInstallFile()
 			}
 			if(this.$refs.installFileEditor){
