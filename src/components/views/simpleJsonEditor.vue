@@ -37,6 +37,11 @@ export default {
 	mounted() {
 		this.json2string()
 	},
+	computed: {
+		isModified(){
+			return JSON.stringify(this.value, null, 2) != this.stringified
+		}
+	},
 	methods: {
 		json2string(){
 			this.stringified = JSON.stringify(this.value, null, 2)
@@ -45,7 +50,7 @@ export default {
 			this.$emit('input', JSON.parse(this.stringified))
 		},
 		prepareSave(){
-			if(JSON.stringify(this.value, null, 2) != this.stringified){
+			if(this.isModified){
 				this.string2json()
 				return true
 			} else {

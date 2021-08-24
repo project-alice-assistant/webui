@@ -167,6 +167,9 @@ export default {
 		},
 		dialogTemplate(){
 			return this.dialogTemplates[this.currentLang]
+		},
+		isModified(){
+			return JSON.stringify(this.dialogTemplates) !== JSON.stringify(this.backupTemplates)
 		}
 	},
 	methods: {
@@ -322,7 +325,7 @@ export default {
 					if (response.data['success']) {
 						// $emit('success ')self.setSuccess()
 						self.dialogTemplate = JSON.parse(response.data['dialogTemplate'])
-						self.backupTemplate = self.dialogTemplate
+						self.backupTemplate = JSON.parse(response.data['dialogTemplate'])
 					}
 					else {
 						// $emit('failed')self.setFailed(response.data['message'] || "Unknown Error")
@@ -350,7 +353,7 @@ export default {
 				if ('success' in response.data) {
 					if (response.data['success']) {
 						self.dialogTemplates = response.data['dialogTemplates']
-						self.backupTemplates = response.data['dialogTemplates']
+						self.backupTemplates = JSON.parse(JSON.stringify(response.data['dialogTemplates']))
 						self.$emit('waiting', false)
 					}
 					else {

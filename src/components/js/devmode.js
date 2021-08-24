@@ -9,28 +9,33 @@ export default {
 					'icon': 'fas fa-cogs',
 					'id': 'settings',
 					'position': 0,
-					'onChangeTo': this.loadInstallFile
+					'onChangeTo': this.loadInstallFile,
+					'checkAllowLeaveFrom': this.checkAllowLeaveFromSettings
 				},
 				training: {
 					'icon': 'fas fa-train',
 					'id': 'training',
-					'position': 1
+					'position': 1,
+					'checkAllowLeaveFrom': this.checkAllowLeaveFromTraining
 				},
 				talk: {
 					'icon': 'fas fa-comment',
 					'id': 'talk',
-					'position': 2
+					'position': 2,
+					'checkAllowLeaveFrom': this.checkAllowLeaveFromTalk
 				},
 				configTemplate: {
 					'icon': 'fas fa-cog',
 					'id': 'configTemplate',
-					'position': 3
+					'position': 3,
+					'checkAllowLeaveFrom': this.checkAllowLeaveFromConfigTemplate
 				},
 				instructions: {
 					'icon': 'fas fa-chalkboard-teacher',
 					'id': 'instructions',
 					'position': 4,
-					'onChangeTo': this.loadInstruction
+					'onChangeTo': this.loadInstruction,
+					'checkAllowLeaveFrom': this.checkAllowLeaveFromInstructions
 				},
 				devices: {
 					'icon': 'fas fa-microchip',
@@ -159,6 +164,39 @@ export default {
 		}
 	},
 	methods: {
+		async checkAllowLeaveFromConfigTemplate() {
+			if(this.$refs.configTemplateEditor?.isModified) {
+				return this.askChangesLost()
+			} else return true
+		},
+		async checkAllowLeaveFromSettings() {
+			if(JSON.stringify(this.changedSkill.installFile) != JSON.stringify(this.backedUpSkill.installFile)) {
+				return this.askChangesLost()
+			} else return true
+		},
+		async checkAllowLeaveFromInstructions() {
+			if(this.changedSkill.instructions != this.backedUpSkill.instructions) {
+				return this.askChangesLost()
+			} else return true
+		},
+		async checkAllowLeaveFromTraining() {
+			if(this.$refs.dialogTemplateEditor?.isModified) {
+				return this.askChangesLost()
+			} else return true
+		},
+		async checkAllowLeaveFromTalk() {
+			if(this.$refs.talkFileEditor?.isModified) {
+				return this.askChangesLost()
+			} else return true
+		},
+		async askChangesLost(){
+			return this.$dialog.confirm({
+				title: "Your changes will be lost!",
+				body: "Do you want to continue and lose your changes?",
+				okText: "Okilidoki",
+				cancelText: this.$t('buttons.cancel'),
+			})
+		},
 		showHelp(){
 			switch(this.activeTabId) {
 				case 'settings':
@@ -319,7 +357,7 @@ export default {
 				if ('success' in response.data) {
 					if (response.data['success']) {
 						self.changedSkill.instructions = response.data['instruction']
-						self.backedUpSkill.instructions = self.changedSkill.instructions
+						self.backedUpSkill.instructions = JSON.parse(JSON.stringify(response.data['instruction']))
 						self.setWaiting(false)
 					}
 					else {
@@ -378,7 +416,7 @@ export default {
 				if ('success' in response.data) {
 					if (response.data['success']) {
 						self.$set(self.changedSkill, 'installFile', response.data['installFile'])
-						self.backedUpSkill.installFile = response.data['installFile']
+						self.backedUpSkill.installFile = JSON.parse(JSON.stringify(response.data['installFile']))
 						self.setWaiting(false)
 					}	else {
 						self.setFailed(response.data['message'] || "Unknown Error")
@@ -488,16 +526,16 @@ export default {
 			if(this.changedSkill.installFile != this.backedUpSkill.installFile){
 				this.saveInstallFile()
 			}
-			if(this.$refs.installFileEditor){
-				this.$refs.installFileEditor.save()
-			}
+//			if(this.$refs.installFileEditor){
+//				this.$refs.installFileEditor.save()
+//			}
 			if(this.$refs.dialogTemplateEditor){
 				this.$refs.dialogTemplateEditor.save()
 			}
 			if(this.$refs.talkFileEditor){
 				this.$refs.talkFileEditor.save()
 			}
-			if(this.$refs.configTemplateEditor && this.$refs.configTemplateEditor.prepareSave()) {
+			if(this.$refs.configTemplateEditor?.prepareSave()) {
 				let self = this
 				let data = {
 					'lang': this.currentLang,

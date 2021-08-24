@@ -12,7 +12,20 @@ export default {
 	],
 	methods: {
 		handleClick: function (id) {
+			let oldId = this.$parent.activeTabId
+			if (oldId === id) return;
 
+			if (this.tabs[oldId].hasOwnProperty('checkAllowLeaveFrom')) {
+				// noinspection JSUnresolvedFunction
+				this.tabs[oldId].checkAllowLeaveFrom().then(() => {
+					this.handleClickAllowed(id)
+				}).catch( () => {})
+			} else {
+				this.handleClickAllowed(id)
+			}
+		},
+		handleClickAllowed(id) {
+			let oldId = this.$parent.activeTabId
 			if (this.$parent.activeTabId !== id) {
 				if (this.onChange) {
 					this.onChange(id)
@@ -20,15 +33,14 @@ export default {
 					this.$parent.activeTabId = id
 				}
 			}
-
 			if (this.tabs[id].hasOwnProperty('onChangeTo')) {
 				// noinspection JSUnresolvedFunction
 				this.tabs[id].onChangeTo()
 			}
 
-			if (this.tabs[id].hasOwnProperty('onLeaveFrom')) {
+			if (this.tabs[oldId].hasOwnProperty('onLeaveFrom')) {
 				// noinspection JSUnresolvedFunction
-				this.tabs[id].onLeaveFrom()
+				this.tabs[oldId].onLeaveFrom()
 			}
 		},
 		rename: function (id) {

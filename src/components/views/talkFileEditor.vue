@@ -149,6 +149,9 @@ export default {
 		},
 		selectedExists(){
 			return !this.missingInLang.includes(this.editingTalk)
+		},
+		isModified() {
+			return JSON.stringify(this.talkFiles) !== JSON.stringify(this.talkFilesBackup)
 		}
 	},
 	methods:{
