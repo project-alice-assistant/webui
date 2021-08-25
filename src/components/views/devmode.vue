@@ -9,9 +9,9 @@
 		</div>
 		<div v-if="createNew" class="settingsContainer">
 			<actions-menu :menuItems="menuItems" :alwaysExtended="false"/>
-			<div class="size-2x WIP"><i class="fas fa-hard-hat red"></i> Work In Progress - currently no skill creation via UI is possible! <i class="fas fa-hard-hat red"></i><br/></div>
+			<div class="size-2x WIP"><i class="fas fa-hard-hat red"></i> Work In Progress - highly experimental! <i class="fas fa-hard-hat red"></i><br/></div>
 				<config
-					:templates="configTemplate()"
+					:templates="newSkill()"
 					:holder="values"
 					:translate="(val) => $t(val)"
 					:validator="false"
@@ -66,7 +66,7 @@
 			</div>
 			<div v-else-if="activeTabId === 'training'"  class="tab_page">
 				<actions-menu :menuItems="menuItems" :alwaysExtended="true"/>
-				<div class="size-2x WIP"><i class="fas fa-hard-hat yellow"></i> Work In Progress - use carefully! <i class="fas fa-hard-hat yellow"></i><br/></div>
+				<div class="WIP"><i class="fab fa-hotjar yellow"></i> new feature - handle with care! <i class="fab fa-hotjar yellow"></i><br/></div>
 				<select v-model="currentLang">
 					<option value="en">English</option>
 					<option value="de">German</option>
@@ -81,7 +81,7 @@
 															v-on:waiting="function(v) { waiting = v }"/>
 			</div>
 			<div v-else-if="activeTabId === 'configTemplate'" class="tab_page">
-				<div class="size-2x WIP"><i class="fas fa-hard-hat yellow"></i> Work In Progress - use carefully! <i class="fas fa-hard-hat yellow"></i><br/></div>
+				<div class="WIP"><i class="fab fa-hotjar yellow"></i> new feature - handle with care! <i class="fab fa-hotjar yellow"></i><br/></div>
 				<actions-menu :menuItems="menuItems" :alwaysExtended="true"/>
 				<h1>Custom Config</h1>
 				Add custom config settings for your skill and configure their required information.<br/>
@@ -92,7 +92,7 @@
 													  ref="configTemplateEditor"/>
 			</div>
 			<div v-else-if="activeTabId === 'instructions'" class="tab_page">
-				<div class="size-2x WIP"><i class="fas fa-hard-hat yellow"></i> Work In Progress - use carefully! <i class="fas fa-hard-hat yellow"></i><br/></div>
+				<div class="WIP"><i class="fab fa-hotjar yellow"></i> new feature - handle with care! <i class="fab fa-hotjar yellow"></i><br/></div>
 				<actions-menu :menuItems="menuItems" :alwaysExtended="true"/>
 				<select v-model="currentLang">
 					<option value="en">English</option>
@@ -137,7 +137,7 @@
 				<actions-menu :menuItems="menuItems" :alwaysExtended="true"/>
 					<div v-if="editingSkill.modified" class="container flexrow">
 						<div style="width: 100%; padding: 1em;">
-							<div class="size-2x WIP"> <i class="fas fa-hard-hat red"></i> <i class="fas fa-bomb red"></i> Work In Progress - highly experimental! <i class="fas fa-bomb red"></i> <i class="fas fa-hard-hat red"></i><br/></div>
+							<div class="size-2x WIP"> <i class="fas fa-hard-hat red"></i> <i class="fas fa-bomb red"></i> Work In Progress - handle with care! <i class="fas fa-bomb red"></i> <i class="fas fa-hard-hat red"></i><br/></div>
 						</div>
 							<div class="utility clickable" @click="utilityRequest('revert')">
 							<p class="utilityIcon">

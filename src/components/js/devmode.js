@@ -636,8 +636,6 @@ export default {
 					"description" : "The name of this intent as it can be found written in the store and folders.",
 					"obligatory"  : true,
 					"category"		: "general",
-					"min"					: 5,
-					"max"					: 20,
 					"noSpace"			: true,
 					"readonly"    : true
 				},
@@ -646,18 +644,14 @@ export default {
 				"dataType"    : "string",
 				"description" : "",
 				"obligatory"  : true,
-				"category"		: "general",
-				"min"					: 5,
-				"max"					: 50
+				"category"		: "general"
 			},
 			'desc' : {
 				"defaultValue": '',
 				"dataType"    : "longstring",
 				"description" : "A short description of that skill. It will be shown in the store",
 				"obligatory"  : true,
-				"category"		: "general",
-				"min"					: 20,
-				"max"					: 200
+				"category"		: "general"
 			},
 			'version' : {
 				"defaultValue": '0.0.1',
@@ -779,6 +773,97 @@ export default {
 					"category"		: "requirements"
 				}
 			}
+		},
+		newSkill() {
+		return { 'name' : {
+				"defaultValue": '',
+				"dataType"    : "string",
+				"description" : "The name of this intent as it can be found written in the store and folders.",
+				"obligatory"  : true,
+				"category"		: "general",
+				"noSpace"			: true
+			},
+			'speakableName' : {
+				"defaultValue": 'A name for the skill that is speakable for Alice - use spaces, but be careful with punctuation',
+				"dataType"    : "string",
+				"description" : "",
+				"obligatory"  : true,
+				"category"		: "general"
+			},
+			'desc' : {
+				"defaultValue": '',
+				"dataType"    : "longstring",
+				"description" : "A short description of that skill. It will be shown in the store",
+				"obligatory"  : true,
+				"category"		: "general"
+			},
+			'version' : {
+				"defaultValue": '0.0.1',
+				"dataType"    : "string",
+				"description" : "The version of this skill. Increase this on every update.",
+				"obligatory"  : true,
+				"category"		: "general"
+			},
+			'icon' : {
+				"defaultValue": 'fas fa-biohazard',
+				"dataType"    : "faIcon",
+				"description" : "The icon representing that skill.",
+				"category"		: "general"
+			},
+			'category' : {
+				"defaultValue": 'assistance',
+				"dataType"    : "list",
+				"description" : "The category your skill belongs into.",
+				"values"  : ["assistance", "automation", "entertainment", "game", "health", "household", "information", "kid",
+					"music", "organisation", "planning", "robotics", "security", "shopping", "weather"],
+				"category"		: "general"
+			},
+			'conditions': {
+				"subConfig": true,
+				"dataType" : "userList",
+				"subType"  : "toggles",
+				"category" : "lang",
+				"values"   : {
+					'en': {
+						"defaultValue": true,
+						"dataType": "boolean",
+						"description": "English must be supported. A skill without english translation won't be accepted in the store.",
+						"obligatory": true,
+						"category": "language"
+					},
+					'de': {
+						"defaultValue": false,
+						"dataType": "boolean",
+						"description": "",
+						"category": "language"
+					},
+					'fr': {
+						"defaultValue": false,
+						"dataType": "boolean",
+						"description": "",
+						"category": "language"
+					},
+					'it': {
+						"defaultValue": false,
+						"dataType": "boolean",
+						"description": "",
+						"category": "language"
+					},
+					'pt': {
+						"defaultValue": false,
+						"dataType": "boolean",
+						"description": "",
+						"category": "language"
+					},
+					'pl': {
+						"defaultValue": false,
+						"dataType": "boolean",
+						"description": "",
+						"category": "language"
+					}
+				}
+		}
+		}
 		}
 	}
 }

@@ -26,6 +26,8 @@ export default {
 			}
 		},
 		icon() {
+			if( this.holder[this.configName] === "" || this.holder[this.configName] === undefined)
+				return "fas fa-biohazard"
 			const regex = /<i class="(.*)"><\/i>/;
 			const matches = regex.exec(this.holder[this.configName])
 			if (matches) {
