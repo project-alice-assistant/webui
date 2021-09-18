@@ -8,7 +8,7 @@
 			</div>
 		</div>
 		<div v-if="createNew" class="settingsContainer">
-			<actions-menu :menuItems="menuItems" :alwaysExtended="false"/>
+			<actions-menu :menuItems="menuItems" :alwaysExtended="true"/>
 			<div class="size-2x WIP"><i class="fas fa-hard-hat red"></i> Work In Progress - highly experimental! <i class="fas fa-hard-hat red"></i><br/></div>
 				<config
 					:templates="newSkill()"
