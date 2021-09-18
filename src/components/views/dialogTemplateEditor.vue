@@ -201,6 +201,11 @@ export default {
 			return this.allSlotTypes.filter(a => !(this.dialogTemplates[this.currentLang].slotTypes.map(o => o.name).includes(a)))
 		}
 	},
+	watch: {
+		currentLang(){
+			this.checkLang()
+		}
+	},
 	methods: {
 		reload(){
 			this.loadDialogTemplate()
