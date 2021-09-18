@@ -3,9 +3,9 @@
 		<div class="flexrow nowrap stretched yscroll">
 			<div class="leftBar">
 				<label class="categoryHead">Intents</label>
-				<configInputList v-if="dialogTemplate"
-												 v-model="dialogTemplate.intents"
-												 v-init="dialogTemplate.intents"
+				<configInputList v-if="dialogTemplates[currentLang]"
+												 v-model="dialogTemplates[currentLang].intents"
+												 v-init="dialogTemplates[currentLang].intents"
 												 :template="{name:'intents',
 																		dataType:'userList',
 																		subType:'dict',
@@ -14,13 +14,14 @@
 																									  enabledByDefault: false,
 																										utterances: [],
 																										slots: [] } }"
+												 :proposedItems="intentsMissingInLang"
 												 :allow-double="false"
 												 @item-selected="selectIntent"
 												 :selectedItem="editingIntent"/>
 				<label class="categoryHead">SlotTypes</label>
-				<configInputList v-if="dialogTemplate"
-												 v-model="dialogTemplate.slotTypes"
-												 v-init="dialogTemplate.slotTypes"
+				<configInputList v-if="dialogTemplates[currentLang]"
+												 v-model="dialogTemplates[currentLang].slotTypes"
+												 v-init="dialogTemplates[currentLang].slotTypes"
 												 :template="{name:'slotTypes',
 																		dataType:'userList',
 																		subType:'dict',
@@ -31,6 +32,7 @@
 																										useSynonyms: true,
 																										technicalValue: false,
 																										values: [] } }"
+												 :proposedItems="slotTypesMissingInLang"
 												 :allow-double="false"
 												 @item-selected="selectSlotType"
 												 :selectedItem="editingSlotType"/>
@@ -166,19 +168,47 @@ export default {
 			return this.newSynonymCSV.split(",")
 		},
 		dialogTemplate(){
-			if(!this.dialogTemplates[this.currentLang]){
-				this.dialogTemplates[this.currentLang] = {}
-				this.dialogTemplates[this.currentLang] = {}
-			}
+			this.checkLang()
 			return this.dialogTemplates[this.currentLang]
 		},
 		isModified(){
 			return JSON.stringify(this.dialogTemplates) !== JSON.stringify(this.backupTemplates)
+		},
+		allIntents(){
+			let collect = []
+			for( const lang in this.dialogTemplates){
+				if("intents" in this.dialogTemplates[lang])
+					collect = [...new Set([...collect, ...this.dialogTemplates[lang].intents.map(o => o.name)])]
+			}
+			return collect
+		},
+		allSlotTypes(){
+			let collect = []
+			for( const lang in this.dialogTemplates){
+				if("slotTypes" in this.dialogTemplates[lang])
+					collect = [...new Set([...collect, ...this.dialogTemplates[lang].slotTypes.map(o => o.name)])]
+			}
+			return collect
+		},
+		intentsMissingInLang(){
+			if (!this.dialogTemplates || !(this.currentLang in this.dialogTemplates) || !this.dialogTemplates[this.currentLang].intents)
+				return this.allIntents
+			return this.allIntents.filter(a => !(this.dialogTemplates[this.currentLang].intents.map(o => o.name).includes(a)))
+		},
+		slotTypesMissingInLang(){
+			if (!this.dialogTemplates || !(this.currentLang in this.dialogTemplates) || !this.dialogTemplates[this.currentLang].slotTypes)
+				return this.allSlotTypes
+			return this.allSlotTypes.filter(a => !(this.dialogTemplates[this.currentLang].slotTypes.map(o => o.name).includes(a)))
 		}
 	},
 	methods: {
 		reload(){
 			this.loadDialogTemplate()
+		},
+		checkLang(){
+			if(!this.dialogTemplates[this.currentLang]){
+				this.$set(this.dialogTemplates, this.currentLang, {})
+			}
 		},
 		renameIntent(intent){
 			self = this
@@ -195,7 +225,7 @@ export default {
 						self.showError('The name must not be empty!')
 						return
 					}
-					if(self.dialogTemplate.intents.filter(a => a.name === dialogue.data).length){
+					if(self.allIntents.filter(a => a.name === dialogue.data).length){
 						self.showError('That name is already taken!')
 						return
 					}
@@ -236,13 +266,13 @@ export default {
 			e.target.reportValidity()
 		},
 		addValue(){
-			for(const slotNum in this.dialogTemplate.slotTypes){
-				if( this.dialogTemplate.slotTypes[slotNum].name === this.editingSlotType){
+			for(const slotNum in this.dialogTemplates[this.currentLang].slotTypes){
+				if( this.dialogTemplates[this.currentLang].slotTypes[slotNum].name === this.editingSlotType){
 					let newVal = {
 						"value": ""+this.newValue,
 						"synonyms": this.newSynonyms
 					}
-					this.dialogTemplate.slotTypes[slotNum].values.unshift(newVal)
+					this.dialogTemplates[this.currentLang].slotTypes[slotNum].values.unshift(newVal)
 					this.newValue = ""
 					this.newSynonymCSV = ""
 					this.$refs['new-val-input'][0].focus()
@@ -325,12 +355,8 @@ export default {
 				if ('success' in response.data) {
 					if (response.data['success']) {
 						// $emit('success ')self.setSuccess()
-						self.dialogTemplate = JSON.parse(response.data['dialogTemplate'])
-						self.backupTemplate = JSON.parse(response.data['dialogTemplate'])
-						if(!self.dialogTemplate){
-							self.dialogTemplate = {}
-							self.backupTemplate = {}
-						}
+						self.dialogTemplates[this.currentLang] = JSON.parse(response.data['dialogTemplate'])
+						self.backupTemplates[this.currentLang] = JSON.parse(response.data['dialogTemplate'])
 					}
 					else {
 						// $emit('failed')self.setFailed(response.data['message'] || "Unknown Error")
@@ -359,6 +385,7 @@ export default {
 					if (response.data['success']) {
 						self.dialogTemplates = response.data['dialogTemplates']
 						self.backupTemplates = JSON.parse(JSON.stringify(response.data['dialogTemplates']))
+						self.checkLang()
 						self.$emit('waiting', false)
 					}
 					else {

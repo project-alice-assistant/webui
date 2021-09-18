@@ -23,6 +23,16 @@
 			<i aria-hidden="true" class="fas fa-minus-circle fa-pull-left clickable"
 				 @click="removeItem(item)"/>{{ item[template.dictKey] }}
 		</div>
+		<div
+			v-for="(item, key) in proposedItems"
+			:key="`itmprop_${item}`"
+			class="listItem"
+			:class="{'selected':selectedItem === item}"
+			@click="$emit('item-selected', item)"
+		>
+			<i aria-hidden="true" class="fas fa-plus-circle fa-pull-left clickable red"
+				 @click="addItemVal(item)"/>{{ item }}
+		</div>
 	</div>
 	<div v-else-if="template['subType'] === 'toggles'">
 		<config :subConfig="true"
