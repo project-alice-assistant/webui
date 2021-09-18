@@ -576,9 +576,9 @@ export default {
 			}).then(function() {
 				icon.classList.add('green')
 				if(id === 'setModified') {
-					self.editingSkill.modified = true
+					self.$set(self.editingSkill, "modified", true)
 				} else if( id === 'revert'){
-					self.editingSkill.modified = false
+					self.$set(self.editingSkill, "modified", false)
 				}
 				setTimeout(() => {
 					icon.classList.remove('fa-spin')
