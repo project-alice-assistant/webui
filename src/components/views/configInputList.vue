@@ -13,17 +13,15 @@
 				@keyup.enter="addItem"
 			>
 		</div>
-		<div v-if="value" class="list">
-			<div
-				v-for="(item, key) in value"
-				:key="`itm_${item[template.dictKey]}`"
-				class="listItem"
-				:class="{'selected':selectedItem === item[template.dictKey]}"
-				@click="$emit('item-selected', item[template.dictKey])"
-			>
-				<i aria-hidden="true" class="fas fa-minus-circle fa-pull-left clickable"
-					 @click="removeItem(item)"/>{{ item[template.dictKey] }}
-			</div>
+		<div
+			v-for="(item, key) in value"
+			:key="`itm_${item[template.dictKey]}`"
+			class="listItem"
+			:class="{'selected':selectedItem === item[template.dictKey]}"
+			@click="$emit('item-selected', item[template.dictKey])"
+		>
+			<i aria-hidden="true" class="fas fa-minus-circle fa-pull-left clickable"
+				 @click="removeItem(item)"/>{{ item[template.dictKey] }}
 		</div>
 	</div>
 	<div v-else-if="template['subType'] === 'toggles'">
@@ -138,13 +136,13 @@
 <script>
 export default {
 	name: "configInputList",
-	props: [
-		'template',
-		'value',
-		'allowDouble',
-		'selectedItem',
-		'proposedItems'
-	],
+	props: {
+		'template': {},
+		'value': {default: () => { return [] }},
+		'allowDouble': {},
+		'selectedItem': {},
+		'proposedItems': {}
+	},
 	data: function () {
 		return { newItem      : "",
 						 newItemSlots : {},
@@ -185,6 +183,12 @@ export default {
 				}
 			}
 			return temp
+		},
+		valNN(){
+			if (!this.value)
+				return []
+			else
+				return this.value
 		}
 	},
 	methods: {
@@ -257,9 +261,9 @@ export default {
 				return
 			}
 			//make sure the result list is initialized
-			if (this.value === undefined){
-				this.value = []
-			}
+			//if (this.value === undefined){
+			//	this.value = []
+			//}
 			//make sure the input item is valid
 			if (!this.handleInput(e)) return
 
@@ -267,16 +271,17 @@ export default {
 				let newVal = this.template.dictTemplate
 				newVal[this.template.dictKey] = this.newItem
 
-				this.$emit('input', [newVal, ...this.value])
+				this.$emit('input', [newVal, ...this.valNN])
 			} else if (this.template.subType === 'keyForDict') {
 				this.$set(this.value, this.newItem, this.template.dictTemplate)
 			} else {
 				//transform to the final form and  add the new item to the front of the list
-				this.$emit('input', [this.prepareForStore(this.newItem), ...this.value])
+				this.$emit('input', [this.prepareForStore(this.newItem), ...this.valNN])
 			}
 			//clear the input
 			this.newItem = ''
 			this.$refs.newListItem.focus()
+			this.$forceUpdate()
 		},
 		prepareForStore(input){
 			/*

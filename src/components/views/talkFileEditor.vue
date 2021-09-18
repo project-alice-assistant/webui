@@ -2,8 +2,7 @@
 	<div class="flexrow nowrap stretched yscroll">
 		<div class="leftBar">
 			<label class="categoryHead">Talks</label>
-			<configInputList v-if="talkFiles[currentLang]"
-											 v-model="talkFiles[currentLang]"
+			<configInputList v-model="talkFiles[currentLang]"
 											 v-init="talkFiles[currentLang]"
 											 :template="{name:'intents',
 																		dataType:'userList',
@@ -127,7 +126,7 @@ export default {
 			}
 		},
 		currentLang: function () {
-			if(!this.talkFiles.hasOwnProperty(this.currentLang)){
+			if(!this.talkFiles?.hasOwnProperty(this.currentLang)){
 				this.$set(this.talkFiles, this.currentLang, {})
 			}
 			this.stringified = JSON.stringify(this.talkFiles[this.currentLang], null, 2)
@@ -145,7 +144,9 @@ export default {
 			return collect
 		},
 		missingInLang(){
-			return this.allSlots.filter(a => !this.talkFiles[this.currentLang].hasOwnProperty(a))
+			if (!this.currentLang in this.talkFiles)
+				return this.allSlots
+			return this.allSlots.filter(a => !this.talkFiles[this.currentLang]?.hasOwnProperty(a))
 		},
 		selectedExists(){
 			return !this.missingInLang.includes(this.editingTalk)
@@ -225,7 +226,9 @@ export default {
 				if ('success' in response.data) {
 					if (response.data['success']) {
 						self.talkFiles = response.data['talkFiles']
-						self.talkFilesBackup = JSON.parse(JSON.stringify(response.data['talkFiles']))
+						if (!self.currentLang in self.talkFiles)
+							self.talkFiles[self.currentLang] = []
+						self.talkFilesBackup = JSON.parse(JSON.stringify(self.talkFiles))
 						self.$emit('waiting', false)
 					}
 					else {

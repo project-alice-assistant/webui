@@ -53,7 +53,7 @@ export default {
 					'position': 7
 				}
 			},
-			values: {},
+			values: { 'conditions' : {}},
 			skills: [],
 			storeSkills: [],
 			waiting: false,
@@ -266,11 +266,11 @@ export default {
 			this.setWaiting()
 
 			const data = new FormData()
-			data.append('skillName', this.values['skillName'])
-			data.append('skillSpeakableName', this.values['speakableName'])
-			data.append('skillDescription', this.values['desc'])
-			data.append('skillCategory', this.values['category'])
-			data.append('skillPipRequirements', this.values['skillPipRequirements'])
+			data.append('name', this.values['name'])
+			data.append('speakableName', this.values['speakableName'])
+			data.append('description', this.values['desc'])
+			data.append('category', this.values['category'])
+			data.append('pipRequirements', this.values['skillPipRequirements'])
 			data.append('skillSystemRequirements', this.values['.skillSystemRequirements'])
 			data.append('skillRequiredSkills', this.values['.skillRequiredSkills'])
 			data.append('skillConflictingSkills', this.values['.skillConflictingSkills.'])

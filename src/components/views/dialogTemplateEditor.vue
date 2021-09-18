@@ -166,6 +166,10 @@ export default {
 			return this.newSynonymCSV.split(",")
 		},
 		dialogTemplate(){
+			if(!this.dialogTemplates[this.currentLang]){
+				this.dialogTemplates[this.currentLang] = {}
+				this.dialogTemplates[this.currentLang] = {}
+			}
 			return this.dialogTemplates[this.currentLang]
 		},
 		isModified(){
@@ -173,9 +177,6 @@ export default {
 		}
 	},
 	methods: {
-		isModified(){
-			return JSON.stringify(this.backupTemplate) !== JSON.stringify(this.dialogTemplate)
-		},
 		reload(){
 			this.loadDialogTemplate()
 		},
@@ -326,6 +327,10 @@ export default {
 						// $emit('success ')self.setSuccess()
 						self.dialogTemplate = JSON.parse(response.data['dialogTemplate'])
 						self.backupTemplate = JSON.parse(response.data['dialogTemplate'])
+						if(!self.dialogTemplate){
+							self.dialogTemplate = {}
+							self.backupTemplate = {}
+						}
 					}
 					else {
 						// $emit('failed')self.setFailed(response.data['message'] || "Unknown Error")
