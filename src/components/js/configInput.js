@@ -54,6 +54,9 @@ export default {
 					return false
 				}
 				let newest = this.configValue.slice(-1)
+				if ('capitalize' in this.template && this.template['capitalize'] && this.configValue !== undefined && this.configValue.length === 1) {
+					this.configValue = this.configValue.toUpperCase()
+				}
 				if ('noSpace' in this.template && this.template['noSpace'] && this.configValue !== undefined && newest === " ") {
 					this.configValue = this.configValue.slice(0, -1)
 				}
