@@ -59,9 +59,6 @@ export default {
 			waiting: false,
 			success: false,
 			failed: false,
-			created: false,
-			uploaded: false,
-			githubUrl: '',
 			editingSkill: null,
 			editingIntent: null,
 			editingSlotType: null,
@@ -262,7 +259,7 @@ export default {
 			}, 2000)
 		},
 		createSkill: function(event) {
-			event.preventDefault()
+			if (event) event.preventDefault()
 			this.setWaiting()
 
 			const data = new FormData()
@@ -298,8 +295,13 @@ export default {
 			}).then(function(response) {
 				if ('success' in response.data) {
 					if (response.data['success']) {
-						self.created = true
+						self.createNew = false
+						self.skills.push(response.data['skill'])
+						self.editingSkill = response.data['skill']
+						self.$set(self.$store.state.installedSkills, response.data['skill'].name, response.data['skill'])
+
 						self.setSuccess()
+						self.loadInstallFile()
 					}
 					else {
 						self.setFailed()
@@ -307,37 +309,6 @@ export default {
 				}
 			}).catch(function() {
 				this.setFailed()
-			})
-		},
-		uploadSkill: function(event) {
-			event.preventDefault()
-			this.setWaiting()
-			const data = new FormData()
-			data.append('skillName', this.values['skillName'])
-			data.append('skillDesc', this.values['skillDescription'])
-
-			let self = this
-			axios({
-				method: 'POST',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/uploadSkill/`,
-				data: data,
-				headers: {
-					'auth': this.$store.getters.apiToken,
-					'content-type': 'multipart/form-data'
-				}
-			}).then(function(response) {
-				if ('success' in response.data) {
-					if (response.data['success']) {
-						self.setSuccess()
-						self.githubUrl = response.data['url']
-						self.uploaded = true
-					}
-					else {
-						self.setFailed(response.data['message'] || "Unknown Error")
-					}
-				}
-			}).catch(function() {
-				self.setFailed()
 			})
 		},
 		loadInstruction(){
@@ -459,19 +430,14 @@ export default {
 		},
 		checkOnGithub: function(event) {
 			event.preventDefault()
-			if (!this.uploaded || !this.githubUrl) {
-				return
-			}
-			window.open(this.githubUrl, '_blank');
+			//TODO:Get github URL and integrate into UI
+			window.open("githubUrl", '_blank');
 		},
 		reset: function(event) {
 			event.preventDefault()
 			this.values = {}
 			//this.$refs.data.reset()
 			this.waiting = false
-			this.created = false
-			this.uploaded = false
-			this.githubUrl = ''
 			//this.setWaiting()
 			//let self = this
 			//setTimeout(function() { self.setFailed() }, 5000)
@@ -520,6 +486,9 @@ export default {
 			}
 		},
 		saveSkill(){
+			if(this.createNew){
+				this.createSkill()
+			}
 			if(this.changedSkill.instructions != this.backedUpSkill.instructions){
 				this.saveInstructions()
 			}
@@ -781,7 +750,8 @@ export default {
 				"description" : "The name of this intent as it can be found written in the store and folders.",
 				"obligatory"  : true,
 				"category"		: "general",
-				"noSpace"			: true
+				"noSpace"			: true,
+				"capitalize"  : true
 			},
 			'speakableName' : {
 				"defaultValue": 'A name for the skill that is speakable for Alice - use spaces, but be careful with punctuation',
@@ -794,13 +764,6 @@ export default {
 				"defaultValue": '',
 				"dataType"    : "longstring",
 				"description" : "A short description of that skill. It will be shown in the store",
-				"obligatory"  : true,
-				"category"		: "general"
-			},
-			'version' : {
-				"defaultValue": '0.0.1',
-				"dataType"    : "string",
-				"description" : "The version of this skill. Increase this on every update.",
 				"obligatory"  : true,
 				"category"		: "general"
 			},

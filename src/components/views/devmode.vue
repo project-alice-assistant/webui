@@ -20,22 +20,10 @@
 					:waiting="waiting"
 					:success="success"
 					:failed="failed"
-				  :actions="{'reset': { 'action': reset,
-				  											'condition': !waiting
-				  											},
-											'create': {'text': $t('buttons.create'),
+				  :actions="{'create': {'text': $t('buttons.create'),
 				  											 'action': createSkill,
-																 'condition': !created && allValid && !waiting
-				  											},
-											'upload': {'text': $t('buttons.uploadToGithub'),
-				  											'action': uploadSkill,
-				  											'condition': created && !uploaded && !waiting
-				  											},
-											'checkOnGithub': {'text': $t('buttons.checkOnGithub'),
-				  											'action': checkOnGithub,
-				  											'condition': created && uploaded && !waiting
-				  											}
-				  											}"
+																 'condition': allValid && !waiting
+				  											}}"
 					:text-buttons="true"
 				  :conf-prefix="'skill '"/>
 				<span style="margin-left: 15px;" ref="skillNameExists" class="red initialHidden">{{$t('devMode.skillAlreadyExists')}}</span>
