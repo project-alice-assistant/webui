@@ -48,8 +48,26 @@
 					<p>You can always find more detailed help by clicking the <i class="fas fa-question-circle"></i> in the top right,
 						this will lead you to the corresponding page of
 					<a href="https://docs.projectalice.io/skill-development/files-in-depth.html#dialog-templates">docs.ProjectAlice.io</a></p>
+					<div v-if="slotTypesMissingInLang.length > 0 || intentsMissingInLang.length > 0">
+						<div class="red">
+							There are elements missing in this language!
+						</div>
+						Add them by clicking the <i class="fas fa-plus-circle red"></i> in the list to the left
+					</div>
+
 				</div>
-				<div v-else-if="editingIntent !== null">
+				<div v-if="!selectedExists && editingIntent">
+					<h1>{{ editingIntent }}</h1>
+					<p>This intent is missing for the current language, but exists for others!</p>
+					<p>Add it by clicking on the plus in the list!</p>
+					<p>To delete it from all languages - click here:</p>
+					<button @click="removeIntent(editingIntent)" class="danger">
+						<i class="fas fa-skull-crossbones size-2x"></i>
+						Yes - Delete in all languages
+						<i class="fas fa-skull-crossbones size-2x"></i>
+					</button>
+				</div>
+				<div v-else-if="editingIntent">
 					<div v-for="(intent, key) in dialogTemplate.intents"
 							 v-if="intent.name === editingIntent">
 						<h1 class="clickable" @click="renameIntent(intent)">{{ intent.name }} <i class="fas fa-pen"></i></h1>
@@ -97,7 +115,18 @@
 					</div>
 				</div>
 				<div v-else class="slotDefinition">
-					<div v-for="(slot, key) in dialogTemplate.slotTypes"
+					<div v-if="!selectedExists && editingSlotType">
+						<h1>{{ editingSlotType }}</h1>
+						<p>This intent is missing for the current language, but exists for others!</p>
+						<p>Add it by clicking on the plus in the list!</p>
+						<p>To delete it from all languages - click here:</p>
+						<button @click="removeSlotType(editingSlotType)" class="danger">
+							<i class="fas fa-skull-crossbones size-2x"></i>
+							Yes - Delete in all languages
+							<i class="fas fa-skull-crossbones size-2x"></i>
+						</button>
+					</div>
+					<div v-else v-for="(slot, key) in dialogTemplate.slotTypes"
 						v-if="slot.name === editingSlotType">
 						<h3>{{ slot.name }}</h3>
 						<div class="configLine">
@@ -190,6 +219,9 @@ export default {
 			}
 			return collect
 		},
+		selectedExists(){
+			return !this.intentsMissingInLang.includes(this.editingIntent) && !this.slotTypesMissingInLang.includes(this.editingSlotType)
+		},
 		intentsMissingInLang(){
 			if (!this.dialogTemplates || !(this.currentLang in this.dialogTemplates) || !this.dialogTemplates[this.currentLang].intents)
 				return this.allIntents
@@ -239,7 +271,7 @@ export default {
 				})
 		},
 		renameSlot(intent, slot){
-			self = this
+			let self = this
 			this.$dialog.prompt({
 					title: 'What should the slot be named?',
 					body: slot.name
@@ -371,6 +403,31 @@ export default {
 				console.log(e)
 				// $emit('failed')self.setFailed(response.data['message'] || "Unknown Error")
 			})
+			}
+		},
+		removeIntent(key){
+			this.askDeletionForAllLanguages('intents', key)
+		},
+		removeSlotType(key){
+			this.askDeletionForAllLanguages('slotTypes', key)
+		},
+		askDeletionForAllLanguages(type, key){
+			let self = this
+			this.$dialog.confirm({
+				title: "Delete for all languages?",
+				body: "This will delete the " + type + " for all languages!",
+				okText: "Delete",
+				cancelText: this.$t('buttons.cancel'),
+			}).then(function (dialog) {
+				self.removeForAllLanguages(type, key)
+			}).catch(() => {})
+		},
+		removeForAllLanguages(type, key){
+			for(const lang in this.dialogTemplates) {
+				if(this.dialogTemplates[lang][type]) {
+					let keys = Object.entries(this.dialogTemplates[lang][type]).map(([k, o]) => { if (o.name === key) return k })
+					if(keys) this.$delete(this.dialogTemplates[lang][type], keys)
+				}
 			}
 		},
 		loadDialogTemplate(){
