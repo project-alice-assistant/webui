@@ -31,7 +31,7 @@
 			<i v-tooltip="$t('tooltips.unlinkDevice')" :class="{yellow: toolsState.unlinkingDevices}"
 				 aria-hidden="true" class="fas fa-unlink fa-2x fa-fw clickable" @click="setActiveTool('unlinkingDevices', true)"/>
 		</div>
-		<div v-if="locationsEditMode && toolsState.paintingFloors" class="tools sideTools paintFloors">
+		<div v-if="locationsEditMode && toolsState.paintingFloors" class="tools sideTools paintFloors" @wheel.stop>
 			<img
 				alt="unknown"
 				v-for="imageId in $store.state.floorTiles"
@@ -42,7 +42,7 @@
 				@click="activeFloorTile === imageId ? activeFloorTile = '' : activeFloorTile = imageId"
 			/>
 		</div>
-		<div v-if="locationsEditMode && toolsState.placingFurniture" class="tools sideTools placeFurniture">
+		<div v-if="locationsEditMode && toolsState.placingFurniture" class="tools sideTools placeFurniture" @wheel.stop>
 			<img
 				v-for="furnitureId in $store.state.furnitureTiles"
 				:key="furnitureId"
@@ -53,7 +53,7 @@
 				@click="activeFurnitureTile === furnitureId ? activeFurnitureTile = '' : activeFurnitureTile = furnitureId"
 			/>
 		</div>
-		<div v-if="locationsEditMode && toolsState.placingConstructions" class="tools sideTools placeConstructions">
+		<div v-if="locationsEditMode && toolsState.placingConstructions" class="tools sideTools placeConstructions" @wheel.stop>
 			<img
 				v-for="conId in $store.state.constructionTiles"
 				:key="conId"
