@@ -32,6 +32,10 @@
 				 aria-hidden="true" class="fas fa-unlink fa-2x fa-fw clickable" @click="setActiveTool('unlinkingDevices', true)"/>
 		</div>
 		<div v-if="locationsEditMode && toolsState.paintingFloors" class="tools sideTools paintFloors" @wheel.stop>
+			<div class="addTile clickable" @click="triggerUploadWindow('floorTileInput')">
+				<i aria-hidden="true" class="fas fa-plus fa-2x"></i>
+				<input id="floorTileInput" accept=".png" class="initialHidden" type="file" @change="uploadNewTile('floorTileInput')">
+			</div>
 			<img
 				alt="unknown"
 				v-for="imageId in $store.state.floorTiles"
@@ -43,6 +47,10 @@
 			/>
 		</div>
 		<div v-if="locationsEditMode && toolsState.placingFurniture" class="tools sideTools placeFurniture" @wheel.stop>
+			<div class="addTile clickable" @click="triggerUploadWindow('furnitureTileInput')">
+				<i aria-hidden="true" class="fas fa-plus fa-2x"></i>
+				<input id="furnitureTileInput" accept=".png" class="initialHidden" type="file" @change="uploadNewTile('furnitureTileInput')">
+			</div>
 			<img
 				v-for="furnitureId in $store.state.furnitureTiles"
 				:key="furnitureId"
@@ -54,6 +62,10 @@
 			/>
 		</div>
 		<div v-if="locationsEditMode && toolsState.placingConstructions" class="tools sideTools placeConstructions" @wheel.stop>
+			<div class="addTile clickable" @click="triggerUploadWindow('constructionTileInput')">
+				<i aria-hidden="true" class="fas fa-plus fa-2x"></i>
+				<input id="constructionTileInput" accept=".png" class="initialHidden" type="file" @change="uploadNewTile('constructionTileInput')">
+			</div>
 			<img
 				v-for="conId in $store.state.constructionTiles"
 				:key="conId"

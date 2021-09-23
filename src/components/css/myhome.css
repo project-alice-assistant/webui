@@ -113,15 +113,19 @@
 	width: 600px;
 }
 
-.sideTools > img {
+.sideTools > img,
+.sideTools > .addTile {
+	align-items: center;
 	box-sizing: border-box;
-	display: inline-block;
+	display: flex;
 	height: 50px;
+	justify-content: center;
 	margin: 2px;
 	width: 50px;
 }
 
-.sideTools > img:hover {
+.sideTools > img:hover,
+.sideTools > .addTile:hover {
 	border: 2px solid var(--text)
 }
 

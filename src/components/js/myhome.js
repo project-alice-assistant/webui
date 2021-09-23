@@ -469,6 +469,60 @@ export default {
 					self.newLocationName = ''
 				})
 		},
+		triggerUploadWindow: function (id) {
+			const input = document.getElementById(id)
+			input.click()
+		},
+		uploadNewTile: function (id) {
+			const input = document.getElementById(id)
+			const file = input.files[0]
+			const self = this
+			const tileType = id.replace('TileInput', '')
+			let formData = new FormData()
+			formData.append('newTile', file)
+			axios({
+				method: 'PUT',
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/${tileType}/`,
+				data: formData,
+				headers: {
+					'auth': this.$store.getters.apiToken,
+					'content-type': 'multipart/form-data'
+				}
+			}).then(response => {
+				if ('success' in response.data && response.data['success']) {
+					let url
+					if (tileType === 'floor') {
+						url = `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/floors/`
+					} else if (tileType === 'construction') {
+						url = `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/constructions/tiles/`
+					} else {
+						url = `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/furniture/tiles/`
+					}
+
+					axios({
+						method: 'GET',
+						url: url,
+					}).then(response => {
+						if ('data' in response.data) {
+							this.showSuccess(this.$t('notifications.successes.newTileAdded'))
+
+							if (tileType === 'floor') {
+								self.$store.commit('setFloorTiles', response.data['data'])
+							} else if (tileType === 'construction') {
+								self.$store.commit('setConstructionTiles', response.data['data'])
+							} else {
+								self.$store.commit('setFurnitureTiles', response.data['data'])
+							}
+						}
+					}).catch(() => {
+						this.showError(this.$t('notifications.errors.newTileFailed'))
+					})
+
+				} else {
+					this.showError(this.$t('notifications.errors.newTileFailed'))
+				}
+			})
+		},
 		addDeviceDialog: function () {
 			this.setActiveTool('none')
 
