@@ -37,9 +37,11 @@ export default {
 	},
 	methods: {
 		computeCustomStyle: function () {
+			let bgColor = this.data.settings['t'] === "floor-80" ? "transparent" : "var(--windowBG)"
 			return this.myHome.moveableItem.computeMyHomeCustomStyle(
 				this.data,
-				`background: url('http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/floors/${this.data.settings['t'] || 'floor-80'}.png');background-color: var(--windowBG);`
+				`background: url('http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/floors/${this.data.settings['t'] || 'floor-80'}.png');
+				background-color: ${bgColor};`
 			)
 		},
 		save: function () {
