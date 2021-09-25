@@ -8,8 +8,8 @@
 			</div>
 		</div>
 		<div v-if="createNew" class="settingsContainer">
+			<div class="WIP"><i class="fab fa-hotjar yellow"></i> new feature - handle with care! <i class="fab fa-hotjar yellow"></i><br/></div>
 			<actions-menu :menuItems="menuItems" :alwaysExtended="true"/>
-			<div class="size-2x WIP"><i class="fas fa-hard-hat red"></i> Work In Progress - highly experimental! <i class="fas fa-hard-hat red"></i><br/></div>
 				<config
 					:templates="newSkill()"
 					:holder="values"
@@ -43,7 +43,7 @@
 			/>
 			<div v-if="activeTabId === 'settings' || activeTabId === undefined"  class="tab_page">
 				<actions-menu :menuItems="menuItems" :alwaysExtended="true"/>
-				<div class="size-2x WIP"><i class="fas fa-hard-hat yellow"></i> Work In Progress - use carefully! <i class="fas fa-hard-hat yellow"></i><br/></div>
+				<div class="WIP"><i class="fab fa-hotjar yellow"></i> new feature - handle with care! <i class="fab fa-hotjar yellow"></i><br/></div>
 				<config v-if="changedSkill.installFile"
 								:holder="changedSkill.installFile"
 								:templates="configTemplate()"
@@ -127,6 +127,7 @@
 						<div style="width: 100%; padding: 1em;">
 							<div class="size-2x WIP"> <i class="fas fa-hard-hat red"></i> <i class="fas fa-bomb red"></i> Work In Progress - handle with care! <i class="fas fa-bomb red"></i> <i class="fas fa-hard-hat red"></i><br/></div>
 						</div>
+							<git-status style="width: 100%" :skill="editingSkill.name"></git-status>
 							<div class="utility clickable" @click="utilityRequest('revert')">
 							<p class="utilityIcon">
 								<i id="utilityRevert" class="fas fa-undo-alt"/>

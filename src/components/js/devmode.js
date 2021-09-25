@@ -542,12 +542,16 @@ export default {
 				method: 'GET',
 				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.editingSkill.name}/${id}/`,
 				headers: {'auth': this.$store.getters.apiToken},
-			}).then(function() {
-				icon.classList.add('green')
-				if(id === 'setModified') {
-					self.$set(self.editingSkill, "modified", true)
-				} else if( id === 'revert'){
-					self.$set(self.editingSkill, "modified", false)
+			}).then(function(resp) {
+				if(resp['success'] != undefined && !resp['success']){
+					throw resp['message'];
+				} else {
+					icon.classList.add('green')
+					if(id === 'setModified') {
+						self.$set(self.editingSkill, "modified", true)
+					} else if( id === 'revert'){
+						self.$set(self.editingSkill, "modified", false)
+					}
 				}
 				setTimeout(() => {
 					icon.classList.remove('fa-spin')
