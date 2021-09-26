@@ -125,7 +125,8 @@
 				<actions-menu :menuItems="menuItems" :alwaysExtended="true"/>
 					<div v-if="editingSkill.modified" class="container flexrow">
 						<div style="width: 100%; padding: 1em;">
-							<div class="size-2x WIP"> <i class="fas fa-hard-hat red"></i> <i class="fas fa-bomb red"></i> Work In Progress - handle with care! <i class="fas fa-bomb red"></i> <i class="fas fa-hard-hat red"></i><br/></div>
+							<div class="WIP"><i class="fab fa-hotjar yellow"></i> new feature - handle with care! <i class="fab fa-hotjar yellow"></i><br/></div>
+							<div> You might need to hit upload twice on the initial upload! </div>
 						</div>
 							<git-status style="width: 100%" :skill="editingSkill.name"></git-status>
 							<div class="utility clickable" @click="utilityRequest('revert')">
@@ -173,10 +174,10 @@
 			</div>
 			<div v-else-if="activeTabId === 'widgets'">
 				<actions-menu :menuItems="menuItems" :alwaysExtended="true"/>
-				<div class="size-2x WIP"><i class="fas fa-hard-hat red"></i> Work In Progress - not yet available! <i class="fas fa-hard-hat red"></i><br/></div>
-				Creation of own widgets via the web interface is not yet possible!<br/>
-				To add widgets please create the files manually.<br/>
-				You can find help on <a href="https://docs.projectalice.io/skill-development/going-further.html#widgets">docs.ProjectAlice.io</a>
+				<div class="size-2x WIP"><i class="fas fa-hard-hat red"></i> Work In Progress - take care! <i class="fas fa-hard-hat red"></i><br/></div>
+				Editing of widgets via the web interface is not yet possible!<br/>
+				You can find help on <a href="https://docs.projectalice.io/skill-development/going-further.html#widgets">docs.ProjectAlice.io</a><br/>
+				<button @click="createWidget">Click here to create a new Widget</button>
 			</div>
 
 		</div>

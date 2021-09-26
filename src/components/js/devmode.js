@@ -602,6 +602,26 @@ export default {
 				}
 			}
 		},
+		createWidget(){
+			self = this
+			this.$dialog.prompt({
+				title: 'Please name your Widget',
+				body: 'The name will be the technical name as well as the one shown to the user!\n Don\'t use spaces or special characters!'}, {
+				promptHelp: '',
+				okText: this.$t('buttons.ok'),
+				cancelText: this.$t('buttons.cancel')
+			}).then(function (dialogue) {
+				let widgetName = dialogue.data
+				axios({
+					method: 'PATCH',
+					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/skills/${self.editingSkill.name}/createWidget/${widgetName}/`,
+					headers: {
+						'auth': self.$store.getters.apiToken,
+						'content-type': 'application/json'
+					}
+				})
+			})
+		},
 		configTemplate(){
 			return { 'name' : {
 					"defaultValue": '',
