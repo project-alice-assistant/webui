@@ -403,7 +403,6 @@ export default {
 				let data = {
 					'installFile': this.changedSkill.installFile
 				}
-				console.log(data)
 				axios({
 					method: 'PATCH',
 					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.editingSkill.name}/setInstallFile/`,
@@ -416,8 +415,8 @@ export default {
 					if ('success' in response.data) {
 						if (response.data['success']) {
 							self.setSuccess()
-							self.changedSkill.installFile = JSON.parse(response.data['installFile'])
-							self.backedUpSkill.installFile = JSON.parse(response.data['installFile'])
+							self.changedSkill.installFile = response.data['installFile']
+							self.backedUpSkill.installFile = JSON.parse(JSON.stringify(response.data['installFile']))
 						}
 						else {
 							self.setFailed(response.data['message'] || "Unknown Error")
