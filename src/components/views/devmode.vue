@@ -170,7 +170,8 @@
 				<div class="size-2x WIP"><i class="fas fa-hard-hat red"></i> Work In Progress - not yet available! <i class="fas fa-hard-hat red"></i><br/></div>
 				Creation of own device types via the web interface is not yet possible!<br/>
 				To add device types please create the files manually.<br/>
-				You can find help on <a href="https://docs.projectalice.io/skill-development/going-further.html#devices">docs.ProjectAlice.io</a>
+				You can find help on <a href="https://docs.projectalice.io/skill-development/going-further.html#devices">docs.ProjectAlice.io</a><br/>
+				<button @click="createDevice">Click here to create a new Device Type</button>
 			</div>
 			<div v-else-if="activeTabId === 'widgets'">
 				<actions-menu :menuItems="menuItems" :alwaysExtended="true"/>
