@@ -283,6 +283,13 @@ export default class MoveableItem {
 		}
 		target.style.width = `${width}px`
 		target.style.height = `${height}px`
+
+		if (target.classList.contains('widget')){
+			// get widget with id
+			try {
+				this.controller.$store.state.widgetInstances[target.id.substr(4)].instance.onResize(target, width, height, delta, direction)
+			} catch (e) { }
+		}
 	}
 
 	handleRotate(target, dist, transform) {
