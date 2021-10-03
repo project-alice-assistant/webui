@@ -11,7 +11,8 @@ export default {
 			targetParentLocation: 0,
 			checkHeartbeat: null,
 			myLinks: {},
-			hovered: false
+			hovered: false,
+			etag: uuidv4()
 		}
 	},
 	props: [
@@ -82,9 +83,23 @@ export default {
 			}).catch()
 		},
 		computeCustomStyle: function () {
+			let self = this
+			axios({
+				method: 'GET',
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/${this.data.id}/${this.etag}/device.png`
+			}).then(response => {
+				if (response.headers['x-etag'] !== self.etag) {
+					self.etag = response.headers['x-etag']
+					let el = document.getElementById(`dev_${self.data.id}`)
+					el.style.backgroundImage = `url('http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/${self.data.id}/${self.etag}/device.png')`
+					el.style.backgroundPosition = 'center center'
+					el.style.backgroundSize = 'contain'
+					el.style.backgroundRepeat = 'no-repeat'
+				}
+			})
 			return this.myHome.moveableItem.computeMyHomeCustomStyle(
-				this.data,
-				`background-image: url('http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/${this.data.id}/${uuidv4()}/device.png'); background-position: center center; background-size: contain; background-repeat: no-repeat;`
+				self.data,
+				null
 			)
 		},
 		save: function () {
@@ -148,7 +163,6 @@ export default {
 				this.myHome.moveableItem.setBoundaries(this.myHome.$refs.floorPlan)
 				this.myHome.moveableItem.setGuidelines([])
 			} else if (!this.myHome.devicesEditMode && !this.myHome.locationsEditMode) {
-				const self = this
 				axios({
 					method: 'GET',
 					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/${this.data.id}/onClick/`,
