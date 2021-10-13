@@ -18,7 +18,7 @@ export default {
 			if (this.$tours['skills'].currentStep !== -1) return
 			axios({
 				method: 'GET',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.skill.name}/reload/`,
+				url: `/skills/${this.skill.name}/reload/`,
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then(response => {
 				if ('skill' in response.data) {
@@ -31,7 +31,7 @@ export default {
 			if (this.$tours['skills'].currentStep !== -1) return
 			axios({
 				method: 'GET',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.skill.name}/toggleActiveState/`,
+				url: `/skills/${this.skill.name}/toggleActiveState/`,
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then(() => (this.skill.active = !this.skill.active))
 
@@ -40,7 +40,7 @@ export default {
 			if (this.$tours['skills'].currentStep !== -1) return
 			axios({
 				method: 'GET',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.skill.name}/checkUpdate/`,
+				url: `/skills/${this.skill.name}/checkUpdate/`,
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then(() => {
 			})
@@ -54,7 +54,7 @@ export default {
 				.then(function() {
 					axios({
 						method: 'DELETE',
-						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/skills/${self.skill.name}/`,
+						url: `/skills/${self.skill.name}/`,
 						headers: {'auth': self.$store.getters.apiToken}
 					}).then(response => {
 						if ('success' in response.data) {
@@ -82,7 +82,7 @@ export default {
 			this.$dialog.prompt({}, options).then(dialogue => {
 				axios({
 					method: 'PATCH',
-					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.skill.name}/`,
+					url: `/skills/${this.skill.name}/`,
 					headers: {
 						'auth': this.$store.getters.apiToken,
 						'content-type': 'application/json'

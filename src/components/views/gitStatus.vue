@@ -29,7 +29,7 @@ export default {
 		let self = this
 		axios({
 			method: 'GET',
-			url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${self.skill}/gitStatus/`,
+			url: `/skills/${self.skill}/gitStatus/`,
 			headers: {'auth': this.$store.getters.apiToken}
 		}).then(function(resp) {
 			self.status = resp.data.result

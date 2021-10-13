@@ -28,7 +28,7 @@ export default {
 
 			axios({
 				method: 'PATCH',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/furniture/${this.data.id}/`,
+				url: `/myHome/furniture/${this.data.id}/`,
 				data: data,
 				headers: {
 					'auth': this.$store.getters.apiToken,
@@ -55,7 +55,7 @@ export default {
 			event.stopPropagation()
 			axios({
 				method: 'DELETE',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/furniture/${this.data.id}/`,
+				url: `/myHome/furniture/${this.data.id}/`,
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then(response => {
 				if ('success' in response.data && response.data.success) {

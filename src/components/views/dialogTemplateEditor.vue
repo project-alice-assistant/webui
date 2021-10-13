@@ -382,7 +382,7 @@ export default {
 			}
 			axios({
 				method: 'PATCH',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.editingSkill.name}/setDialogTemplate/`,
+				url: `/skills/${this.editingSkill.name}/setDialogTemplate/`,
 				data: data,
 				headers: {
 					'auth': this.$store.getters.apiToken,
@@ -436,7 +436,7 @@ export default {
 			this.$emit('waiting', true)
 			axios({
 				method: 'POST',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.editingSkill.name}/getDialogTemplate/`,
+				url: `/skills/${this.editingSkill.name}/getDialogTemplate/`,
 				data: data,
 				headers: {
 					'auth': this.$store.getters.apiToken,

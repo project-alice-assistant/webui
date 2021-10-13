@@ -27,17 +27,20 @@ export default {
 			this.$store.commit('setSkillTourCompleted')
 		}
 
-		this.doConnect().then(console.log('Project Alice Web Interface connected and ready'))
+		this.doConnect().then(() => {
+			console.log('Project Alice Web Interface connected and ready')
+		})
 	},
 	beforeDestroy: function () {
 		axios({
 			method: 'PUT',
-			url: `http://${self.ip}:${self.port}/api/v1.0.1/devices/${localStorage.getItem('interfaceUid')}/bye/`,
+			url: `/devices/${localStorage.getItem('interfaceUid')}/bye/`,
 			headers: {'auth': this.$store.getters.apiToken}
 		}).then()
 	},
 	methods: {
 		async doConnect() {
+			axios.defaults.baseURL = `http://${this.ip}:${this.port}/api/v1.0.1`
 			this.connecting = true
 			let self = this
 			Promise.all([
@@ -89,14 +92,14 @@ export default {
 				return new Promise(function (resolve, reject) {
 					axios({
 						method: 'GET',
-						url: `http://${self.ip}:${self.port}/api/v1.0.1/devices/${uid}/hello/`,
+						url: `/devices/${uid}/hello/`,
 					}).then(response => {
 						if ('deviceId' in response.data) {
 							resolve()
 						} else {
 							axios({
 								method: 'PUT',
-								url: `http://${self.ip}:${self.port}/api/v1.0.1/devices/${uid}/`,
+								url: `/devices/${uid}/`,
 								data: {
 									locationId: 1,
 									skillName: 'AliceCore',
@@ -163,7 +166,7 @@ export default {
 			return new Promise(function (resolve, reject) {
 				axios({
 					method: 'GET',
-					url: `http://${self.ip}:${self.port}/api/v1.0.1/utils/config/`,
+					url: `/utils/config/`,
 					headers: {'auth': self.$store.getters.apiToken}
 				}).then(response => {
 					self.$store.commit('setSettings', response.data['config'])
@@ -187,7 +190,7 @@ export default {
 		connectMQTT() {
 			let self = this
 			return new Promise(function (resolve, reject) {
-				axios.get(`http://${self.ip}:${self.port}/api/v1.0.1/utils/mqttConfig/`)
+				axios.get(`/utils/mqttConfig/`)
 					.then(response => {
 						let settings = window.sessionStorage.getItem('aliceSettings')
 						if (settings) {
@@ -223,7 +226,7 @@ export default {
 				if (localStorage.getItem('apiToken') && localStorage.getItem('username')) {
 					axios({
 						method: 'POST',
-						url: `http://${self.ip}:${self.port}/api/v1.0.1/login/checkToken/`,
+						url: `/login/checkToken/`,
 						headers: {'auth': localStorage.getItem('apiToken')}
 					}).then(response => {
 						if ('success' in response.data) {
@@ -250,7 +253,7 @@ export default {
 			return new Promise(function (resolve, reject) {
 				axios({
 					method: 'GET',
-					url: `http://${self.ip}:${self.port}/api/v1.0.1/utils/i18n/`
+					url: `/utils/i18n/`
 				}).then(response => {
 					self.$i18n.locale = self.$store.state.settings['activeLanguage']
 					for (const [lang, data] of Object.entries(response.data['data'])) {
@@ -267,7 +270,7 @@ export default {
 			return new Promise(function (resolve, reject) {
 				axios({
 					method: 'GET',
-					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/widgets/templates/`
+					url: `/widgets/templates/`
 				}).then(response => {
 					if ('widgets' in response.data) {
 						self.$store.commit('setWidgetTemplates', response.data['widgets'])
@@ -285,7 +288,7 @@ export default {
 			return new Promise(function (resolve, reject) {
 				axios({
 					method: 'GET',
-					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/widgets/`,
+					url: `/widgets/`,
 					headers: {'auth': self.$store.getters.apiToken}
 				}).then(response => {
 					if ('widgets' in response.data) {
@@ -304,7 +307,7 @@ export default {
 			return new Promise(function (resolve, reject) {
 				axios({
 					method: 'GET',
-					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/deviceTypes/`,
+					url: `/myHome/deviceTypes/`,
 				}).then(response => {
 					if ('types' in response.data) {
 						self.$store.commit('setDeviceTypes', response.data['types'])
@@ -322,7 +325,7 @@ export default {
 			return new Promise(function (resolve, reject) {
 				axios({
 					method: 'GET',
-					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/widgets/pages/`,
+					url: `/widgets/pages/`,
 				}).then(response => {
 					if ('pages' in response.data) {
 						self.$store.commit('setWidgetPages', response.data['pages'])
@@ -340,7 +343,7 @@ export default {
 			return new Promise(function (resolve, reject) {
 				axios({
 					method: 'GET',
-					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/skills/`,
+					url: `/skills/`,
 					headers: {'auth': self.$store.getters.apiToken}
 				}).then(response => {
 					if ('skills' in response.data) {
@@ -359,7 +362,7 @@ export default {
 			return new Promise(function (resolve, reject) {
 				axios({
 					method: 'GET',
-					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/skills/getStore/`
+					url: `/skills/getStore/`
 				}).then(response => {
 					if ('store' in response.data) {
 						self.$store.commit('setStoreSkills', response.data['store'])
@@ -377,7 +380,7 @@ export default {
 			return new Promise(function (resolve, reject) {
 				axios({
 					method: 'GET',
-					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/floors/`,
+					url: `/myHome/locations/floors/`,
 				}).then(response => {
 					if ('data' in response.data) {
 						self.$store.commit('setFloorTiles', response.data['data'])
@@ -395,7 +398,7 @@ export default {
 			return new Promise(function (resolve, reject) {
 				axios({
 					method: 'GET',
-					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/constructions/tiles/`,
+					url: `/myHome/constructions/tiles/`,
 				}).then(response => {
 					if ('data' in response.data) {
 						self.$store.commit('setConstructionTiles', response.data['data'])
@@ -413,7 +416,7 @@ export default {
 			return new Promise(function (resolve, reject) {
 				axios({
 					method: 'GET',
-					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/furniture/tiles/`,
+					url: `/myHome/furniture/tiles/`,
 				}).then(response => {
 					if ('data' in response.data) {
 						self.$store.commit('setFurnitureTiles', response.data['data'])
@@ -431,7 +434,7 @@ export default {
 			return new Promise(function (resolve, reject) {
 				axios({
 					method: 'GET',
-					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/`,
+					url: `/myHome/`,
 					headers: {'auth': self.$store.getters.apiToken}
 				}).then(response => {
 					if ('data' in response.data) {
@@ -454,7 +457,7 @@ export default {
 			return new Promise(function (resolve, reject) {
 				axios({
 					method: 'GET',
-					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/utils/notifications/`,
+					url: `/utils/notifications/`,
 					headers: {'auth': self.$store.getters.apiToken, 'uid': localStorage.getItem('interfaceUid')}
 				}).then(response => {
 					resolve()

@@ -76,7 +76,7 @@ export default {
 			if (this.currentSession === undefined) {
 				axios({
 					method: 'POST',
-					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/dialog/process/`,
+					url: `/dialog/process/`,
 					data: data,
 					headers: {
 						'auth': this.$store.getters.apiToken,
@@ -92,7 +92,7 @@ export default {
 				data.append( 'sessionId', this.currentSession)
 				axios({
 					method: 'POST',
-					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/dialog/continue/`,
+					url: `/dialog/continue/`,
 					data: data,
 					headers: {
 						'auth': this.$store.getters.apiToken,

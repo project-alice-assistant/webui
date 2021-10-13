@@ -55,7 +55,7 @@ export default {
 
 			axios({
 				method: 'PATCH',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/${this.data.id}/`,
+				url: `/myHome/locations/${this.data.id}/`,
 				data: data,
 				headers: {
 					'auth': this.$store.getters.apiToken,
@@ -89,7 +89,7 @@ export default {
 
 				axios({
 					method: 'PUT',
-					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/`,
+					url: `/myHome/devices/`,
 					data: data,
 					headers: {
 						'auth': this.$store.getters.apiToken,
@@ -129,7 +129,7 @@ export default {
 
 				axios({
 					method: 'PUT',
-					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/furniture/`,
+					url: `/myHome/furniture/`,
 					data: data,
 					headers: {
 						'auth': this.$store.getters.apiToken,
@@ -160,7 +160,7 @@ export default {
 
 				axios({
 					method: 'PUT',
-					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/constructions/`,
+					url: `/myHome/constructions/`,
 					data: data,
 					headers: {
 						'auth': this.$store.getters.apiToken,
@@ -186,7 +186,7 @@ export default {
 
 				axios({
 					method: 'PUT',
-					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/deviceLinks/`,
+					url: `/myHome/deviceLinks/`,
 					data: data,
 					headers: {
 						'auth': this.$store.getters.apiToken,
@@ -218,7 +218,7 @@ export default {
 
 				axios({
 					method: 'DELETE',
-					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/deviceLinks/`,
+					url: `/myHome/deviceLinks/`,
 					data: data,
 					headers: {
 						'auth': this.$store.getters.apiToken,
@@ -274,7 +274,7 @@ export default {
 			event.stopPropagation()
 			axios({
 				method: 'DELETE',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/${this.data.id}/`,
+				url: `/myHome/locations/${this.data.id}/`,
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then(response => {
 				if (this.checkResponse(response)) {

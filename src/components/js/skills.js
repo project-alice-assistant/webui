@@ -164,7 +164,7 @@ export default {
 					const payload = JSON.parse(msg.payloadString)
 					axios({
 						method: 'GET',
-						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/skills/${payload.skillName}/`,
+						url: `/skills/${payload.skillName}/`,
 						headers: {'auth': self.$store.getters.apiToken}
 					}).then(response => {
 						if ('skill' in response.data) {
@@ -201,7 +201,7 @@ export default {
 		reloadStoreSkills: function () {
 			axios({
 				method: 'GET',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/getStore/`
+				url: `/skills/getStore/`
 			}).then(response => {
 				if ('store' in response.data) {
 					this.$store.commit('setStoreSkills', response.data['store'])
@@ -223,7 +223,7 @@ export default {
 			}
 			axios({
 				method: 'PUT',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/installSkills/`,
+				url: `/skills/installSkills/`,
 				data: this.skillsToDownload,
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then(response => {

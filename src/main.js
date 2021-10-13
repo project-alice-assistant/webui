@@ -69,6 +69,8 @@ Vue.use(VueTooltip)
 Vue.use(VueSimpleMarkdown)
 Vue.use(VueI18n)
 
+axios.defaults.withCredentials = true
+
 Vue.component('VueToggles', VueToggles)
 Vue.component('skill', Skill)
 Vue.component('storeSkill', StoreSkill)

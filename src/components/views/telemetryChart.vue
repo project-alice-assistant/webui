@@ -116,7 +116,7 @@ export default {
 			this.waitingForData += 1
 				axios({
 					method: 'get',
-					url: `http://${that.$store.state.settings['aliceIp']}:${that.$store.state.settings['apiPort']}/api/v1.0.1/telemetry/`,
+					url: `/telemetry/`,
 					headers: {
 						'auth': localStorage.getItem('apiToken'),
 						'Content-Type': 'application/json'

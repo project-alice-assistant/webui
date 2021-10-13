@@ -168,7 +168,7 @@ export default {
 		addWidget: function (skillName, widgetName) {
 			axios({
 				method: 'PUT',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/`,
+				url: `/widgets/`,
 				data: {
 					skillName: skillName,
 					widgetName: widgetName,
@@ -188,7 +188,7 @@ export default {
 		removeWidget: function(widgetId) {
 			axios({
 				method: 'DELETE',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/${widgetId}/`,
+				url: `/widgets/${widgetId}/`,
 				headers: {
 					'auth': this.$store.getters.apiToken
 				}
@@ -214,7 +214,7 @@ export default {
 			dataJson['configs'] = widget.configs
 			axios({
 				method: 'PATCH',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/${widget.id}/`,
+				url: `/widgets/${widget.id}/`,
 				data: JSON.stringify(dataJson),
 				headers: {
 					'auth': this.$store.getters.apiToken,
@@ -289,7 +289,7 @@ export default {
 					.then(function () {
 						axios({
 							method: 'DELETE',
-							url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/widgets/pages/${id}/`,
+							url: `/widgets/pages/${id}/`,
 							headers: {'auth': self.$store.getters.apiToken}
 						}).then(response => {
 							if ('pages' in response.data) {
@@ -320,7 +320,7 @@ export default {
 				let icon = dialogue.data || 'fas fa-biohazard'
 				axios({
 					method: 'PATCH',
-					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/widgets/pages/${id}/`,
+					url: `/widgets/pages/${id}/`,
 					data: {newIcon: icon},
 					headers: {
 						'auth': self.$store.getters.apiToken,
@@ -336,7 +336,7 @@ export default {
 		addTab: function() {
 			axios({
 				method: 'PUT',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/addPage/`,
+				url: `/widgets/addPage/`,
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then(response => {
 				if ('newpage' in response.data) {

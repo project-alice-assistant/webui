@@ -40,7 +40,7 @@ export default {
 			// initial loading of the possible combinations by calling the telemetry/overview API
 			axios({
 				method: 'GET',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/telemetry/overview/`,
+				url: `/telemetry/overview/`,
 				headers: {
 					'auth': this.$store.getters.apiToken,
 					'Content-Type': 'application/json'

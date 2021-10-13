@@ -33,7 +33,7 @@ export default {
 				dataJson['configs'] = dialogue.data.configs
 				axios({
 					method: 'PATCH',
-					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/widgets/${self.widget.id}/`,
+					url: `/widgets/${self.widget.id}/`,
 					data: JSON.stringify(dataJson),
 					headers: {
 						'auth': self.$store.getters.apiToken,

@@ -216,7 +216,7 @@ export default {
 			self.$emit('waiting', true)
 			axios({
 				method: 'POST',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.editingSkill.name}/getTalkFiles/`,
+				url: `/skills/${this.editingSkill.name}/getTalkFiles/`,
 				data: data,
 				headers: {
 					'auth': this.$store.getters.apiToken,
@@ -258,7 +258,7 @@ export default {
 			}
 			axios({
 				method: 'PATCH',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.editingSkill.name}/setTalkFile/`,
+				url: `/skills/${this.editingSkill.name}/setTalkFile/`,
 				data: data,
 				headers: {
 					'auth': this.$store.getters.apiToken,

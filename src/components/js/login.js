@@ -16,7 +16,7 @@ export default {
 			data.append('pin', this.pincode)
 			axios({
 				method: 'POST',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/login/`,
+				url: `/login/`,
 				data: data,
 				headers: {'Content-Type': 'multipart/form-data'}
 			}).then(response => {
@@ -33,7 +33,7 @@ export default {
 
 					axios({
 						method: 'GET',
-						url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/config/`,
+						url: `/utils/config/`,
 						headers: {'auth': response.data.apiToken}
 					}).then(response => {
 						this.$store.commit('setSettings', response.data['config'])

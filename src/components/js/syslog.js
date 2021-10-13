@@ -59,7 +59,7 @@ export default {
 			data.append('cmd', this.cmd)
 			axios({
 				method: 'POST',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/sysCmd/`,
+				url: `/utils/sysCmd/`,
 				data: data,
 				headers: {
 					'auth': this.$store.getters.apiToken,

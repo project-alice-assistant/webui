@@ -53,7 +53,7 @@ export default {
 			}
 			axios({
 				method: 'PATCH',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/markNotificationRead/${id}/`,
+				url: `/utils/markNotificationRead/${id}/`,
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then()
 		}

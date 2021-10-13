@@ -86,7 +86,7 @@ export default {
 			let self = this
 			axios({
 				method: 'GET',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/${this.data.id}/${this.etag}/device.png`
+				url: `/myHome/devices/${this.data.id}/${this.etag}/device.png`
 			}).then(response => {
 				if (response.headers['x-etag'] !== self.etag) {
 					self.etag = response.headers['x-etag']
@@ -113,7 +113,7 @@ export default {
 			const self = this
 			axios({
 				method: 'PATCH',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/${this.data.id}/`,
+				url: `/myHome/devices/${this.data.id}/`,
 				data: data,
 				headers: {
 					'auth': this.$store.getters.apiToken,
@@ -165,7 +165,7 @@ export default {
 			} else if (!this.myHome.devicesEditMode && !this.myHome.locationsEditMode) {
 				axios({
 					method: 'GET',
-					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/${this.data.id}/onClick/`,
+					url: `/myHome/devices/${this.data.id}/onClick/`,
 					headers: {'auth': this.$store.getters.apiToken}
 				}).then(response => {
 					if ('success' in response.data) {
@@ -243,7 +243,7 @@ export default {
 			event.stopPropagation()
 			axios({
 				method: 'DELETE',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/${this.data.id}/`,
+				url: `/myHome/devices/${this.data.id}/`,
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then(response => {
 				if ('success' in response.data && response.data.success) {

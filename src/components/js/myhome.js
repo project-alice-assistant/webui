@@ -453,7 +453,7 @@ export default {
 				.then(function (dialogue) {
 					axios({
 						method: 'GET',
-						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/${dialogue.data}/`,
+						url: `/myHome/locations/${dialogue.data}/`,
 						headers: {'auth': self.$store.getters.apiToken}
 					}).then(response => {
 						if ('location' in response.data) {
@@ -482,7 +482,7 @@ export default {
 			formData.append('newTile', file)
 			axios({
 				method: 'PUT',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/${tileType}/`,
+				url: `/myHome/locations/${tileType}/`,
 				data: formData,
 				headers: {
 					'auth': this.$store.getters.apiToken,
@@ -492,11 +492,11 @@ export default {
 				if ('success' in response.data && response.data['success']) {
 					let url
 					if (tileType === 'floor') {
-						url = `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/floors/`
+						url = `/myHome/locations/floors/`
 					} else if (tileType === 'construction') {
-						url = `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/constructions/tiles/`
+						url = `/myHome/constructions/tiles/`
 					} else {
-						url = `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/furniture/tiles/`
+						url = `/myHome/furniture/tiles/`
 					}
 
 					axios({
@@ -662,7 +662,7 @@ export default {
 
 				axios({
 					method: 'PUT',
-					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/`,
+					url: `/myHome/locations/`,
 					data: data,
 					headers: {
 						'auth': this.$store.getters.apiToken,
@@ -734,7 +734,7 @@ export default {
 
 			axios({
 				method: 'PATCH',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/${data.id}/`,
+				url: `/myHome/locations/${data.id}/`,
 				data: data,
 				headers: {
 					'auth': this.$store.getters.apiToken,

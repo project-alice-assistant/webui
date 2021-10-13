@@ -112,7 +112,7 @@ export default {
 			event.target['data-success'] = false
 			axios({
 				method: 'PATCH',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/config/`,
+				url: `/utils/config/`,
 				headers: {
 					'auth': this.$store.getters.apiToken,
 					'content-type': 'application/json'
@@ -129,7 +129,7 @@ export default {
 
 			axios({
 				method: 'GET',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/${id}/`,
+				url: `/utils/${id}/`,
 				headers: {'auth': this.$store.getters.apiToken},
 			}).then(function() {
 				icon.classList.add('green')
@@ -156,7 +156,7 @@ export default {
 
 			axios({
 				method: 'GET',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/${id}/`,
+				url: `/utils/${id}/`,
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then(function() {
 				self.checkState(state, icon)
@@ -171,7 +171,7 @@ export default {
 			const icon = this.startIcon(id)
 			axios({
 				method: 'GET',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/${id}/`,
+				url: `/utils/${id}/`,
 				headers: {
 					'auth': this.$store.getters.apiToken,
 					'uid': localStorage.getItem('interfaceUid')
@@ -207,7 +207,7 @@ export default {
 		checkState: function(state, icon) {
 			axios({
 				method: 'GET',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/state/${state}/`,
+				url: `/state/${state}/`,
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then(response => {
 				if ('state' in response.data) {

@@ -98,7 +98,7 @@ export default {
 	mounted: function() {
 		axios({
 			method: 'GET',
-			url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/getStore/`
+			url: `/skills/getStore/`
 		}).then(response => {
 			if ('store' in response.data) {
 				for (const skill of Object.keys(response.data['store'])) {
@@ -286,7 +286,7 @@ export default {
 			let self = this
 			axios({
 				method: 'PUT',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/createSkill/`,
+				url: `/skills/createSkill/`,
 				headers: {
 					'auth': this.$store.getters.apiToken,
 					'content-type': 'multipart/form-data'
@@ -318,7 +318,7 @@ export default {
 			this.setWaiting()
 			axios({
 				method: 'POST',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.editingSkill.name}/getInstructions/`,
+				url: `/skills/${this.editingSkill.name}/getInstructions/`,
 				data: data,
 				headers: {
 					'auth': this.$store.getters.apiToken,
@@ -348,7 +348,7 @@ export default {
 			}
 			axios({
 				method: 'PATCH',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.editingSkill.name}/setInstructions/`,
+				url: `/skills/${this.editingSkill.name}/setInstructions/`,
 				data: data,
 				headers: {
 					'auth': this.$store.getters.apiToken,
@@ -377,7 +377,7 @@ export default {
 			this.setWaiting()
 			axios({
 				method: 'POST',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.editingSkill.name}/getInstallFile/`,
+				url: `/skills/${this.editingSkill.name}/getInstallFile/`,
 				data: data,
 				headers: {
 					'auth': this.$store.getters.apiToken,
@@ -405,7 +405,7 @@ export default {
 				}
 				axios({
 					method: 'PATCH',
-					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.editingSkill.name}/setInstallFile/`,
+					url: `/skills/${this.editingSkill.name}/setInstallFile/`,
 					data: data,
 					headers: {
 						'auth': this.$store.getters.apiToken,
@@ -444,7 +444,7 @@ export default {
 		fetchSkills: function () {
 			axios({
 				method: 'GET',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/`,
+				url: `/skills/`,
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then(response => {
 				if ('data' in response.data) {
@@ -511,7 +511,7 @@ export default {
 				}
 				axios({
 					method: 'PATCH',
-					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.editingSkill.name}/setConfigTemplate/`,
+					url: `/skills/${this.editingSkill.name}/setConfigTemplate/`,
 					data: data,
 					headers: {
 						'auth': this.$store.getters.apiToken,
@@ -539,7 +539,7 @@ export default {
 
 			axios({
 				method: 'GET',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.editingSkill.name}/${id}/`,
+				url: `/skills/${this.editingSkill.name}/${id}/`,
 				headers: {'auth': this.$store.getters.apiToken},
 			}).then(function(resp) {
 				if(resp['success'] != undefined && !resp['success']){
@@ -613,7 +613,7 @@ export default {
 				let widgetName = dialogue.data
 				axios({
 					method: 'PATCH',
-					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/skills/${self.editingSkill.name}/createWidget/${widgetName}/`,
+					url: `/skills/${self.editingSkill.name}/createWidget/${widgetName}/`,
 					headers: {
 						'auth': self.$store.getters.apiToken,
 						'content-type': 'application/json'
@@ -633,7 +633,7 @@ export default {
 				let deviceName = dialogue.data
 				axios({
 					method: 'PATCH',
-					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/skills/${self.editingSkill.name}/createDeviceType/${deviceName}/`,
+					url: `/skills/${self.editingSkill.name}/createDeviceType/${deviceName}/`,
 					headers: {
 						'auth': self.$store.getters.apiToken,
 						'content-type': 'application/json'
