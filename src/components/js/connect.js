@@ -449,6 +449,20 @@ export default {
 				})
 			})
 		},
+		loadNotifications: function () {
+			const self = this
+			return new Promise(function (resolve, reject) {
+				axios({
+					method: 'GET',
+					url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/utils/notifications/`,
+					headers: {'auth': self.$store.getters.apiToken, 'uid': localStorage.getItem('interfaceUid')}
+				}).then(response => {
+					resolve()
+				}).catch(reason => {
+					reject(Error('Failed loading notifications: ' + reason))
+				})
+			})
+		},
 		loadData: function () {
 			const self = this
 			return new Promise(function (resolve, reject) {
@@ -462,7 +476,8 @@ export default {
 					self.loadFloorTiles(),
 					self.loadConstructionTiles(),
 					self.loadFurnitureTiles(),
-					self.loadMyHome()
+					self.loadMyHome(),
+					self.loadNotifications()
 				]).then(() => {
 					resolve()
 				}).catch(reason => {

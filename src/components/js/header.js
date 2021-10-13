@@ -1,4 +1,5 @@
 import * as C from '@/utils/constants'
+import axios from 'axios'
 
 export default {
 	name: 'pa-header',
@@ -26,11 +27,7 @@ export default {
 				if (msg.topic === C.RESOURCE_USAGE_TOPIC) {
 					self.resources = payload
 				} else if (msg.topic === C.UI_NOTIFICATION_TOPIC) {
-					if (payload.hasOwnProperty('key') && payload['key']) {
-						self.notifications[payload['key']] = payload
-					} else {
-						self.notifications[Object.keys(self.notifications).length + 1] = payload
-					}
+					self.notifications[payload['id']] = payload
 				}
 			}
 		)
@@ -54,6 +51,11 @@ export default {
 			if (Object.keys(this.notifications).length === 0) {
 				this.notificationsDisplayToggle = false
 			}
+			axios({
+				method: 'PATCH',
+				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/markNotificationRead/${id}/`,
+				headers: {'auth': this.$store.getters.apiToken}
+			}).then()
 		}
 	}
 }

@@ -1,5 +1,5 @@
 <template>
-	<div class="notification clickable" @click="dismiss(id)">
+	<div class="notification clickable" @click="dismiss(notification.id)">
 		<div class="title">
 			<i :class=icon class="fa-fw" aria-hidden="true"/> {{ notification['title'] }}
 		</div>
@@ -13,8 +13,7 @@
 export default {
 	name: 'notification',
 	props: [
-		'notification',
-		'id'
+		'notification'
 	],
 	computed: {
 		icon: function () {

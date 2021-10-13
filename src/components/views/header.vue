@@ -16,7 +16,7 @@
 		<div class="notifications" v-if="Object.keys(notifications).length !== 0">
 			<i aria-hidden="false" class="fas fa-envelope clickable notificationIcon" @click="notificationsDisplayToggle = !notificationsDisplayToggle"/>
 			<div class="notificationHolder" v-if="notificationsDisplayToggle">
-				<notification v-for="(notification, id) in notifications" :key="id" :notification="notification" :id="id"/>
+				<notification v-for="notification in notifications" :key="notification.id" :notification="notification"/>
 			</div>
 		</div>
 	</header>
