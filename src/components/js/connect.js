@@ -152,7 +152,7 @@ export default {
 				'aliceIp': this.$store.state.settings['aliceIp'],
 				'timezone': this.$store.state.settings['timezone']
 			}
-			// due to asynchronity sometimes MQTT is faster and overwrites - need to combine!
+			// due to asynchronicity sometimes MQTT is faster and overwrites - need to combine!
 			if(settings) {
 				settings = JSON.parse(settings)
 				settings = Object.assign({}, settings, defSettings);
@@ -222,7 +222,7 @@ export default {
 		},
 		validateToken() {
 			let self = this
-			return new Promise(function (resolve, _reject) {
+			return new Promise(function (resolve, reject) {
 				if (localStorage.getItem('apiToken') && localStorage.getItem('username')) {
 					axios({
 						method: 'POST',
@@ -459,7 +459,7 @@ export default {
 					method: 'GET',
 					url: `/utils/notifications/`,
 					headers: {'auth': self.$store.getters.apiToken, 'uid': localStorage.getItem('interfaceUid')}
-				}).then(response => {
+				}).then(() => {
 					resolve()
 				}).catch(reason => {
 					reject(Error('Failed loading notifications: ' + reason))
