@@ -55,7 +55,7 @@ export default {
 			}
 			axios({
 				method: 'PATCH',
-				url: `/utils/markNotificationRead/${id}/`,
+				url: `/utils/notifications/${id}/`,
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then()
 		}
