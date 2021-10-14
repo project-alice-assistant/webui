@@ -27,7 +27,9 @@ export default {
 				if (msg.topic === C.RESOURCE_USAGE_TOPIC) {
 					self.resources = payload
 				} else if (msg.topic === C.UI_NOTIFICATION_TOPIC) {
-					self.notifications[payload['id']] = payload
+					if (payload.hasOwnProperty('deviceUid') && (payload['deviceUid'] === 'all' || payload['deviceUid'] === localStorage.getItem('interfaceUid'))) {
+						self.notifications[payload['id']] = payload
+					}
 				}
 			}
 		)
