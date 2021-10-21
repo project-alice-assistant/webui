@@ -110,8 +110,8 @@ export default {
 					timeSlice: 100,
 					recorderType: RecordRTC.StereoAudioRecorder,
 					numberOfAudioChannels: 1,
-					ondataavailable: (_blob) => {
-						_blob.arrayBuffer().then(buffer => {
+					ondataavailable: (blob) => {
+						blob.arrayBuffer().then(buffer => {
 							self.$store.state.mqtt.publish(C.AUDIO_FRAME_TOPIC.replace('{}', localStorage.getItem('interfaceUid')), buffer)
 						})
 					}
