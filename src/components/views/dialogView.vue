@@ -8,8 +8,7 @@
 			<!--suppress HtmlFormInputWithoutLabel -->
 			<input type="text" v-bind:value="say" v-on:input="say = $event.target.value" @keyup.enter="sendQuery"/>
 			<button @click="sendQuery"><i aria-hidden="true" class="fas fa-paper-plane"></i></button>
-			<button v-if="microphoneSupport" :class="{red: listening}" @click="startListening">
-				<i aria-hidden="true" class="fas fa-microphone"></i></button>
+			<micStreamer icon="fas fa-microphone fa-2x"></micStreamer>
 		</div>
 	</div>
 </template>

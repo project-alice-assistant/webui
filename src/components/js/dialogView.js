@@ -2,8 +2,6 @@ import axios from 'axios'
 import * as C from '@/utils/constants'
 import SpeechBubble from '@/components/views/speechBubble'
 
-let RecordRTC = require('recordrtc')
-
 export default {
 	name: 'dialogView',
 	components: {
@@ -11,9 +9,6 @@ export default {
 	},
 	data: function () {
 		return {
-			recorder: null,
-			listening: false,
-			microphoneSupport: false,
 			cmd: '',
 			unwatch: {},
 			msgs: [],
@@ -34,31 +29,14 @@ export default {
 		}
 	},
 	created: function () {
-		navigator.mediaDevices.getUserMedia({audio: true, video: false}).then(this.microphoneSupport = true).catch(() => {
-			console.log('Audio recording not supported')
-		})
-
 		let self = this
 		this.unwatch = this.$store.watch(
 			function (state) {
 				return state.mqttMessage
 			},
 			function (msg) {
-				let payload = JSON.parse(msg.payloadString)
-
 				if (C.SESSION_ENDED_TOPIC === msg.topic) {
 					self.currentSession = undefined
-					self.stopRecording()
-				}
-				if (C.STOP_LISTENING_TOPIC === msg.topic) {
-					if (payload.siteId === localStorage.getItem('interfaceUid')) {
-						self.stopRecording()
-					}
-				}
-				if (C.START_LISTENING_TOPIC === msg.topic) {
-					if (payload.siteId === localStorage.getItem('interfaceUid')) {
-						self.startStream()
-					}
 				}
 				if ([C.NLU_QUERY_TOPIC, C.SAY_TOPIC, C.SESSION_ENDED_TOPIC].includes(msg.topic)) {
 					self.msgs.push(msg)
@@ -89,45 +67,6 @@ export default {
 		this.unwatch()
 	},
 	methods: {
-		startListening: function () {
-			if (this.listening) {
-				this.stopRecording()
-				return
-			}
-			this.listening = true
-			this.$store.state.mqtt.publish('hermes/hotword/default/detected', JSON.stringify({
-				siteId: localStorage.getItem('interfaceUid'),
-				modelType: 'universal'
-			}))
-		},
-		startStream: function () {
-			let self = this
-			navigator.mediaDevices.getUserMedia({video: false, audio: true}).then(async function (stream) {
-				self.recorder = RecordRTC(stream, {
-					type: 'audio',
-					mimeType: 'audio/wav',
-					desiredSampRate: 16000,
-					timeSlice: 100,
-					recorderType: RecordRTC.StereoAudioRecorder,
-					numberOfAudioChannels: 1,
-					ondataavailable: (blob) => {
-						blob.arrayBuffer().then(buffer => {
-							self.$store.state.mqtt.publish(C.AUDIO_FRAME_TOPIC.replace('{}', localStorage.getItem('interfaceUid')), buffer)
-						})
-					}
-				})
-				self.recorder.startRecording()
-			}).catch(error => {
-				console.log('Audio recording not supported:', error)
-				self.stopRecording()
-			})
-		},
-		stopRecording: function () {
-			this.listening = false
-			if (this.recorder !== null) {
-				this.recorder.stopRecording()
-			}
-		},
 		sendQuery: function () {
 			if (this.say === '') return
 

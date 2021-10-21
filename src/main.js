@@ -33,6 +33,7 @@ import Device from './components/views/device'
 import Widget from './components/views/widget'
 import Notification from './components/views/notification'
 import GitStatus from './components/views/gitStatus'
+import MicStreamer from './components/views/micStreamer'
 
 import 'vuejs-dialog/dist/vuejs-dialog.min.css'
 import 'vue-tour/dist/vue-tour.css'
@@ -91,6 +92,7 @@ Vue.component('config', Config)
 Vue.component('widget', Widget)
 Vue.component('notification', Notification)
 Vue.component('gitStatus', GitStatus)
+Vue.component('micStreamer', MicStreamer)
 
 Vue.dialog.registerComponent('fontawesomePromptDialog', faIconOption)
 Vue.dialog.registerComponent('widgetOptionsPromptDialog', widgetOption)
