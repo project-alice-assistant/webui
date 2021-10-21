@@ -510,6 +510,8 @@ export default {
 			this.$store.state.mqtt.subscribe(C.SKILL_UPDATING_TOPIC)
 			this.$store.state.mqtt.subscribe(C.SKILL_INSTALLED_TOPIC)
 			this.$store.state.mqtt.subscribe(C.SKILL_DELETED_TOPIC)
+			this.$store.state.mqtt.subscribe(C.START_LISTENING_TOPIC)
+			this.$store.state.mqtt.subscribe(C.STOP_LISTENING_TOPIC)
 			this.$store.state.mqtt.subscribe(C.PLAY_BYTES_TOPIC.replace('{}', localStorage.getItem('interfaceUid')))
 		},
 		onConnectionFailed: function (_msg) {

@@ -2,6 +2,8 @@ import axios from 'axios'
 import * as C from '@/utils/constants'
 import SpeechBubble from '@/components/views/speechBubble'
 
+let RecordRTC = require('recordrtc')
+
 export default {
 	name: 'dialogView',
 	components: {
@@ -9,7 +11,7 @@ export default {
 	},
 	data: function () {
 		return {
-			audioContext: null,
+			recorder: null,
 			listening: false,
 			microphoneSupport: false,
 			cmd: '',
@@ -25,12 +27,13 @@ export default {
 					extendedIcon: 'far fa-play-circle',
 					extendedName: this.$t('tooltips.close'),
 					isToggle: true,
-					onClick: () => { }
+					onClick: () => {
+					}
 				}
 			]
 		}
 	},
-	created: function() {
+	created: function () {
 		navigator.mediaDevices.getUserMedia({audio: true, video: false}).then(this.microphoneSupport = true).catch(() => {
 			console.log('Audio recording not supported')
 		})
@@ -41,9 +44,21 @@ export default {
 				return state.mqttMessage
 			},
 			function (msg) {
+				let payload = JSON.parse(msg.payloadString)
+
 				if (C.SESSION_ENDED_TOPIC === msg.topic) {
 					self.currentSession = undefined
-					self.listening = false
+					self.stopRecording()
+				}
+				if (C.STOP_LISTENING_TOPIC === msg.topic) {
+					if (payload.siteId === localStorage.getItem('interfaceUid')) {
+						self.stopRecording()
+					}
+				}
+				if (C.START_LISTENING_TOPIC === msg.topic) {
+					if (payload.siteId === localStorage.getItem('interfaceUid')) {
+						self.startStream()
+					}
 				}
 				if ([C.NLU_QUERY_TOPIC, C.SAY_TOPIC, C.SESSION_ENDED_TOPIC].includes(msg.topic)) {
 					self.msgs.push(msg)
@@ -74,115 +89,222 @@ export default {
 		this.unwatch()
 	},
 	methods: {
-		startStream: function () {
+		startListening: function () {
 			if (this.listening) {
-				this.listening = false
-				if (this.audioContext !== null) {
-					this.audioContext.close()
-				}
+				this.stopRecording()
 				return
 			}
-
 			this.listening = true
+			this.$store.state.mqtt.publish('hermes/hotword/default/detected', JSON.stringify({
+				siteId: localStorage.getItem('interfaceUid'),
+				modelType: 'universal'
+			}))
+		},
+		startStream: function () {
 			let self = this
-			navigator.mediaDevices.getUserMedia({video: false, audio: true}).then(stream => {
-				self.$store.state.mqtt.publish('hermes/hotword/default/detected', JSON.stringify({
-					siteId: localStorage.getItem('interfaceUid'),
-					modelType: 'universal'
-				}))
+			navigator.mediaDevices.getUserMedia({video: false, audio: true}).then(async function (stream) {
+				self.recorder = RecordRTC(stream, {
+					type: 'audio',
+					mimeType: 'audio/wav',
+					desiredSampRate: 16000,
+					timeSlice: 100,
+					recorderType: RecordRTC.StereoAudioRecorder,
+					numberOfAudioChannels: 1,
+					ondataavailable: (_blob) => {
+						let internalRecorder = self.recorder.getInternalRecorder()
+						let leftChannel = [...internalRecorder.leftchannel]
+						let rightChannel = internalRecorder.numberOfAudioChannels === 1 ? [] : [...internalRecorder.rightchannel]
 
-				this.audioContext = new AudioContext({sampleRate: 16000})
-				let source = this.audioContext.createMediaStreamSource(stream)
-				let processor = this.audioContext.createScriptProcessor(512, 2, 2)
-				source.connect(processor)
-				processor.connect(this.audioContext.destination)
-				processor.onaudioprocess = function (e) {
-					const [left, right] = [e.inputBuffer.getChannelData(0), e.inputBuffer.getChannelData(1)]
-
-					const interleaved = new Float32Array(left.length + right.length)
-					for (let src = 0, dst = 0; src < left.length; src++, dst += 2) {
-						interleaved[dst] = left[src]
-						interleaved[dst + 1] = right[src]
+						self.mergeLeftRightBuffers({
+							desiredSampRate: internalRecorder.desiredSampRate,
+							sampleRate: internalRecorder.sampleRate,
+							numberOfAudioChannels: internalRecorder.numberOfAudioChannels,
+							internalInterleavedLength: internalRecorder.recordingLength,
+							leftBuffers: leftChannel,
+							rightBuffers: rightChannel
+						}, function (buffer, _view) {
+							self.$store.state.mqtt.publish(C.AUDIO_FRAME_TOPIC.replace('{}', localStorage.getItem('interfaceUid')), buffer)
+						})
 					}
-
-					const wavBytes = self.getWavBytes(interleaved.buffer, {
-						isFloat: false,
-						numChannels: 1,
-						sampleRate: self.audioContext.sampleRate
-					})
-
-					self.$store.state.mqtt.publish(C.AUDIO_FRAME_TOPIC.replace('{}', localStorage.getItem('interfaceUid')), wavBytes)
-
-					if (!self.listening) {
-						self.audioContext.close()
-					}
-				}
+				})
+				self.recorder.startRecording()
 			}).catch(error => {
 				console.log('Audio recording not supported:', error)
-				this.listening = false
+				self.stopRecording()
 			})
 		},
-		getWavBytes(buffer, options) {
-			const type = options.isFloat ? Float32Array : Uint16Array
-			const numFrames = buffer.byteLength / type.BYTES_PER_ELEMENT
+		mergeLeftRightBuffers: function (config, callback) { // Shameless copy of https://github.com/muaz-khan/RecordRTC/blob/master/simple-demos/raw-pcm.html Thank you for the example!
+			function mergeAudioBuffers(config, cb) {
+				let numberOfAudioChannels = config.numberOfAudioChannels
 
-			const headerBytes = this.getWavHeader(Object.assign({}, options, {numFrames}))
-			const wavBytes = new Uint8Array(headerBytes.length + buffer.byteLength)
+				let leftBuffers = config.leftBuffers.slice(0)
+				let rightBuffers = config.rightBuffers.slice(0)
+				let sampleRate = config.sampleRate
+				let internalInterleavedLength = config.internalInterleavedLength
+				let desiredSampRate = config.desiredSampRate
 
-			// prepend header, then add pcmBytes
-			wavBytes.set(headerBytes, 0)
-			wavBytes.set(new Uint8Array(buffer), headerBytes.length)
-
-			return wavBytes
-		},
-		getWavHeader(options) {
-			const numFrames = options.numFrames
-			const numChannels = options.numChannels || 2
-			const sampleRate = options.sampleRate || 44100
-			const bytesPerSample = options.isFloat ? 4 : 2
-			const format = options.isFloat ? 3 : 1
-
-			const blockAlign = numChannels * bytesPerSample
-			const byteRate = sampleRate * blockAlign
-			const dataSize = numFrames * blockAlign
-
-			const buffer = new ArrayBuffer(44)
-			const dv = new DataView(buffer)
-
-			let p = 0
-
-			function writeString(s) {
-				for (let i = 0; i < s.length; i++) {
-					dv.setUint8(p + i, s.charCodeAt(i))
+				if (numberOfAudioChannels === 2) {
+					leftBuffers = mergeBuffers(leftBuffers, internalInterleavedLength)
+					rightBuffers = mergeBuffers(rightBuffers, internalInterleavedLength)
+					if (desiredSampRate) {
+						leftBuffers = interpolateArray(leftBuffers, desiredSampRate, sampleRate)
+						rightBuffers = interpolateArray(rightBuffers, desiredSampRate, sampleRate)
+					}
 				}
-				p += s.length
+
+				if (numberOfAudioChannels === 1) {
+					leftBuffers = mergeBuffers(leftBuffers, internalInterleavedLength)
+					if (desiredSampRate) {
+						leftBuffers = interpolateArray(leftBuffers, desiredSampRate, sampleRate)
+					}
+				}
+
+				// set sample rate as desired sample rate
+				if (desiredSampRate) {
+					sampleRate = desiredSampRate
+				}
+
+				// for changing the sampling rate, reference:
+				// http://stackoverflow.com/a/28977136/552182
+				function interpolateArray(data, newSampleRate, oldSampleRate) {
+					let fitCount = Math.round(data.length * (newSampleRate / oldSampleRate))
+					let newData = []
+					let springFactor = Number((data.length - 1) / (fitCount - 1))
+					newData[0] = data[0] // for new allocation
+					for (let i = 1; i < fitCount - 1; i++) {
+						let tmp = i * springFactor
+						let before = Number(Math.floor(tmp)).toFixed()
+						let after = Number(Math.ceil(tmp)).toFixed()
+						let atPoint = tmp - before
+						newData[i] = linearInterpolate(data[before], data[after], atPoint)
+					}
+					newData[fitCount - 1] = data[data.length - 1] // for new allocation
+					return newData;
+				}
+
+				function linearInterpolate(before, after, atPoint) {
+					return before + (after - before) * atPoint
+				}
+
+				function mergeBuffers(channelBuffer, rLength) {
+					let result = new Float64Array(rLength)
+					let offset = 0
+					let lng = channelBuffer.length
+
+					for (let i = 0; i < lng; i++) {
+						let buffer = channelBuffer[i]
+						result.set(buffer, offset)
+						offset += buffer.length
+					}
+
+					return result
+				}
+
+				function interleave(leftChannel, rightChannel) {
+					let length = leftChannel.length + rightChannel.length
+					let result = new Float64Array(length)
+					let inputIndex = 0
+
+					for (let index = 0; index < length;) {
+						result[index++] = leftChannel[inputIndex]
+						result[index++] = rightChannel[inputIndex]
+						inputIndex++
+					}
+					return result
+				}
+
+				function writeUTFBytes(view, offset, string) {
+					let lng = string.length
+					for (let i = 0; i < lng; i++) {
+						view.setUint8(offset + i, string.charCodeAt(i))
+					}
+				}
+
+				// interleave both channels together
+				let interleaved
+
+				if (numberOfAudioChannels === 2) {
+					interleaved = interleave(leftBuffers, rightBuffers)
+				}
+
+				if (numberOfAudioChannels === 1) {
+					interleaved = leftBuffers
+				}
+
+				let interleavedLength = interleaved.length
+
+				// create wav file
+				let resultingBufferLength = 44 + interleavedLength * 2
+				let buffer = new ArrayBuffer(resultingBufferLength)
+				let view = new DataView(buffer)
+
+				// RIFF chunk descriptor/identifier
+				writeUTFBytes(view, 0, 'RIFF')
+
+				// RIFF chunk length
+				view.setUint32(4, 44 + interleavedLength * 2, true)
+
+				// RIFF type
+				writeUTFBytes(view, 8, 'WAVE')
+
+				// format chunk identifier
+				// FMT sub-chunk
+				writeUTFBytes(view, 12, 'fmt ')
+
+				// format chunk length
+				view.setUint32(16, 16, true)
+
+				// sample format (raw)
+				view.setUint16(20, 1, true)
+
+				// stereo (2 channels)
+				view.setUint16(22, numberOfAudioChannels, true)
+
+				// sample rate
+				view.setUint32(24, sampleRate, true)
+
+				// byte rate (sample rate * block align)
+				view.setUint32(28, sampleRate * 2, true)
+
+				// block align (channel count * bytes per sample)
+				view.setUint16(32, numberOfAudioChannels * 2, true)
+
+				// bits per sample
+				view.setUint16(34, 16, true)
+
+				// data sub-chunk
+				// data chunk identifier
+				writeUTFBytes(view, 36, 'data')
+
+				// data chunk length
+				view.setUint32(40, interleavedLength * 2, true)
+
+				// write the PCM samples
+				let lng = interleavedLength
+				let index = 44
+				let volume = 1
+				for (let i = 0; i < lng; i++) {
+					view.setInt16(index, interleaved[i] * (0x7FFF * volume), true)
+					index += 2
+				}
+
+				if (cb) {
+					return cb({
+						buffer: buffer,
+						view: view
+					})
+				}
 			}
 
-			function writeUint32(d) {
-				dv.setUint32(p, d, true)
-				p += 4
+			mergeAudioBuffers(config, function (data) {
+				callback(data.buffer, data.view)
+			})
+		},
+		stopRecording: function () {
+			this.listening = false
+			if (this.recorder !== null) {
+				this.recorder.stopRecording()
 			}
-
-			function writeUint16(d) {
-				dv.setUint16(p, d, true)
-				p += 2
-			}
-
-			writeString('RIFF')              // ChunkID
-			writeUint32(dataSize + 36)       // ChunkSize
-			writeString('WAVE')              // Format
-			writeString('fmt ')              // Subchunk1ID
-			writeUint32(16)                  // Subchunk1Size
-			writeUint16(format)              // AudioFormat
-			writeUint16(numChannels)         // NumChannels
-			writeUint32(sampleRate)          // SampleRate
-			writeUint32(byteRate)            // ByteRate
-			writeUint16(blockAlign)          // BlockAlign
-			writeUint16(bytesPerSample * 8)  // BitsPerSample
-			writeString('data')              // Subchunk2ID
-			writeUint32(dataSize)            // Subchunk2Size
-
-			return new Uint8Array(buffer)
 		},
 		sendQuery: function () {
 			if (this.say === '') return
@@ -207,7 +329,7 @@ export default {
 				})
 			} else {
 				//if session is available - continueSession
-				data.append( 'sessionId', this.currentSession)
+				data.append('sessionId', this.currentSession)
 				axios({
 					method: 'POST',
 					url: `/dialog/continue/`,
