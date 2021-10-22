@@ -1,16 +1,16 @@
 <!--suppress HtmlFormInputWithoutLabel, HtmlUnknownAttribute -->
 <template>
 	<div class="custom-view-wrapper">
-		<h3>{{parent.$t('dialogs.titles.skillSettings')}}</h3>
+		<h3>{{ parent.$t('dialogs.titles.skillSettings') }}</h3>
 		<div>
-		<config
-			:templates="options['skill']['settingsTemplate']"
-			:holder="options['skill']['settings']"
-			:translate="(val) => parent.$t(val)"/>
-		<div>
-			<button @click="handleDismiss">{{parent.$t('buttons.cancel')}}</button>
-			<button @click="handleConfirm">{{parent.$t('buttons.confirm')}}</button>
-		</div>
+			<config
+				:holder="options['skill']['settings']"
+				:templates="options['skill']['settingsTemplate']"
+				:translate="(val) => parent.$t(val)"/>
+			<div>
+				<button @click="handleDismiss">{{ parent.$t('buttons.cancel') }}</button>
+				<button @click="handleConfirm">{{ parent.$t('buttons.confirm') }}</button>
+			</div>
 		</div>
 	</div>
 </template>
@@ -19,11 +19,11 @@
 import VueDialogMixin from 'vuejs-dialog/dist/vuejs-dialog-mixin.min.js'
 
 export default {
-	mixins: [VueDialogMixin],
-	data: function() {
+	mixins:  [VueDialogMixin],
+	data:    function () {
 		return {
 			parent: this.options['parent'],
-			skill: this.options['skill']
+			skill:  this.options['skill']
 		}
 	},
 	methods: {

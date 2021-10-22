@@ -3,32 +3,32 @@ import * as C from '@/utils/constants'
 import SpeechBubble from '@/components/views/speechBubble'
 
 export default {
-	name: 'dialogView',
+	name:       'dialogView',
 	components: {
 		SpeechBubble
 	},
-	data: function () {
+	data:       function () {
 		return {
-			cmd: '',
-			unwatch: {},
-			msgs: [],
-			say: '',
-			currentSpeech: undefined,
+			cmd:            '',
+			unwatch:        {},
+			msgs:           [],
+			say:            '',
+			currentSpeech:  undefined,
 			currentSession: undefined,
-			menuItems: [
+			menuItems:      [
 				{
-					name: this.$t('tooltips.close'),
-					icon: 'far fa-pause-circle',
+					name:         this.$t('tooltips.close'),
+					icon:         'far fa-pause-circle',
 					extendedIcon: 'far fa-play-circle',
 					extendedName: this.$t('tooltips.close'),
-					isToggle: true,
-					onClick: () => {
+					isToggle:     true,
+					onClick:      () => {
 					}
 				}
 			]
 		}
 	},
-	created: function () {
+	created:    function () {
 		let self = this
 		this.unwatch = this.$store.watch(
 			function (state) {
@@ -52,11 +52,11 @@ export default {
 			}
 		)
 	},
-	activated: function () {
+	activated:  function () {
 		let terminal = this.$el.querySelector('#messageContainer')
 		terminal.scrollTop = terminal.scrollHeight
 	},
-	updated: function () {
+	updated:    function () {
 		let terminal = this.$el.querySelector('#messageContainer')
 		terminal.scrollTop = terminal.scrollHeight
 	},
@@ -66,7 +66,7 @@ export default {
 		this.$store.state.mqtt.unsubscribe(C.SESSION_ENDED_TOPIC)
 		this.unwatch()
 	},
-	methods: {
+	methods:    {
 		sendQuery: function () {
 			if (this.say === '') return
 
@@ -76,11 +76,11 @@ export default {
 			//if no session is available start new one
 			if (this.currentSession === undefined) {
 				axios({
-					method: 'POST',
-					url: `/dialog/process/`,
-					data: data,
+					method:  'POST',
+					url:     `/dialog/process/`,
+					data:    data,
 					headers: {
-						'auth': this.$store.getters.apiToken,
+						'auth':         this.$store.getters.apiToken,
 						'Content-Type': 'multipart/form-data'
 					}
 				}).then(response => {
@@ -92,11 +92,11 @@ export default {
 				//if session is available - continueSession
 				data.append('sessionId', this.currentSession)
 				axios({
-					method: 'POST',
-					url: `/dialog/continue/`,
-					data: data,
+					method:  'POST',
+					url:     `/dialog/continue/`,
+					data:    data,
 					headers: {
-						'auth': this.$store.getters.apiToken,
+						'auth':         this.$store.getters.apiToken,
 						'Content-Type': 'multipart/form-data'
 					}
 				})

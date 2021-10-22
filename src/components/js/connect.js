@@ -8,14 +8,14 @@ export default {
 	name: 'connect',
 	data() {
 		return {
-			connecting: false,
-			port: 5001,
-			ip: '',
-			remember: false,
+			connecting:  false,
+			port:        5001,
+			ip:          '',
+			remember:    false,
 			audioPlayer: new AudioPlayer()
 		}
 	},
-	created: function () {
+	created:       function () {
 		this.remember = localStorage.getItem('rememberServer') || false
 		if (this.remember === 'true') this.remember = true
 		if (this.remember === 'false') this.remember = false
@@ -33,12 +33,12 @@ export default {
 	},
 	beforeDestroy: function () {
 		axios({
-			method: 'PUT',
-			url: `/devices/${localStorage.getItem('interfaceUid')}/bye/`,
+			method:  'PUT',
+			url:     `/devices/${localStorage.getItem('interfaceUid')}/bye/`,
 			headers: {'auth': this.$store.getters.apiToken}
 		}).then()
 	},
-	methods: {
+	methods:       {
 		async doConnect() {
 			axios.defaults.baseURL = `http://${this.ip}:${this.port}/api/v1.0.1`
 			this.connecting = true
@@ -72,7 +72,7 @@ export default {
 				console.error('Failed connecting: ' + reason)
 			}).finally(() => self.connecting = false)
 		},
-		startHeartbeat: function () {
+		startHeartbeat:       function () {
 			const self = this
 			setInterval(function () {
 				if (localStorage.getItem('interfaceUid')) {
@@ -85,28 +85,28 @@ export default {
 				}
 			}, 5000)
 		},
-		helloAlice: function () {
+		helloAlice:           function () {
 			const self = this
 			const uid = localStorage.getItem('interfaceUid')
 			if (uid && uid !== '' && self.$store.state.loggedInUser) {
 				return new Promise(function (resolve, reject) {
 					axios({
 						method: 'GET',
-						url: `/devices/${uid}/hello/`,
+						url:    `/devices/${uid}/hello/`,
 					}).then(response => {
 						if ('deviceId' in response.data) {
 							resolve()
 						} else {
 							axios({
-								method: 'PUT',
-								url: `/devices/${uid}/`,
-								data: {
+								method:  'PUT',
+								url:     `/devices/${uid}/`,
+								data:    {
 									locationId: 1,
-									skillName: 'AliceCore',
+									skillName:  'AliceCore',
 									deviceType: 'WebInterface'
 								},
 								headers: {
-									'auth': self.$store.getters.apiToken,
+									'auth':         self.$store.getters.apiToken,
 									'content-type': 'application/json'
 								}
 							}).then(response => {
@@ -129,7 +129,7 @@ export default {
 				})
 			}
 		},
-		loadDynamicScripts: function () {
+		loadDynamicScripts:   function () {
 			const self = this
 			return new Promise(function (resolve, reject) {
 				jsLoader(`http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/utils/Widget/`).then(() => {
@@ -147,13 +147,13 @@ export default {
 			let settings = window.sessionStorage.getItem('aliceSettings')
 			let defSettings = {
 				'activeCountryCode': this.$store.state.settings['activeCountryCode'],
-				'activeLanguage': this.$store.state.settings['activeLanguage'],
-				'apiPort': this.$store.state.settings['apiPort'],
-				'aliceIp': this.$store.state.settings['aliceIp'],
-				'timezone': this.$store.state.settings['timezone']
+				'activeLanguage':    this.$store.state.settings['activeLanguage'],
+				'apiPort':           this.$store.state.settings['apiPort'],
+				'aliceIp':           this.$store.state.settings['aliceIp'],
+				'timezone':          this.$store.state.settings['timezone']
 			}
 			// due to asynchronicity sometimes MQTT is faster and overwrites - need to combine!
-			if(settings) {
+			if (settings) {
 				settings = JSON.parse(settings)
 				settings = Object.assign({}, settings, defSettings);
 			} else {
@@ -165,8 +165,8 @@ export default {
 			let self = this
 			return new Promise(function (resolve, reject) {
 				axios({
-					method: 'GET',
-					url: `/utils/config/`,
+					method:  'GET',
+					url:     `/utils/config/`,
 					headers: {'auth': self.$store.getters.apiToken}
 				}).then(response => {
 					self.$store.commit('setSettings', response.data['config'])
@@ -225,14 +225,14 @@ export default {
 			return new Promise(function (resolve, reject) {
 				if (localStorage.getItem('apiToken') && localStorage.getItem('username')) {
 					axios({
-						method: 'POST',
-						url: `/login/checkToken/`,
+						method:  'POST',
+						url:     `/login/checkToken/`,
 						headers: {'auth': localStorage.getItem('apiToken')}
 					}).then(response => {
 						if ('success' in response.data) {
 							self.$store.commit('userLogin', {
-								user: localStorage.getItem('username'),
-								token: localStorage.getItem('apiToken'),
+								user:      localStorage.getItem('username'),
+								token:     localStorage.getItem('apiToken'),
 								authLevel: response.data.authLevel
 							})
 						} else {
@@ -265,12 +265,12 @@ export default {
 				})
 			})
 		},
-		loadWidgetTemplates: function () {
+		loadWidgetTemplates:   function () {
 			const self = this
 			return new Promise(function (resolve, reject) {
 				axios({
 					method: 'GET',
-					url: `/widgets/templates/`
+					url:    `/widgets/templates/`
 				}).then(response => {
 					if ('widgets' in response.data) {
 						self.$store.commit('setWidgetTemplates', response.data['widgets'])
@@ -283,12 +283,12 @@ export default {
 				})
 			})
 		},
-		loadWidgetInstances: function () {
+		loadWidgetInstances:   function () {
 			const self = this
 			return new Promise(function (resolve, reject) {
 				axios({
-					method: 'GET',
-					url: `/widgets/`,
+					method:  'GET',
+					url:     `/widgets/`,
 					headers: {'auth': self.$store.getters.apiToken}
 				}).then(response => {
 					if ('widgets' in response.data) {
@@ -302,12 +302,12 @@ export default {
 				})
 			})
 		},
-		loadDeviceTypes: function () {
+		loadDeviceTypes:       function () {
 			const self = this
 			return new Promise(function (resolve, reject) {
 				axios({
 					method: 'GET',
-					url: `/myHome/deviceTypes/`,
+					url:    `/myHome/deviceTypes/`,
 				}).then(response => {
 					if ('types' in response.data) {
 						self.$store.commit('setDeviceTypes', response.data['types'])
@@ -320,12 +320,12 @@ export default {
 				})
 			})
 		},
-		loadWidgetPages: function () {
+		loadWidgetPages:       function () {
 			const self = this
 			return new Promise(function (resolve, reject) {
 				axios({
 					method: 'GET',
-					url: `/widgets/pages/`,
+					url:    `/widgets/pages/`,
 				}).then(response => {
 					if ('pages' in response.data) {
 						self.$store.commit('setWidgetPages', response.data['pages'])
@@ -338,12 +338,12 @@ export default {
 				})
 			})
 		},
-		loadInstalledSkills: function () {
+		loadInstalledSkills:   function () {
 			const self = this
 			return new Promise(function (resolve, reject) {
 				axios({
-					method: 'GET',
-					url: `/skills/`,
+					method:  'GET',
+					url:     `/skills/`,
 					headers: {'auth': self.$store.getters.apiToken}
 				}).then(response => {
 					if ('skills' in response.data) {
@@ -357,12 +357,12 @@ export default {
 				})
 			})
 		},
-		loadStore: function () {
+		loadStore:             function () {
 			const self = this
 			return new Promise(function (resolve, reject) {
 				axios({
 					method: 'GET',
-					url: `/skills/getStore/`
+					url:    `/skills/getStore/`
 				}).then(response => {
 					if ('store' in response.data) {
 						self.$store.commit('setStoreSkills', response.data['store'])
@@ -375,12 +375,12 @@ export default {
 				})
 			})
 		},
-		loadFloorTiles: function () {
+		loadFloorTiles:        function () {
 			const self = this
 			return new Promise(function (resolve, reject) {
 				axios({
 					method: 'GET',
-					url: `/myHome/locations/floors/`,
+					url:    `/myHome/locations/floors/`,
 				}).then(response => {
 					if ('data' in response.data) {
 						self.$store.commit('setFloorTiles', response.data['data'])
@@ -398,7 +398,7 @@ export default {
 			return new Promise(function (resolve, reject) {
 				axios({
 					method: 'GET',
-					url: `/myHome/constructions/tiles/`,
+					url:    `/myHome/constructions/tiles/`,
 				}).then(response => {
 					if ('data' in response.data) {
 						self.$store.commit('setConstructionTiles', response.data['data'])
@@ -411,12 +411,12 @@ export default {
 				})
 			})
 		},
-		loadFurnitureTiles: function () {
+		loadFurnitureTiles:    function () {
 			const self = this
 			return new Promise(function (resolve, reject) {
 				axios({
 					method: 'GET',
-					url: `/myHome/furniture/tiles/`,
+					url:    `/myHome/furniture/tiles/`,
 				}).then(response => {
 					if ('data' in response.data) {
 						self.$store.commit('setFurnitureTiles', response.data['data'])
@@ -429,12 +429,12 @@ export default {
 				})
 			})
 		},
-		loadMyHome: function () {
+		loadMyHome:            function () {
 			const self = this
 			return new Promise(function (resolve, reject) {
 				axios({
-					method: 'GET',
-					url: `/myHome/`,
+					method:  'GET',
+					url:     `/myHome/`,
 					headers: {'auth': self.$store.getters.apiToken}
 				}).then(response => {
 					if ('data' in response.data) {
@@ -452,12 +452,12 @@ export default {
 				})
 			})
 		},
-		loadNotifications: function () {
+		loadNotifications:     function () {
 			const self = this
 			return new Promise(function (resolve, reject) {
 				axios({
-					method: 'GET',
-					url: `/utils/notifications/`,
+					method:  'GET',
+					url:     `/utils/notifications/`,
 					headers: {'auth': self.$store.getters.apiToken, 'uid': localStorage.getItem('interfaceUid')}
 				}).then(() => {
 					resolve()
@@ -466,7 +466,7 @@ export default {
 				})
 			})
 		},
-		loadData: function () {
+		loadData:              function () {
 			const self = this
 			return new Promise(function (resolve, reject) {
 				Promise.all([
@@ -488,7 +488,7 @@ export default {
 				})
 			})
 		},
-		onConnected: function () {
+		onConnected:           function () {
 			console.log('Mqtt connected')
 			this.$store.state.mqtt.subscribe(C.UI_NOTIFICATION_TOPIC)
 			this.$store.state.mqtt.subscribe(C.RESOURCE_USAGE_TOPIC)
@@ -514,13 +514,13 @@ export default {
 			this.$store.state.mqtt.subscribe(C.STOP_LISTENING_TOPIC)
 			this.$store.state.mqtt.subscribe(C.PLAY_BYTES_TOPIC.replace('{}', localStorage.getItem('interfaceUid')))
 		},
-		onConnectionFailed: function (_msg) {
+		onConnectionFailed:    function (_msg) {
 			console.log('Mqtt connection failed')
 		},
-		onConnectionLost: function () {
+		onConnectionLost:      function () {
 			console.log('Mqtt connection lost')
 		},
-		onMessage: function (msg) {
+		onMessage:             function (msg) {
 			if (msg.topic.includes('playBytes')) {
 				this.audioPlayer.playBytes(msg.payloadBytes)
 			} else {

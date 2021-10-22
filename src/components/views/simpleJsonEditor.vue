@@ -25,32 +25,32 @@
 
 <script>
 export default {
-	name: "simpleJsonEditor",
-	props: [ 'value',
-					 'configTemplate'
-				 ],
-	data: function (){
+	name:  'simpleJsonEditor',
+	props: ['value',
+		'configTemplate'
+	],
+	data:  function () {
 		return {
-			stringified: ""
+			stringified: ''
 		}
 	},
 	mounted() {
 		this.json2string()
 	},
 	computed: {
-		isModified(){
-			return JSON.stringify(this.value, null, 2) != this.stringified
+		isModified() {
+			return JSON.stringify(this.value, null, 2) !== this.stringified
 		}
 	},
-	methods: {
-		json2string(){
+	methods:  {
+		json2string() {
 			this.stringified = JSON.stringify(this.value, null, 2)
 		},
-		string2json(){
+		string2json() {
 			this.$emit('input', JSON.parse(this.stringified))
 		},
-		prepareSave(){
-			if(this.isModified){
+		prepareSave() {
+			if (this.isModified) {
 				this.string2json()
 				return true
 			} else {
@@ -62,9 +62,9 @@ export default {
 </script>
 
 <style scoped>
-.stretched{
-	width: 100%;
+.stretched {
 	height: 100%;
+	width: 100%;
 }
 
 </style>

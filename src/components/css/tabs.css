@@ -1,14 +1,14 @@
 .tabs {
-	width: 100%;
+	border-bottom: 2px solid var(--accent);
+	box-sizing: border-box;
 	display: flex;
 	flex: 1;
 	flex-direction: row;
-	min-height: 50px;
-	max-height: 50px;
-	box-sizing: border-box;
-	border-bottom: 2px solid var(--accent);
 	margin: 5px 10px 0 0;
+	max-height: 50px;
+	min-height: 50px;
 	padding-left: 15px;
+	width: 100%;
 }
 
 .tabs.magicMirrorMode {
@@ -16,22 +16,22 @@
 }
 
 .tab {
-	display: flex;
-	justify-content: center;
-	justify-items: center;
 	align-content: center;
 	align-items: center;
-	width: 70px;
-	max-height: 50px;
-	box-sizing: border-box;
-	border-top: 2px solid var(--accent);
-	border-right: 2px solid var(--accent);
 	border-bottom: none;
-	font-size: 2em;
+	border-right: 2px solid var(--accent);
+	border-top: 2px solid var(--accent);
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
+	box-sizing: border-box;
+	display: flex;
+	font-size: 2em;
+	justify-content: center;
+	justify-items: center;
+	max-height: 50px;
 	position: relative;
 	top: 2px;
+	width: 70px;
 }
 
 .tab:nth-child(1) {
@@ -43,20 +43,20 @@
 }
 
 .tab_page {
-	position: relative;
+	box-sizing: border-box;
 	display: flex;
 	flex: 1 1 0;
-	overflow: hidden;
-	box-sizing: border-box;
 	flex-flow: column;
+	overflow: hidden;
 	padding: 5px;
+	position: relative;
 }
 
 .dg-container * .tab_page {
-	border-right: 2px solid black;
+	background-color: var(--secondary);
 	border-bottom: 2px solid black;
 	border-left: 2px solid black;
-	background-color: var(--secondary);
+	border-right: 2px solid black;
 }
 
 .tab_page.magicMirrorMode {

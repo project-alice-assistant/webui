@@ -4,83 +4,83 @@ import MoveableItem from './moveableItem'
 import jsLoader from '@/utils/jsLoader';
 
 export default {
-	name: 'pa-widgets',
-	data: function() {
+	name:        'pa-widgets',
+	data:        function () {
 		return {
-			uid: uuidv4(),
-			controller: this,
-			moveableItem: new MoveableItem(this),
-			menuItems: [
+			uid:                  uuidv4(),
+			controller:           this,
+			moveableItem:         new MoveableItem(this),
+			menuItems:            [
 				{
-					name: this.$t('tooltips.edit'),
-					icon: 'fas fa-pen-square',
-					isToggle: true,
+					name:         this.$t('tooltips.edit'),
+					icon:         'fas fa-pen-square',
+					isToggle:     true,
 					extendedIcon: 'fas fa-times-circle',
 					extendedName: this.$t('tooltips.close'),
-					onClose: () => {
+					onClose:      () => {
 						this.removeWidgets = false
 						this.settings = false
 						this.dragAndResizeEnabled = false
 						this.moveableItem.destroyMoveable()
 					},
-					onOpen: () => {
+					onOpen:       () => {
 						this.dragAndResizeEnabled = true
 					}
 				},
 				{
-					name: this.$t('tooltips.theaterMode'),
-					icon: 'fas fa-person-booth',
+					name:     this.$t('tooltips.theaterMode'),
+					icon:     'fas fa-person-booth',
 					isToggle: true,
 					callback: this.cinemaMode
 				},
 				{
-					name: this.$t('tooltips.magicMirrorMode'),
-					icon: 'fas fa-magic',
+					name:     this.$t('tooltips.magicMirrorMode'),
+					icon:     'fas fa-magic',
 					isToggle: true,
 					callback: this.magicMirrorMode
 				},
 				{
-					name: this.$t('tooltips.settings'),
-					icon: 'fas fa-cog',
+					name:        this.$t('tooltips.settings'),
+					icon:        'fas fa-cog',
 					activeClass: 'yellow',
-					onClick: () => {
+					onClick:     () => {
 						this.settings = !this.settings
 					}
 				},
 				{
-					name: this.$t('tooltips.addWidgets'),
-					icon: 'far fa-plus-square',
+					name:    this.$t('tooltips.addWidgets'),
+					icon:    'far fa-plus-square',
 					onClick: () => {
 						this.addWidgets = true
 					}
 				},
 				{
-					name: this.$t('tooltips.removeWidgets'),
-					icon: 'far fa-minus-square',
+					name:    this.$t('tooltips.removeWidgets'),
+					icon:    'far fa-minus-square',
 					onClick: () => {
 						this.removeWidgets = !this.removeWidgets
 					}
 				}
 			],
-			settings: false,
-			addWidgets: false,
-			removeWidgets: false,
-			activeTabId: 1,
-			selectedWidget: -1,
+			settings:             false,
+			addWidgets:           false,
+			removeWidgets:        false,
+			activeTabId:          1,
+			selectedWidget:       -1,
 			dragAndResizeEnabled: false,
-			hasTitle: true,
-			jsImports: '',
-			loadedClasses: []
+			hasTitle:             true,
+			jsImports:            '',
+			loadedClasses:        []
 		}
 	},
-	computed: {
+	computed:    {
 		'activePageWidgets': function () {
 			return Object.values(this.$store.state.widgetInstances).filter(widget => {
 				return widget['page'] === this.activeTabId
 			})
 		}
 	},
-	created: function () {
+	created:     function () {
 		this.activeTabId = parseInt(localStorage.getItem('widgetsActiveTabId')) || 1
 
 		const self = this
@@ -100,21 +100,21 @@ export default {
 			}
 		})
 	},
-	mounted: function () {
+	mounted:     function () {
 		setTimeout(() => this.startWidgetsOnPage(self.activeTabId), 500)
 	},
-	activated: function () {
+	activated:   function () {
 		this.uid = uuidv4()
 		this.removeWidgets = false
 		this.settings = false
 		this.dragAndResizeEnabled = false
 		this.startWidgetsOnPage(this.activeTabId)
 	},
-	deactivated: function() {
+	deactivated: function () {
 		this.stopAllWidgets()
 	},
-	methods: {
-		setMoveable: function (target, prop) {
+	methods:     {
+		setMoveable:        function (target, prop) {
 			this.moveableItem.setMoveable(target, prop)
 		},
 		startWidgetsOnPage: function (pageId) {
@@ -124,7 +124,7 @@ export default {
 				}
 			}
 		},
-		startWidgetScript: function (widget) {
+		startWidgetScript:  function (widget) {
 			const uuid = uuidv4()
 			widget.taggedHtml = widget.html.replace(/data-ref="(.*?)"/gi, `data-ref="$1_${uuid}"`)
 			const src = `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/widgets/resources/${widget.skill}/${widget.name}`
@@ -137,15 +137,15 @@ export default {
 				self.loadedClasses.push(inst)
 			})
 		},
-		stopAllWidgets: function (){
-			while(this.loadedClasses && this.loadedClasses.length) {
+		stopAllWidgets:     function () {
+			while (this.loadedClasses && this.loadedClasses.length) {
 				let inst = this.loadedClasses.pop()
-				if(typeof inst.stop === 'function') {
+				if (typeof inst.stop === 'function') {
 					inst.stop()
 				}
 			}
 		},
-		changePage: function (id) {
+		changePage:         function (id) {
 			this.moveableItem.destroyMoveable()
 			this.activeTabId = id
 			this.$forceUpdate()
@@ -153,29 +153,29 @@ export default {
 			this.startWidgetsOnPage(this.activeTabId)
 			localStorage.setItem('widgetsActiveTabId', this.activeTabId)
 		},
-		cinemaMode: function () {
+		cinemaMode:         function () {
 			this.$store.commit('toggleCinemaMode')
 			if (this.$store.state.fullScreen) {
 				this.showInfo(this.$t('notifications.info.theaterModeExplain'))
 			}
 		},
-		magicMirrorMode: function () {
+		magicMirrorMode:    function () {
 			this.$store.commit('toggleMagicMirrorMode')
 			if (this.$store.state.fullScreen) {
 				this.showInfo(this.$t('notifications.info.magicMirrorModeExplain'))
 			}
 		},
-		addWidget: function (skillName, widgetName) {
+		addWidget:          function (skillName, widgetName) {
 			axios({
-				method: 'PUT',
-				url: `/widgets/`,
-				data: {
-					skillName: skillName,
+				method:  'PUT',
+				url:     `/widgets/`,
+				data:    {
+					skillName:  skillName,
 					widgetName: widgetName,
-					pageId: this.activeTabId
+					pageId:     this.activeTabId
 				},
 				headers: {
-					'auth': this.$store.getters.apiToken,
+					'auth':         this.$store.getters.apiToken,
 					'content-type': 'application/json'
 				}
 			}).then(response => {
@@ -185,10 +185,10 @@ export default {
 				}
 			})
 		},
-		removeWidget: function(widgetId) {
+		removeWidget:       function (widgetId) {
 			axios({
-				method: 'DELETE',
-				url: `/widgets/${widgetId}/`,
+				method:  'DELETE',
+				url:     `/widgets/${widgetId}/`,
 				headers: {
 					'auth': this.$store.getters.apiToken
 				}
@@ -213,11 +213,11 @@ export default {
 			dataJson['settings'] = widget.settings
 			dataJson['configs'] = widget.configs
 			axios({
-				method: 'PATCH',
-				url: `/widgets/${widget.id}/`,
-				data: JSON.stringify(dataJson),
+				method:  'PATCH',
+				url:     `/widgets/${widget.id}/`,
+				data:    JSON.stringify(dataJson),
 				headers: {
-					'auth': this.$store.getters.apiToken,
+					'auth':         this.$store.getters.apiToken,
 					'content-type': 'application/json'
 				}
 			}).then(response => {
@@ -277,7 +277,7 @@ export default {
 			}
 			return listing
 		},
-		removeTab: function(id) {
+		removeTab: function (id) {
 			if (!this.$store.state.loggedInUser) {
 				return
 			}
@@ -288,8 +288,8 @@ export default {
 				this.$dialog.confirm(this.$t('dialogs.bodies.confirmPageDelete'))
 					.then(function () {
 						axios({
-							method: 'DELETE',
-							url: `/widgets/pages/${id}/`,
+							method:  'DELETE',
+							url:     `/widgets/pages/${id}/`,
 							headers: {'auth': self.$store.getters.apiToken}
 						}).then(response => {
 							if ('pages' in response.data) {
@@ -299,10 +299,11 @@ export default {
 								localStorage.setItem('widgetsActiveTabId', 1)
 							}
 						})
-					}).catch(() => {})
+					}).catch(() => {
+				})
 			}
 		},
-		renameTab: function(id) {
+		renameTab: function (id) {
 			if (!this.$store.state.loggedInUser) {
 				return
 			}
@@ -311,19 +312,19 @@ export default {
 
 			const message = {}
 			const options = {
-				view: 'fontawesomePromptDialog',
-				parent: this,
+				view:    'fontawesomePromptDialog',
+				parent:  this,
 				current: this.$store.state.widgetPages[id].icon
 			}
 
 			this.$dialog.prompt(message, options).then(dialogue => {
 				let icon = dialogue.data || 'fas fa-biohazard'
 				axios({
-					method: 'PATCH',
-					url: `/widgets/pages/${id}/`,
-					data: {newIcon: icon},
+					method:  'PATCH',
+					url:     `/widgets/pages/${id}/`,
+					data:    {newIcon: icon},
 					headers: {
-						'auth': self.$store.getters.apiToken,
+						'auth':         self.$store.getters.apiToken,
 						'content-type': 'application/json'
 					}
 				}).then(response => {
@@ -331,12 +332,13 @@ export default {
 						this.$store.state.widgetPages[id].icon = icon
 					}
 				})
-			}).catch(() =>{})
+			}).catch(() => {
+			})
 		},
-		addTab: function() {
+		addTab:    function () {
 			axios({
-				method: 'PUT',
-				url: `/widgets/addPage/`,
+				method:  'PUT',
+				url:     `/widgets/addPage/`,
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then(response => {
 				if ('newpage' in response.data) {
@@ -346,7 +348,7 @@ export default {
 			})
 		}
 	},
-	watch: {
+	watch:       {
 		$route: {
 			immediate: true,
 			handler() {

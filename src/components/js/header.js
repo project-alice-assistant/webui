@@ -5,25 +5,25 @@ export default {
 	name: 'pa-header',
 	data() {
 		return {
-			notifications: {},
+			notifications:              {},
 			notificationsDisplayToggle: false,
-			title: '',
-			unwatch: {},
-			resources: {
+			title:                      '',
+			unwatch:                    {},
+			resources:                  {
 				cpu: 0,
 				ram: 0,
 				swp: 0
 			}
 		}
 	},
-	created: function() {
+	created:       function () {
 		let self = this
 		this.unwatch = this.$store.watch(
-			function(state) {
+			function (state) {
 				return state.mqttMessage
 			},
-			function(msg) {
-				let payload =JSON.parse(msg.payloadString)
+			function (msg) {
+				let payload = JSON.parse(msg.payloadString)
 				if (msg.topic === C.RESOURCE_USAGE_TOPIC) {
 					self.resources = payload
 				} else if (msg.topic === C.UI_NOTIFICATION_TOPIC) {
@@ -38,7 +38,7 @@ export default {
 		this.$store.state.mqtt.unsubscribe(C.RESOURCE_USAGE_TOPIC)
 		this.unwatch()
 	},
-	watch: {
+	watch:         {
 		$route: {
 			immediate: true,
 			handler(to) {
@@ -47,15 +47,15 @@ export default {
 			}
 		}
 	},
-	methods: {
-		dismissNotification: function(id) {
+	methods:       {
+		dismissNotification: function (id) {
 			this.$delete(this.notifications, id)
 			if (Object.keys(this.notifications).length === 0) {
 				this.notificationsDisplayToggle = false
 			}
 			axios({
-				method: 'PATCH',
-				url: `/utils/notifications/${id}/`,
+				method:  'PATCH',
+				url:     `/utils/notifications/${id}/`,
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then()
 		}

@@ -5,7 +5,7 @@
 			<div class="dg-content" v-html="parent.$t('dialogs.bodies.enterNewIcon')"/>
 			<form autocomplete="off" class="dg-form" data-children-count="1" v-on:submit.prevent>
 				<label for="dg-input-elem">{{ parent.$t('dialogs.labels.faExample') }}</label><br/><br/>
-				<input type="text" autocomplete="off" id="dg-input-elem" v-model="iconInput" @input="update"/>
+				<input id="dg-input-elem" v-model="iconInput" autocomplete="off" type="text" @input="update"/>
 			</form>
 		</div>
 		<div class="dg-content-footer">
@@ -24,10 +24,10 @@
 import VueDialogMixin from 'vuejs-dialog/dist/vuejs-dialog-mixin.min.js'
 
 export default {
-	mixins: [VueDialogMixin],
-	data: function() {
+	mixins:   [VueDialogMixin],
+	data:     function () {
 		return {
-			parent: this.options['parent'],
+			parent:    this.options['parent'],
 			iconInput: this.options['current'] || 'fas fa-biohazard'
 		}
 	},
@@ -35,12 +35,13 @@ export default {
 		icon: function () {
 			const regex = /<i class="(.*)"><\/i>/;
 			const matches = regex.exec(this.iconInput)
-			if(matches){
+			if (matches) {
 				return matches[1]
 			}
 			return this.iconInput
-	} },
-	methods: {
+		}
+	},
+	methods:  {
 		handleConfirm() {
 			this.proceed(this.icon)
 		},

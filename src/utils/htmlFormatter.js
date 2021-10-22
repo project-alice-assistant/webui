@@ -1,4 +1,4 @@
-export default function(text) {
+export default function (text) {
 	text = text.replace(/\*\*(.*?)\*\*/gi, '<span class="logBold">$1</span>')
 	text = text.replace(/--(.*?)--/gi, '<span class="logDim">$1</span>')
 	text = text.replace(/__(.*?)__/gi, '<span class="logUnderlined">$1</span>')

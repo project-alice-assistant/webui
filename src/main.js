@@ -115,9 +115,9 @@ Vue.directive('init', {
 })
 
 const i18n = new VueI18n({
-	local: 'en',
+	local:          'en',
 	fallbackLocale: 'en',
-	messages: {}
+	messages:       {}
 })
 
 new Vue({

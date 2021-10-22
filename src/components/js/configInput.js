@@ -1,6 +1,6 @@
 export default {
-	name: 'configInput',
-	props: [
+	name:     'configInput',
+	props:    [
 		'template',
 		'configName',
 		'holder',
@@ -9,14 +9,14 @@ export default {
 	computed: {
 		configValue: {
 			get: function () {
-				if(this.template['subConfig']) {
+				if (this.template['subConfig']) {
 					return this.holder[this.configName][this.template['category']]
 				} else {
 					return this.holder[this.configName]
 				}
 			},
 			set: function (value) {
-				if(this.template['subConfig']) {
+				if (this.template['subConfig']) {
 					this.$set(this.holder[this.configName], this.template['category'], value)
 					return true
 				} else {
@@ -26,8 +26,8 @@ export default {
 			}
 		},
 		icon() {
-			if( this.holder[this.configName] === "" || this.holder[this.configName] === undefined)
-				return "fas fa-biohazard"
+			if (this.holder[this.configName] === '' || this.holder[this.configName] === undefined)
+				return 'fas fa-biohazard'
 			const regex = /<i class="(.*)"><\/i>/;
 			const matches = regex.exec(this.holder[this.configName])
 			if (matches) {
@@ -37,7 +37,7 @@ export default {
 			return this.holder[this.configName]
 		}
 	},
-	methods: {
+	methods:  {
 		hex2rgba() {
 			let hex = this.holder['background']
 			let alpha = this.holder['background-opacity']
@@ -45,11 +45,11 @@ export default {
 			this.holder['rgba'] = `rgba(${r}, ${g}, ${b}, ${alpha})`
 			console.log('new color ' + this.holder['rgba'])
 		},
-		missing: function() {
+		missing: function () {
 			return this.template['obligatory'] && !this.configValue
 		},
-		valid: function (){
-			if(this.template['dataType'] === "string" || this.template['dataType'] === "longstring") {
+		valid:   function () {
+			if (this.template['dataType'] === 'string' || this.template['dataType'] === 'longstring') {
 				if (this.configValue === undefined) {
 					return false
 				}
@@ -57,7 +57,7 @@ export default {
 				if ('capitalize' in this.template && this.template['capitalize'] && this.configValue !== undefined && this.configValue.length === 1) {
 					this.configValue = this.configValue.toUpperCase()
 				}
-				if ('noSpace' in this.template && this.template['noSpace'] && this.configValue !== undefined && newest === " ") {
+				if ('noSpace' in this.template && this.template['noSpace'] && this.configValue !== undefined && newest === ' ') {
 					this.configValue = this.configValue.slice(0, -1)
 				}
 			}

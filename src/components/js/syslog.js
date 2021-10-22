@@ -3,26 +3,28 @@ import htmlFormatter from '@/utils/htmlFormatter'
 import * as C from '@/utils/constants'
 
 export default {
-	name: 'syslog',
-	data: function() {
+	name:    'syslog',
+	data:    function () {
 		return {
-			cmd: '',
-			unwatch: {},
-			follow: true,
-			logs: [],
+			cmd:       '',
+			unwatch:   {},
+			follow:    true,
+			logs:      [],
 			menuItems: [
 				{
-					name: this.$t('tooltips.lock'),
-					icon: 'far fa-pause-circle',
+					name:         this.$t('tooltips.lock'),
+					icon:         'far fa-pause-circle',
 					extendedIcon: 'far fa-play-circle',
 					extendedName: this.$t('tooltips.follow'),
-					isToggle: true,
-					onClick: () => {this.follow = !this.follow}
+					isToggle:     true,
+					onClick:      () => {
+						this.follow = !this.follow
+					}
 				}
 			]
 		}
 	},
-	created: function() {
+	created: function () {
 		let self = this
 		this.unwatch = this.$store.watch(
 			function (state) {
@@ -58,11 +60,11 @@ export default {
 			const data = new FormData
 			data.append('cmd', this.cmd)
 			axios({
-				method: 'POST',
-				url: `/utils/sysCmd/`,
-				data: data,
+				method:  'POST',
+				url:     `/utils/sysCmd/`,
+				data:    data,
 				headers: {
-					'auth': this.$store.getters.apiToken,
+					'auth':         this.$store.getters.apiToken,
 					'Content-Type': 'multipart/form-data'
 				}
 			})

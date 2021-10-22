@@ -1,7 +1,7 @@
 <template>
 	<div :key="uid" class="container flexcolumn">
 		<v-tour :callbacks="tourCallbacks" :steps="steps" name="myHome"/>
-		<actions-menu :menuItems="menuItems" v-if="$store.state.loggedInUser"/>
+		<actions-menu v-if="$store.state.loggedInUser" :menuItems="menuItems"/>
 		<div v-if="locationsEditMode" class="tools rightSideTools">
 			<i v-tooltip="$t('tooltips.addLocations')" :class="{yellow: toolsState.addingLocation}"
 				 aria-hidden="true" class="fas fa-plus-circle fa-2x fa-fw clickable" @click="addLocationDialog"/>
@@ -37,11 +37,11 @@
 				<input id="floorTileInput" accept=".png" class="initialHidden" type="file" @change="uploadNewTile('floorTileInput')">
 			</div>
 			<img
-				alt="unknown"
 				v-for="imageId in $store.state.floorTiles"
 				:key="imageId"
 				:class="{selected: imageId === activeFloorTile}"
 				:src="`http://${$store.state.settings['aliceIp']}:${$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/floors/${imageId}.png`"
+				alt="unknown"
 				class="clickable"
 				@click="activeFloorTile === imageId ? activeFloorTile = '' : activeFloorTile = imageId"
 			/>
@@ -86,25 +86,25 @@
 			</div>
 			<div ref="ghost" :class="{hidden: !activeFloorTile && !activeFurnitureTile && !activeConstructionTile}" :style="ghostBackground" class="ghost"/>
 			<div
+				id="floorPlan"
+				ref="floorPlan"
+				:class="{
+					locationsEditMode: locationsEditMode,
+					addLocation: toolsState.addingLocation
+				}"
 				:style="`
 					transform: scale(${zoomLevel});
 					left:${floorPlanX}px;
 					top:${floorPlanY}px;
 				`"
-				:class="{
-					locationsEditMode: locationsEditMode,
-					addLocation: toolsState.addingLocation
-				}"
-				id="floorPlan"
-				ref="floorPlan"
 				class="floorPlan"
 				@click="floorPlanClick"
 				@mousedown="mouseDown"
 				@mousemove="mouseMove"
 				@mouseup="handleClick"
-				@touchstart="mouseDown"
-				@touchmove="mouseMove"
 				@touchend="handleClick"
+				@touchmove="mouseMove"
+				@touchstart="mouseDown"
 			>
 				<div id="center" ref="center"/>
 				<div
@@ -132,5 +132,5 @@
 	</div>
 </template>
 
-<style src="../css/myhome.css" scoped/>
+<style scoped src="../css/myhome.css"/>
 <script src="../js/myhome.js"/>

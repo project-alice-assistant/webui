@@ -3,7 +3,7 @@ import paNav from '../views/nav'
 import paContent from '../views/content'
 
 export default {
-	name: 'Main',
+	name:       'Main',
 	components: {
 		paContent,
 		paHeader,

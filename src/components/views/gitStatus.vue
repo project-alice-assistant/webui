@@ -1,40 +1,42 @@
 <template>
-	<span>
-		<div v-if="status != 'unknown'" class="container">
+	<div>
+		<div v-if="status !== 'unknown'" class="container">
 			<div v-for="st of status" class="flexrow">
-				<label>{{st.name}}</label>
-				<input readonly :value="st.url"/>
+				<label>{{ st.name }}</label>
+				<input :value="st.url" readonly/>
 				<i v-if="st.status" class="fas fa-check-circle" style="color: green"></i>
 				<i v-if="!st.status" class="fas fa-times-circle" style="color: red"></i>
-				{{request}}
+				{{ request }}
 			</div>
 		</div>
 		<div v-else>
 			<i class="fab fa-github fa-spin size-4x centered"></i>
 		</div>
-	</span>
+	</div>
 
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios';
 
 export default {
-	name: 'gitStatus',
+	name:  'gitStatus',
 	props: ['skill'],
-	data: () => ({status : {},
-								request: undefined}),
+	data:  () => ({
+		status:  {},
+		request: undefined
+	}),
 	mounted() {
 		this.status = 'unknown'
 		let self = this
 		axios({
-			method: 'GET',
-			url: `/skills/${self.skill}/gitStatus/`,
+			method:  'GET',
+			url:     `/skills/${self.skill}/gitStatus/`,
 			headers: {'auth': this.$store.getters.apiToken}
-		}).then(function(resp) {
+		}).then(function (resp) {
 			self.status = resp.data.result
 			console.log(resp)
-		}).catch(function(e) {
+		}).catch(function (e) {
 			self.status = {}
 			self.request = e
 		})
@@ -44,21 +46,24 @@ export default {
 
 <style scoped>
 label {
-	min-width: 6em;
 	max-width: 30em;
+	min-width: 6em;
 }
+
 input {
 	min-width: 35em;
 }
-.container{
-	position: relative;
+
+.container {
 	display: flex;
 	flex-flow: column;
+	position: relative;
 }
-.flexrow{
-	gap: 1em;
+
+.flexrow {
+	align-items: center;
 	display: flex;
 	flex-flow: row;
-	align-items: center;
+	gap: 1em;
 }
 </style>

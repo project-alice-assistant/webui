@@ -1,11 +1,11 @@
 nav {
-	display: flex;
-	width: 150px;
-	flex-direction: column;
 	background-color: var(--mainBG);
-	margin-right: 2px;
 	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	margin-right: 2px;
 	padding: 0 2px 2px 2px;
+	width: 150px;
 	z-index: 4999;
 }
 
@@ -14,70 +14,70 @@ nav.collapsed {
 }
 
 button {
-	margin: 2px 0 0;
-	width: 100%;
-	min-width: 100%;
-	max-width: 100%;
-	height: 46px;
-	max-height: 46px;
-	min-height: 46px;
-	text-align: left;
 	box-sizing: border-box;
-	padding-left: 15px;
+	height: 46px;
+	margin: 2px 0 0;
+	max-height: 46px;
+	max-width: 100%;
+	min-height: 46px;
+	min-width: 100%;
 	overflow: hidden;
+	padding-left: 15px;
+	text-align: left;
 	white-space: nowrap;
+	width: 100%;
 }
 
 .lastItem {
+	bottom: 2px;
+	left: 2px;
 	margin-top: auto;
 	position: fixed;
-	left: 2px;
-	bottom: 2px;
 	width: 146px;
 }
 
 nav.minimized {
-	width: var(--minSidebarWidth);
+	align-content: flex-start;
 	flex-direction: row;
 	flex-wrap: wrap;
-	align-content: flex-start;
 	justify-content: space-between;
+	width: var(--minSidebarWidth);
 }
 
 button.minimized {
-	display: flex;
-	width: 100%;
-	min-width: var(--minNormalWidth);
-	max-width: var(--minNormalWidth);
-	height: 46px;
-	min-height: 46px;
-	max-height: 46px;
-	padding: 0;
-	font-size: 1.5em;
-	justify-content: center;
 	align-items: center;
+	display: flex;
+	font-size: 1.5em;
+	height: 46px;
+	justify-content: center;
+	max-height: 46px;
+	max-width: var(--minNormalWidth);
+	min-height: 46px;
+	min-width: var(--minNormalWidth);
 	overflow: hidden;
+	padding: 0;
+	width: 100%;
 }
 
 .retract {
-	animation-name: changeSize;
 	animation-duration: 0.25s;
 	animation-fill-mode: backwards;
+	animation-name: changeSize;
 	animation-timing-function: ease;
 }
 
 .extend {
-	animation-name: changeSize;
+	animation-direction: reverse;
 	animation-duration: 0.25s;
 	animation-fill-mode: forwards;
-	animation-direction: reverse;
+	animation-name: changeSize;
 	animation-timing-function: ease;
 }
 
 .fullSize {
-	width: var(--minFullWidth) !important;
 	max-width: var(--minFullWidth) !important;
 	min-width: var(--minFullWidth) !important;
+	width: var(--minFullWidth) !important;
 }
 
 @keyframes changeSize {

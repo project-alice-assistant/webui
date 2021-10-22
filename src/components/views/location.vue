@@ -1,11 +1,11 @@
 <template>
 	<div
 		:id="`loc_${data.id}`"
-		:style="computeCustomStyle()"
 		:class="{
 			painting: myHome.toolsState.paintingFloors,
 			clickable: myHome.locationsEditMode && !myHome.toolsState.addingLocation && !myHome.toolsState.paintingFloors
 		}"
+		:style="computeCustomStyle()"
 		class="location"
 		@click="handleClick"
 		@mouseenter="onMouseEnter"

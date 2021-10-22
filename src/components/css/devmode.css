@@ -3,24 +3,27 @@
 	height: 250px;
 	width: 300px;
 }
+
 .stretched {
-	width: 100%;
 	height: 100%;
+	width: 100%;
 }
+
 .stretched >>> textarea {
-	width: 100%;
 	height: 100%;
+	width: 100%;
 }
+
 .utility {
+	background-color: var(--windowBG);
 	display: flex;
 	flex-direction: column;
-	width: 200px;
-	max-width: 200px;
 	height: 200px;
-	max-height: 200px;
-	background-color: var(--windowBG);
 	margin: 15px;
+	max-height: 200px;
+	max-width: 200px;
 	transition: var(--shortAnimation);
+	width: 200px;
 }
 
 .utility:hover {
@@ -28,56 +31,57 @@
 }
 
 .utilityIcon {
+	align-items: center;
 	display: flex;
-	margin: 0;
 	font-size: 5em;
 	height: 150px;
-	min-height: 150px;
 	justify-content: center;
-	align-items: center;
+	margin: 0;
+	min-height: 150px;
 }
 
 .utilityName {
 	display: flex;
-	margin: 0;
 	font-size: 1.25em;
 	justify-content: center;
+	margin: 0;
 }
 
 >>> .categoryHead {
 	background-color: var(--accent);
-	width: 100%;
-	text-align: center;
 	line-height: 2em;
+	text-align: center;
+	width: 100%;
 }
 
->>> .leftBar{
+>>> .leftBar {
 	display: flex;
 	flex-direction: column;
 }
 
 
 .waiting {
-	transition: 0s;
-	z-index: 998;
+	background-color: rgba(64, 64, 64, 0.75);
+	height: 100%;
+	left: 0;
+	padding-bottom: 25%;
+	padding-top: 20%;
 	position: absolute;
 	top: 0;
-	left: 0;
+	transition: 0s;
 	width: 100%;
-	height: 100%;
-	background-color: rgba(64,64,64,0.75);
-	padding-top: 20%;
-	padding-bottom: 25%;
-}
-.waitHidden {
-	pointer-events: none;
-	transition: 1s;
 	z-index: 998;
+}
+
+.waitHidden {
+	background-color: rgba(64, 64, 64, 0.0);
+	height: 100%;
+	left: 0;
+	padding-bottom: 25%;
+	pointer-events: none;
 	position: absolute;
 	top: -100px;
-	left: 0;
+	transition: 1s;
 	width: 100%;
-	height: 100%;
-	padding-bottom: 25%;
-	background-color: rgba(64,64,64,0.0);
+	z-index: 998;
 }

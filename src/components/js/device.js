@@ -4,23 +4,23 @@ import {v4 as uuidv4} from 'uuid'
 
 // noinspection DuplicatedCode
 export default {
-	name: 'device',
-	data: function () {
+	name:          'device',
+	data:          function () {
 		return {
-			rotationDelta: 0,
+			rotationDelta:        0,
 			targetParentLocation: 0,
-			checkHeartbeat: null,
-			myLinks: {},
-			hovered: false,
-			etag: uuidv4()
+			checkHeartbeat:       null,
+			myLinks:              {},
+			hovered:              false,
+			etag:                 uuidv4()
 		}
 	},
-	props: [
+	props:         [
 		'data',
 		'device',
 		'myHome'
 	],
-	created: function () {
+	created:       function () {
 		let self = this
 		this.unwatch = this.$store.watch(
 			function (state) {
@@ -43,7 +43,7 @@ export default {
 
 					self.data.connected = true
 
-					if(self.data.deviceConfigs['heartbeatRate'] > 0) {
+					if (self.data.deviceConfigs['heartbeatRate'] > 0) {
 						self.checkHeartbeat = setTimeout(function () {
 							self.data.connected = false
 						}, self.data.deviceConfigs['heartbeatRate'] * 2500)
@@ -68,13 +68,13 @@ export default {
 		this.$store.state.mqtt.unsubscribe(C.DEVICE_DELETED_TOPIC)
 		this.unwatch()
 	},
-	methods: {
-		openSettings: function () {
+	methods:       {
+		openSettings:       function () {
 			let self = this
 			const message = {}
 			const options = {
-				view: 'deviceOptionsPromptDialog',
-				data: this.data,
+				view:   'deviceOptionsPromptDialog',
+				data:   this.data,
 				parent: this
 			}
 
@@ -86,7 +86,7 @@ export default {
 			let self = this
 			axios({
 				method: 'GET',
-				url: `/myHome/devices/${this.data.id}/${this.etag}/device.png`
+				url:    `/myHome/devices/${this.data.id}/${this.etag}/device.png`
 			}).then(response => {
 				if (response.headers['x-etag'] !== self.etag) {
 					self.etag = response.headers['x-etag']
@@ -102,21 +102,21 @@ export default {
 				null
 			)
 		},
-		save: function () {
+		save:               function () {
 			const data = {
 				parentLocation: this.data.parentLocation,
-				settings: this.data.settings,
-				deviceConfigs: this.data.deviceConfigs,
-				linkConfigs: this.myHome.getDeviceLinks(this.data.id)
+				settings:       this.data.settings,
+				deviceConfigs:  this.data.deviceConfigs,
+				linkConfigs:    this.myHome.getDeviceLinks(this.data.id)
 			}
 
 			const self = this
 			axios({
-				method: 'PATCH',
-				url: `/myHome/devices/${this.data.id}/`,
-				data: data,
+				method:  'PATCH',
+				url:     `/myHome/devices/${this.data.id}/`,
+				data:    data,
 				headers: {
-					'auth': this.$store.getters.apiToken,
+					'auth':         this.$store.getters.apiToken,
 					'content-type': 'application/json'
 				}
 			}).then(response => {
@@ -136,7 +136,7 @@ export default {
 				}
 			})
 		},
-		handleClick: function (event) {
+		handleClick:        function (event) {
 			if (this.myHome.toolsState.addingDevice) return
 
 			event.stopPropagation()
@@ -164,8 +164,8 @@ export default {
 				this.myHome.moveableItem.setGuidelines([])
 			} else if (!this.myHome.devicesEditMode && !this.myHome.locationsEditMode) {
 				axios({
-					method: 'GET',
-					url: `/myHome/devices/${this.data.id}/onClick/`,
+					method:  'GET',
+					url:     `/myHome/devices/${this.data.id}/onClick/`,
 					headers: {'auth': this.$store.getters.apiToken}
 				}).then(response => {
 					if ('success' in response.data) {
@@ -182,7 +182,7 @@ export default {
 				})
 			}
 		},
-		handleDrag: function (target, left, top, clientX, clientY) {
+		handleDrag:         function (target, left, top, clientX, clientY) {
 			const elementsBelow = document.elementsFromPoint(clientX, clientY)
 			for (const el of elementsBelow) {
 				if (el.classList.contains('location')) {
@@ -208,15 +208,15 @@ export default {
 			this.myHome.refreshDeviceLinks()
 			throw true
 		},
-		calcGlobalOffset: function (locId) {
-			if(locId === 0){
-				return [0,0]
+		calcGlobalOffset:   function (locId) {
+			if (locId === 0) {
+				return [0, 0]
 			}
 			let parentLoc = this.$store.state.locations[locId]
 			let recursive = this.calcGlobalOffset(parentLoc.parentLocation)
-			return [parentLoc.settings.x+recursive[0], parentLoc.settings.y+recursive[1]]
+			return [parentLoc.settings.x + recursive[0], parentLoc.settings.y + recursive[1]]
 		},
-		setPosition: function (target, _clientX, _clientY) {
+		setPosition:        function (target, _clientX, _clientY) {
 			try {
 				if (this.targetParentLocation !== 0 && this.data.parentLocation !== this.targetParentLocation) {
 					// noinspection DuplicatedCode
@@ -239,11 +239,11 @@ export default {
 				throw e
 			}
 		},
-		deleteMe: function (event) {
+		deleteMe:           function (event) {
 			event.stopPropagation()
 			axios({
-				method: 'DELETE',
-				url: `/myHome/devices/${this.data.id}/`,
+				method:  'DELETE',
+				url:     `/myHome/devices/${this.data.id}/`,
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then(response => {
 				if ('success' in response.data && response.data.success) {
@@ -252,7 +252,7 @@ export default {
 				}
 			})
 		},
-		onMouseEnter: function () {
+		onMouseEnter:       function () {
 			this.hovered = true
 			if (this.myHome.locationsEditMode && this.myHome.toolsState.none) {
 				for (const link of Object.values(this.myLinks)) {
@@ -260,7 +260,7 @@ export default {
 				}
 			}
 		},
-		onMouseExit: function () {
+		onMouseExit:        function () {
 			this.hovered = false
 			if (this.myHome.locationsEditMode && this.myHome.toolsState.none) {
 				for (const link of Object.values(this.myLinks)) {

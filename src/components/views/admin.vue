@@ -4,18 +4,18 @@
 		<tabs
 			:activeTabId="activeTabId"
 			:parent="this"
-			:tabs="tabs"
 			:store="$store"
+			:tabs="tabs"
 		/>
 		<div v-if="activeTabId === 1" class="tab_page">
 			<config
-				:templates="$store.state.settingTemplates"
-				:holder="$store.state.settings"
-				:translate="(val) => $t(val)"
-				:validator="false"
+				:actions="actions"
 				:byCategory="true"
+				:holder="$store.state.settings"
 				:includeFilter="true"
-				:actions="actions"/>
+				:templates="$store.state.settingTemplates"
+				:translate="(val) => $t(val)"
+				:validator="false"/>
 		</div>
 		<div v-else-if="activeTabId === 2" class="tab_page">
 			<div class="container flexrow">
@@ -32,7 +32,7 @@
 						<i id="utilityReboot" class="fas fa-power-off"/>
 					</p>
 					<p class="utilityName">
-						{{$t('utilities.reboot')}}
+						{{ $t('utilities.reboot') }}
 					</p>
 				</div>
 				<div class="utility clickable" @click="utilityRequestAndCheck('train', 'projectalice.core.training')">
@@ -40,7 +40,7 @@
 						<i id="utilityTrain" class="fas fa-brain"/>
 					</p>
 					<p class="utilityName">
-						{{$t('utilities.train')}}
+						{{ $t('utilities.train') }}
 					</p>
 				</div>
 				<div class="utility clickable" @click="utilityRequestAndCheck('update', 'projectalice.core.updating')">
@@ -48,7 +48,7 @@
 						<i id="utilityUpdate" class="fas fa-sync"/>
 					</p>
 					<p class="utilityName">
-						{{$t('utilities.update')}}
+						{{ $t('utilities.update') }}
 					</p>
 				</div>
 				<div class="utility clickable" @click="utilitySimpleRequest('addUser')">
@@ -56,7 +56,7 @@
 						<i id="utilityAddUser" class="fas fa-user-plus"/>
 					</p>
 					<p class="utilityName">
-						{{$t('utilities.addUser')}}
+						{{ $t('utilities.addUser') }}
 					</p>
 				</div>
 				<div class="utility clickable" @click="utilitySimpleRequest('addWakeword')">
@@ -64,7 +64,7 @@
 						<i id="utilityAddWakeword" class="fas fa-comment-medical"/>
 					</p>
 					<p class="utilityName">
-						{{$t('utilities.addWakeword')}}
+						{{ $t('utilities.addWakeword') }}
 					</p>
 				</div>
 				<div class="utility clickable" @click="utilitySimpleRequest('tuneWakeword')">
@@ -72,7 +72,7 @@
 						<i id="utilityTuneWakeword" class="fas fa-volume-up"/>
 					</p>
 					<p class="utilityName">
-						{{$t('utilities.tuneWakeword')}}
+						{{ $t('utilities.tuneWakeword') }}
 					</p>
 				</div>
 				<div class="utility clickable" @click="utilityRequestAndRedirect('wipeAll')">
@@ -80,7 +80,7 @@
 						<i id="utilityWipeAll" class="fas fa-bomb"/>
 					</p>
 					<p class="utilityName">
-						{{$t('utilities.wipe')}}
+						{{ $t('utilities.wipe') }}
 					</p>
 				</div>
 			</div>

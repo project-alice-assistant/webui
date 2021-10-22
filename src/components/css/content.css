@@ -11,10 +11,10 @@
 }
 
 .connectionStatus > i {
-	position: relative;
-	left: -100px;
-	top: 100px;
 	animation: wiggle 3s infinite;
+	left: -100px;
+	position: relative;
+	top: 100px;
 }
 
 .connected {

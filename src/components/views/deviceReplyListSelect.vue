@@ -4,7 +4,7 @@
 			<h6 class="dg-title">{{ data['title'] }}</h6>
 			<div class="dg-content">{{ data['body'] }}
 				<!--suppress HtmlFormInputWithoutLabel -->
-				<select v-model="selected" name="device">
+				<select v-model="selected">
 					<option v-for="answer in data['list']" :value="answer">{{ answer }}</option>
 				</select>
 			</div>
@@ -25,11 +25,11 @@
 import VueDialogMixin from 'vuejs-dialog/dist/vuejs-dialog-mixin.min.js'
 
 export default {
-	mixins: [VueDialogMixin],
-	data: function () {
+	mixins:  [VueDialogMixin],
+	data:    function () {
 		return {
-			parent: this.options['parent'],
-			data: this.options['data'],
+			parent:   this.options['parent'],
+			data:     this.options['data'],
 			selected: ''
 		}
 	},

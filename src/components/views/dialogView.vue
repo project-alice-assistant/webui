@@ -1,6 +1,6 @@
 <template>
 	<div class="dialogView">
-		<div class="messageContainer" id="messageContainer">
+		<div id="messageContainer" class="messageContainer">
 			<SpeechBubble v-for="(msg, key) in msgs" :key="key" :aliceGender="$store.state.settings['ttsType']" :msg="msg"/>
 			<SpeechBubble v-if="currentSpeech !== undefined" :key="msgs.length" :msg="currentSpeech"/>
 		</div>
@@ -15,5 +15,5 @@
 
 
 <script src="../js/dialogView.js"/>
-<style src="../css/speechBubble.css" scoped/>
+<style scoped src="../css/speechBubble.css"/>
 <style scoped src="../css/dialogView.css"/>

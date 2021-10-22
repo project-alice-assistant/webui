@@ -1,6 +1,6 @@
 export default {
-	name: 'tabs',
-	props: [
+	name:    'tabs',
+	props:   [
 		'tabs',
 		'onChange',
 		'addTab',
@@ -19,7 +19,8 @@ export default {
 				// noinspection JSUnresolvedFunction
 				this.tabs[oldId].checkAllowLeaveFrom().then(() => {
 					this.handleClickAllowed(id)
-				}).catch( () => {})
+				}).catch(() => {
+				})
 			} else {
 				this.handleClickAllowed(id)
 			}

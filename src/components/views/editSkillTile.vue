@@ -1,5 +1,5 @@
 <template>
-	<div class="skill" :class="{'modified':skill.modified}">
+	<div :class="{'modified':skill.modified}" class="skill">
 		<div class="skillTitle">
 			<svg class="skillName">
 				<text y="15">{{ skill.name }}</text>
@@ -7,13 +7,13 @@
 			<div class="skillIcon"><i :class="skill.icon" aria-hidden="true"/></div>
 		</div>
 		<div class="skillAuthor">
-			<i class="fas fa-user" aria-hidden="true"/> <span class="clickable">{{ skill.author }}</span>
+			<i aria-hidden="true" class="fas fa-user"/> <span class="clickable">{{ skill.author }}</span>
 		</div>
 		<div class="skillDescription">
 			{{ skill.description }}
 		</div>
 		<div class="download" @click="startEditing">
-			<i class="fas fa-cogs clickable" aria-hidden="true"/>
+			<i aria-hidden="true" class="fas fa-cogs clickable"/>
 		</div>
 	</div>
 </template>
@@ -48,10 +48,10 @@
 }
 
 .skillTitle {
-	width: 100%;
-	height: 25px;
 	background-color: var(--secondary);
 	box-sizing: border-box;
+	height: 25px;
+	width: 100%;
 }
 
 .skillNameeee {
@@ -82,8 +82,8 @@
 
 .skillIcon {
 	position: absolute;
-	top: 3px;
 	right: 3px;
+	top: 3px;
 	transition: var(--shortAnimation);
 }
 
@@ -109,12 +109,13 @@
 }
 
 .download {
-	position: absolute;
-	font-size: 1.5em;
 	bottom: 0;
+	font-size: 1.5em;
 	left: 0;
 	margin-left: 5px;
+	position: absolute;
 }
+
 .modified {
 	background: darkred;
 }
@@ -122,18 +123,17 @@
 </style>
 <script>
 export default {
-name: 'editSkillTile',
-data: function() {
-return {
-}
-},
-props: [
-'skill'
-],
-methods: {
-	startEditing() {
-		this.$emit('skill-selected', this.skill)
+	name:    'editSkillTile',
+	data:    function () {
+		return {}
+	},
+	props:   [
+		'skill'
+	],
+	methods: {
+		startEditing() {
+			this.$emit('skill-selected', this.skill)
+		}
 	}
-}
 }
 </script>

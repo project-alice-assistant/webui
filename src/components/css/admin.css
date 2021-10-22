@@ -1,15 +1,14 @@
 
-
 .utility {
+	background-color: var(--windowBG);
 	display: flex;
 	flex-direction: column;
-	width: 200px;
-	max-width: 200px;
 	height: 200px;
-	max-height: 200px;
-	background-color: var(--windowBG);
 	margin: 15px;
+	max-height: 200px;
+	max-width: 200px;
 	transition: var(--shortAnimation);
+	width: 200px;
 }
 
 .utility:hover {
@@ -17,20 +16,20 @@
 }
 
 .utilityIcon {
+	align-items: center;
 	display: flex;
-	margin: 0;
 	font-size: 5em;
 	height: 150px;
-	min-height: 150px;
 	justify-content: center;
-	align-items: center;
+	margin: 0;
+	min-height: 150px;
 }
 
 .utilityName {
 	display: flex;
-	margin: 0;
 	font-size: 1.25em;
 	justify-content: center;
+	margin: 0;
 }
 
 textarea {

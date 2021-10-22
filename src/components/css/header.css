@@ -1,9 +1,9 @@
 .pageTitle {
-	font-size: 1.5em;
-	text-transform: capitalize;
-	margin-left: 1em;
 	align-items: center;
 	display: flex;
+	font-size: 1.5em;
+	margin-left: 1em;
+	text-transform: capitalize;
 }
 
 .aliceStatus {
@@ -11,35 +11,35 @@
 }
 
 .updateChannelMarker {
-	font-style: italic;
-	margin: 0 .9em;
 	align-items: center;
 	display: flex;
+	font-style: italic;
+	margin: 0 .9em;
 }
 
 .resourceUsage {
-	font-size: 0.85em;
-	font-weight: 300;
 	align-items: center;
 	display: flex;
+	font-size: 0.85em;
+	font-weight: 300;
 }
 
 .versionInfo {
-	font-size: 0.85em;
 	align-items: center;
 	display: flex;
+	font-size: 0.85em;
 	margin-left: 15px;
 }
 
 .channelInfo {
-	font-size: 0.7em;
 	align-items: center;
 	display: flex;
+	font-family: var(--lightItalic);
+	font-size: 0.7em;
+	justify-items: right;
 	margin-left: 15px;
 	margin-right: 15px;
 	text-transform: uppercase;
-	justify-items: right;
-	font-family: var(--lightItalic);
 }
 
 .notifications {

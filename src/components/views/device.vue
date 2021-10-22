@@ -1,9 +1,10 @@
 <template>
+	<!--suppress HtmlUnknownAttribute -->
 	<div
 		:id="`dev_${data.id}`"
 		:ref="`dev_${data.id}`"
-		:style="computeCustomStyle()"
 		v-tooltip="data.deviceConfigs.displayName"
+		:style="computeCustomStyle()"
 		class="device clickable"
 		@click="handleClick"
 		@mouseenter="onMouseEnter"

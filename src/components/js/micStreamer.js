@@ -3,14 +3,14 @@ import * as C from '@/utils/constants'
 let RecordRTC = require('recordrtc')
 
 export default {
-	name: 'micStreamer',
-	props: [
+	name:    'micStreamer',
+	props:   [
 		'icon'
 	],
-	data: function () {
+	data:    function () {
 		return {
-			recorder: null,
-			listening: false,
+			recorder:          null,
+			listening:         false,
 			microphoneSupport: false
 		}
 	},
@@ -49,21 +49,21 @@ export default {
 			}
 			this.listening = true
 			this.$store.state.mqtt.publish('hermes/hotword/default/detected', JSON.stringify({
-				siteId: localStorage.getItem('interfaceUid'),
+				siteId:    localStorage.getItem('interfaceUid'),
 				modelType: 'universal'
 			}))
 		},
-		startStream: function () {
+		startStream:     function () {
 			let self = this
 			navigator.mediaDevices.getUserMedia({video: false, audio: true}).then(async function (stream) {
 				self.recorder = RecordRTC(stream, {
-					type: 'audio',
-					mimeType: 'audio/wav',
-					desiredSampRate: 16000,
-					timeSlice: 100,
-					recorderType: RecordRTC.StereoAudioRecorder,
+					type:                  'audio',
+					mimeType:              'audio/wav',
+					desiredSampRate:       16000,
+					timeSlice:             100,
+					recorderType:          RecordRTC.StereoAudioRecorder,
 					numberOfAudioChannels: 1,
-					ondataavailable: (blob) => {
+					ondataavailable:       (blob) => {
 						blob.arrayBuffer().then(buffer => {
 							self.$store.state.mqtt.publish(C.AUDIO_FRAME_TOPIC.replace('{}', localStorage.getItem('interfaceUid')), buffer)
 						})
@@ -75,7 +75,7 @@ export default {
 				self.stopRecording()
 			})
 		},
-		stopRecording: function () {
+		stopRecording:   function () {
 			this.listening = false
 			if (this.recorder !== null) {
 				this.recorder.stopRecording()

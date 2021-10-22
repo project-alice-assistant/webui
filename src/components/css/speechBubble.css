@@ -3,18 +3,18 @@
 }
 
 .dialogView {
-	width: 100%;
-	height: 100%;
+	bottom: 0;
 	display: flex;
 	flex-direction: column;
-	position: absolute;
-	top: 0;
+	height: 100%;
 	left: 0;
-	bottom: 0;
+	position: absolute;
 	right: 0;
+	top: 0;
+	width: 100%;
 }
 
-.dvInput{
+.dvInput {
 	display: flex;
 	flex-direction: row;
 	flex-grow: 0;
@@ -23,18 +23,18 @@
 	width: 50%;
 }
 
-.dvInput input{
-	width: 100%;
-	height: 1.7em;
-	font-size: 1.5em;
+.dvInput input {
 	background: var(--secondary);
+	font-size: 1.5em;
+	height: 1.7em;
+	width: 100%;
 }
 
-.dvInput button{
+.dvInput button {
 	min-width: 3.5em;
 }
 
-.dvInput button i{
+.dvInput button i {
 	font-size: 2em;
 }
 
@@ -44,14 +44,14 @@
 }
 
 .sessionEnded {
-	width: 50%;
-	margin: 10px auto auto 18%;
 	color: #363636;
-	padding: 20px;
-	text-align: left;
-	font-weight: 900;
 	font-family: arial, serif;
+	font-weight: 900;
+	margin: 10px auto auto 18%;
+	padding: 20px;
 	position: relative;
+	text-align: left;
+	width: 50%;
 }
 
 .aliceSpeech {
@@ -69,27 +69,27 @@
 }
 
 .aliceSpeech:after {
-	content: "";
-	width: 0;
-	height: 0;
-	position: absolute;
+	border-bottom: 15px solid transparent;
 	border-left: 15px solid transparent;
 	border-right: 15px solid #E5E4E9;
 	border-top: 15px solid #E5E4E9;
-	border-bottom: 15px solid transparent;
+	content: "";
+	height: 0;
 	left: -16px;
+	position: absolute;
 	top: 0;
+	width: 0;
 }
 
 .aliceSpeech:before {
-	content: "";
-	display: block;
 	background-repeat: no-repeat;
 	background-size: 50px;
-	width: 50px;
-	height: 50px;
+	content: "";
+	display: block;
 	float: left;
+	height: 50px;
 	margin: -20px 0 0 -90px;
+	width: 50px;
 }
 
 .aliceSpeech.male:before {
@@ -115,41 +115,41 @@
 }
 
 .userSpeech:after {
-	content: "";
-	width: 0;
-	height: 0;
-	position: absolute;
+	border-bottom: 15px solid transparent;
 	border-left: 15px solid #2095FE;
 	border-right: 15px solid transparent;
 	border-top: 15px solid #2095FE;
-	border-bottom: 15px solid transparent;
+	content: "";
+	height: 0;
+	position: absolute;
 	right: -16px;
 	top: 0;
+	width: 0;
 }
 
 .userSpeech.female:before {
-	content: "";
-	display: block;
 	background-image: url('../../assets/images/femaleAvatar.png');
 	background-repeat: no-repeat;
 	background-size: 50px;
-	width: 50px;
-	height: 50px;
+	content: "";
+	display: block;
 	float: right;
+	height: 50px;
 	margin: -20px -90px 0 0;
+	width: 50px;
 }
 
 
 .userSpeech.male:before {
-	content: "";
-	display: block;
 	background-image: url('../../assets/images/maleAvatar.png');
 	background-repeat: no-repeat;
 	background-size: 50px;
-	width: 50px;
-	height: 50px;
+	content: "";
+	display: block;
 	float: right;
+	height: 50px;
 	margin: -20px -90px 0 0;
+	width: 50px;
 }
 
 .extend {

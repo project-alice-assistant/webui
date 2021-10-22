@@ -1,40 +1,41 @@
 import VueDialogMixin from 'vuejs-dialog/dist/vuejs-dialog-mixin.min.js'
 
 export default {
-	mixins: [VueDialogMixin],
-	data: function () {
+	mixins:   [VueDialogMixin],
+	data:     function () {
 		return {
 			parent: this.options['parent'],
-			data: this.options['data']
+			data:   this.options['data']
 		}
 	},
 	computed: {
-		myConfigTemplates: function () {
+		myConfigTemplates:      function () {
 			return this.parent.myHome.getDeviceType(this).deviceConfigsTemplates
 		},
-		myLinkConfigTemplates: function () {
+		myLinkConfigTemplates:  function () {
 			return this.parent.myHome.getDeviceType(this).linkConfigsTemplates
 		},
-		deviceTemplates: function () {
+		deviceTemplates:        function () {
 			return Object.assign({}, this.myConfigTemplates, this.genericDeviceTemplates);
 		},
-		genericDeviceTemplates: function (){
-			let template = {	"displayName"             : {
-					"defaultValue": "",
-					"dataType"    : "string",
-					"isSensitive" : false,
-					"description" : "The name to display for this device"
-					}
+		genericDeviceTemplates: function () {
+			let template = {
+				'displayName': {
+					'defaultValue': '',
+					'dataType':     'string',
+					'isSensitive':  false,
+					'description':  'The name to display for this device'
 				}
-				if( this.data['allowHeartbeatOverride'] ){
-					template['heartbeat'] = {
-						"defaultValue": 0,
-						"dataType"    : "integer",
-						"isSensitive" : false,
-						"description" : "Allow overwriting of the heartbeat"
-					}
+			}
+			if (this.data['allowHeartbeatOverride']) {
+				template['heartbeat'] = {
+					'defaultValue': 0,
+					'dataType':     'integer',
+					'isSensitive':  false,
+					'description':  'Allow overwriting of the heartbeat'
 				}
-				return template
+			}
+			return template
 		},
 		configValue() {
 			return (configName) => {
@@ -42,7 +43,7 @@ export default {
 			}
 		}
 	},
-	methods: {
+	methods:  {
 		handleConfirm() {
 			this.proceed()
 		},

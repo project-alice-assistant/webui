@@ -2,60 +2,61 @@
 :root {
 	/* COLOR */
 	--accent: black;
-	--hover: yellow;
-	--mainBG: #1e1e1e;
-	--secondary: #343434;
-	--text: #d1d1d1;
-	--windowBG: #636363;
+	--bold: 'OrkneyBold', Arial, sans-serif;
+	--boldItalic: 'OrkneyBoldItalic', Arial, sans-serif;
 	--danger: #FF0000;
+	--hover: yellow;
+	--italic: 'OrkneyItalic', Arial, sans-serif;
+	--light: 'OrkneyLight', Arial, sans-serif;
 
 	/* FONTS */
-	--normal: 'Orkney', Arial, sans-serif;
-	--light: 'OrkneyLight', Arial, sans-serif;
-	--medium: 'OrkneyMedium', Arial, sans-serif;
-	--bold: 'OrkneyBold', Arial, sans-serif;
-
-	--italic: 'OrkneyItalic', Arial, sans-serif;
 	--lightItalic: 'OrkneyLightItalic', Arial, sans-serif;
+	--lightLift: translate3d(-2px, -2px, 0px);
+	--mainBG: #1e1e1e;
+	--medium: 'OrkneyMedium', Arial, sans-serif;
+
 	--mediumItalic: 'OrkneyMediumItalic', Arial, sans-serif;
-	--boldItalic: 'OrkneyBoldItalic', Arial, sans-serif;
+	--minFullWidth: 46px;
+	--minNormalWidth: 46px;
+	--minSidebarWidth: 50px;
 
 	--monospace: 'Courier New', monospace;
 
 	/* ANIMATION */
-	--shortAnimation: all .15s ease-in-out;
-	--lightLift: translate3d(-2px, -2px, 0px);
+	--normal: 'Orkney', Arial, sans-serif;
+	--secondary: #343434;
 
 	/* Nav settings */
-	--minSidebarWidth: 50px;
-	--minFullWidth: 46px;
-	--minNormalWidth: 46px;
+	--shortAnimation: all .15s ease-in-out;
+	--text: #d1d1d1;
+	--windowBG: #636363;
 
 }
+
 @media only screen and (max-height: 627px) {
 	:root {
 		/* Nav settings small screen*/
-		--minSidebarWidth: 100px;
 		--minFullWidth: 96px;
 		--minNormalWidth: 46px;
+		--minSidebarWidth: 100px;
 	}
 }
 
 @media only screen and (max-height: 387px) {
 	:root {
 		/* Nav settings small screen*/
-		--minSidebarWidth: 150px;
 		--minFullWidth: 146px;
 		--minNormalWidth: 46px;
+		--minSidebarWidth: 150px;
 	}
 }
 
 @media only screen and (max-height: 291px) {
 	:root {
 		/* Nav settings small screen*/
-		--minSidebarWidth: 200px;
 		--minFullWidth: 196px;
 		--minNormalWidth: 46px;
+		--minSidebarWidth: 200px;
 	}
 }
 
@@ -167,8 +168,8 @@
 /* ========================= BUILT IN TAGS ======================== */
 
 ::-webkit-scrollbar {
-	width: 1em;
 	background-color: var(--accent);
+	width: 1em;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -178,45 +179,45 @@
 html, body {
 	background-color: var(--accent);
 	color: var(--text);
+	display: flex;
+	flex: 1;
 	font-family: var(--normal);
 	margin: 0;
+	/*noinspection CssUnknownProperty*/
 	overflow: hidden;
 	-webkit-touch-callout: none;
-	/*noinspection CssUnknownProperty*/
 	-khtml-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
 	-webkit-user-select: none;
 	user-select: none;
-	display: flex;
-	flex: 1;
 }
 
 .mainContainer {
-	display: flex;
-	flex-flow: column;
-	flex: 1;
 	align-items: stretch;
+	display: flex;
+	flex: 1;
+	flex-flow: column;
 	overflow: hidden;
 }
 
 header {
-	display: flex;
 	align-items: center;
 	background-color: var(--mainBG);
+	display: flex;
 	height: 3em;
 	margin-bottom: 2px;
-	width: 100%;
 	overflow: hidden;
+	width: 100%;
 	z-index: 4999;
 }
 
 #main {
 	display: flex;
-	flex-flow: row;
 	flex: 1;
-	position: relative;
+	flex-flow: row;
 	overflow: hidden;
+	position: relative;
 }
 
 #mainSection {
@@ -231,29 +232,29 @@ header {
 }
 
 .container {
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
 	bottom: 0;
+	box-sizing: border-box;
 	display: flex;
 	flex: 1;
-	width: 100%;
 	height: 100%;
+	left: 0;
 	overflow: hidden;
-	box-sizing: border-box;
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 100%;
 }
 
 .flexrow {
-	display:flex;
+	align-content: flex-start;
+	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
-	align-content: flex-start;
 }
 
 .flexcolumn {
-	flex-direction: column;
 	align-content: flex-start;
+	flex-direction: column;
 }
 
 .yscroll {
@@ -282,25 +283,26 @@ a:hover {
 input, select, textarea {
 	background-color: var(--mainBG);
 	border: 1px dotted #636363;
+	box-sizing: border-box;
 	color: var(--text);
+	height: 3em;
+	min-width: 200px;
 	outline: none;
 	padding: 5px;
 	width: auto;
-	min-width: 200px;
-	box-sizing: border-box;
-	height: 3em;
 }
+
 .likeInput {
 	background-color: var(--mainBG);
 	border: 1px dotted #636363;
 	box-sizing: border-box;
 	color: var(--text);
+	height: 2.5em;
+	min-width: 200px;
 	outline: none;
 	padding: .75em;
-	width: auto;
-	min-width: 200px;
-	height: 2.5em;
 	text-align: center;
+	width: auto;
 }
 
 input:hover, textarea:hover {
@@ -308,10 +310,10 @@ input:hover, textarea:hover {
 }
 
 input[type='color'] {
-	width: 50px;
-	padding: 1px;
-	height: 2.5em;
 	cursor: pointer;
+	height: 2.5em;
+	padding: 1px;
+	width: 50px;
 }
 
 textarea {
@@ -325,21 +327,22 @@ input:focus, textarea:focus {
 
 input:read-only:focus,
 input:read-only {
-	color: var(--windowBG);
 	border: 1px dotted;
+	color: var(--windowBG);
 }
 
-input:read-only[type=text]+span:after{
-	margin-left: -1.5em;
-	display: inline-block;
-	font-style: normal;
-	font-variant: normal;
-	text-rendering: auto;
-	-webkit-font-smoothing: antialiased;
-	font-family: "Font Awesome 5 Free";
-	font-weight: 900;
+input:read-only[type=text] + span:after {
 	color: var(--secondary);
 	content: "\f023";
+	display: inline-block;
+	/*noinspection CssNoGenericFontName*/
+	font-family: "Font Awesome 5 Free";
+	-webkit-font-smoothing: antialiased;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 900;
+	margin-left: -1.5em;
+	text-rendering: auto;
 }
 
 /* ======================= COLOR MARKINGS ======================== */
@@ -368,19 +371,19 @@ input:read-only[type=text]+span:after{
 button {
 	background-color: var(--secondary);
 	border: none;
+	border-radius: unset;
 	box-sizing: border-box;
 	color: var(--text);
+	cursor: pointer;
 	font: 1em var(--normal);
 	height: 3em;
 	margin: 2px;
-	text-align: center;
-	outline: none;
-	text-transform: uppercase;
-	overflow: hidden;
-	border-radius: unset;
 	min-width: 6.25rem;
+	outline: none;
+	overflow: hidden;
 	padding: 0;
-	cursor: pointer;
+	text-align: center;
+	text-transform: uppercase;
 }
 
 button:hover {
@@ -412,16 +415,16 @@ button:active {
 }
 
 .vcentered {
-	display: flex;
-	flex: 1;
 	align-content: center;
 	align-items: center;
+	display: flex;
+	flex: 1;
 }
 
-.flexHalf{
-	width: 50%;
+.flexHalf {
 	flex-grow: 2;
 	flex-shrink: 2;
+	width: 50%;
 }
 
 .nowrap {
@@ -442,12 +445,12 @@ button:active {
 }
 
 .fullpageForm {
+	align-content: center;
+	align-items: center;
 	display: flex;
 	flex-direction: column;
-	justify-items: center;
 	justify-content: center;
-	align-items: center;
-	align-content: center;
+	justify-items: center;
 }
 
 .fullpageForm > p {
@@ -488,14 +491,14 @@ button:active {
 }
 
 .configLayout {
-	position: relative;
+	box-sizing: border-box;
 	display: flex;
 	flex: 1;
 	flex-direction: column;
-	width: 100%;
-	box-sizing: border-box;
-	//padding: 15px;
 	overflow: hidden;
+	padding: 15px;
+	position: relative;
+	width: 100%;
 }
 
 .configLayout > .labels {
@@ -506,16 +509,16 @@ button:active {
 
 .configLayout > .labels > .textAreaLabel {
 	height: 250px;
-	min-height: 250px;
 	max-height: 250px;
+	min-height: 250px;
 }
 
 .configLayout > .labels > label {
-	height: 2.5em;
-	display: flex;
 	align-items: center;
-	margin-bottom: 10px;
 	cursor: pointer;
+	display: flex;
+	height: 2.5em;
+	margin-bottom: 10px;
 }
 
 .configLayout > .inputs {
@@ -524,16 +527,15 @@ button:active {
 
 .longInputs input,
 .longInputs select,
-.longInputs textarea
-{
+.longInputs textarea {
 	min-width: 500px;
 }
 
 .configLayout > .inputs > .input {
-	min-height: 2.5em;
-	display: flex;
 	align-items: center;
+	display: flex;
 	margin-bottom: 10px;
+	min-height: 2.5em;
 }
 
 .configLayout > .inputs > .input > .inputRangeValue {
@@ -542,31 +544,31 @@ button:active {
 }
 
 .configLayout > .inputs > .inputMultiline {
-	width: 100%;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	margin-bottom: 10px;
+	width: 100%;
 }
 
 .configLayout > .inputs > .inputMultiline > .line {
-	width: 100%;
+	align-items: center;
 	display: flex;
 	flex-direction: row;
-	align-items: center;
 	margin-bottom: 10px;
+	width: 100%;
 }
 
 .configLayout > .inputs > .input > textarea {
-	height: 250px;
-	min-height: 250px;
-	max-height: 250px;
 	box-sizing: border-box;
+	height: 250px;
+	max-height: 250px;
+	min-height: 250px;
 }
 
 .configLayout > .inputs > .input > .rangeInput {
-	display: flex;
 	align-items: center;
+	display: flex;
 }
 
 .inputError {
@@ -614,34 +616,69 @@ button:active {
 	14% {
 		transform: rotate(-4deg);
 	}
-	16% { transform: rotate(1deg); }
-	18% { transform: rotate(-3deg); }
-	20% { transform: rotate(0deg); }
-	100% { transform: rotate(0deg); }
+	16% {
+		transform: rotate(1deg);
+	}
+	18% {
+		transform: rotate(-3deg);
+	}
+	20% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(0deg);
+	}
 }
 
 @keyframes beat {
-	0% { transform: scale(0.95); }
-	10% { transform: scale(1.1); }
-	20% { transform: scale(0.9); }
-	30% { transform: scale(1.05); }
-	40% { transform: scale(0.8); }
-	50% { transform: scale(1.08); }
-	60% { transform: scale(0.87); }
-	70% { transform: scale(1.1); }
-	80% { transform: scale(0.95); }
-	90% { transform: scale(1.1); }
-	100% { transform: scale(1); }
+	0% {
+		transform: scale(0.95);
+	}
+	10% {
+		transform: scale(1.1);
+	}
+	20% {
+		transform: scale(0.9);
+	}
+	30% {
+		transform: scale(1.05);
+	}
+	40% {
+		transform: scale(0.8);
+	}
+	50% {
+		transform: scale(1.08);
+	}
+	60% {
+		transform: scale(0.87);
+	}
+	70% {
+		transform: scale(1.1);
+	}
+	80% {
+		transform: scale(0.95);
+	}
+	90% {
+		transform: scale(1.1);
+	}
+	100% {
+		transform: scale(1);
+	}
 }
 
 @keyframes fade {
-	0% { opacity: 1; }
-	100% { opacity: 0; }
+	0% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
 }
 
 .dg-actions {
 	margin-top: 1em;
 }
+
 .dg-actions button {
 	padding: 0 1em 0 1em;
 }
@@ -649,17 +686,18 @@ button:active {
 .spacedText {
 	margin: 5em;
 }
+
 .vue-simple-markdown {
 	white-space: normal !important;
 }
 
 .settingsContainer {
+	bottom: 0;
 	display: flex;
 	flex-flow: column;
-	top: 0;
-	left: 0;
-	bottom: 0;
-	right: 0;
-	overflow: hidden;
 	flex-grow: 1;
+	left: 0;
+	overflow: hidden;
+	right: 0;
+	top: 0;
 }

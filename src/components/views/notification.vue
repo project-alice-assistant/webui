@@ -1,7 +1,7 @@
 <template>
 	<div class="notification clickable" @click="dismiss(notification.id)">
 		<div class="title">
-			<i :class=icon class="fa-fw" aria-hidden="true"/> {{ notification['title'] }}
+			<i :class=icon aria-hidden="true" class="fa-fw"/> {{ notification['title'] }}
 		</div>
 		<div class="content">
 			{{ notification['text'] }}
@@ -11,8 +11,8 @@
 
 <script>
 export default {
-	name: 'notification',
-	props: [
+	name:     'notification',
+	props:    [
 		'notification'
 	],
 	computed: {
@@ -26,8 +26,8 @@ export default {
 			}
 		}
 	},
-	methods: {
-		dismiss: function(id) {
+	methods:  {
+		dismiss: function (id) {
 			// noinspection JSUnresolvedFunction
 			this.$parent.dismissNotification(id)
 		}
@@ -38,11 +38,11 @@ export default {
 <style scoped>
 .notification {
 	background-color: var(--secondary);
-	width: 100%;
-	font-size: 1em;
 	box-sizing: border-box;
-	padding: 5px;
+	font-size: 1em;
 	margin-bottom: 5px;
+	padding: 5px;
+	width: 100%;
 }
 
 .title {

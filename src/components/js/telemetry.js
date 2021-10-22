@@ -3,15 +3,15 @@ import axios from 'axios'
 
 export default {
 	components: {TelemetryChart},
-	data: () => ({
+	data:    () => ({
 		name: 'telemetry',
 		// holds all possible combinations
 		overview: [],
 		// bound structure for graph selection
 		graphData: {
-			set: false,
-			Y1: [],
-			Y2: [],
+			set:    false,
+			Y1:     [],
+			Y2:     [],
 			toggle: false
 		},
 		// toggle between easy and advanced mode
@@ -20,29 +20,29 @@ export default {
 		selection: [],
 		// holds the filtered data for dropdown and data selection
 		available: {
-			locations: [],
-			devices: [],
-			services: [],
+			locations:     [],
+			devices:       [],
+			services:      [],
 			telemetryType: [],
-			combinations: []
+			combinations:  []
 		},
 		// the currently selected values for the filter
 		filter: {
-			service: '',
-			location: '',
-			device: '',
+			service:       '',
+			location:      '',
+			device:        '',
 			telemetryType: '',
-			input: ''
+			input:         ''
 		}
 	}),
 	methods: {
-		getUnique: function () {
+		getUnique:      function () {
 			// initial loading of the possible combinations by calling the telemetry/overview API
 			axios({
-				method: 'GET',
-				url: `/telemetry/overview/`,
+				method:  'GET',
+				url:     `/telemetry/overview/`,
 				headers: {
-					'auth': this.$store.getters.apiToken,
+					'auth':         this.$store.getters.apiToken,
 					'Content-Type': 'application/json'
 				}
 			}).then(response => {
@@ -106,7 +106,7 @@ export default {
 				if (!this.available.devices.some(el => el.id === combination['deviceId'])
 					&& filterLine(this.filter.telemetryType, '', this.filter.location, this.filter.service, combination, this)) {
 					this.available.devices.push({
-						id: combination['deviceId'],
+						id:   combination['deviceId'],
 						name: combination['device']
 					})
 				}
@@ -114,7 +114,7 @@ export default {
 				if (!this.available.locations.some(el => el.id === combination['locationId'])
 					&& filterLine(this.filter.telemetryType, this.filter.device, '', this.filter.service, combination, this)) {
 					this.available.locations.push({
-						id: combination['locationId'],
+						id:   combination['locationId'],
 						name: combination['location']
 					})
 				}
@@ -132,7 +132,7 @@ export default {
 				}
 			}
 		},
-		addSelection: function (comb) {
+		addSelection:   function (comb) {
 			// add a single value to the selection
 			this.selection.push(comb)
 			this.buildSelection()
@@ -145,7 +145,7 @@ export default {
 			}
 			this.buildSelection()
 		},
-		createGraph: function () {
+		createGraph:    function () {
 			// fill in the data for the graph and show it
 			// alternating between Y1 and Y2 axis
 			if (this.graphData.toggle) {
@@ -163,7 +163,7 @@ export default {
 			this.selection = []
 			this.buildSelection()
 		},
-		addAll: function () {
+		addAll:         function () {
 			// add all currently filtered combinations to the selections
 			let that = this
 			this.available.combinations.forEach(function (comb) {
@@ -176,7 +176,7 @@ export default {
 			this.selection = []
 			this.buildSelection()
 		},
-		addAllOrShow: function () {
+		addAllOrShow:   function () {
 			// if there is nothing to add, add the selection to the graph
 			// used for filter: press enter twice to addAll and direct afterwards show the graph
 			if (this.available.combinations.length === 0) {
@@ -196,11 +196,11 @@ export default {
 				this.clearGraph()
 			}
 		},
-		clearGraph: function () {
+		clearGraph:     function () {
 			// clear the currently shown graph - graphData is bound
 			this.graphData = {}
 		},
-		clearFilters: function () {
+		clearFilters:   function () {
 			// remove all filters and rebuild the available values
 			this.filter.input = ''
 			this.filter.service = ''

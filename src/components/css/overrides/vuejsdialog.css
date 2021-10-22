@@ -11,29 +11,28 @@
 
 .dg-container {
 	align-content: center;
-//align-items: center;
 	display: flex;
 	justify-content: center;
 	justify-items: center;
 }
 
 .dg-btn--cancel {
-	color: var(--text);
 	background-color: var(--mainBG);
+	color: var(--text);
 }
 
 .dg-btn--ok {
-	color: var(--text);
 	background-color: var(--mainBG);
 	border: none;
+	color: var(--text);
 }
 
 .dg-form {
 	background-color: var(--secondary);
-	padding: 10px;
-	margin-bottom: -15px;
-	color: var(--text);
 	border-radius: 0;
+	color: var(--text);
+	margin-bottom: -15px;
+	padding: 10px;
 }
 
 .dg-container--has-input .dg-form {
@@ -43,22 +42,22 @@
 .dg-container--has-input .dg-content-footer {
 	background-color: var(--secondary);
 	border: 1px solid var(--text);
-	border-top: none;
 	border-radius: 0;
+	border-top: none;
 }
 
 .dg-container .dg-highlight-1 {
-	color: #FF8C00;
-	font-weight: bold;
 	border-bottom: 1px solid #2ba5ff;
 	border-radius: 0;
+	color: #FF8C00;
+	font-weight: bold;
 }
 
 .dg-container .dg-highlight-2 {
-	color: #2ba5ff;
-	font-weight: bold;
 	border-bottom: 1px solid #FF8C00;
 	border-radius: 0;
+	color: #2ba5ff;
+	font-weight: bold;
 }
 
 .dg-backdrop {

@@ -98,24 +98,24 @@ export default class MoveableItem {
 		}
 
 		this.moveable = new Moveable(container, {
-			target: target,
-			props: prop,
-			draggable: true,
-			resizable: true,
-			rotatable: true,
-			snappable: true,
-			roundable: false,
+			target:             target,
+			props:              prop,
+			draggable:          true,
+			resizable:          true,
+			rotatable:          true,
+			snappable:          true,
+			roundable:          false,
 			isDisplaySnapDigit: true,
-			snapCenter: true,
-			snapGap: false,
-			snapThreshold: 15,
-			throttleDrag: 1,
-			throttleResize: 1,
-			throttleRotate: 5,
-			scalable: false,
-			keepRatio: false,
-			edge: false,
-			origin: false
+			snapCenter:         true,
+			snapGap:            false,
+			snapThreshold:      15,
+			throttleDrag:       1,
+			throttleResize:     1,
+			throttleRotate:     5,
+			scalable:           false,
+			keepRatio:          false,
+			edge:               false,
+			origin:             false
 		})
 
 		this.moveable.on('dragStart', ({target}) => {
@@ -125,7 +125,7 @@ export default class MoveableItem {
 				this.startDrag(target)
 			} finally {
 				this.dragging = true
-				this.timeout = Math.floor(new Date().getTime()/250)
+				this.timeout = Math.floor(new Date().getTime() / 250)
 			}
 		}).on('drag', ({target, left, top, clientX, clientY}) => {
 			try {
@@ -141,8 +141,8 @@ export default class MoveableItem {
 			} finally {
 				this.save()
 				this.dragging = false
-				let newTimeout = Math.floor(new Date().getTime()/250)
-				if( this.timeout !== newTimeout) {
+				let newTimeout = Math.floor(new Date().getTime() / 250)
+				if (this.timeout !== newTimeout) {
 					this.timeout = newTimeout
 				} else {
 					this.timeout = 0
@@ -203,9 +203,9 @@ export default class MoveableItem {
 	setBoundaries(element, offset) {
 		const parent = element.parentElement
 		this.moveable.bounds = {
-			left: -offset,
-			right: parseInt(parent.style.width.substring(-2)) + offset,
-			top: -offset,
+			left:   -offset,
+			right:  parseInt(parent.style.width.substring(-2)) + offset,
+			top:    -offset,
 			bottom: parseInt(parent.style.height.substring(-2)) + offset
 		}
 	}
@@ -284,11 +284,12 @@ export default class MoveableItem {
 		target.style.width = `${width}px`
 		target.style.height = `${height}px`
 
-		if (target.classList.contains('widget')){
+		if (target.classList.contains('widget')) {
 			// get widget with id
 			try {
 				this.controller.$store.state.widgetInstances[target.id.substr(4)].instance.onResize(target, width, height, delta, direction)
-			} catch (e) { }
+			} catch (e) {
+			}
 		}
 	}
 

@@ -1,24 +1,24 @@
 .menu {
-	height: 3em;
-	font-size: 1em;
+	align-content: center;
+	align-items: center;
+	animation-direction: normal;
+	animation-duration: 1s;
+	animation-fill-mode: forwards;
+	animation-timing-function: linear;
 	background-color: var(--mainBG);
 	border: 2px solid var(--accent);
 	border-bottom-left-radius: 1.5em;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: row;
+	font-size: 1em;
+	height: 3em;
+	min-width: 60px;
+	padding-left: 20px;
 	position: fixed;
 	right: 0;
 	top: 48px;
 	z-index: 2;
-	display: flex;
-	flex-direction: row;
-	box-sizing: border-box;
-	padding-left: 20px;
-	align-content: center;
-	align-items: center;
-	min-width: 60px;
-	animation-timing-function: linear;
-	animation-duration: 1s;
-	animation-direction: normal;
-	animation-fill-mode: forwards;
 }
 
 .extended {
@@ -38,8 +38,8 @@
 }
 
 .retract {
-	animation-name: action-menu-extend;
 	animation-direction: reverse;
+	animation-name: action-menu-extend;
 }
 
 .menuButton {

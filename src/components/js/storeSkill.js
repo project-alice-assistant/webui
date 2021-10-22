@@ -1,18 +1,18 @@
 export default {
-	name: 'storeSkill',
-	data: function() {
+	name:    'storeSkill',
+	data:    function () {
 		return {
-			isWanted: false,
+			isWanted:      false,
 			isDownloading: false
 		}
 	},
-	props: [
+	props:   [
 		'skill',
 		'addMethod',
 		'removeMethod'
 	],
 	methods: {
-		handleDownloadClick: function() {
+		handleDownloadClick: function () {
 			if (!this.isWanted && !this.isDownloading) {
 				this.isWanted = true
 				this.addMethod(this.skill.name)
@@ -21,7 +21,7 @@ export default {
 				this.removeMethod(this.skill.name)
 			}
 		},
-		setIsDownloading: function() {
+		setIsDownloading:    function () {
 			this.isWanted = false
 			this.isDownloading = true
 		}

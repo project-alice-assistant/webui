@@ -2,14 +2,14 @@ import axios from 'axios'
 
 // noinspection DuplicatedCode
 export default {
-	name: 'widget',
-	data: function () {
+	name:    'widget',
+	data:    function () {
 		return {
-			hovered: false,
+			hovered:       false,
 			rotationDelta: 0
 		}
 	},
-	props: [
+	props:   [
 		'controller',
 		'widget'
 	],
@@ -22,7 +22,7 @@ export default {
 
 			const message = {}
 			const options = {
-				view: 'widgetOptionsPromptDialog',
+				view:   'widgetOptionsPromptDialog',
 				widget: this.widget,
 				parent: this
 			}
@@ -32,11 +32,11 @@ export default {
 				dataJson['settings'] = dialogue.data.settings
 				dataJson['configs'] = dialogue.data.configs
 				axios({
-					method: 'PATCH',
-					url: `/widgets/${self.widget.id}/`,
-					data: JSON.stringify(dataJson),
+					method:  'PATCH',
+					url:     `/widgets/${self.widget.id}/`,
+					data:    JSON.stringify(dataJson),
 					headers: {
-						'auth': self.$store.getters.apiToken,
+						'auth':         self.$store.getters.apiToken,
 						'content-type': 'application/json'
 					}
 				}).catch(() => {
@@ -47,7 +47,8 @@ export default {
 					//
 					try {
 						self.widget.instance.refresh()
-					} catch(e){}
+					} catch (e) {
+					}
 				})
 			}).catch(() => {
 				this.widget.settings = backupsettings
@@ -58,10 +59,10 @@ export default {
 		computeCustomStyle: function () {
 			return this.controller.moveableItem.computeWidgetCustomStyle(this.widget)
 		},
-		save: function () {
+		save:         function () {
 			this.controller.saveWidget(this.widget)
 		},
-		handleClick: function (event) {
+		handleClick:  function (event) {
 			event.stopPropagation()
 
 			if (!this.controller.dragAndResizeEnabled || !event.target.classList.contains('widget')) return

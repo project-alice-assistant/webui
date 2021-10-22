@@ -2,24 +2,24 @@ import * as C from '@/utils/constants'
 import paScenariosIframe from '../views/scenariosIframe'
 
 export default {
-	name: 'pa-content',
+	name:       'pa-content',
 	components: {
 		paScenariosIframe
 	},
-	data: function() {
+	data:       function () {
 		return {
-			connected: true,
-			reconnected: false,
+			connected:      true,
+			reconnected:    false,
 			checkHeartbeat: null
 		}
 	},
-	created: function() {
+	created:    function () {
 		let self = this
 		this.unwatch = this.$store.watch(
-			function(state) {
+			function (state) {
 				return state.mqttMessage
 			},
-			function(msg) {
+			function (msg) {
 				if (msg.topic === C.CORE_HEARTBEAT_TOPIC || msg.topic === C.CORE_RECONNECTION_TOPIC) {
 					if (self.reconnected) return
 
@@ -56,7 +56,7 @@ export default {
 		this.$store.state.mqtt.unsubscribe(C.CORE_DISCONNECTION_TOPIC)
 		this.unwatch()
 	},
-	watch: {
+	watch:      {
 		$route: {
 			immediate: true,
 			handler(to) {

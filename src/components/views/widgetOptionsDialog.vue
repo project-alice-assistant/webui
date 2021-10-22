@@ -4,20 +4,20 @@
 		<tabs
 			:activeTabId="activeTabId"
 			:parent="this"
-			:tabs="tabs"
-			:store="parent.$store"/>
+			:store="parent.$store"
+			:tabs="tabs"/>
 		<div v-if="activeTabId === 1" class="tab_page">
 			<div class="configLayout">
 				<div v-if="Object.keys(widget.configs).length === 0" class="spacedText">No widget specific configuration</div>
-				<config :templates="widget['configTemplate']"
-								:holder="widget.configs"
+				<config :holder="widget.configs"
+								:templates="widget['configTemplate']"
 								:translate="(val) => parent.$t(val)"/>
 			</div>
 		</div>
 		<div v-if="activeTabId === 2" class="tab_page">
 			<div class="configLayout">
-				<config :templates="designConfig()"
-								:holder="widget.settings"
+				<config :holder="widget.settings"
+								:templates="designConfig()"
 								:translate="(val) => parent.$t(val)"/>
 			</div>
 		</div>
@@ -29,4 +29,4 @@
 </template>
 
 <script src="../js/widgetOptionsDialog.js"/>
-<style src="../css/tabs.css" scoped/>
+<style scoped src="../css/tabs.css"/>
