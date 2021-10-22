@@ -1,104 +1,105 @@
 import axios from 'axios'
 
 export default {
-	name: 'devmode',
-	data: function () { return {
-			activeTabId: 'settings',
-			tabs: {
-				settings: {
-					'icon': 'fas fa-cogs',
-					'id': 'settings',
-					'position': 0,
-					'onChangeTo': this.loadInstallFile,
+	name:     'devmode',
+	data:     function () {
+		return {
+			activeTabId:     'settings',
+			tabs:            {
+				settings:       {
+					'icon':                'fas fa-cogs',
+					'id':                  'settings',
+					'position':            0,
+					'onChangeTo':          this.loadInstallFile,
 					'checkAllowLeaveFrom': this.checkAllowLeaveFromSettings
 				},
-				training: {
-					'icon': 'fas fa-train',
-					'id': 'training',
-					'position': 1,
+				training:       {
+					'icon':                'fas fa-train',
+					'id':                  'training',
+					'position':            1,
 					'checkAllowLeaveFrom': this.checkAllowLeaveFromTraining
 				},
-				talk: {
-					'icon': 'fas fa-comment',
-					'id': 'talk',
-					'position': 2,
+				talk:           {
+					'icon':                'fas fa-comment',
+					'id':                  'talk',
+					'position':            2,
 					'checkAllowLeaveFrom': this.checkAllowLeaveFromTalk
 				},
 				configTemplate: {
-					'icon': 'fas fa-cog',
-					'id': 'configTemplate',
-					'position': 3,
+					'icon':                'fas fa-cog',
+					'id':                  'configTemplate',
+					'position':            3,
 					'checkAllowLeaveFrom': this.checkAllowLeaveFromConfigTemplate
 				},
-				instructions: {
-					'icon': 'fas fa-chalkboard-teacher',
-					'id': 'instructions',
-					'position': 4,
-					'onChangeTo': this.loadInstruction,
+				instructions:   {
+					'icon':                'fas fa-chalkboard-teacher',
+					'id':                  'instructions',
+					'position':            4,
+					'onChangeTo':          this.loadInstruction,
 					'checkAllowLeaveFrom': this.checkAllowLeaveFromInstructions
 				},
-				devices: {
-					'icon': 'fas fa-microchip',
-					'id': 'devices',
+				devices:        {
+					'icon':     'fas fa-microchip',
+					'id':       'devices',
 					'position': 5
 				},
-				widgets: {
-					'icon': 'fas fa-window-maximize',
-					'id': 'widgets',
+				widgets:        {
+					'icon':     'fas fa-window-maximize',
+					'id':       'widgets',
 					'position': 6
 				},
-				cloud: {
-					'icon': 'fas fa-cloud',
-					'id': 'cloud',
+				cloud:          {
+					'icon':     'fas fa-cloud',
+					'id':       'cloud',
 					'position': 7
 				}
 			},
-			values: { 'conditions' : {}},
-			skills: [],
-			storeSkills: [],
-			waiting: false,
-			success: false,
-			failed: false,
-			editingSkill: null,
-			editingIntent: null,
+			values:          {'conditions': {}},
+			skills:          [],
+			storeSkills:     [],
+			waiting:         false,
+			success:         false,
+			failed:          false,
+			editingSkill:    null,
+			editingIntent:   null,
 			editingSlotType: null,
-			createNew: false,
-			currentLang: 'en',
-			changedSkill: {},
-			backedUpSkill: {},
-			noWatch: false,
-			menuItems: [
+			createNew:       false,
+			currentLang:     'en',
+			changedSkill:    {},
+			backedUpSkill:   {},
+			noWatch:         false,
+			menuItems:       [
 				{
-					name: "save",
-					icon: 'fas fa-save',
+					name:     'save',
+					icon:     'fas fa-save',
 					isToggle: false,
 					callback: this.saveSkill
 				},
 				{
-					name: "help",
-					icon: 'fas fa-question-circle',
+					name:     'help',
+					icon:     'fas fa-question-circle',
 					isToggle: false,
 					callback: this.showHelp
 				},
 				{
-					name: "close",
-					icon: 'fas fa-times-circle',
+					name:     'close',
+					icon:     'fas fa-times-circle',
 					isToggle: false,
 					callback: this.stopEditingSkill
 				}
 			],
-			newSkillTile: {
-				name: 'Create New Skill',
-				author: 'You!',
+			newSkillTile:    {
+				name:        'Create New Skill',
+				author:      'You!',
 				description: 'Start here for creating your own skill!',
-				modified: true
+				modified:    true
 			}
 		}
 	},
-	mounted: function() {
+	mounted:  function () {
 		axios({
 			method: 'GET',
-			url: `/skills/getStore/`
+			url:    `/skills/getStore/`
 		}).then(response => {
 			if ('store' in response.data) {
 				for (const skill of Object.keys(response.data['store'])) {
@@ -110,47 +111,47 @@ export default {
 		this.currentLang = this.$store.state.settings['activeLanguage']
 	},
 	computed: {
-		allValid : function () {
-			return document.querySelectorAll('.invalid, .missing').length <= 0;
+		allValid:             function () {
+			return document.querySelectorAll('.invalid, .missing').length <= 0
 		},
-		intentDefinition: function () {
-			for(const intent of Object.values(this.changedSkill.dialogTemplate.intents)){
+		intentDefinition:     function () {
+			for (const intent of Object.values(this.changedSkill.dialogTemplate.intents)) {
 				console.log(intent)
-				console.log("intent " + intent.name)
-				if(intent.name === this.editingIntent){
+				console.log('intent ' + intent.name)
+				if (intent.name === this.editingIntent) {
 					return intent
 				}
 			}
 		},
 		intentContainedSlots: function () {
 			let ret = []
-			for(const slot of Object.values(this.intentDefinition.slots)){
+			for (const slot of Object.values(this.intentDefinition.slots)) {
 				ret.push(slot.name)
 			}
 			return ret
 		}
 	},
-	watch: {
-		currentLang: function (newVal, oldVal){
-			if(this.activeTabId === 'instructions'){
-				if(this.noWatch) return
+	watch:    {
+		currentLang: function (newVal, oldVal) {
+			if (this.activeTabId === 'instructions') {
+				if (this.noWatch) return
 				this.noWatch = true
 				let self = this
-				if(this.backedUpSkill && this.backedUpSkill.instructions && this.backedUpSkill.instructions != this.changedSkill.instructions){
+				if (this.backedUpSkill && this.backedUpSkill.instructions && this.backedUpSkill.instructions !== this.changedSkill.instructions) {
 					this.$dialog.confirm({
-						title: "Your changes will be lost!",
-						body: "Close to return to "+oldVal+" or continue to "+newVal+"?",
-						okText: "Okilidoki",
+						title:      'Your changes will be lost!',
+						body:       'Close to return to ' + oldVal + ' or continue to ' + newVal + '?',
+						okText:     'Okilidoki',
 						cancelText: this.$t('buttons.cancel'),
-					}).then(function (dialog) {
+					}).then(function (_dialog) {
 						self.loadInstruction()
 						self.noWatch = false
-					}).catch(function (dialog){
-						self.currentLang = oldVal
-						self.$nextTick(() => {
-							//delay as watch will be called at the end of THIS tick with noWatch already changed
-							self.noWatch = false
-						});
+					}).catch(function (_dialog) {
+							self.currentLang = oldVal
+							self.$nextTick(() => {
+								//delay as watch will be called at the end of THIS tick with noWatch already changed
+								self.noWatch = false
+							})
 						}
 					)
 				} else {
@@ -160,74 +161,79 @@ export default {
 			}
 		}
 	},
-	methods: {
+	methods:  {
 		async checkAllowLeaveFromConfigTemplate() {
-			if(this.$refs.configTemplateEditor?.isModified) {
+			if (this.$refs.configTemplateEditor?.isModified) {
 				return this.askChangesLost()
 			} else return true
 		},
 		async checkAllowLeaveFromSettings() {
-			if(JSON.stringify(this.changedSkill.installFile) != JSON.stringify(this.backedUpSkill.installFile)) {
+			if (JSON.stringify(this.changedSkill.installFile) !== JSON.stringify(this.backedUpSkill.installFile)) {
 				return this.askChangesLost()
 			} else return true
 		},
 		async checkAllowLeaveFromInstructions() {
-			if(this.changedSkill.instructions != this.backedUpSkill.instructions) {
+			if (this.changedSkill.instructions !== this.backedUpSkill.instructions) {
 				return this.askChangesLost()
 			} else return true
 		},
 		async checkAllowLeaveFromTraining() {
-			if(this.$refs.dialogTemplateEditor?.isModified) {
+			if (this.$refs.dialogTemplateEditor?.isModified) {
 				return this.askChangesLost()
 			} else return true
 		},
 		async checkAllowLeaveFromTalk() {
-			if(this.$refs.talkFileEditor?.isModified) {
+			if (this.$refs.talkFileEditor?.isModified) {
 				return this.askChangesLost()
 			} else return true
 		},
-		async askChangesLost(){
+		async askChangesLost() {
 			return this.$dialog.confirm({
-				title: "Your changes will be lost!",
-				body: "Do you want to continue and lose your changes?",
-				okText: "Okilidoki",
+				title:      'Your changes will be lost!',
+				body:       'Do you want to continue and lose your changes?',
+				okText:     'Okilidoki',
 				cancelText: this.$t('buttons.cancel'),
 			})
 		},
-		showHelp(){
-			switch(this.activeTabId) {
+		showHelp() {
+			switch (this.activeTabId) {
 				case 'settings':
 					window.open('https://docs.projectalice.io/skill-development/your-first-skill.html#your-first-skill')
-					break;
+					break
 				case 'training':
 					window.open('https://docs.projectalice.io/skill-development/files-in-depth.html#dialog-templates')
-					break;
+					break
 				case 'configTemplate':
 					window.open('https://docs.projectalice.io/skill-development/files-in-depth.html#skill-configuration-file')
-					break;
+					break
 				case 'instructions':
-					alert("No help available")
-					break;
+					alert('No help available')
+					break
 				case 'talk':
 					window.open('https://docs.projectalice.io/skill-development/files-in-depth.html#talk-files')
-					break;
+					break
 				case 'devices':
 					window.open('https://docs.projectalice.io/skill-development/going-further.html#devices')
-					break;
+					break
 				case 'widgets':
 					window.open('https://docs.projectalice.io/skill-development/going-further.html#widgets')
-					break;
+					break
 				default:
 					alert('Unknown help requested')
 			}
 		},
-		startCapture: function() {
+		startCapture:      function () {
 			console.log('start')
-			navigator.mediaDevices.getUserMedia({video: true, audio: true, width: { min: 1280 }, height: { min: 720 }}).then((stream) => {
-				this.$refs.video.srcObject = stream;
+			navigator.mediaDevices.getUserMedia({
+				video:  true,
+				audio:  true,
+				width:  {min: 1280},
+				height: {min: 720}
+			}).then((stream) => {
+				this.$refs.video.srcObject = stream
 			})
 		},
-		validateTextInput: function(minLength, maxLength, noSpace, event) {
+		validateTextInput: function (minLength, maxLength, noSpace, event) {
 			const value = event.target.value
 			if (event.target.id === 'skillName') {
 				if (this.storeSkills.includes(value.toLowerCase())) {
@@ -239,26 +245,26 @@ export default {
 				}
 			}
 		},
-		setWaiting: function(v = true) {
+		setWaiting:        function (v = true) {
 			this.waiting = v
 		},
-		setSuccess: function() {
+		setSuccess:        function () {
 			this.waiting = false
 			this.success = true
 			let self = this
-			setTimeout(function() {
+			setTimeout(function () {
 				self.success = false
 			}, 2000)
 		},
-		setFailed: function() {
+		setFailed:         function () {
 			this.waiting = false
 			this.failed = true
 			let self = this
-			setTimeout(function() {
+			setTimeout(function () {
 				self.failed = false
 			}, 2000)
 		},
-		createSkill: function(event) {
+		createSkill:       function (event) {
 			if (event) event.preventDefault()
 			this.setWaiting()
 
@@ -285,14 +291,14 @@ export default {
 
 			let self = this
 			axios({
-				method: 'PUT',
-				url: `/skills/createSkill/`,
+				method:  'PUT',
+				url:     `/skills/createSkill/`,
 				headers: {
-					'auth': this.$store.getters.apiToken,
+					'auth':         this.$store.getters.apiToken,
 					'content-type': 'multipart/form-data'
 				},
-				data: data
-			}).then(function(response) {
+				data:    data
+			}).then(function (response) {
 				if ('success' in response.data) {
 					if (response.data['success']) {
 						self.createNew = false
@@ -302,137 +308,133 @@ export default {
 
 						self.setSuccess()
 						self.loadInstallFile()
-					}
-					else {
+					} else {
 						self.setFailed()
 					}
 				}
-			}).catch(function() {
+			}).catch(function () {
 				this.setFailed()
 			})
 		},
-		loadInstruction(){
+		loadInstruction() {
 			// load the instructions for the currently selected skill and language
-			const data = {"lang": this.currentLang }
+			const data = {'lang': this.currentLang}
 			let self = this
 			this.setWaiting()
 			axios({
-				method: 'POST',
-				url: `/skills/${this.editingSkill.name}/getInstructions/`,
-				data: data,
+				method:  'POST',
+				url:     `/skills/${this.editingSkill.name}/getInstructions/`,
+				data:    data,
 				headers: {
-					'auth': this.$store.getters.apiToken,
+					'auth':         this.$store.getters.apiToken,
 					'content-type': 'application/json'
 				}
-			}).then(function(response) {
+			}).then(function (response) {
 				if ('success' in response.data) {
 					if (response.data['success']) {
 						self.changedSkill.instructions = response.data['instruction']
 						self.backedUpSkill.instructions = JSON.parse(JSON.stringify(response.data['instruction']))
 						self.setWaiting(false)
-					}
-					else {
-						self.setFailed(response.data['message'] || "Unknown Error")
+					} else {
+						self.setFailed(response.data['message'] || 'Unknown Error')
 					}
 				}
-			}).catch(function(e) {
+			}).catch(function (e) {
 				console.log(e)
 				self.setFailed()
 			})
 		},
-		saveInstructions(){
+		saveInstructions() {
 			let self = this
 			let data = {
-				'lang': this.currentLang,
+				'lang':        this.currentLang,
 				'instruction': this.changedSkill.instructions
 			}
 			axios({
-				method: 'PATCH',
-				url: `/skills/${this.editingSkill.name}/setInstructions/`,
-				data: data,
+				method:  'PATCH',
+				url:     `/skills/${this.editingSkill.name}/setInstructions/`,
+				data:    data,
 				headers: {
-					'auth': this.$store.getters.apiToken,
+					'auth':         this.$store.getters.apiToken,
 					'content-type': 'application/json'
 				}
-			}).then(function(response) {
+			}).then(function (response) {
 				if ('success' in response.data) {
 					if (response.data['success']) {
 						self.setSuccess()
 						self.changedSkill.instructions = response.data['instruction']
 						self.backedUpSkill.instructions = self.changedSkill.instructions
-					}
-					else {
-						self.setFailed(response.data['message'] || "Unknown Error")
+					} else {
+						self.setFailed(response.data['message'] || 'Unknown Error')
 					}
 				}
-			}).catch(function(e) {
+			}).catch(function (e) {
 				console.log(e)
 				self.setFailed()
 			})
 		},
-		loadInstallFile(){
+		loadInstallFile() {
 			// load the instructions for the currently selected skill and language
 			const data = {}
 			let self = this
 			this.setWaiting()
 			axios({
-				method: 'POST',
-				url: `/skills/${this.editingSkill.name}/getInstallFile/`,
-				data: data,
+				method:  'POST',
+				url:     `/skills/${this.editingSkill.name}/getInstallFile/`,
+				data:    data,
 				headers: {
-					'auth': this.$store.getters.apiToken,
+					'auth':         this.$store.getters.apiToken,
 					'content-type': 'application/json'
 				}
-			}).then(function(response) {
+			}).then(function (response) {
 				if ('success' in response.data) {
 					if (response.data['success']) {
 						self.$set(self.changedSkill, 'installFile', response.data['installFile'])
 						self.backedUpSkill.installFile = JSON.parse(JSON.stringify(response.data['installFile']))
 						self.setWaiting(false)
-					}	else {
-						self.setFailed(response.data['message'] || "Unknown Error")
+					} else {
+						self.setFailed(response.data['message'] || 'Unknown Error')
 					}
 				}
-			}).catch(function(e) {
+			}).catch(function (e) {
 				console.log(e)
 				self.setFailed()
 			})
 		},
-		saveInstallFile(){
-				let self = this
-				let data = {
-					'installFile': this.changedSkill.installFile
+		saveInstallFile() {
+			let self = this
+			let data = {
+				'installFile': this.changedSkill.installFile
+			}
+			axios({
+				method:  'PATCH',
+				url:     `/skills/${this.editingSkill.name}/setInstallFile/`,
+				data:    data,
+				headers: {
+					'auth':         this.$store.getters.apiToken,
+					'content-type': 'application/json'
 				}
-				axios({
-					method: 'PATCH',
-					url: `/skills/${this.editingSkill.name}/setInstallFile/`,
-					data: data,
-					headers: {
-						'auth': this.$store.getters.apiToken,
-						'content-type': 'application/json'
+			}).then(function (response) {
+				if ('success' in response.data) {
+					if (response.data['success']) {
+						self.setSuccess()
+						self.changedSkill.installFile = response.data['installFile']
+						self.backedUpSkill.installFile = JSON.parse(JSON.stringify(response.data['installFile']))
+					} else {
+						self.setFailed(response.data['message'] || 'Unknown Error')
 					}
-				}).then(function(response) {
-					if ('success' in response.data) {
-						if (response.data['success']) {
-							self.setSuccess()
-							self.changedSkill.installFile = response.data['installFile']
-							self.backedUpSkill.installFile = JSON.parse(JSON.stringify(response.data['installFile']))
-						}
-						else {
-							self.setFailed(response.data['message'] || "Unknown Error")
-						}
-					}
-				}).catch(function(e) {
-					console.log(e)
-					self.setFailed()
-				})
+				}
+			}).catch(function (e) {
+				console.log(e)
+				self.setFailed()
+			})
 		},
-		checkOnGithub: function(event) {
+		checkOnGithub: function (event) {
 			event.preventDefault()
 			//TODO:Get github URL and integrate into UI
-			window.open("githubUrl", '_blank');
+			window.open('githubUrl', '_blank')
 		},
-		reset: function(event) {
+		reset:         function (event) {
 			event.preventDefault()
 			this.values = {}
 			//this.$refs.data.reset()
@@ -441,10 +443,10 @@ export default {
 			//let self = this
 			//setTimeout(function() { self.setFailed() }, 5000)
 		},
-		fetchSkills: function () {
+		fetchSkills:   function () {
 			axios({
-				method: 'GET',
-				url: `/skills/`,
+				method:  'GET',
+				url:     `/skills/`,
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then(response => {
 				if ('data' in response.data) {
@@ -452,28 +454,28 @@ export default {
 				}
 			})
 		},
-		startEditingSkill(skill){
+		startEditingSkill(skill) {
 			this.editingSkill = skill
 			this.loadInstallFile()
 		},
-		stopEditingSkill(){
+		stopEditingSkill() {
 			this.editingSkill = null
 			this.createNew = false
 		},
-		createPR(){
+		createPR() {
 			let gitUser = this.$store.state.settings['githubUsername']
-			if(!gitUser){
-				alert("please maintain a github user!")
+			if (!gitUser) {
+				alert('please maintain a github user!')
 			} else {
 
 				self = this
 				this.$dialog.prompt({
 					title: 'Please name your Pull Request',
-					body: 'Make sure you have Uploaded all your changes and changed the skills Version!'
-						  + 'The name should be short and precisely describe your changes'
+					body:  'Make sure you have Uploaded all your changes and changed the skills Version!'
+									 + 'The name should be short and precisely describe your changes'
 				}, {
 					promptHelp: '',
-					okText: this.$t('buttons.ok'),
+					okText:     this.$t('buttons.ok'),
 					cancelText: this.$t('buttons.cancel')
 				})
 					.then(function (dialogue) {
@@ -484,37 +486,37 @@ export default {
 					})
 			}
 		},
-		saveSkill(){
-			if(this.createNew){
+		saveSkill() {
+			if (this.createNew) {
 				this.createSkill()
 			}
-			if(this.changedSkill.instructions != this.backedUpSkill.instructions){
+			if (this.changedSkill.instructions !== this.backedUpSkill.instructions) {
 				this.saveInstructions()
 			}
-			if(this.changedSkill.installFile != this.backedUpSkill.installFile){
+			if (this.changedSkill.installFile !== this.backedUpSkill.installFile) {
 				this.saveInstallFile()
 			}
 //			if(this.$refs.installFileEditor){
 //				this.$refs.installFileEditor.save()
 //			}
-			if(this.$refs.dialogTemplateEditor){
+			if (this.$refs.dialogTemplateEditor) {
 				this.$refs.dialogTemplateEditor.save()
 			}
-			if(this.$refs.talkFileEditor){
+			if (this.$refs.talkFileEditor) {
 				this.$refs.talkFileEditor.save()
 			}
-			if(this.$refs.configTemplateEditor?.prepareSave()) {
+			if (this.$refs.configTemplateEditor?.prepareSave()) {
 				let self = this
 				let data = {
-					'lang': this.currentLang,
+					'lang':           this.currentLang,
 					'configTemplate': this.editingSkill.settingsTemplate
 				}
 				axios({
-					method: 'PATCH',
-					url: `/skills/${this.editingSkill.name}/setConfigTemplate/`,
-					data: data,
+					method:  'PATCH',
+					url:     `/skills/${this.editingSkill.name}/setConfigTemplate/`,
+					data:    data,
 					headers: {
-						'auth': this.$store.getters.apiToken,
+						'auth':         this.$store.getters.apiToken,
 						'content-type': 'application/json'
 					}
 				}).then(function (response) {
@@ -523,7 +525,7 @@ export default {
 							self.setSuccess()
 							self.editingSkill.settingsTemplate = response.data['configTemplate']
 						} else {
-							self.setFailed(response.data['message'] || "Unknown Error")
+							self.setFailed(response.data['message'] || 'Unknown Error')
 						}
 					}
 				}).catch(function (e) {
@@ -538,24 +540,24 @@ export default {
 			const self = this
 
 			axios({
-				method: 'GET',
-				url: `/skills/${this.editingSkill.name}/${id}/`,
+				method:  'GET',
+				url:     `/skills/${this.editingSkill.name}/${id}/`,
 				headers: {'auth': this.$store.getters.apiToken},
-			}).then(function(resp) {
-				if(resp['success'] != undefined && !resp['success']){
-					throw resp['message'];
+			}).then(function (resp) {
+				if (resp['success'] !== undefined && !resp['success']) {
+					throw resp['message']
 				} else {
 					icon.classList.add('green')
-					if(id === 'setModified') {
-						self.$set(self.editingSkill, "modified", true)
-					} else if( id === 'revert'){
-						self.$set(self.editingSkill, "modified", false)
+					if (id === 'setModified') {
+						self.$set(self.editingSkill, 'modified', true)
+					} else if (id === 'revert') {
+						self.$set(self.editingSkill, 'modified', false)
 					}
 				}
 				setTimeout(() => {
 					icon.classList.remove('fa-spin')
 				}, 2000)
-			}).catch(function(e) {
+			}).catch(function (e) {
 				console.log(e)
 				icon.classList.add('red')
 				setTimeout(() => {
@@ -574,302 +576,328 @@ export default {
 			icon.classList.add('fa-spin')
 			return icon
 		},
-		intentsTemplate(){
-			return { 'intents': {
-						"defaultValue": [],
-						"dataType"		: "userList",
-						"subType"			: "string",
-						"description" : "The intents this skill will be able to handle",
-						"category"		: "Intents",
-						"allowDouble" : false
-					},
-					'utterances': {
-						"defaultValue": [],
-						"dataType"		: "userList",
-						"subType"			: "utterance",
-						"description" : "A collection of utterances this skill should recognize",
-						"category"		: "Intents",
-						"allowDouble" : false,
-						"highlights"  : [
-							{ 'slot' : "city",
-								'color': "#006600",
-								'pattern': '{.*:=>city}'}, //IDEA: pattern as a way to generalize and enable easier editing?
-							{ 'slot' :"country",
-								'color':"#cc8400"},
-							{ 'slot' :"continent",
-								'color':"#1b4958"}]
+		intentsTemplate() {
+			return {
+				'intents':    {
+					'defaultValue': [],
+					'dataType':     'userList',
+					'subType':      'string',
+					'description':  'The intents this skill will be able to handle',
+					'category':     'Intents',
+					'allowDouble':  false
+				},
+				'utterances': {
+					'defaultValue': [],
+					'dataType':     'userList',
+					'subType':      'utterance',
+					'description':  'A collection of utterances this skill should recognize',
+					'category':     'Intents',
+					'allowDouble':  false,
+					'highlights':   [
+						{
+							'slot':    'city',
+							'color':   '#006600',
+							'pattern': '{.*:=>city}'
+						}, //IDEA: pattern as a way to generalize and enable easier editing?
+						{
+							'slot':  'country',
+							'color': '#cc8400'
+						},
+						{
+							'slot':  'continent',
+							'color': '#1b4958'
+						}]
 				}
 			}
 		},
-		createWidget(){
+		createWidget() {
 			self = this
 			this.$dialog.prompt({
 				title: 'Please name your Widget',
-				body: 'The name will be the technical name as well as the one shown to the user!\n Don\'t use spaces or special characters!'}, {
+				body:  'The name will be the technical name as well as the one shown to the user!\n Don\'t use spaces or special characters!'
+			}, {
 				promptHelp: '',
-				okText: this.$t('buttons.ok'),
+				okText:     this.$t('buttons.ok'),
 				cancelText: this.$t('buttons.cancel')
 			}).then(function (dialogue) {
 				let widgetName = dialogue.data
 				axios({
-					method: 'PATCH',
-					url: `/skills/${self.editingSkill.name}/createWidget/${widgetName}/`,
+					method:  'PATCH',
+					url:     `/skills/${self.editingSkill.name}/createWidget/${widgetName}/`,
 					headers: {
-						'auth': self.$store.getters.apiToken,
+						'auth':         self.$store.getters.apiToken,
 						'content-type': 'application/json'
 					}
 				})
 			})
 		},
-		createDevice(){
+		createDevice() {
 			self = this
 			this.$dialog.prompt({
 				title: 'Please name your device type',
-				body: 'The name will be the technical name as well as the one shown to the user!\n Don\'t use spaces or special characters!'}, {
+				body:  'The name will be the technical name as well as the one shown to the user!\n Don\'t use spaces or special characters!'
+			}, {
 				promptHelp: '',
-				okText: this.$t('buttons.ok'),
+				okText:     this.$t('buttons.ok'),
 				cancelText: this.$t('buttons.cancel')
 			}).then(function (dialogue) {
 				let deviceName = dialogue.data
 				axios({
-					method: 'PATCH',
-					url: `/skills/${self.editingSkill.name}/createDeviceType/${deviceName}/`,
+					method:  'PATCH',
+					url:     `/skills/${self.editingSkill.name}/createDeviceType/${deviceName}/`,
 					headers: {
-						'auth': self.$store.getters.apiToken,
+						'auth':         self.$store.getters.apiToken,
 						'content-type': 'application/json'
 					}
 				})
 			})
 		},
-		configTemplate(){
-			return { 'name' : {
-					"defaultValue": '',
-					"dataType"    : "string",
-					"description" : "The name of this intent as it can be found written in the store and folders.",
-					"obligatory"  : true,
-					"category"		: "general",
-					"noSpace"			: true,
-					"readonly"    : true
+		configTemplate() {
+			return {
+				'name':                   {
+					'defaultValue': '',
+					'dataType':     'string',
+					'description':  'The name of this intent as it can be found written in the store and folders.',
+					'obligatory':   true,
+					'category':     'general',
+					'noSpace':      true,
+					'readonly':     true
 				},
-			'speakableName' : {
-				"defaultValue": 'A name for the skill that is speakable for Alice - use spaces, but be careful with punctuation',
-				"dataType"    : "string",
-				"description" : "",
-				"obligatory"  : true,
-				"category"		: "general"
-			},
-			'desc' : {
-				"defaultValue": '',
-				"dataType"    : "longstring",
-				"description" : "A short description of that skill. It will be shown in the store",
-				"obligatory"  : true,
-				"category"		: "general"
-			},
-			'version' : {
-				"defaultValue": '0.0.1',
-				"dataType"    : "string",
-				"description" : "The version of this skill. Increase this on every update.",
-				"obligatory"  : true,
-				"category"		: "general"
-			},
-			'icon' : {
-				"defaultValue": 'fas fa-biohazard',
-				"dataType"    : "faIcon",
-				"description" : "The icon representing that skill.",
-				"category"		: "general"
-			},
-			'category' : {
-				"defaultValue": 'assistance',
-				"dataType"    : "list",
-				"description" : "The category your skill belongs into.",
-				"values"  : ["assistance", "automation", "entertainment", "game", "health", "household", "information", "kid",
-					"music", "organisation", "planning", "robotics", "security", "shopping", "weather"],
-				"category"		: "general"
-			},
-				'conditions': {
-					"subConfig": true,
-					"dataType" : "userList",
-					"subType"  : "toggles",
-					"category" : "lang",
-					"values"   : {
+				'speakableName':          {
+					'defaultValue': 'A name for the skill that is speakable for Alice - use spaces, but be careful with punctuation',
+					'dataType':     'string',
+					'description':  '',
+					'obligatory':   true,
+					'category':     'general'
+				},
+				'desc':                   {
+					'defaultValue': '',
+					'dataType':     'longstring',
+					'description':  'A short description of that skill. It will be shown in the store',
+					'obligatory':   true,
+					'category':     'general'
+				},
+				'version':                {
+					'defaultValue': '0.0.1',
+					'dataType':     'string',
+					'description':  'The version of this skill. Increase this on every update.',
+					'obligatory':   true,
+					'category':     'general'
+				},
+				'icon':                   {
+					'defaultValue': 'fas fa-biohazard',
+					'dataType':     'faIcon',
+					'description':  'The icon representing that skill.',
+					'category':     'general'
+				},
+				'category':               {
+					'defaultValue': 'assistance',
+					'dataType':     'list',
+					'description':  'The category your skill belongs into.',
+					'values':       ['assistance', 'automation', 'entertainment', 'game', 'health', 'household', 'information', 'kid',
+						'music', 'organisation', 'planning', 'robotics', 'security', 'shopping', 'weather'],
+					'category':     'general'
+				},
+				'conditions':             {
+					'subConfig': true,
+					'dataType':  'userList',
+					'subType':   'toggles',
+					'category':  'lang',
+					'values':    {
 						'en': {
-						"defaultValue": true,
-						"dataType"    : "boolean",
-						"description" : "English must be supported. A skill without english translation won't be accepted in the store.",
-						"obligatory"  : true,
-						"category"		: "language"
+							'defaultValue': true,
+							'dataType':     'boolean',
+							'description':  'English must be supported. A skill without english translation won\'t be accepted in the store.',
+							'obligatory':   true,
+							'category':     'language'
 						},
 						'de': {
-							"defaultValue": false,
-							"dataType"    : "boolean",
-							"description" : "",
-							"category"		: "language"
+							'defaultValue': false,
+							'dataType':     'boolean',
+							'description':  '',
+							'category':     'language'
 						},
 						'fr': {
-							"defaultValue": false,
-							"dataType"    : "boolean",
-							"description" : "",
-							"category"		: "language"
+							'defaultValue': false,
+							'dataType':     'boolean',
+							'description':  '',
+							'category':     'language'
 						},
 						'it': {
-							"defaultValue": false,
-							"dataType"    : "boolean",
-							"description" : "",
-							"category"		: "language"
+							'defaultValue': false,
+							'dataType':     'boolean',
+							'description':  '',
+							'category':     'language'
 						},
 						'pt': {
-							"defaultValue": false,
-							"dataType"    : "boolean",
-							"description" : "",
-							"category"		: "language"
+							'defaultValue': false,
+							'dataType':     'boolean',
+							'description':  '',
+							'category':     'language'
 						},
 						'pl': {
-							"defaultValue": false,
-							"dataType": "boolean",
-							"description": "",
-							"category": "language"
+							'defaultValue': false,
+							'dataType':     'boolean',
+							'description':  '',
+							'category':     'language'
 						}
 					}
 				},
-				'aliceMinVersion': {
-					"defaultValue": '1.0.0-rc1',
-					"dataType"    : "string",
-					"description" : "The minimum version alice needs to use that skill - if you don't know, be sure and use your current version!",
-					"category"		: "requirements"
+				'aliceMinVersion':        {
+					'defaultValue': '1.0.0-rc1',
+					'dataType':     'string',
+					'description':  'The minimum version alice needs to use that skill - if you don\'t know, be sure and use your current version!',
+					'category':     'requirements'
 				},
-				'pipRequirements': {
-					"defaultValue": '',
-					"dataType"    : "userList",
-					"subType"     : "string",
-					"description" : "The python requirements to be installed by pip",
-					"category"		: "requirements"
+				'pipRequirements':        {
+					'defaultValue': '',
+					'dataType':     'userList',
+					'subType':      'string',
+					'description':  'The python requirements to be installed by pip',
+					'category':     'requirements'
 				},
-				'sysreq': {
-					"defaultValue": '',
-					"dataType"    : "userList",
-					"subType"     : "string",
-					"description" : "The system requirements to be installed by apt-get",
-					"category"		: "requirements"
+				'sysreq':                 {
+					'defaultValue': '',
+					'dataType':     'userList',
+					'subType':      'string',
+					'description':  'The system requirements to be installed by apt-get',
+					'category':     'requirements'
 				},
-				'conditionOnline': {
-					"defaultValue": false,
-					"dataType"    : "boolean",
-					"description" : "Does this skill require internet to perform its task?",
-					"category"		: "requirements"
+				'conditionOnline':        {
+					'defaultValue': false,
+					'dataType':     'boolean',
+					'description':  'Does this skill require internet to perform its task?',
+					'category':     'requirements'
 				},
-				'conditionASRArbitrary': {
-					"defaultValue": false,
-					"dataType"    : "boolean",
-					"description" : "Is an arbitrary ASR capturing required for this skill?",
-					"category"		: "requirements"
+				'conditionASRArbitrary':  {
+					'defaultValue': false,
+					'dataType':     'boolean',
+					'description':  'Is an arbitrary ASR capturing required for this skill?',
+					'category':     'requirements'
 				},
-				'conditionSkill': {
-					"defaultValue": '',
-					"dataType"    : "userList",
-					"subType"     : "string",
-					"description" : "Are other skills required to run this skill?",
-					"category"		: "requirements"
+				'conditionSkill':         {
+					'defaultValue': '',
+					'dataType':     'userList',
+					'subType':      'string',
+					'description':  'Are other skills required to run this skill?',
+					'category':     'requirements'
 				},
-				'conditionNotSkill': {
-					"defaultValue": '',
-					"dataType"    : "userList",
-					"subType"     : "string",
-					"description" : "Are there skills this skill won't be able to run with?",
-					"category"		: "requirements"
+				'conditionNotSkill':      {
+					'defaultValue': '',
+					'dataType':     'userList',
+					'subType':      'string',
+					'description':  'Are there skills this skill won\'t be able to run with?',
+					'category':     'requirements'
 				},
 				'conditionActiveManager': {
-					"defaultValue": '',
-					"dataType"    : "userList",
-					"subType"     : "string",
-					"description" : "Is there a specific manager required in Alice?",
-					"category"		: "requirements"
+					'defaultValue': '',
+					'dataType':     'userList',
+					'subType':      'string',
+					'description':  'Is there a specific manager required in Alice?',
+					'category':     'requirements'
 				}
 			}
 		},
 		newSkill() {
-		return { 'name' : {
-				"defaultValue": '',
-				"dataType"    : "string",
-				"description" : "The name of this intent as it can be found written in the store and folders.",
-				"obligatory"  : true,
-				"category"		: "general",
-				"noSpace"			: true,
-				"capitalize"  : true
-			},
-			'speakableName' : {
-				"defaultValue": 'A name for the skill that is speakable for Alice - use spaces, but be careful with punctuation',
-				"dataType"    : "string",
-				"description" : "",
-				"obligatory"  : true,
-				"category"		: "general"
-			},
-			'desc' : {
-				"defaultValue": '',
-				"dataType"    : "longstring",
-				"description" : "A short description of that skill. It will be shown in the store",
-				"obligatory"  : true,
-				"category"		: "general"
-			},
-			'icon' : {
-				"defaultValue": 'fas fa-biohazard',
-				"dataType"    : "faIcon",
-				"description" : "The icon representing that skill.",
-				"category"		: "general"
-			},
-			'category' : {
-				"defaultValue": 'assistance',
-				"dataType"    : "list",
-				"description" : "The category your skill belongs into.",
-				"values"  : ["assistance", "automation", "entertainment", "game", "health", "household", "information", "kid",
-					"music", "organisation", "planning", "robotics", "security", "shopping", "weather"],
-				"category"		: "general"
-			},
-			'conditions': {
-				"subConfig": true,
-				"dataType" : "userList",
-				"subType"  : "toggles",
-				"category" : "lang",
-				"values"   : {
-					'en': {
-						"defaultValue": true,
-						"dataType": "boolean",
-						"description": "English must be supported. A skill without english translation won't be accepted in the store.",
-						"obligatory": true,
-						"category": "language"
-					},
-					'de': {
-						"defaultValue": false,
-						"dataType": "boolean",
-						"description": "",
-						"category": "language"
-					},
-					'fr': {
-						"defaultValue": false,
-						"dataType": "boolean",
-						"description": "",
-						"category": "language"
-					},
-					'it': {
-						"defaultValue": false,
-						"dataType": "boolean",
-						"description": "",
-						"category": "language"
-					},
-					'pt': {
-						"defaultValue": false,
-						"dataType": "boolean",
-						"description": "",
-						"category": "language"
-					},
-					'pl': {
-						"defaultValue": false,
-						"dataType": "boolean",
-						"description": "",
-						"category": "language"
+			return {
+				'name':          {
+					'defaultValue': '',
+					'dataType':     'string',
+					'description':  'The name of this intent as it can be found written in the store and folders.',
+					'obligatory':   true,
+					'category':     'general',
+					'noSpace':      true,
+					'capitalize':   true
+				},
+				'speakableName': {
+					'defaultValue': 'A name for the skill that is speakable for Alice - use spaces, but be careful with punctuation',
+					'dataType':     'string',
+					'description':  '',
+					'obligatory':   true,
+					'category':     'general'
+				},
+				'desc':          {
+					'defaultValue': '',
+					'dataType':     'longstring',
+					'description':  'A short description of that skill. It will be shown in the store',
+					'obligatory':   true,
+					'category':     'general'
+				},
+				'icon':          {
+					'defaultValue': 'fas fa-biohazard',
+					'dataType':     'faIcon',
+					'description':  'The icon representing that skill.',
+					'category':     'general'
+				},
+				'category':      {
+					'defaultValue': 'assistance',
+					'dataType':     'list',
+					'description':  'The category your skill belongs into.',
+					'values':       [
+						'assistance',
+						'automation',
+						'entertainment',
+						'game',
+						'health',
+						'household',
+						'information',
+						'kid',
+						'music',
+						'organisation',
+						'planning',
+						'robotics',
+						'security',
+						'shopping',
+						'weather'
+					],
+					'category':     'general'
+				},
+				'conditions':    {
+					'subConfig': true,
+					'dataType':  'userList',
+					'subType':   'toggles',
+					'category':  'lang',
+					'values':    {
+						'en': {
+							'defaultValue': true,
+							'dataType':     'boolean',
+							'description':  'English must be supported. A skill without english translation won\'t be accepted in the store.',
+							'obligatory':   true,
+							'category':     'language'
+						},
+						'de': {
+							'defaultValue': false,
+							'dataType':     'boolean',
+							'description':  '',
+							'category':     'language'
+						},
+						'fr': {
+							'defaultValue': false,
+							'dataType':     'boolean',
+							'description':  '',
+							'category':     'language'
+						},
+						'it': {
+							'defaultValue': false,
+							'dataType':     'boolean',
+							'description':  '',
+							'category':     'language'
+						},
+						'pt': {
+							'defaultValue': false,
+							'dataType':     'boolean',
+							'description':  '',
+							'category':     'language'
+						},
+						'pl': {
+							'defaultValue': false,
+							'dataType':     'boolean',
+							'description':  '',
+							'category':     'language'
+						}
 					}
 				}
-		}
-		}
+			}
 		}
 	}
 }
