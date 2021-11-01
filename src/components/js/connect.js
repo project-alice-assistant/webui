@@ -33,8 +33,8 @@ export default {
 	},
 	beforeDestroy: function () {
 		axios({
-			method:  'PUT',
-			url:     `/devices/${localStorage.getItem('interfaceUid')}/bye/`,
+			method: 'GET',
+			url: `/devices/${localStorage.getItem('interfaceUid')}/bye/`,
 			headers: {'auth': this.$store.getters.apiToken}
 		}).then()
 	},
