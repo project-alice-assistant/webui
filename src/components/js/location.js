@@ -240,7 +240,7 @@ export default {
 				this.myHome.moveableItem.setBoundaries(this.$el, 10)
 				const locations = Array.from(document.querySelectorAll('.location')).filter((location, _index, _array) => {
 					const locId = parseInt(location.id.substring(4))
-					return !(locId === this.data.id || this.$store.state.locations[locId].parentLocation === this.data.id);
+					return !(locId === this.data.id || this.$store.state.locations[locId].parentLocation === this.data.id)
 				})
 				this.myHome.moveableItem.setGuidelines(locations)
 			}
@@ -251,24 +251,24 @@ export default {
 
 			let self = this
 			this.$dialog
-				.prompt({
-					title: this.$t('dialogs.titles.enterNewLocationName'),
-					body:  ''
-				}, {
-					promptHelp: '',
-					okText:     this.$t('buttons.ok'),
-					cancelText: this.$t('buttons.cancel')
-				})
-				.then(function (dialogue) {
-					if (dialogue.data === '') {
-						self.showError(self.$t('notifications.errors.noLocationEmptyName'))
-						return
-					}
-					self.data.name = dialogue.data
-					self.$set(this.$store.state.locations, self.data.id, self.data)
-					self.$forceUpdate()
-					self.save()
-				})
+					.prompt({
+						title: this.$t('dialogs.titles.enterNewLocationName'),
+						body:  ''
+					}, {
+						promptHelp: '',
+						okText:     this.$t('buttons.ok'),
+						cancelText: this.$t('buttons.cancel')
+					})
+					.then(function (dialogue) {
+						if (dialogue.data === '') {
+							self.showError(self.$t('notifications.errors.noLocationEmptyName'))
+							return
+						}
+						self.data.name = dialogue.data
+						self.$set(this.$store.state.locations, self.data.id, self.data)
+						self.$forceUpdate()
+						self.save()
+					})
 		},
 		deleteMe:           function (event) {
 			event.stopPropagation()

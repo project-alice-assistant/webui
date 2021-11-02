@@ -33,7 +33,7 @@ export default {
 	},
 	computed: {
 		icon: function () {
-			const regex = /<i class="(.*)"><\/i>/;
+			const regex = /<i class="(.*)"><\/i>/
 			const matches = regex.exec(this.iconInput)
 			if (matches) {
 				return matches[1]
@@ -52,5 +52,5 @@ export default {
 			this.$forceUpdate()
 		}
 	}
-};
+}
 </script>

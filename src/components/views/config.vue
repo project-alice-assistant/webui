@@ -140,7 +140,7 @@ export default {
 	},
 	methods:  {
 		checkCategoryVisibility: function (categoryName) {
-			return Object.keys(this.templatesForCategory(categoryName)).length > 0;
+			return Object.keys(this.templatesForCategory(categoryName)).length > 0
 		},
 		checkConfigVisibility:   function (configName) {
 			let visible = true
@@ -167,15 +167,15 @@ export default {
 				}
 
 				if (visible && this.searchKeyword !== '') {
-					visible = configName.toLowerCase().includes(this.searchKeyword.toLowerCase());
+					visible = configName.toLowerCase().includes(this.searchKeyword.toLowerCase())
 				}
 			} else {
 				if (this.searchKeyword !== '') {
-					visible = configName.toLowerCase().includes(this.searchKeyword.toLowerCase());
+					visible = configName.toLowerCase().includes(this.searchKeyword.toLowerCase())
 				}
 			}
 			return visible
-		},
+		}
 	}
 }
 </script>

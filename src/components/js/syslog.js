@@ -3,8 +3,8 @@ import htmlFormatter from '@/utils/htmlFormatter'
 import * as C from '@/utils/constants'
 
 export default {
-	name:    'syslog',
-	data:    function () {
+	name:      'syslog',
+	data:      function () {
 		return {
 			cmd:       '',
 			unwatch:   {},
@@ -24,7 +24,7 @@ export default {
 			]
 		}
 	},
-	created: function () {
+	created:   function () {
 		let self = this
 		this.unwatch = this.$store.watch(
 			function (state) {
@@ -45,7 +45,7 @@ export default {
 			terminal.scrollTop = terminal.scrollHeight
 		}
 	},
-	updated: function () {
+	updated:   function () {
 		if (this.follow) {
 			let terminal = this.$el.querySelector('#terminal')
 			terminal.scrollTop = terminal.scrollHeight
@@ -55,7 +55,7 @@ export default {
 		this.$store.state.mqtt.unsubscribe(C.SYSLOG_TOPIC)
 		this.unwatch()
 	},
-	methods: {
+	methods:   {
 		sendCmd: function () {
 			const data = new FormData
 			data.append('cmd', this.cmd)

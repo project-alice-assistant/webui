@@ -45,7 +45,7 @@ export default {
 				this.myHome.moveableItem.setBoundaries(this.$el, 0)
 				const constructions = Array.from(document.querySelectorAll('.construction')).filter((construction) => {
 					const conId = parseInt(construction.id.substring(4))
-					return !(conId === this.data.id);
+					return !(conId === this.data.id)
 				})
 				this.myHome.moveableItem.setGuidelines(constructions)
 			}

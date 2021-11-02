@@ -50,26 +50,26 @@ export default {
 
 			let self = this
 			this.$dialog
-				.confirm(this.$t('dialogs.titles.confirmSkillDeletion'), {
-					okText:     this.$t('dialogs.labels.yes'),
-					cancelText: this.$t('dialogs.labels.cancel')
-				})
-				.then(function () {
-					axios({
-						method:  'DELETE',
-						url:     `/skills/${self.skill.name}/`,
-						headers: {'auth': self.$store.getters.apiToken}
-					}).then(response => {
-						if ('success' in response.data) {
-							if (response.data.success) {
-								self.showSuccess(this.$parent.$t('notifications.successes.skillDeleted'))
-							} else {
-								self.showError(this.$parent.$t('notifications.errors.skillDeleteFailed'))
-							}
-						}
+					.confirm(this.$t('dialogs.titles.confirmSkillDeletion'), {
+						okText:     this.$t('dialogs.labels.yes'),
+						cancelText: this.$t('dialogs.labels.cancel')
 					})
-				})
-				.catch()
+					.then(function () {
+						axios({
+							method:  'DELETE',
+							url:     `/skills/${self.skill.name}/`,
+							headers: {'auth': self.$store.getters.apiToken}
+						}).then(response => {
+							if ('success' in response.data) {
+								if (response.data.success) {
+									self.showSuccess(this.$parent.$t('notifications.successes.skillDeleted'))
+								} else {
+									self.showError(this.$parent.$t('notifications.errors.skillDeleteFailed'))
+								}
+							}
+						})
+					})
+					.catch()
 		},
 		showSettings: function () {
 			if (this.$tours['skills'].currentStep !== -1) return

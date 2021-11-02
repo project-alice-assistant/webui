@@ -36,7 +36,7 @@ export default {
 		}
 	}),
 	methods: {
-		getUnique:      function () {
+		getUnique:       function () {
 			// initial loading of the possible combinations by calling the telemetry/overview API
 			axios({
 				method:  'GET',
@@ -52,7 +52,7 @@ export default {
 			})
 			return true
 		},
-		buildSelection: function () {
+		buildSelection:  function () {
 			// build and rebuild the available combinations and filters:
 			// based on the currently set filters and chosen selections
 
@@ -132,20 +132,20 @@ export default {
 				}
 			}
 		},
-		addSelection:   function (comb) {
+		addSelection:    function (comb) {
 			// add a single value to the selection
 			this.selection.push(comb)
 			this.buildSelection()
 		},
 		removeSelection: function (comb) {
 			// remove a single value from the selection
-			const index = this.selection.indexOf(comb);
+			const index = this.selection.indexOf(comb)
 			if (index > -1) {
-				this.selection.splice(index, 1);
+				this.selection.splice(index, 1)
 			}
 			this.buildSelection()
 		},
-		createGraph:    function () {
+		createGraph:     function () {
 			// fill in the data for the graph and show it
 			// alternating between Y1 and Y2 axis
 			if (this.graphData.toggle) {
@@ -163,7 +163,7 @@ export default {
 			this.selection = []
 			this.buildSelection()
 		},
-		addAll:         function () {
+		addAll:          function () {
 			// add all currently filtered combinations to the selections
 			let that = this
 			this.available.combinations.forEach(function (comb) {
@@ -171,12 +171,12 @@ export default {
 			})
 			this.buildSelection()
 		},
-		clearSelection: function () {
+		clearSelection:  function () {
 			// clear the selection and rebuild the possible combinations
 			this.selection = []
 			this.buildSelection()
 		},
-		addAllOrShow:   function () {
+		addAllOrShow:    function () {
 			// if there is nothing to add, add the selection to the graph
 			// used for filter: press enter twice to addAll and direct afterwards show the graph
 			if (this.available.combinations.length === 0) {
@@ -196,11 +196,11 @@ export default {
 				this.clearGraph()
 			}
 		},
-		clearGraph:     function () {
+		clearGraph:      function () {
 			// clear the currently shown graph - graphData is bound
 			this.graphData = {}
 		},
-		clearFilters:   function () {
+		clearFilters:    function () {
 			// remove all filters and rebuild the available values
 			this.filter.input = ''
 			this.filter.service = ''

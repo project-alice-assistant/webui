@@ -16,7 +16,7 @@ export default {
 			return this.parent.myHome.getDeviceType(this).linkConfigsTemplates
 		},
 		deviceTemplates:        function () {
-			return Object.assign({}, this.myConfigTemplates, this.genericDeviceTemplates);
+			return Object.assign({}, this.myConfigTemplates, this.genericDeviceTemplates)
 		},
 		genericDeviceTemplates: function () {
 			let template = {

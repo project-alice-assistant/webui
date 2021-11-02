@@ -46,7 +46,7 @@ export default {
 				this.myHome.moveableItem.setBoundaries(this.$el, 0)
 				const furnitures = Array.from(document.querySelectorAll('.furniture')).filter((furniture) => {
 					const furId = parseInt(furniture.id.substring(4))
-					return !(furId === this.data.id);
+					return !(furId === this.data.id)
 				})
 				this.myHome.moveableItem.setGuidelines(furnitures)
 			}

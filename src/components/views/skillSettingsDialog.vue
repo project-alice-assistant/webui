@@ -34,5 +34,5 @@ export default {
 			this.cancel()
 		}
 	}
-};
+}
 </script>

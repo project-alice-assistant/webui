@@ -26,7 +26,8 @@
 <script>
 export default {
 	name:  'simpleJsonEditor',
-	props: ['value',
+	props: [
+		'value',
 		'configTemplate'
 	],
 	data:  function () {

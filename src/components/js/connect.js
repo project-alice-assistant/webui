@@ -33,8 +33,8 @@ export default {
 	},
 	beforeDestroy: function () {
 		axios({
-			method: 'GET',
-			url: `/devices/${localStorage.getItem('interfaceUid')}/bye/`,
+			method:  'GET',
+			url:     `/devices/${localStorage.getItem('interfaceUid')}/bye/`,
 			headers: {'auth': this.$store.getters.apiToken}
 		}).then()
 	},
@@ -92,7 +92,7 @@ export default {
 				return new Promise(function (resolve, reject) {
 					axios({
 						method: 'GET',
-						url:    `/devices/${uid}/hello/`,
+						url: `/devices/${uid}/hello/`
 					}).then(response => {
 						if ('deviceId' in response.data) {
 							resolve()
@@ -155,7 +155,7 @@ export default {
 			// due to asynchronicity sometimes MQTT is faster and overwrites - need to combine!
 			if (settings) {
 				settings = JSON.parse(settings)
-				settings = Object.assign({}, settings, defSettings);
+				settings = Object.assign({}, settings, defSettings)
 			} else {
 				settings = defSettings
 			}
@@ -191,33 +191,33 @@ export default {
 			let self = this
 			return new Promise(function (resolve, reject) {
 				axios.get(`/utils/mqttConfig/`)
-					.then(response => {
-						let settings = window.sessionStorage.getItem('aliceSettings')
-						if (settings) {
-							settings = JSON.parse(settings)
-						} else {
-							settings = {}
-						}
-						settings['mqttHost'] = response.data.host
-						settings['mqttPort'] = Number(response.data.port)
-						window.sessionStorage.setItem('aliceSettings', JSON.stringify(settings))
-						let randomNum = Math.floor((Math.random() * 10000000) + 1)
-						// noinspection JSUnresolvedFunction
-						let client = new Paho.Client(response.data.host, Number(response.data.port), 'ProjectAliceInterface' + randomNum)
-						client.onMessageArrived = self.onMessage
-						client.onConnectionLost = self.onConnectionLost
-						client.onConnectionFailed = self.onConnectionFailed
-						client.connect({
-							onSuccess: self.onConnected,
-							onFailure: self.onConnectionFailed,
-							timeout: 5
-						})
-						self.$store.commit('setMqtt', client)
-						resolve()
-					})
-					.catch(reason => {
-						reject(new Error('Error getting MQTT info: ' + reason))
-					})
+						 .then(response => {
+							 let settings = window.sessionStorage.getItem('aliceSettings')
+							 if (settings) {
+								 settings = JSON.parse(settings)
+							 } else {
+								 settings = {}
+							 }
+							 settings['mqttHost'] = response.data.host
+							 settings['mqttPort'] = Number(response.data.port)
+							 window.sessionStorage.setItem('aliceSettings', JSON.stringify(settings))
+							 let randomNum = Math.floor((Math.random() * 10000000) + 1)
+							 // noinspection JSUnresolvedFunction
+							 let client = new Paho.Client(response.data.host, Number(response.data.port), 'ProjectAliceInterface' + randomNum)
+							 client.onMessageArrived = self.onMessage
+							 client.onConnectionLost = self.onConnectionLost
+							 client.onConnectionFailed = self.onConnectionFailed
+							 client.connect({
+								 onSuccess: self.onConnected,
+								 onFailure: self.onConnectionFailed,
+								 timeout:   5
+							 })
+							 self.$store.commit('setMqtt', client)
+							 resolve()
+						 })
+						 .catch(reason => {
+							 reject(new Error('Error getting MQTT info: ' + reason))
+						 })
 			})
 		},
 		validateToken() {
@@ -307,7 +307,7 @@ export default {
 			return new Promise(function (resolve, reject) {
 				axios({
 					method: 'GET',
-					url:    `/myHome/deviceTypes/`,
+					url: `/myHome/deviceTypes/`
 				}).then(response => {
 					if ('types' in response.data) {
 						self.$store.commit('setDeviceTypes', response.data['types'])
@@ -325,7 +325,7 @@ export default {
 			return new Promise(function (resolve, reject) {
 				axios({
 					method: 'GET',
-					url:    `/widgets/pages/`,
+					url: `/widgets/pages/`
 				}).then(response => {
 					if ('pages' in response.data) {
 						self.$store.commit('setWidgetPages', response.data['pages'])
@@ -380,7 +380,7 @@ export default {
 			return new Promise(function (resolve, reject) {
 				axios({
 					method: 'GET',
-					url:    `/myHome/locations/floors/`,
+					url: `/myHome/locations/floors/`
 				}).then(response => {
 					if ('data' in response.data) {
 						self.$store.commit('setFloorTiles', response.data['data'])
@@ -398,7 +398,7 @@ export default {
 			return new Promise(function (resolve, reject) {
 				axios({
 					method: 'GET',
-					url:    `/myHome/constructions/tiles/`,
+					url: `/myHome/constructions/tiles/`
 				}).then(response => {
 					if ('data' in response.data) {
 						self.$store.commit('setConstructionTiles', response.data['data'])
@@ -416,7 +416,7 @@ export default {
 			return new Promise(function (resolve, reject) {
 				axios({
 					method: 'GET',
-					url:    `/myHome/furniture/tiles/`,
+					url: `/myHome/furniture/tiles/`
 				}).then(response => {
 					if ('data' in response.data) {
 						self.$store.commit('setFurnitureTiles', response.data['data'])

@@ -13,7 +13,7 @@ export default {
 	methods: {
 		handleClick: function (id) {
 			let oldId = this.$parent.activeTabId
-			if (oldId === id) return;
+			if (oldId === id) return
 
 			if (this.tabs[oldId].hasOwnProperty('checkAllowLeaveFrom')) {
 				// noinspection JSUnresolvedFunction

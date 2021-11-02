@@ -286,20 +286,20 @@ export default {
 				this.$dialog.alert(this.$t('dialogs.bodies.cannotDeleteDefaultPage')).then()
 			} else {
 				this.$dialog.confirm(this.$t('dialogs.bodies.confirmPageDelete'))
-					.then(function () {
-						axios({
-							method:  'DELETE',
-							url:     `/widgets/pages/${id}/`,
-							headers: {'auth': self.$store.getters.apiToken}
-						}).then(response => {
-							if ('pages' in response.data) {
-								self.$delete(self.$store.state.widgetPages, id)
-								self.showSuccess(self.$t('notifications.successes.pageDeleted'))
-								self.activeTabId = 1
-								localStorage.setItem('widgetsActiveTabId', 1)
-							}
-						})
-					}).catch(() => {
+						.then(function () {
+							axios({
+								method:  'DELETE',
+								url:     `/widgets/pages/${id}/`,
+								headers: {'auth': self.$store.getters.apiToken}
+							}).then(response => {
+								if ('pages' in response.data) {
+									self.$delete(self.$store.state.widgetPages, id)
+									self.showSuccess(self.$t('notifications.successes.pageDeleted'))
+									self.activeTabId = 1
+									localStorage.setItem('widgetsActiveTabId', 1)
+								}
+							})
+						}).catch(() => {
 				})
 			}
 		},

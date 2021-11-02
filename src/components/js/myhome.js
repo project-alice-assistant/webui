@@ -93,7 +93,7 @@ export default {
 					before:  _type => new Promise((resolve) => {
 						// Just wait for the default device to be shown at least
 						setTimeout(resolve, 500)
-					}),
+					})
 				},
 				{
 					target:  '[data-tour="1"]',
@@ -113,12 +113,12 @@ export default {
 		}
 	},
 	computed: {
-		locations: function () {
+		locations:        function () {
 			return Object.values(this.$store.state.locations).filter(location => {
 				return location.parentLocation === 0
 			})
 		},
-		ghostBackground: function () {
+		ghostBackground:  function () {
 			let end = 'locations/floors/floor-80.png'
 			if (this.activeFloorTile) {
 				end = `locations/floors/${this.activeFloorTile}.png`
@@ -442,32 +442,32 @@ export default {
 
 			let self = this
 			this.$dialog
-				.prompt({
-					title: this.$t('dialogs.titles.enterLocationName'),
-					body:  this.$t('dialogs.bodies.clickToAddLocation')
-				}, {
-					promptHelp: '',
-					okText:     this.$t('buttons.ok'),
-					cancelText: this.$t('buttons.cancel')
-				})
-				.then(function (dialogue) {
-					axios({
-						method:  'GET',
-						url:     `/myHome/locations/${dialogue.data}/`,
-						headers: {'auth': self.$store.getters.apiToken}
-					}).then(response => {
-						if ('location' in response.data) {
-							self.$dialog.alert(self.$t('dialogs.bodies.locationNameOrSynonymAlreadyExist')).then()
-						} else {
-							self.setActiveTool('addingLocation')
-							self.newLocationName = dialogue.data
-						}
+					.prompt({
+						title: this.$t('dialogs.titles.enterLocationName'),
+						body:  this.$t('dialogs.bodies.clickToAddLocation')
+					}, {
+						promptHelp: '',
+						okText:     this.$t('buttons.ok'),
+						cancelText: this.$t('buttons.cancel')
 					})
-				})
-				.catch(function () {
-					self.setActiveTool('locationsEditMode')
-					self.newLocationName = ''
-				})
+					.then(function (dialogue) {
+						axios({
+							method:  'GET',
+							url:     `/myHome/locations/${dialogue.data}/`,
+							headers: {'auth': self.$store.getters.apiToken}
+						}).then(response => {
+							if ('location' in response.data) {
+								self.$dialog.alert(self.$t('dialogs.bodies.locationNameOrSynonymAlreadyExist')).then()
+							} else {
+								self.setActiveTool('addingLocation')
+								self.newLocationName = dialogue.data
+							}
+						})
+					})
+					.catch(function () {
+						self.setActiveTool('locationsEditMode')
+						self.newLocationName = ''
+					})
 		},
 		triggerUploadWindow:  function (id) {
 			const input = document.getElementById(id)
@@ -501,7 +501,7 @@ export default {
 
 					axios({
 						method: 'GET',
-						url:    url,
+						url: url
 					}).then(response => {
 						if ('data' in response.data) {
 							this.showSuccess(this.$t('notifications.successes.newTileAdded'))
@@ -684,7 +684,7 @@ export default {
 		moveZUp(location) {
 			const data = location.data
 			const myIndex = data.settings['z']
-			const myNewIndex = myIndex + 1;
+			const myNewIndex = myIndex + 1
 
 			if (myNewIndex > this.$store.state.locations.length) {
 				return
@@ -703,7 +703,7 @@ export default {
 		moveZDown(location) {
 			const data = location.data
 			const myIndex = data.settings['z']
-			const myNewIndex = myIndex - 1;
+			const myNewIndex = myIndex - 1
 
 			if (data.parentLocation > 0) {
 				const parent = document.querySelector(`#loc_${data.parentLocation}`)

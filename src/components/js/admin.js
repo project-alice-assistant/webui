@@ -70,7 +70,7 @@ export default {
 			}
 		},
 		checkCategoryVisibility:   function (categoryName) {
-			return Object.keys(this.categorySettings(categoryName)).length > 0;
+			return Object.keys(this.categorySettings(categoryName)).length > 0
 		},
 		checkSettingVisibility:    function (settingName) {
 			let visible = true
@@ -97,11 +97,11 @@ export default {
 				}
 
 				if (visible && this.settingSearchKeyword !== '') {
-					visible = settingName.toLowerCase().includes(this.settingSearchKeyword.toLowerCase());
+					visible = settingName.toLowerCase().includes(this.settingSearchKeyword.toLowerCase())
 				}
 			} else {
 				if (this.settingSearchKeyword !== '') {
-					visible = settingName.toLowerCase().includes(this.settingSearchKeyword.toLowerCase());
+					visible = settingName.toLowerCase().includes(this.settingSearchKeyword.toLowerCase())
 				}
 			}
 
@@ -130,7 +130,7 @@ export default {
 			axios({
 				method:  'GET',
 				url:     `/utils/${id}/`,
-				headers: {'auth': this.$store.getters.apiToken},
+				headers: {'auth': this.$store.getters.apiToken}
 			}).then(function () {
 				icon.classList.add('green')
 				setTimeout(() => {

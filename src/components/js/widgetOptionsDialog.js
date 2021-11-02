@@ -28,7 +28,7 @@ export default {
 	},
 	methods: {
 		designConfig: function () {
-			let template = {};
+			let template = {}
 			template['title'] = {
 				'defaultValue': false,
 				'dataType':     'boolean',
@@ -82,4 +82,4 @@ export default {
 			this.cancel()
 		}
 	}
-};
+}

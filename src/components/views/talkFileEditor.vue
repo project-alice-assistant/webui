@@ -88,8 +88,10 @@ import axios from 'axios'
 
 export default {
 	name:  'talkFileEditor',
-	props: ['editingSkill',
-		'currentLang'],
+	props: [
+		'editingSkill',
+		'currentLang'
+	],
 	data() {
 		return {
 			talkFiles:       {},
@@ -110,12 +112,12 @@ export default {
 				this.stringValid = true
 				this.$nextTick(() => {
 					self.noWatch = false
-				});
+				})
 			} catch (e) {
 				this.stringValid = false
 				this.$nextTick(() => {
 					self.noWatch = false
-				});
+				})
 			}
 		},
 		talkFiles:   {
@@ -127,7 +129,7 @@ export default {
 				self = this
 				this.$nextTick(() => {
 					self.noWatch = false
-				});
+				})
 			}
 		},
 		currentLang: function () {
@@ -177,29 +179,29 @@ export default {
 				okText:     this.$t('buttons.ok'),
 				cancelText: this.$t('buttons.cancel')
 			})
-				.then(function (dialogue) {
-					if (dialogue.data === '') {
-						self.showError('The name must not be empty!')
-						return
-					}
-					if (self.allSlots.includes(dialogue.data)) {
-						self.showError('That name is already taken!')
-						return
-					}
-					let renameProp = (
-						oldProp,
-						newProp,
-						{[oldProp]: old, ...others}
-					) => {
-						return {
-							[newProp]: old,
-							...others
+					.then(function (dialogue) {
+						if (dialogue.data === '') {
+							self.showError('The name must not be empty!')
+							return
 						}
-					}
-					for (const lang in self.talkFiles) {
-						self.talkFiles[lang] = renameProp(talk, dialogue.data, self.talkFiles[lang])
-					}
-				})
+						if (self.allSlots.includes(dialogue.data)) {
+							self.showError('That name is already taken!')
+							return
+						}
+						let renameProp = (
+							oldProp,
+							newProp,
+							{[oldProp]: old, ...others}
+						) => {
+							return {
+								[newProp]: old,
+								...others
+							}
+						}
+						for (const lang in self.talkFiles) {
+							self.talkFiles[lang] = renameProp(talk, dialogue.data, self.talkFiles[lang])
+						}
+					})
 		},
 		removeTalk(key) {
 			let self = this
@@ -207,7 +209,7 @@ export default {
 				title:      'Delete for all languages?',
 				body:       'This will delete the talk for all languages!',
 				okText:     'Delete',
-				cancelText: this.$t('buttons.cancel'),
+				cancelText: this.$t('buttons.cancel')
 			}).then(() => {
 				for (const lang in self.talkFiles) {
 					self.$delete(self.talkFiles[lang], [key])
@@ -281,7 +283,7 @@ export default {
 				console.log(e)
 				self.$emit('failed', 'Unknown Error')
 			})
-		},
+		}
 	}
 }
 </script>

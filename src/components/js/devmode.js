@@ -142,7 +142,7 @@ export default {
 						title:      'Your changes will be lost!',
 						body:       'Close to return to ' + oldVal + ' or continue to ' + newVal + '?',
 						okText:     'Okilidoki',
-						cancelText: this.$t('buttons.cancel'),
+						cancelText: this.$t('buttons.cancel')
 					}).then(function (_dialog) {
 						self.loadInstruction()
 						self.noWatch = false
@@ -192,7 +192,7 @@ export default {
 				title:      'Your changes will be lost!',
 				body:       'Do you want to continue and lose your changes?',
 				okText:     'Okilidoki',
-				cancelText: this.$t('buttons.cancel'),
+				cancelText: this.$t('buttons.cancel')
 			})
 		},
 		showHelp() {
@@ -478,12 +478,12 @@ export default {
 					okText:     this.$t('buttons.ok'),
 					cancelText: this.$t('buttons.cancel')
 				})
-					.then(function (dialogue) {
-						let prTitle = dialogue.data
-						window.open('https://github.com/project-alice-assistant/skill_'
-							+ self.editingSkill.name + '/compare/master...' + gitUser + ':master'
-							+ '?diff=split&quick_pull=1&title=' + prTitle)
-					})
+						.then(function (dialogue) {
+							let prTitle = dialogue.data
+							window.open('https://github.com/project-alice-assistant/skill_'
+								+ self.editingSkill.name + '/compare/master...' + gitUser + ':master'
+								+ '?diff=split&quick_pull=1&title=' + prTitle)
+						})
 			}
 		},
 		saveSkill() {
@@ -542,7 +542,7 @@ export default {
 			axios({
 				method:  'GET',
 				url:     `/skills/${this.editingSkill.name}/${id}/`,
-				headers: {'auth': this.$store.getters.apiToken},
+				headers: {'auth': this.$store.getters.apiToken}
 			}).then(function (resp) {
 				if (resp['success'] !== undefined && !resp['success']) {
 					throw resp['message']
@@ -606,7 +606,8 @@ export default {
 						{
 							'slot':  'continent',
 							'color': '#1b4958'
-						}]
+						}
+					]
 				}
 			}
 		},
@@ -690,12 +691,14 @@ export default {
 					'description':  'The icon representing that skill.',
 					'category':     'general'
 				},
-				'category':               {
+				'category': {
 					'defaultValue': 'assistance',
 					'dataType':     'list',
 					'description':  'The category your skill belongs into.',
-					'values':       ['assistance', 'automation', 'entertainment', 'game', 'health', 'household', 'information', 'kid',
-						'music', 'organisation', 'planning', 'robotics', 'security', 'shopping', 'weather'],
+					'values':       [
+						'assistance', 'automation', 'entertainment', 'game', 'health', 'household', 'information', 'kid',
+						'music', 'organisation', 'planning', 'robotics', 'security', 'shopping', 'weather'
+					],
 					'category':     'general'
 				},
 				'conditions':             {

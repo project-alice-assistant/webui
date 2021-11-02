@@ -33,6 +33,7 @@ export default class MoveableItem {
 		})
 	}
 
+
 	destroyMoveable() {
 		if (this.altDown) return
 		try {
@@ -40,6 +41,7 @@ export default class MoveableItem {
 		} catch {
 		}
 	}
+
 
 	computeWidgetCustomStyle(widget) {
 		let style = `color: ${widget.settings['font-color']};`
@@ -81,9 +83,11 @@ export default class MoveableItem {
 		return style
 	}
 
+
 	setGuidelines(guidelines) {
 		this.moveable.elementGuidelines = guidelines
 	}
+
 
 	setMoveable(target, prop) {
 		this.destroyMoveable()
@@ -200,6 +204,7 @@ export default class MoveableItem {
 		})
 	}
 
+
 	setBoundaries(element, offset) {
 		const parent = element.parentElement
 		this.moveable.bounds = {
@@ -210,14 +215,17 @@ export default class MoveableItem {
 		}
 	}
 
+
 	save() {
 		this.moveable.props.save()
 	}
+
 
 	startDrag(target) {
 		target.classList.add('dragging')
 		target.style['z-index'] = 1000
 	}
+
 
 	getItem(target) {
 		const id = this.getId(target)
@@ -234,9 +242,11 @@ export default class MoveableItem {
 		}
 	}
 
+
 	getId(target) {
 		return parseInt(target.id.substring(4))
 	}
+
 
 	setPosition(target) {
 		const item = this.getItem(target)
@@ -249,6 +259,7 @@ export default class MoveableItem {
 		}
 	}
 
+
 	setSize(target) {
 		const item = this.getItem(target)
 		item.settings['x'] = parseInt(target.style.left.substring(-2))
@@ -256,6 +267,7 @@ export default class MoveableItem {
 		item.settings['w'] = parseInt(target.style.width.substring(-2))
 		item.settings['h'] = parseInt(target.style.height.substring(-2))
 	}
+
 
 	setRotation(target) {
 		const item = this.getItem(target)
@@ -267,10 +279,12 @@ export default class MoveableItem {
 		this.rotationDelta = 0
 	}
 
+
 	setBorderRadius(el) {
 		const item = this.getItem(el.target)
 		item.settings['b'] = el.target.style['border-radius']
 	}
+
 
 	handleResize(target, width, height, delta, direction) {
 		if (direction[0] === -1) {
@@ -293,14 +307,17 @@ export default class MoveableItem {
 		}
 	}
 
+
 	handleRotate(target, dist, transform) {
 		this.rotationDelta = dist
 		target.style.transform = transform
 	}
 
+
 	handleBorderRadius(el) {
 		el.target.style.borderRadius = el.borderRadius
 	}
+
 
 	handleDrag(target, left, top) {
 		target.style.left = `${left}px`

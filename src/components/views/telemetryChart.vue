@@ -11,12 +11,12 @@ import axios from 'axios'
 
 export default {
 	components: {Chart},
-	props: ['telemetrytypeY1', 'telemetrytypeY2', 'locations', 'fullSpecifiedY1', 'fullSpecifiedY2'],
-	data: () => ({
-		loaded: false,
+	props:      ['telemetrytypeY1', 'telemetrytypeY2', 'locations', 'fullSpecifiedY1', 'fullSpecifiedY2'],
+	data:       () => ({
+		loaded:         false,
 		waitingForData: 0,
-		options: {
-			elements: {
+		options:        {
+			elements:            {
 				point: {
 					radius: 0
 				}
@@ -24,28 +24,32 @@ export default {
 			responsive:          true,
 			maintainAspectRatio: false,
 			scales:              {
-				xAxes: [{
-					type:    'time',
-					time:    {
-						displayFormats: {
-							hour: 'HH:mm',
-							days: 'DD MMM'
+				xAxes: [
+					{
+						type:    'time',
+						time:    {
+							displayFormats: {
+								hour: 'HH:mm',
+								days: 'DD MMM'
+							},
+							distribution:   'linear',
+							ticks:          {
+								autoSkip:      true,
+								maxTicksLimit: 20,
+								maxRotation:   0,
+								minRotation:   0
+							}
 						},
-						distribution:   'linear',
-						ticks:          {
-							autoSkip:      true,
-							maxTicksLimit: 20,
-							maxRotation:   0,
-							minRotation:   0,
-						},
-					},
-					display: true
-				}],
-				yAxes: [{
-					id:       'Y1',
-					type:     'linear',
-					position: 'left',
-				}]
+						display: true
+					}
+				],
+				yAxes: [
+					{
+						id:       'Y1',
+						type:     'linear',
+						position: 'left'
+					}
+				]
 			}
 		},
 		chartdata:      {datasets: []}
@@ -156,12 +160,12 @@ export default {
 
 
 function getRandomColor() {
-	let letters = '0123456789ABCDEF';
-	let color = '#';
+	let letters = '0123456789ABCDEF'
+	let color = '#'
 	for (let i = 0; i < 6; i++) {
-		color += letters[Math.floor(Math.random() * 16)];
+		color += letters[Math.floor(Math.random() * 16)]
 	}
-	return color;
+	return color
 }
 </script>
 

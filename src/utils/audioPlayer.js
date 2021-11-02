@@ -11,6 +11,7 @@ export default class AudioPlayer {
 		this.context = new AudioContext()
 	}
 
+
 	playBytes(bytes) {
 		let self = this
 		let buffer = new ArrayBuffer(bytes.length)
@@ -23,6 +24,7 @@ export default class AudioPlayer {
 			self.play(buffer)
 		}).then()
 	}
+
 
 	play(buffer) {
 		let source = this.context.createBufferSource()

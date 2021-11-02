@@ -28,8 +28,8 @@ export default {
 	],
 	methods: {
 		removeTags: function (msg) {
-			let regex = /(<([^>]+)>)/ig;
-			return msg.replace(regex, '');
+			let regex = /(<([^>]+)>)/ig
+			return msg.replace(regex, '')
 		}
 	}
 }

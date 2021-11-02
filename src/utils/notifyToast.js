@@ -48,13 +48,13 @@ const notifyToast = {
 					} else if (ret['action'] === 'error_notification') {
 						this.showError(ret['data']['body'] || this.$t(ret['data']))
 					} else if (ret['action'] === 'navigate') {
-						window.open(ret['data'], '_blank');
+						window.open(ret['data'], '_blank')
 					} else if (ret['action'] === 'answer_string') {
 						this.$dialog.prompt({
 							title:      this.$t(ret['data']['title']),
 							body:       this.$t(ret['data']['body']),
 							okText:     this.$t('buttons.ok'),
-							cancelText: this.$t('buttons.cancel'),
+							cancelText: this.$t('buttons.cancel')
 						}).then(function (dialog) {
 							axios({
 								method:  'POST',
@@ -99,4 +99,4 @@ const notifyToast = {
 	}
 }
 
-export default notifyToast;
+export default notifyToast

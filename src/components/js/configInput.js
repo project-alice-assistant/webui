@@ -28,7 +28,7 @@ export default {
 		icon() {
 			if (this.holder[this.configName] === '' || this.holder[this.configName] === undefined)
 				return 'fas fa-biohazard'
-			const regex = /<i class="(.*)"><\/i>/;
+			const regex = /<i class="(.*)"><\/i>/
 			const matches = regex.exec(this.holder[this.configName])
 			if (matches) {
 				this.$set(this.holder, this.configName, matches[1])
@@ -41,7 +41,7 @@ export default {
 		hex2rgba() {
 			let hex = this.holder['background']
 			let alpha = this.holder['background-opacity']
-			const [r, g, b] = hex.match(/\w\w/g).map(x => parseInt(x, 16));
+			const [r, g, b] = hex.match(/\w\w/g).map(x => parseInt(x, 16))
 			this.holder['rgba'] = `rgba(${r}, ${g}, ${b}, ${alpha})`
 			console.log('new color ' + this.holder['rgba'])
 		},

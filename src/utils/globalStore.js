@@ -158,7 +158,7 @@ export default new Vuex.Store({
 			state.uiConnected = connected
 		},
 		setWindowHeight(state) {
-			state.windowHeight = window.innerHeight;
+			state.windowHeight = window.innerHeight
 		}
 	},
 	getters:   {

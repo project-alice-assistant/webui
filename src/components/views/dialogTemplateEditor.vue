@@ -177,8 +177,10 @@ import axios from 'axios'
 
 export default {
 	name:  'dialogTemplateEditor',
-	props: ['editingSkill',
-		'currentLang'],
+	props: [
+		'editingSkill',
+		'currentLang'
+	],
 	data:  function () {
 		return {
 			dialogTemplates: {},
@@ -260,18 +262,18 @@ export default {
 				okText:     this.$t('buttons.ok'),
 				cancelText: this.$t('buttons.cancel')
 			})
-				.then(function (dialogue) {
-					if (dialogue.data === '') {
-						self.showError('The name must not be empty!')
-						return
-					}
-					if (self.allIntents.filter(a => a.name === dialogue.data).length) {
-						self.showError('That name is already taken!')
-						return
-					}
-					intent.name = dialogue.data
-					self.editingIntent = intent.name
-				})
+					.then(function (dialogue) {
+						if (dialogue.data === '') {
+							self.showError('The name must not be empty!')
+							return
+						}
+						if (self.allIntents.filter(a => a.name === dialogue.data).length) {
+							self.showError('That name is already taken!')
+							return
+						}
+						intent.name = dialogue.data
+						self.editingIntent = intent.name
+					})
 		},
 		renameSlot(intent, slot) {
 			let self = this
@@ -283,23 +285,23 @@ export default {
 				okText:     this.$t('buttons.ok'),
 				cancelText: this.$t('buttons.cancel')
 			})
-				.then(function (dialogue) {
-					if (dialogue.data === '') {
-						self.showError('The name must not be empty!')
-						return
-					}
-					if (intent.slots.filter(a => a.name === dialogue.data).length) {
-						self.showError('That name is already taken!')
-						return
-					}
-					let old = slot.name
-					slot.name = dialogue.data
+					.then(function (dialogue) {
+						if (dialogue.data === '') {
+							self.showError('The name must not be empty!')
+							return
+						}
+						if (intent.slots.filter(a => a.name === dialogue.data).length) {
+							self.showError('That name is already taken!')
+							return
+						}
+						let old = slot.name
+						slot.name = dialogue.data
 
-					let regex = new RegExp('{([^(:=>)]*?):=>' + old + '}', 'g')
-					for (let ind in Object.values(intent.utterances)) {
-						intent.utterances[ind] = intent.utterances[ind].replace(regex, '{$1:=>' + slot.name + '}')
-					}
-				})
+						let regex = new RegExp('{([^(:=>)]*?):=>' + old + '}', 'g')
+						for (let ind in Object.values(intent.utterances)) {
+							intent.utterances[ind] = intent.utterances[ind].replace(regex, '{$1:=>' + slot.name + '}')
+						}
+					})
 		},
 		resetValidity(e) {
 			e.target.setCustomValidity('')
@@ -341,7 +343,7 @@ export default {
 				title:      'Mind the consequences!',
 				body:       'Deleting a slot will remove all occurrences in the utterances',
 				okText:     'Delete',
-				cancelText: this.$t('buttons.cancel'),
+				cancelText: this.$t('buttons.cancel')
 			}).then(() => {
 				let regex = new RegExp('{([^(:=>)]*?):=>' + slot.name + '}', 'g')
 				for (let ind in Object.values(intent.utterances)) {
@@ -418,7 +420,7 @@ export default {
 				title:      'Delete for all languages?',
 				body:       'This will delete the ' + type + ' for all languages!',
 				okText:     'Delete',
-				cancelText: this.$t('buttons.cancel'),
+				cancelText: this.$t('buttons.cancel')
 			}).then(() => {
 				self.removeForAllLanguages(type, key)
 			})
@@ -460,7 +462,7 @@ export default {
 				console.log(e)
 				self.$emit('failed')
 			})
-		},
+		}
 	}
 }
 </script>
