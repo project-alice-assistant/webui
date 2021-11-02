@@ -747,7 +747,7 @@ export default {
 					}
 				},
 				'aliceMinVersion':        {
-					'defaultValue': '1.0.0-rc1',
+					'defaultValue': '1.0.0-rc2',
 					'dataType':     'string',
 					'description':  'The minimum version alice needs to use that skill - if you don\'t know, be sure and use your current version!',
 					'category':     'requirements'
