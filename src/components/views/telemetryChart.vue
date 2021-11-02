@@ -5,18 +5,18 @@
 </template>
 
 <script>
-import Chart from '@/components/views/chart';
-import axios from 'axios';
+import Chart from '@/components/views/chart'
+import axios from 'axios'
 
 
 export default {
 	components: {Chart},
-	props:      ['telemetrytypeY1', 'telemetrytypeY2', 'locations', 'fullSpecifiedY1', 'fullSpecifiedY2'],
-	data:       () => ({
-		loaded:         false,
+	props: ['telemetrytypeY1', 'telemetrytypeY2', 'locations', 'fullSpecifiedY1', 'fullSpecifiedY2'],
+	data: () => ({
+		loaded: false,
 		waitingForData: 0,
-		options:        {
-			elements:            {
+		options: {
+			elements: {
 				point: {
 					radius: 0
 				}

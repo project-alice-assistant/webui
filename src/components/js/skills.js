@@ -1,5 +1,5 @@
 import axios from 'axios'
-import * as C from '@/utils/constants';
+import * as C from '@/utils/constants'
 
 export default {
 	name:      'skills',

@@ -1,5 +1,5 @@
-import VueToasted from 'vue-toasted';
-import axios from 'axios';
+import VueToasted from 'vue-toasted'
+import axios from 'axios'
 
 const notifyToast = {
 	install(Vue, _options) {

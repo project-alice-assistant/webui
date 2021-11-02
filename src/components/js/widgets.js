@@ -1,7 +1,7 @@
 import axios from 'axios'
 import {v4 as uuidv4} from 'uuid'
 import MoveableItem from './moveableItem'
-import jsLoader from '@/utils/jsLoader';
+import jsLoader from '@/utils/jsLoader'
 
 export default {
 	name:        'pa-widgets',
