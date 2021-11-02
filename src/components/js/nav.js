@@ -1,27 +1,32 @@
 export default {
-	name: 'pa-nav',
-	data: function() {
+	name:     'pa-nav',
+	data:     function () {
 		return {
 			animateRetract: false,
-			animateExtend: false
+			animateExtend:  false
 		}
 	},
-	methods: {
-		logout: function() {
+	computed: {
+		forceMinimized() {
+			return this.$store.state.windowHeight <= 627
+		}
+	},
+	methods:  {
+		logout:        function () {
 			this.$store.commit('userLogout')
 			window.location.reload()
 		},
-		endAnimations: function() {
+		endAnimations: function () {
 			this.animateExtend = false
 			this.animateRetract = false
 		},
-		minimize: function() {
+		minimize:      function () {
 			this.$store.commit('startMinimized')
 			this.animateExtend = false
 			this.animateRetract = true
 		}
 		,
-		maximize: function() {
+		maximize: function () {
 			this.$store.commit('stopMinimized')
 			this.animateRetract = false
 			this.animateExtend = true

@@ -69,13 +69,13 @@
 import VueDialogMixin from 'vuejs-dialog/dist/vuejs-dialog-mixin.min.js'
 
 export default {
-	mixins: [VueDialogMixin],
-	data: function () {
+	mixins:  [VueDialogMixin],
+	data:    function () {
 		return {
-			parent: this.options['parent'],
-			data: this.options['data'],
+			parent:     this.options['parent'],
+			data:       this.options['data'],
 			newSynonym: '',
-			error: false
+			error:      false
 		}
 	},
 	methods: {

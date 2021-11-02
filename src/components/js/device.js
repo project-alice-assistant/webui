@@ -4,22 +4,23 @@ import {v4 as uuidv4} from 'uuid'
 
 // noinspection DuplicatedCode
 export default {
-	name: 'device',
-	data: function () {
+	name:          'device',
+	data:          function () {
 		return {
-			rotationDelta: 0,
+			rotationDelta:        0,
 			targetParentLocation: 0,
-			checkHeartbeat: null,
-			myLinks: {},
-			hovered: false
+			checkHeartbeat:       null,
+			myLinks:              {},
+			hovered:              false,
+			etag:                 uuidv4()
 		}
 	},
-	props: [
+	props:         [
 		'data',
 		'device',
 		'myHome'
 	],
-	created: function () {
+	created:       function () {
 		let self = this
 		this.unwatch = this.$store.watch(
 			function (state) {
@@ -42,9 +43,11 @@ export default {
 
 					self.data.connected = true
 
-					self.checkHeartbeat = setTimeout(function () {
-						self.data.connected = false
-					}, self.data.deviceConfigs['heartbeatRate'] * 2500)
+					if (self.data.deviceConfigs['heartbeatRate'] > 0) {
+						self.checkHeartbeat = setTimeout(function () {
+							self.data.connected = false
+						}, self.data.deviceConfigs['heartbeatRate'] * 2500)
+					}
 				} else if (msg.topic === C.CORE_DISCONNECTION_TOPIC) {
 					self.data.connected = false
 					if (self.checkHeartbeat !== null) {
@@ -52,6 +55,8 @@ export default {
 					}
 				} else if (msg.topic === C.DEVICE_UPDATED_TOPIC) {
 					self.$set(self.$store.state.devices, payload['device']['id'], payload['device'])
+				} else if (msg.topic === C.DEVICE_DELETED_TOPIC) {
+					self.$delete(self.$store.state.devices, payload['id'])
 				}
 			}
 		)
@@ -60,15 +65,16 @@ export default {
 		this.$store.state.mqtt.unsubscribe(C.CORE_HEARTBEAT_TOPIC)
 		this.$store.state.mqtt.unsubscribe(C.DEVICE_HEARTBEAT_TOPIC)
 		this.$store.state.mqtt.unsubscribe(C.DEVICE_UPDATED_TOPIC)
+		this.$store.state.mqtt.unsubscribe(C.DEVICE_DELETED_TOPIC)
 		this.unwatch()
 	},
-	methods: {
-		openSettings: function () {
+	methods:       {
+		openSettings:       function () {
 			let self = this
 			const message = {}
 			const options = {
-				view: 'deviceOptionsPromptDialog',
-				data: this.data,
+				view:   'deviceOptionsPromptDialog',
+				data:   this.data,
 				parent: this
 			}
 
@@ -77,26 +83,40 @@ export default {
 			}).catch()
 		},
 		computeCustomStyle: function () {
+			let self = this
+			axios({
+				method: 'GET',
+				url:    `/myHome/devices/${this.data.id}/${this.etag}/device.png`
+			}).then(response => {
+				if (response.headers['x-etag'] !== self.etag) {
+					self.etag = response.headers['x-etag']
+					let el = document.getElementById(`dev_${self.data.id}`)
+					el.style.backgroundImage = `url('http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/${self.data.id}/${self.etag}/device.png')`
+					el.style.backgroundPosition = 'center center'
+					el.style.backgroundSize = 'contain'
+					el.style.backgroundRepeat = 'no-repeat'
+				}
+			})
 			return this.myHome.moveableItem.computeMyHomeCustomStyle(
-				this.data,
-				`background-image: url('http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/${this.data.id}/${uuidv4()}/device.png'); background-position: center center; background-size: contain; background-repeat: no-repeat;`
+				self.data,
+				null
 			)
 		},
-		save: function () {
+		save:               function () {
 			const data = {
 				parentLocation: this.data.parentLocation,
-				settings: this.data.settings,
-				deviceConfigs: this.data.deviceConfigs,
-				linksConfigs: this.myHome.getDeviceLinks(this.data.id)
+				settings:       this.data.settings,
+				deviceConfigs:  this.data.deviceConfigs,
+				linkConfigs:    this.myHome.getDeviceLinks(this.data.id)
 			}
 
 			const self = this
 			axios({
-				method: 'PATCH',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/${this.data.id}/`,
-				data: data,
+				method:  'PATCH',
+				url:     `/myHome/devices/${this.data.id}/`,
+				data:    data,
 				headers: {
-					'auth': this.$store.getters.apiToken,
+					'auth':         this.$store.getters.apiToken,
 					'content-type': 'application/json'
 				}
 			}).then(response => {
@@ -104,7 +124,7 @@ export default {
 					self.myHome.removeDeviceLinks(self.data.id)
 
 					for (const link of Object.values(response.data.links)) {
-						this.myHome.$set(this.myHome.deviceLinks, link.id, link)
+						self.myHome.$set(self.myHome.$store.state.deviceLinks, link.id, link)
 					}
 
 					self.showSuccess(self.$t('notifications.successes.deviceSaved'))
@@ -116,7 +136,7 @@ export default {
 				}
 			})
 		},
-		handleClick: function (event) {
+		handleClick:        function (event) {
 			if (this.myHome.toolsState.addingDevice) return
 
 			event.stopPropagation()
@@ -143,10 +163,9 @@ export default {
 				this.myHome.moveableItem.setBoundaries(this.myHome.$refs.floorPlan)
 				this.myHome.moveableItem.setGuidelines([])
 			} else if (!this.myHome.devicesEditMode && !this.myHome.locationsEditMode) {
-				const self = this
 				axios({
-					method: 'GET',
-					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/${this.data.id}/onClick/`,
+					method:  'GET',
+					url:     `/myHome/devices/${this.data.id}/onClick/`,
 					headers: {'auth': this.$store.getters.apiToken}
 				}).then(response => {
 					if ('success' in response.data) {
@@ -155,58 +174,7 @@ export default {
 							console.error(response.data.message)
 						} else {
 							const ret = response.data['ret']
-							if (ret['action'] === 'info_notification') {
-								this.showInfo(this.$t(ret['data']))
-							} else if (ret['action'] === 'success_notification') {
-								this.showSuccess(this.$t(ret['data']))
-							} else if (ret['action'] === 'error_notification') {
-								this.showError(this.$t(ret['data']))
-							} else if (ret['action'] === 'navigate') {
-								window.open(ret['data'], '_blank');
-							} else if (ret['action'] === 'answer_string') {
-								this.$dialog.prompt({
-									title: this.$t(ret['data']['title']),
-									body: this.$t(ret['data']['body']),
-									okText: this.$t('buttons.ok'),
-									cancelText: this.$t('buttons.cancel'),
-								}).then(function (dialog) {
-									axios({
-										method: 'POST',
-										url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/${self.data.id}/reply/`,
-										data: {
-											secret: ret['reply']['secret'],
-											concerns: ret['reply']['concerns'],
-											answer: dialog.data
-										},
-										headers: {
-											'auth': self.$store.getters.apiToken,
-											'content-type': 'application/json'
-										}
-									})
-								}).catch()
-							} else if (ret['action'] === 'list_select') {
-								const options = {
-									view: 'deviceReplyListSelect',
-									data: ret['data'],
-									parent: this
-								}
-
-								this.$dialog.prompt({}, options).then(function (dialog) {
-									axios({
-										method: 'POST',
-										url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/${self.data.id}/reply/`,
-										data: {
-											secret: ret['reply']['secret'],
-											concerns: ret['reply']['concerns'],
-											answer: dialog.data
-										},
-										headers: {
-											'auth': self.$store.getters.apiToken,
-											'content-type': 'application/json'
-										}
-									})
-								}).catch()
-							}
+							this.handleDeviceClickReaction(ret)
 						}
 					} else {
 						this.showError(this.$t('notifications.errors.somethingWentWrong'))
@@ -214,7 +182,7 @@ export default {
 				})
 			}
 		},
-		handleDrag: function (target, left, top, clientX, clientY) {
+		handleDrag:         function (target, left, top, clientX, clientY) {
 			const elementsBelow = document.elementsFromPoint(clientX, clientY)
 			for (const el of elementsBelow) {
 				if (el.classList.contains('location')) {
@@ -240,17 +208,28 @@ export default {
 			this.myHome.refreshDeviceLinks()
 			throw true
 		},
-		setPosition: function (target, _clientX, _clientY) {
+		calcGlobalOffset:   function (locId) {
+			if (locId === 0) {
+				return [0, 0]
+			}
+			let parentLoc = this.$store.state.locations[locId]
+			let recursive = this.calcGlobalOffset(parentLoc.parentLocation)
+			return [parentLoc.settings.x + recursive[0], parentLoc.settings.y + recursive[1]]
+		},
+		setPosition:        function (target, _clientX, _clientY) {
 			try {
 				if (this.targetParentLocation !== 0 && this.data.parentLocation !== this.targetParentLocation) {
 					// noinspection DuplicatedCode
-					const parentLocation = document.querySelector(`#loc_${this.data.parentLocation}`)
+					let parentLoc = this.calcGlobalOffset(this.data.parentLocation)
+					let newParentLoc = this.calcGlobalOffset(this.targetParentLocation)
+
 					const droppedIn = document.querySelector(`#loc_${this.targetParentLocation}`)
 					this.myHome.moveableItem.container = droppedIn
 					this.$store.state.devices[this.data.id].parentLocation = this.targetParentLocation
 					this.$store.state.devices[this.data.id].settings['z'] = parseInt(droppedIn.style['z-index']) + 1
-					this.$store.state.devices[this.data.id].settings['x'] = parentLocation.offsetLeft + parseInt(target.style.left.substring(-2)) - droppedIn.offsetLeft
-					this.$store.state.devices[this.data.id].settings['y'] = parentLocation.offsetTop + parseInt(target.style.top.substring(-2)) - droppedIn.offsetTop
+
+					this.$store.state.devices[this.data.id].settings['x'] = parentLoc[0] + parseInt(target.style.left.substring(-2)) - newParentLoc[0]
+					this.$store.state.devices[this.data.id].settings['y'] = parentLoc[1] + parseInt(target.style.top.substring(-2)) - newParentLoc[1]
 					this.targetParentLocation = 0
 				} else {
 					// noinspection ExceptionCaughtLocallyJS
@@ -260,11 +239,11 @@ export default {
 				throw e
 			}
 		},
-		deleteMe: function (event) {
+		deleteMe:           function (event) {
 			event.stopPropagation()
 			axios({
-				method: 'DELETE',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/${this.data.id}/`,
+				method:  'DELETE',
+				url:     `/myHome/devices/${this.data.id}/`,
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then(response => {
 				if ('success' in response.data && response.data.success) {
@@ -273,7 +252,7 @@ export default {
 				}
 			})
 		},
-		onMouseEnter: function () {
+		onMouseEnter:       function () {
 			this.hovered = true
 			if (this.myHome.locationsEditMode && this.myHome.toolsState.none) {
 				for (const link of Object.values(this.myLinks)) {
@@ -281,7 +260,7 @@ export default {
 				}
 			}
 		},
-		onMouseExit: function () {
+		onMouseExit:        function () {
 			this.hovered = false
 			if (this.myHome.locationsEditMode && this.myHome.toolsState.none) {
 				for (const link of Object.values(this.myLinks)) {

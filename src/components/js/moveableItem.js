@@ -33,6 +33,7 @@ export default class MoveableItem {
 		})
 	}
 
+
 	destroyMoveable() {
 		if (this.altDown) return
 		try {
@@ -41,8 +42,9 @@ export default class MoveableItem {
 		}
 	}
 
+
 	computeWidgetCustomStyle(widget) {
-		let style = `color: ${widget.settings['color']};`
+		let style = `color: ${widget.settings['font-color']};`
 		style += `background-color: ${widget.settings['rgba']};`
 		style += `font-size: ${widget.settings['font-size']}em;`
 		style += `top: ${widget.settings['y']}px;`
@@ -81,9 +83,11 @@ export default class MoveableItem {
 		return style
 	}
 
+
 	setGuidelines(guidelines) {
 		this.moveable.elementGuidelines = guidelines
 	}
+
 
 	setMoveable(target, prop) {
 		this.destroyMoveable()
@@ -98,24 +102,24 @@ export default class MoveableItem {
 		}
 
 		this.moveable = new Moveable(container, {
-			target: target,
-			props: prop,
-			draggable: true,
-			resizable: true,
-			rotatable: true,
-			snappable: true,
-			roundable: false,
+			target:             target,
+			props:              prop,
+			draggable:          true,
+			resizable:          true,
+			rotatable:          true,
+			snappable:          true,
+			roundable:          false,
 			isDisplaySnapDigit: true,
-			snapCenter: true,
-			snapGap: false,
-			snapThreshold: 15,
-			throttleDrag: 1,
-			throttleResize: 1,
-			throttleRotate: 5,
-			scalable: false,
-			keepRatio: false,
-			edge: false,
-			origin: false
+			snapCenter:         true,
+			snapGap:            false,
+			snapThreshold:      15,
+			throttleDrag:       1,
+			throttleResize:     1,
+			throttleRotate:     5,
+			scalable:           false,
+			keepRatio:          false,
+			edge:               false,
+			origin:             false
 		})
 
 		this.moveable.on('dragStart', ({target}) => {
@@ -125,7 +129,7 @@ export default class MoveableItem {
 				this.startDrag(target)
 			} finally {
 				this.dragging = true
-				this.timeout = Math.floor(new Date().getTime()/250)
+				this.timeout = Math.floor(new Date().getTime() / 250)
 			}
 		}).on('drag', ({target, left, top, clientX, clientY}) => {
 			try {
@@ -141,8 +145,8 @@ export default class MoveableItem {
 			} finally {
 				this.save()
 				this.dragging = false
-				let newTimeout = Math.floor(new Date().getTime()/250)
-				if( this.timeout !== newTimeout) {
+				let newTimeout = Math.floor(new Date().getTime() / 250)
+				if (this.timeout !== newTimeout) {
 					this.timeout = newTimeout
 				} else {
 					this.timeout = 0
@@ -200,24 +204,28 @@ export default class MoveableItem {
 		})
 	}
 
+
 	setBoundaries(element, offset) {
 		const parent = element.parentElement
 		this.moveable.bounds = {
-			left: -offset,
-			right: parseInt(parent.style.width.substring(-2)) + offset,
-			top: -offset,
+			left:   -offset,
+			right:  parseInt(parent.style.width.substring(-2)) + offset,
+			top:    -offset,
 			bottom: parseInt(parent.style.height.substring(-2)) + offset
 		}
 	}
+
 
 	save() {
 		this.moveable.props.save()
 	}
 
+
 	startDrag(target) {
 		target.classList.add('dragging')
 		target.style['z-index'] = 1000
 	}
+
 
 	getItem(target) {
 		const id = this.getId(target)
@@ -234,9 +242,11 @@ export default class MoveableItem {
 		}
 	}
 
+
 	getId(target) {
 		return parseInt(target.id.substring(4))
 	}
+
 
 	setPosition(target) {
 		const item = this.getItem(target)
@@ -249,6 +259,7 @@ export default class MoveableItem {
 		}
 	}
 
+
 	setSize(target) {
 		const item = this.getItem(target)
 		item.settings['x'] = parseInt(target.style.left.substring(-2))
@@ -256,6 +267,7 @@ export default class MoveableItem {
 		item.settings['w'] = parseInt(target.style.width.substring(-2))
 		item.settings['h'] = parseInt(target.style.height.substring(-2))
 	}
+
 
 	setRotation(target) {
 		const item = this.getItem(target)
@@ -267,10 +279,12 @@ export default class MoveableItem {
 		this.rotationDelta = 0
 	}
 
+
 	setBorderRadius(el) {
 		const item = this.getItem(el.target)
 		item.settings['b'] = el.target.style['border-radius']
 	}
+
 
 	handleResize(target, width, height, delta, direction) {
 		if (direction[0] === -1) {
@@ -283,16 +297,27 @@ export default class MoveableItem {
 		}
 		target.style.width = `${width}px`
 		target.style.height = `${height}px`
+
+		if (target.classList.contains('widget')) {
+			// get widget with id
+			try {
+				this.controller.$store.state.widgetInstances[target.id.substr(4)].instance.onResize(target, width, height, delta, direction)
+			} catch (e) {
+			}
+		}
 	}
+
 
 	handleRotate(target, dist, transform) {
 		this.rotationDelta = dist
 		target.style.transform = transform
 	}
 
+
 	handleBorderRadius(el) {
 		el.target.style.borderRadius = el.borderRadius
 	}
+
 
 	handleDrag(target, left, top) {
 		target.style.left = `${left}px`

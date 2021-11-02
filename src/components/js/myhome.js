@@ -4,108 +4,108 @@ import MoveableItem from './moveableItem'
 import LeaderLine from 'leader-line-new'
 
 export default {
-	name: 'myhome',
-	data: function () {
+	name:     'myhome',
+	data:     function () {
 		return {
-			uid: uuidv4(),
-			me: '',
-			menuItems: [
+			uid:                    uuidv4(),
+			me:                     '',
+			menuItems:              [
 				{
-					name: this.$t('tooltips.edit'),
-					icon: 'fas fa-pen-square',
-					isToggle: true,
+					name:         this.$t('tooltips.edit'),
+					icon:         'fas fa-pen-square',
+					isToggle:     true,
 					extendedIcon: 'fas fa-times-circle',
 					extendedName: this.$t('tooltips.close'),
-					onClose: this.closeEditor,
-					onOpen: this.openEditor
+					onClose:      this.closeEditor,
+					onOpen:       this.openEditor
 				},
 				{
-					name: this.$t('tooltips.theaterMode'),
-					icon: 'fas fa-person-booth',
+					name:     this.$t('tooltips.theaterMode'),
+					icon:     'fas fa-person-booth',
 					isToggle: true,
 					callback: this.cinemaMode
 				},
 				{
-					name: this.$t('tooltips.manageLocations'),
-					icon: 'fas fa-map-marked-alt',
+					name:     this.$t('tooltips.manageLocations'),
+					icon:     'fas fa-map-marked-alt',
 					callback: this.setLocationsEditMode
 				},
 				{
-					name: this.$t('tooltips.manageDevices'),
-					icon: 'fas fa-plug',
+					name:     this.$t('tooltips.manageDevices'),
+					icon:     'fas fa-plug',
 					callback: this.setDevicesEditMode
 				}
 			],
-			moveableItem: new MoveableItem(this),
-			locationsEditMode: false,
-			devicesEditMode: false,
-			toolsState: {
-				none: true,
-				addingLocation: false,
-				paintingFloors: false,
-				deletingLocations: false,
-				addingDevice: false,
-				deletingDevices: false,
-				settingDevices: false,
-				linkingDevices: false,
-				unlinkingDevices: false,
-				settingLocations: false,
-				placingFurniture: false,
+			moveableItem:           new MoveableItem(this),
+			locationsEditMode:      false,
+			devicesEditMode:        false,
+			toolsState:             {
+				none:                 true,
+				addingLocation:       false,
+				paintingFloors:       false,
+				deletingLocations:    false,
+				addingDevice:         false,
+				deletingDevices:      false,
+				settingDevices:       false,
+				linkingDevices:       false,
+				unlinkingDevices:     false,
+				settingLocations:     false,
+				placingFurniture:     false,
 				placingConstructions: false
 			},
-			newLocationName: '',
-			activeFloorTile: '',
-			activeFurnitureTile: '',
+			newLocationName:        '',
+			activeFloorTile:        '',
+			activeFurnitureTile:    '',
 			activeConstructionTile: '',
-			activeDeviceTile: '',
-			areaSelectorX: 0,
-			areaSelectorY: 0,
-			areaSelectorStartX: 0,
-			areaSelectorStartY: 0,
-			areaSelectorW: 0,
-			areaSelectorH: 0,
-			clicked: false,
-			dragging: false,
-			draggingPlan: false,
-			draggingPlanStartX: 0,
-			draggingPlanStartY: 0,
-			floorPlanX: 0,
-			floorPlanY: 0,
-			zoomLevel: 1.0,
-			deviceLinkParent: null,
-			newConnectionLink: null,
-			connectionLinks: {},
-			tourCallbacks: {
-				onSkip: this.finishTour,
+			activeDeviceTile:       '',
+			areaSelectorX:          0,
+			areaSelectorY:          0,
+			areaSelectorStartX:     0,
+			areaSelectorStartY:     0,
+			areaSelectorW:          0,
+			areaSelectorH:          0,
+			clicked:                false,
+			dragging:               false,
+			draggingPlan:           false,
+			draggingPlanStartX:     0,
+			draggingPlanStartY:     0,
+			floorPlanX:             0,
+			floorPlanY:             0,
+			zoomLevel:              1.0,
+			deviceLinkParent:       null,
+			newConnectionLink:      null,
+			connectionLinks:        {},
+			tourCallbacks:          {
+				onSkip:   this.finishTour,
 				onFinish: this.finishTour
 			},
-			steps: [
+			steps:                  [
 				{
-					target: '[data-tour="0"]',
-					header: {
+					target:  '[data-tour="0"]',
+					header:  {
 						title: this.$t('tours.myHome.myHome')
 					},
 					content: this.$t('tours.myHome.data0'),
-					params: {
+					params:  {
 						highlight: true,
 						placement: 'bottom'
 					},
-					before: _type => new Promise((resolve) => {
+					before:  _type => new Promise((resolve) => {
 						// Just wait for the default device to be shown at least
 						setTimeout(resolve, 500)
-					}),
+					})
 				},
 				{
-					target: '[data-tour="1"]',
+					target:  '[data-tour="1"]',
 					content: this.$t('tours.myHome.data1'),
-					params: {
+					params:  {
 						highlight: true
 					}
 				},
 				{
-					target: '[data-tour="2"]',
+					target:  '[data-tour="2"]',
 					content: this.$t('tours.myHome.data2'),
-					params: {
+					params:  {
 						highlight: true
 					}
 				}
@@ -113,12 +113,12 @@ export default {
 		}
 	},
 	computed: {
-		locations: function () {
+		locations:        function () {
 			return Object.values(this.$store.state.locations).filter(location => {
 				return location.parentLocation === 0
 			})
 		},
-		ghostBackground: function () {
+		ghostBackground:  function () {
 			let end = 'locations/floors/floor-80.png'
 			if (this.activeFloorTile) {
 				end = `locations/floors/${this.activeFloorTile}.png`
@@ -147,7 +147,7 @@ export default {
 			return shownList
 		}
 	},
-	created: function () {
+	created:  function () {
 		this.me = this
 		let self = this
 		this.setActiveTool('none')
@@ -210,7 +210,7 @@ export default {
 		this.floorPlanY = parseInt(localStorage.getItem('floorPlanY')) || 0
 		this.zoomLevel = parseFloat(localStorage.getItem('zoomLevel')) || 1.0
 	},
-	mounted: function () {
+	mounted:  function () {
 		if (!localStorage.getItem('myHomeTourCompleted')) {
 			this.$tours['myHome'].start()
 		}
@@ -242,11 +242,11 @@ export default {
 	activated: function () {
 		//this.uid = uuidv4()
 	},
-	methods: {
+	methods:  {
 		finishTour: function () {
 			localStorage.setItem('myHomeTourCompleted', true)
 		},
-		recenter: function () {
+		recenter:   function () {
 			this.floorPlanX = 0
 			this.floorPlanY = 0
 			this.zoomLevel = 1.0
@@ -271,19 +271,19 @@ export default {
 			}
 		},
 		canAddDevice:
-			function (deviceType) {
-				if (deviceType.totalDeviceLimit > 0) {
-					let count = 0
-					for (const device of Object.values(this.$store.state.devices)) {
-						if (deviceType.skillName === device.skillName && deviceType.deviceTypeName === device.typeName) {
-							count++
-						}
-					}
-					return count < deviceType.totalDeviceLimit
-				}
-				return true
-		},
-		getDeviceType: function (device) {
+										 function (deviceType) {
+											 if (deviceType.totalDeviceLimit > 0) {
+												 let count = 0
+												 for (const device of Object.values(this.$store.state.devices)) {
+													 if (deviceType.skillName === device.skillName && deviceType.deviceTypeName === device.typeName) {
+														 count++
+													 }
+												 }
+												 return count < deviceType.totalDeviceLimit
+											 }
+											 return true
+										 },
+		getDeviceType:   function (device) {
 			const skillName = device.data.skillName.toLowerCase()
 			const deviceTypeName = device.data.typeName.toLowerCase()
 			if (!skillName in this.$store.state.deviceTypes) {
@@ -325,23 +325,23 @@ export default {
 					y: targetLocation.style.height / 2
 				}),
 				{
-					color: '#343434',
-					size: 3,
-					dash: {
+					color:       '#343434',
+					size:        3,
+					dash:        {
 						animation: {
 							duration: 250,
-							timing: 'linear'
+							timing:   'linear'
 						}
 					},
-					dropShadow: true,
-					endPlug: 'disc',
+					dropShadow:  true,
+					endPlug:     'disc',
 					endPlugSize: 3,
-					hide: true,
+					hide:        true,
 					middleLabel: label
 				}
 			)
 			device.myLinks[link.id] = line
-			if(device.data['parentLocation'] !== link.targetLocation) {
+			if (device.data['parentLocation'] !== link.targetLocation) {
 				this.connectionLinks[link.id] = line
 			}
 
@@ -349,12 +349,12 @@ export default {
 				line.show('draw')
 			}
 		},
-		refreshDeviceLinks: function () {
+		refreshDeviceLinks:   function () {
 			for (const link of Object.values(this.connectionLinks)) {
 				link.position()
 			}
 		},
-		setActiveTool: function (tool, isToggle) {
+		setActiveTool:        function (tool, isToggle) {
 			const self = this
 			Object.keys(this.toolsState).forEach(function (key, _value) {
 				if (key === tool) {
@@ -389,7 +389,7 @@ export default {
 			this.activeConstructionTile = ''
 			this.activeDeviceTile = ''
 		},
-		removeDroppable: function () {
+		removeDroppable:      function () {
 			document.querySelectorAll('.droppable').forEach(el => {
 				el.classList.remove('droppable')
 			})
@@ -397,10 +397,10 @@ export default {
 				el.classList.remove('notDroppable')
 			})
 		},
-		setMoveable: function (target, prop) {
+		setMoveable:          function (target, prop) {
 			this.moveableItem.setMoveable(target, prop)
 		},
-		cinemaMode: function () {
+		cinemaMode:           function () {
 			this.$store.commit('toggleCinemaMode')
 			if (this.$store.state.fullScreen) {
 				this.showInfo(this.$t('notifications.info.theaterModeExplain'))
@@ -411,17 +411,17 @@ export default {
 			this.devicesEditMode = false
 			this.setActiveTool('none')
 		},
-		setDevicesEditMode: function () {
+		setDevicesEditMode:   function () {
 			this.locationsEditMode = false
 			this.devicesEditMode = true
 			this.setActiveTool('none')
 		},
-		openEditor: function () {
+		openEditor:           function () {
 			if (Object.keys(this.connectionLinks).length === 0) {
 				this.drawDeviceLinks()
 			}
 		},
-		closeEditor: function () {
+		closeEditor:          function () {
 			this.setActiveTool('none')
 			this.locationsEditMode = false
 			this.devicesEditMode = false
@@ -434,48 +434,102 @@ export default {
 			}
 			this.connectionLinks = {}
 		},
-		floorPlanClick: function () {
+		floorPlanClick:       function () {
 			this.moveableItem.destroyMoveable()
 		},
-		addLocationDialog: function () {
+		addLocationDialog:    function () {
 			this.setActiveTool('none')
 
 			let self = this
 			this.$dialog
-				.prompt({
-					title: this.$t('dialogs.titles.enterLocationName'),
-					body: this.$t('dialogs.bodies.clickToAddLocation')
-				}, {
-					promptHelp: '',
-					okText: this.$t('buttons.ok'),
-					cancelText: this.$t('buttons.cancel')
-				})
-				.then(function (dialogue) {
+					.prompt({
+						title: this.$t('dialogs.titles.enterLocationName'),
+						body:  this.$t('dialogs.bodies.clickToAddLocation')
+					}, {
+						promptHelp: '',
+						okText:     this.$t('buttons.ok'),
+						cancelText: this.$t('buttons.cancel')
+					})
+					.then(function (dialogue) {
+						axios({
+							method:  'GET',
+							url:     `/myHome/locations/${dialogue.data}/`,
+							headers: {'auth': self.$store.getters.apiToken}
+						}).then(response => {
+							if ('location' in response.data) {
+								self.$dialog.alert(self.$t('dialogs.bodies.locationNameOrSynonymAlreadyExist')).then()
+							} else {
+								self.setActiveTool('addingLocation')
+								self.newLocationName = dialogue.data
+							}
+						})
+					})
+					.catch(function () {
+						self.setActiveTool('locationsEditMode')
+						self.newLocationName = ''
+					})
+		},
+		triggerUploadWindow:  function (id) {
+			const input = document.getElementById(id)
+			input.click()
+		},
+		uploadNewTile:        function (id) {
+			const input = document.getElementById(id)
+			const file = input.files[0]
+			const self = this
+			const tileType = id.replace('TileInput', '')
+			let formData = new FormData()
+			formData.append('newTile', file)
+			axios({
+				method:  'PUT',
+				url:     `/myHome/locations/${tileType}/`,
+				data:    formData,
+				headers: {
+					'auth':         this.$store.getters.apiToken,
+					'content-type': 'multipart/form-data'
+				}
+			}).then(response => {
+				if ('success' in response.data && response.data['success']) {
+					let url
+					if (tileType === 'floor') {
+						url = `/myHome/locations/floors/`
+					} else if (tileType === 'construction') {
+						url = `/myHome/constructions/tiles/`
+					} else {
+						url = `/myHome/furniture/tiles/`
+					}
+
 					axios({
 						method: 'GET',
-						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/${dialogue.data}/`,
-						headers: {'auth': self.$store.getters.apiToken}
+						url: url
 					}).then(response => {
-						if ('location' in response.data) {
-							self.$dialog.alert(self.$t('dialogs.bodies.locationNameOrSynonymAlreadyExist')).then()
-						} else {
-							self.setActiveTool('addingLocation')
-							self.newLocationName = dialogue.data
+						if ('data' in response.data) {
+							this.showSuccess(this.$t('notifications.successes.newTileAdded'))
+
+							if (tileType === 'floor') {
+								self.$store.commit('setFloorTiles', response.data['data'])
+							} else if (tileType === 'construction') {
+								self.$store.commit('setConstructionTiles', response.data['data'])
+							} else {
+								self.$store.commit('setFurnitureTiles', response.data['data'])
+							}
 						}
+					}).catch(() => {
+						this.showError(this.$t('notifications.errors.newTileFailed'))
 					})
-				})
-				.catch(function () {
-					self.setActiveTool('locationsEditMode')
-					self.newLocationName = ''
-				})
+
+				} else {
+					this.showError(this.$t('notifications.errors.newTileFailed'))
+				}
+			})
 		},
-		addDeviceDialog: function () {
+		addDeviceDialog:      function () {
 			this.setActiveTool('none')
 
 			let self = this
 			const message = {}
 			const options = {
-				view: 'addDevicePromptDialog',
+				view:   'addDevicePromptDialog',
 				parent: this
 			}
 
@@ -491,29 +545,31 @@ export default {
 			const angle = Math.atan2(centerPointer.top + 17 - center.top, centerPointer.left + 17 - center.left) - (135 * Math.PI / 180)
 			this.$refs['centerPointer'].style.transform = `rotate(${angle}rad)`
 		},
-		mouseDown: function (event) {
+		mouseDown:            function (event) {
 			if (this.toolsState.addingLocation) {
 				this.clicked = true
 				this.areaSelectorStartX = event.offsetX
 				this.areaSelectorStartY = event.offsetY
 				this.drawSelectionArea(this.areaSelectorStartX, this.areaSelectorStartY)
-			} else if (event.target.classList.contains('floorPlan') && this.toolsState.none) {
+			} else if (this.toolsState.none && event.target.classList.contains('floorPlan') || (!this.locationsEditMode && event.target.classList.contains('location'))) {
 				event.target.classList.add('grabbed')
 				this.draggingPlan = true
-				this.draggingPlanStartX = event.clientX
-				this.draggingPlanStartY = event.clientY
+				this.draggingPlanStartX = event.clientX ? event.clientX : event.changedTouches[0].clientX
+				this.draggingPlanStartY = event.clientY ? event.clientY : event.changedTouches[0].clientY
 			}
 		},
-		mouseMove: function (event) {
+		mouseMove:            function (event) {
 			if (this.toolsState.addingLocation) {
 				if (!this.clicked) return
 				this.drawSelectionArea(event.offsetX, event.offsetY)
 			} else if (this.draggingPlan) {
-				this.floorPlanX += event.clientX - this.draggingPlanStartX
-				this.floorPlanY += event.clientY - this.draggingPlanStartY
+				let clientX = event.clientX ? event.clientX : event.changedTouches[0].clientX
+				let clientY = event.clientY ? event.clientY : event.changedTouches[0].clientY
+				this.floorPlanX += clientX - this.draggingPlanStartX
+				this.floorPlanY += clientY - this.draggingPlanStartY
 
-				this.draggingPlanStartX = event.clientX
-				this.draggingPlanStartY = event.clientY
+				this.draggingPlanStartX = clientX
+				this.draggingPlanStartY = clientY
 				this.refreshDeviceLinks()
 				this.positionCenterPointer()
 			} else if ((this.toolsState.paintingFloors && this.activeFloorTile !== '')
@@ -530,7 +586,7 @@ export default {
 				}
 			}
 		},
-		drawSelectionArea: function (movedX, movedY) {
+		drawSelectionArea:    function (movedX, movedY) {
 			let x = Math.min(this.areaSelectorStartX, movedX)
 			let x2 = Math.max(this.areaSelectorStartX, movedX)
 			let y = Math.min(this.areaSelectorStartY, movedY)
@@ -541,18 +597,18 @@ export default {
 			this.areaSelectorW = x2 - x
 			this.areaSelectorH = y2 - y
 		},
-		newConnectionLine: function (device) {
+		newConnectionLine:    function (device) {
 			this.deviceLinkParent = device
 			this.newConnectionLink = new LeaderLine(
 				document.querySelector(`#dev_${device.data.id}`),
 				this.$refs.ghost,
 				{
-					color: 'blue',
-					size: 4,
-					dash: {
+					color:      'blue',
+					size:       4,
+					dash:       {
 						animation: {
 							duration: 250,
-							timing: 'linear'
+							timing:   'linear'
 						}
 					},
 					dropShadow: true
@@ -565,28 +621,28 @@ export default {
 				document.querySelector(`#dev_${device.data.id}`),
 				this.$refs.ghost,
 				{
-					color: 'red',
-					size: 4,
-					dash: {
+					color:      'red',
+					size:       4,
+					dash:       {
 						animation: {
 							duration: 100,
-							timing: 'linear'
+							timing:   'linear'
 						}
 					},
 					dropShadow: true
 				}
 			)
 		},
-		handleClick: function (event) {
+		handleClick:          function (event) {
 			this.clicked = false
 			if (this.toolsState.addingLocation) {
 				event.preventDefault()
 				event.stopPropagation()
 
 				const data = {
-					name: this.newLocationName,
+					name:           this.newLocationName,
 					parentLocation: 0,
-					settings: {
+					settings:       {
 						x: this.areaSelectorStartX,
 						y: this.areaSelectorStartY,
 						w: Math.max(this.areaSelectorW || 150, 50),
@@ -605,11 +661,11 @@ export default {
 				this.setActiveTool('locationsEditMode')
 
 				axios({
-					method: 'PUT',
-					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/`,
-					data: data,
+					method:  'PUT',
+					url:     `/myHome/locations/`,
+					data:    data,
 					headers: {
-						'auth': this.$store.getters.apiToken,
+						'auth':         this.$store.getters.apiToken,
 						'content-type': 'application/json'
 					}
 				}).then(response => {
@@ -628,7 +684,7 @@ export default {
 		moveZUp(location) {
 			const data = location.data
 			const myIndex = data.settings['z']
-			const myNewIndex = myIndex + 1;
+			const myNewIndex = myIndex + 1
 
 			if (myNewIndex > this.$store.state.locations.length) {
 				return
@@ -647,7 +703,7 @@ export default {
 		moveZDown(location) {
 			const data = location.data
 			const myIndex = data.settings['z']
-			const myNewIndex = myIndex - 1;
+			const myNewIndex = myIndex - 1
 
 			if (data.parentLocation > 0) {
 				const parent = document.querySelector(`#loc_${data.parentLocation}`)
@@ -672,16 +728,16 @@ export default {
 		},
 		saveLocationSettings(location) {
 			const data = {
-				id: location.id,
+				id:       location.id,
 				settings: location.settings
 			}
 
 			axios({
-				method: 'PATCH',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/locations/${data.id}/`,
-				data: data,
+				method:  'PATCH',
+				url:     `/myHome/locations/${data.id}/`,
+				data:    data,
 				headers: {
-					'auth': this.$store.getters.apiToken,
+					'auth':         this.$store.getters.apiToken,
 					'content-type': 'application/json'
 				}
 			}).then()
@@ -708,7 +764,7 @@ export default {
 		},
 		removeDeviceLinks(deviceId) {
 			for (const link of Object.values(this.$store.state.deviceLinks)) {
-				if (link.deviceId === deviceId) {
+				if (link.deviceId === deviceId && this.connectionLinks[link.id]) {
 					this.connectionLinks[link.id].remove()
 					delete this.connectionLinks[link.id]
 					this.$delete(this.$store.state.deviceLinks, link.id)
@@ -730,7 +786,7 @@ export default {
 			return ret
 		}
 	},
-	watch: {
+	watch:    {
 		$route: {
 			immediate: true,
 			handler(to) {

@@ -1,17 +1,21 @@
 export default {
-	name: 'actionsMenu',
-	data: function() {
+	name:  'actionsMenu',
+	data:  function () {
 		return {
 			isExtended: false,
-			extend: false,
-			retract: false
+			extend:     false,
+			retract:    false
 		}
 	},
 	props: [
-		'menuItems'
+		'menuItems',
+		'alwaysExtended'
 	],
+	mounted() {
+		this.isExtended = this.alwaysExtended
+	},
 	methods: {
-		toggle: function(item) {
+		toggle:       function (item) {
 			this.isExtended = !this.isExtended
 
 			if (!this.isExtended && item.hasOwnProperty('onClose')) {
@@ -24,7 +28,7 @@ export default {
 				this.extend = true
 			}
 		},
-		handleClick: function (item, event) {
+		handleClick:  function (item, event) {
 			if (item.hasOwnProperty('activeClass')) {
 				if (item.hasOwnProperty('active')) {
 					if (!item.active) {
@@ -48,7 +52,7 @@ export default {
 				item.callback(item)
 			}
 		},
-		animationEnd: function() {
+		animationEnd: function () {
 			this.extend = false
 			this.retract = false
 		}

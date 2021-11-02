@@ -4,12 +4,12 @@ import {v4 as uuidv4} from 'uuid'
 
 // noinspection JSUnusedGlobalSymbols
 export default {
-	name: 'ProjectAlice',
+	name:       'ProjectAlice',
 	components: {
 		paMain,
 		paConnect
 	},
-	mounted: function() {
+	mounted:    function () {
 		const self = this
 		this.$i18n.locale = 'en'
 
@@ -42,6 +42,12 @@ export default {
 				}
 			}
 		})
+
+		window.addEventListener(
+			'resize', (e) => {
+				self.$store.commit('setWindowHeight', e)
+			}
+		)
 
 		if (!this.$store.state.uiConnected) {
 			if (this.$router.currentRoute.path !== '/connect') {

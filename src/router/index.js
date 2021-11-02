@@ -19,106 +19,106 @@ Vue.use(PortalVue)
 
 const routes = [
 	{
-		path: '/connect',
-		name: 'Connect',
+		path:      '/connect',
+		name:      'Connect',
 		component: connect,
-		meta: {
+		meta:      {
 			title: 'connect'
 		}
 	},
 	{
-		path: '/skills',
-		name: 'Skills',
+		path:      '/skills',
+		name:      'Skills',
 		component: skills,
-		meta: {
+		meta:      {
 			title: 'nav.skills'
 		}
 	},
 	{
-		path: '/scenarios',
+		path:      '/scenarios',
 		component: scenarios,
-		name: 'Scenarios',
-		meta: {
+		name:      'Scenarios',
+		meta:      {
 			title: 'nav.scenarios'
 		}
 	},
 	{
-		path: '/login',
-		name: 'Login',
+		path:      '/login',
+		name:      'Login',
 		component: login,
-		meta: {
+		meta:      {
 			title: 'nav.login'
 		}
 	},
 	{
-		path: '/syslog',
-		name: 'Syslog',
+		path:      '/syslog',
+		name:      'Syslog',
 		component: syslog,
-		meta: {
+		meta:      {
 			title: 'nav.syslog'
 		}
 	},
 	{
-		path: '/alicewatch',
-		name: 'AliceWatch',
+		path:      '/alicewatch',
+		name:      'AliceWatch',
 		component: alicewatch,
-		meta: {
+		meta:      {
 			title: 'nav.alicewatch'
 		}
 	},
 	{
-		path: '/admin',
-		name: 'Admin',
+		path:      '/admin',
+		name:      'Admin',
 		component: admin,
-		meta: {
+		meta:      {
 			title: 'nav.admin'
 		}
 	},
 	{
-		path: '/devmode',
-		name: 'Devmode',
+		path:      '/devmode',
+		name:      'Devmode',
 		component: devmode,
-		meta: {
+		meta:      {
 			title: 'nav.devmode'
 		}
 	},
 	{
-		path: '/myhome',
-		name: 'MyHome',
+		path:      '/myhome',
+		name:      'MyHome',
 		component: myhome,
-		meta: {
+		meta:      {
 			title: 'nav.myhome'
 		}
 	},
 	{
-		path: '/dialogView',
-		name: 'Dialog View',
+		path:      '/dialogView',
+		name:      'Dialog View',
 		component: dialogView,
-		meta: {
+		meta:      {
 			title: 'nav.dialogView'
 		}
 	},
 	{
-		path: '/widgets',
-		name: 'Widgets',
+		path:      '/widgets',
+		name:      'Widgets',
 		component: widgets,
-		meta: {
+		meta:      {
 			title: 'nav.widgets'
 		}
 	},
 	{
-		path: '/telemetry',
-		name: 'Telemetry',
+		path:      '/telemetry',
+		name:      'Telemetry',
 		component: telemetry,
-		meta: {
+		meta:      {
 			title: 'nav.telemetry'
 		}
 	},
 	{
-		path: '*',
-		name: 'Home',
+		path:      '*',
+		name:      'Home',
 		component: widgets,
-		meta: {
+		meta:      {
 			title: 'nav.widgets'
 		}
 	}

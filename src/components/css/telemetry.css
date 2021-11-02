@@ -1,7 +1,8 @@
 .addMe {
-	background: #2ba5ff;
+	background: #0479e0;
 	border-radius: 1em;
 	clip-path: polygon(0% 0%, calc(100% - 1em) 0%, 100% 50%, 100% 50%, calc(100% - 1em) 100%, 0% 100%);
+	color: black;
 	height: 1em;
 	margin: .2em auto;
 	overflow: hidden;
@@ -12,9 +13,10 @@
 }
 
 .added {
-	background: #2ba5ff;
+	background: #0479e0;
 	border-radius: 1em;
 	clip-path: polygon(100% 100%, 100% 0%, 1em 0%, 0% 50%, 1em 100%);
+	color: black;
 	height: 1em;
 	margin: .2em auto;
 	overflow: hidden;
@@ -49,5 +51,6 @@ button {
 }
 
 .enter {
-	background: #2ba5ff;
+	background: #0479e0;
+	color: black;
 }

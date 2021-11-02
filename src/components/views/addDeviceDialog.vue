@@ -6,7 +6,7 @@
 				<label for="deviceList">{{ parent.$t('dialogs.bodies.chooseDevice') }}</label><br/>
 			</p>
 			<p v-if="Object.keys(parent.shownDeviceTypes).length > 0">
-				<select id="deviceList" v-model="selected" name="device">
+				<select id="deviceList" v-model="selected">
 					<optgroup v-for="(deviceTypes, skillName) in parent.shownDeviceTypes" :key="skillName" :label="skillName.toUpperCase()">
 						<option v-for="deviceType in deviceTypes" :key="deviceType.deviceTypeName" :value="deviceType">{{ deviceType.deviceTypeName }}</option>
 					</optgroup>
@@ -27,12 +27,12 @@
 import VueDialogMixin from 'vuejs-dialog/dist/vuejs-dialog-mixin.min.js'
 
 export default {
-	mixins: [VueDialogMixin],
-	data: function () {
+	mixins:  [VueDialogMixin],
+	data:    function () {
 		return {
 			selected: null,
-			parent: this.options['parent'],
-			error: false
+			parent:   this.options['parent'],
+			error:    false
 		}
 	},
 	methods: {

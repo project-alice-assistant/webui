@@ -4,34 +4,36 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-	state: {
-		connectVue: null,
-		settings: {},
-		settingTemplates: {},
-		settingCategories: {},
-		mqtt: null,
-		loggedInUser: false,
-		fullScreen: false,
-		magicMirrorMode: false,
-		minimized: false,
-		uiConnected: false,
-		mqttMessage: {},
-		widgetPages: {},
-		widgetTemplates: {},
-		widgetInstances: {},
-		installedSkills: {},
-		storeSkills: {},
+	state:     {
+		connectVue:         null,
+		settings:           {},
+		settingTemplates:   {},
+		settingCategories:  {},
+		mqtt:               null,
+		loggedInUser:       false,
+		fullScreen:         false,
+		magicMirrorMode:    false,
+		minimized:          false,
+		uiConnected:        false,
+		mqttMessage:        {},
+		widgetPages:        {},
+		widgetTemplates:    {},
+		widgetInstances:    {},
+		installedSkills:    {},
+		storeSkills:        {},
 		skillTourCompleted: false,
-		furnitureTiles: [],
-		floorTiles: [],
-		constructionTiles: [],
-		deviceTypes: {},
-		devices: {},
-		deviceLinks: {},
-		furnitures: {},
-		constructions: {},
-		locations: {},
-		interfaceUid: ''
+		furnitureTiles:     [],
+		floorTiles:         [],
+		constructionTiles:  [],
+		deviceTypes:        {},
+		devices:            {},
+		newSkillSettings:   {},
+		deviceLinks:        {},
+		furnitures:         {},
+		constructions:      {},
+		locations:          {},
+		interfaceUid:       '',
+		windowHeight:       window.innerHeight
 	},
 	mutations: {
 		setInterfaceUid(state, data) {
@@ -154,9 +156,12 @@ export default new Vuex.Store({
 		},
 		uiConnected(state, connected) {
 			state.uiConnected = connected
+		},
+		setWindowHeight(state) {
+			state.windowHeight = window.innerHeight
 		}
 	},
-	getters: {
+	getters:   {
 		apiToken: function (state, _getters) {
 			if (typeof state.loggedInUser === 'object') {
 				return state.loggedInUser.token

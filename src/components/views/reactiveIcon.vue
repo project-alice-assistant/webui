@@ -1,6 +1,6 @@
 <template>
-	<i :class="classes" aria-hidden="true" v-tooltip="tooltip ? $t(tooltip) : ''" @click="handleClick"/>
+	<i v-tooltip="tooltip ? $t(tooltip) : ''" :class="classes" aria-hidden="true" @click="handleClick"/>
 </template>
 
-<style src="../css/reactiveIcon.css" scoped/>
+<style scoped src="../css/reactiveIcon.css"/>
 <script src="../js/reactiveIcon.js"/>

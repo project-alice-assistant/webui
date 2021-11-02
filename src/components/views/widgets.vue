@@ -1,22 +1,23 @@
 <template>
 	<div :key="uid" class="container flexcolumn">
-		<overlay :opened="addWidgets" :visible="addWidgets" @closed="addWidgets = false" animate="zoom-in" :header="$t('dialogs.titles.addWidgets')">
+		<overlay :header="$t('dialogs.titles.addWidgets')" :opened="addWidgets" :visible="addWidgets" animate="zoom-in" @closed="addWidgets = false">
 			<div v-for="(widgets, skillName) in $store.state.widgetTemplates" :key="skillName">
 				<div class="skillTemplate">{{ skillName }}</div>
-				<div class="widgetTemplate clickable" v-for="widget in widgets" @click="addWidget(skillName, widget)">
+				<div v-for="widget in widgets" class="widgetTemplate clickable" @click="addWidget(skillName, widget)">
 					{{ widget }}
 				</div>
 			</div>
 		</overlay>
-		<actions-menu :menuItems="menuItems" v-if="$store.state.loggedInUser"/>
+		<actions-menu v-if="$store.state.loggedInUser" :menuItems="menuItems"/>
 		<tabs
-			:tabs="$store.state.widgetPages"
 			:activeTabId="activeTabId"
 			:addTab="addTab"
-			:removeTab="removeTab"
-			:renameTab="renameTab"
 			:onChange="changePage"
 			:parent="this"
+			:removeTab="removeTab"
+			:renameTab="renameTab"
+			:store="$store"
+			:tabs="$store.state.widgetPages"
 		/>
 		<div :key="activeTabId" :class="{
 			magicMirrorMode: $store.state.magicMirrorMode
@@ -31,7 +32,7 @@
 	</div>
 </template>
 
-<style src="../css/widgets.css" scoped/>
-<style src="../css/tabs.css" scoped/>
+<style scoped src="../css/widgets.css"/>
+<style scoped src="../css/tabs.css"/>
 <style scoped src="../css/overrides/overlay.css"/>
 <script src="../js/widgets.js"/>

@@ -15,16 +15,25 @@ import VueI18n from 'vue-i18n'
 
 import Skill from './components/views/skill'
 import StoreSkill from './components/views/storeSkill'
+import EditSkillTile from './components/views/editSkillTile'
 import ActionsMenu from './components/views/actionsMenu'
 import Tabs from './components/views/tabs'
 import ReactiveIcon from './components/views/reactiveIcon'
 import Location from './components/views/location'
 import Furniture from './components/views/furniture'
+import ConfigLine from './components/views/configLine'
 import ConfigInput from './components/views/configInput'
+import ConfigInputList from './components/views/configInputList'
+import DialogTemplateEditor from './components/views/dialogTemplateEditor'
+import SimpleJsonEditor from './components/views/simpleJsonEditor'
+import TalkFileEditor from './components/views/talkFileEditor'
+import Config from './components/views/config'
 import Construction from './components/views/construction'
 import Device from './components/views/device'
 import Widget from './components/views/widget'
 import Notification from './components/views/notification'
+import GitStatus from './components/views/gitStatus'
+import MicStreamer from './components/views/micStreamer'
 
 import 'vuejs-dialog/dist/vuejs-dialog.min.css'
 import 'vue-tour/dist/vue-tour.css'
@@ -64,6 +73,7 @@ Vue.use(VueI18n)
 Vue.component('VueToggles', VueToggles)
 Vue.component('skill', Skill)
 Vue.component('storeSkill', StoreSkill)
+Vue.component('editSkillTile', EditSkillTile)
 Vue.component('actionsMenu', ActionsMenu)
 Vue.component('tabs', Tabs)
 Vue.component('reactive-icon', ReactiveIcon)
@@ -73,8 +83,16 @@ Vue.component('furniture', Furniture)
 Vue.component('construction', Construction)
 Vue.component('device', Device)
 Vue.component('configInput', ConfigInput)
+Vue.component('configLine', ConfigLine)
+Vue.component('configInputList', ConfigInputList)
+Vue.component('dialogTemplateEditor', DialogTemplateEditor)
+Vue.component('simpleJsonEditor', SimpleJsonEditor)
+Vue.component('talkFileEditor', TalkFileEditor)
+Vue.component('config', Config)
 Vue.component('widget', Widget)
 Vue.component('notification', Notification)
+Vue.component('gitStatus', GitStatus)
+Vue.component('micStreamer', MicStreamer)
 
 Vue.dialog.registerComponent('fontawesomePromptDialog', faIconOption)
 Vue.dialog.registerComponent('widgetOptionsPromptDialog', widgetOption)
@@ -97,9 +115,9 @@ Vue.directive('init', {
 })
 
 const i18n = new VueI18n({
-	local: 'en',
+	local:          'en',
 	fallbackLocale: 'en',
-	messages: {}
+	messages:       {}
 })
 
 new Vue({

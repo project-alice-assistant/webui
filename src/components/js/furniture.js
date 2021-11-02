@@ -1,14 +1,14 @@
 import axios from 'axios'
 
 export default {
-	name: 'furniture',
-	data: function () {
+	name:    'furniture',
+	data:    function () {
 		return {
 			rotationDelta: 0,
-			hovered: false
+			hovered:       false
 		}
 	},
-	props: [
+	props:   [
 		'data',
 		'myHome'
 	],
@@ -19,24 +19,24 @@ export default {
 				`background: url('http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/furniture/${this.data.settings['t'] || 'deco-1'}.png') no-repeat; background-size: 100% 100%;`
 			)
 		},
-		save: function () {
+		save:               function () {
 			const data = {
-				id: this.data.id,
+				id:             this.data.id,
 				parentLocation: this.data.parentLocation,
-				settings: this.data.settings
+				settings:       this.data.settings
 			}
 
 			axios({
-				method: 'PATCH',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/furniture/${this.data.id}/`,
-				data: data,
+				method:  'PATCH',
+				url:     `/myHome/furniture/${this.data.id}/`,
+				data:    data,
 				headers: {
-					'auth': this.$store.getters.apiToken,
+					'auth':         this.$store.getters.apiToken,
 					'content-type': 'application/json'
 				}
 			}).then()
 		},
-		handleClick: function (event) {
+		handleClick:        function (event) {
 			event.stopPropagation()
 			this.myHome.removeDroppable()
 			this.myHome.activeFurnitureTile = ''
@@ -46,16 +46,16 @@ export default {
 				this.myHome.moveableItem.setBoundaries(this.$el, 0)
 				const furnitures = Array.from(document.querySelectorAll('.furniture')).filter((furniture) => {
 					const furId = parseInt(furniture.id.substring(4))
-					return !(furId === this.data.id);
+					return !(furId === this.data.id)
 				})
 				this.myHome.moveableItem.setGuidelines(furnitures)
 			}
 		},
-		deleteMe: function (event) {
+		deleteMe:           function (event) {
 			event.stopPropagation()
 			axios({
-				method: 'DELETE',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/myHome/furniture/${this.data.id}/`,
+				method:  'DELETE',
+				url:     `/myHome/furniture/${this.data.id}/`,
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then(response => {
 				if ('success' in response.data && response.data.success) {

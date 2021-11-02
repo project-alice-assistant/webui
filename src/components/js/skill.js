@@ -1,24 +1,24 @@
 import axios from 'axios'
 
 export default {
-	name: 'skill',
-	data: function () {
+	name:    'skill',
+	data:    function () {
 		return {
-			viewIntents: false,
-			viewInfos: false,
+			viewIntents:      false,
+			viewInfos:        false,
 			viewInstructions: false,
-			viewSkill: true
+			viewSkill:        true
 		}
 	},
-	props: [
+	props:   [
 		'skill'
 	],
 	methods: {
-		reloadSkill: function () {
+		reloadSkill:  function () {
 			if (this.$tours['skills'].currentStep !== -1) return
 			axios({
-				method: 'GET',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.skill.name}/reload/`,
+				method:  'GET',
+				url:     `/skills/${this.skill.name}/reload/`,
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then(response => {
 				if ('skill' in response.data) {
@@ -27,46 +27,49 @@ export default {
 				}
 			})
 		},
-		toggle: function () {
+		toggle:       function () {
 			if (this.$tours['skills'].currentStep !== -1) return
 			axios({
-				method: 'GET',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.skill.name}/toggleActiveState/`,
+				method:  'GET',
+				url:     `/skills/${this.skill.name}/toggleActiveState/`,
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then(() => (this.skill.active = !this.skill.active))
 
 		},
-		update: function () {
+		update:       function () {
 			if (this.$tours['skills'].currentStep !== -1) return
 			axios({
-				method: 'GET',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.skill.name}/checkUpdate/`,
+				method:  'GET',
+				url:     `/skills/${this.skill.name}/checkUpdate/`,
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then(() => {
 			})
 		},
-		remove: function () {
+		remove:       function () {
 			if (this.$tours['skills'].currentStep !== -1) return
 
 			let self = this
 			this.$dialog
-				.confirm(this.$t('dialogs.titles.confirmSkillDeletion'), {okText: this.$t('dialogs.labels.yes'), cancelText: this.$t('dialogs.labels.cancel')})
-				.then(function() {
-					axios({
-						method: 'DELETE',
-						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/skills/${self.skill.name}/`,
-						headers: {'auth': self.$store.getters.apiToken}
-					}).then(response => {
-						if ('success' in response.data) {
-							if (response.data.success) {
-								self.showSuccess(this.$parent.$t('notifications.successes.skillDeleted'))
-							} else {
-								self.showError(this.$parent.$t('notifications.errors.skillDeleteFailed'))
-							}
-						}
+					.confirm(this.$t('dialogs.titles.confirmSkillDeletion'), {
+						okText:     this.$t('dialogs.labels.yes'),
+						cancelText: this.$t('dialogs.labels.cancel')
 					})
-				})
-				.catch()
+					.then(function () {
+						axios({
+							method:  'DELETE',
+							url:     `/skills/${self.skill.name}/`,
+							headers: {'auth': self.$store.getters.apiToken}
+						}).then(response => {
+							if ('success' in response.data) {
+								if (response.data.success) {
+									self.showSuccess(this.$parent.$t('notifications.successes.skillDeleted'))
+								} else {
+									self.showError(this.$parent.$t('notifications.errors.skillDeleteFailed'))
+								}
+							}
+						})
+					})
+					.catch()
 		},
 		showSettings: function () {
 			if (this.$tours['skills'].currentStep !== -1) return
@@ -74,20 +77,20 @@ export default {
 			let backup = JSON.parse(JSON.stringify(this.skill['settings']))
 			let self = this
 			const options = {
-				view: 'skillSettingsPromptDialog',
-				skill: this.skill,
+				view:   'skillSettingsPromptDialog',
+				skill:  this.skill,
 				parent: this
 			}
 
 			this.$dialog.prompt({}, options).then(dialogue => {
 				axios({
-					method: 'PATCH',
-					url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/${this.skill.name}/`,
+					method:  'PATCH',
+					url:     `/skills/${this.skill.name}/`,
 					headers: {
-						'auth': this.$store.getters.apiToken,
+						'auth':         this.$store.getters.apiToken,
 						'content-type': 'application/json'
 					},
-					data: JSON.stringify(dialogue.data)
+					data:    JSON.stringify(dialogue.data)
 				}).then((response) => {
 					if (this.checkResponse(response)) {
 						backup = {}

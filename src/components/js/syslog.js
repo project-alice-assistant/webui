@@ -3,26 +3,28 @@ import htmlFormatter from '@/utils/htmlFormatter'
 import * as C from '@/utils/constants'
 
 export default {
-	name: 'syslog',
-	data: function() {
+	name:      'syslog',
+	data:      function () {
 		return {
-			cmd: '',
-			unwatch: {},
-			follow: true,
-			logs: [],
+			cmd:       '',
+			unwatch:   {},
+			follow:    true,
+			logs:      [],
 			menuItems: [
 				{
-					name: this.$t('tooltips.lock'),
-					icon: 'far fa-pause-circle',
+					name:         this.$t('tooltips.lock'),
+					icon:         'far fa-pause-circle',
 					extendedIcon: 'far fa-play-circle',
 					extendedName: this.$t('tooltips.follow'),
-					isToggle: true,
-					onClick: () => {this.follow = !this.follow}
+					isToggle:     true,
+					onClick:      () => {
+						this.follow = !this.follow
+					}
 				}
 			]
 		}
 	},
-	created: function() {
+	created:   function () {
 		let self = this
 		this.unwatch = this.$store.watch(
 			function (state) {
@@ -43,7 +45,7 @@ export default {
 			terminal.scrollTop = terminal.scrollHeight
 		}
 	},
-	updated: function () {
+	updated:   function () {
 		if (this.follow) {
 			let terminal = this.$el.querySelector('#terminal')
 			terminal.scrollTop = terminal.scrollHeight
@@ -53,16 +55,16 @@ export default {
 		this.$store.state.mqtt.unsubscribe(C.SYSLOG_TOPIC)
 		this.unwatch()
 	},
-	methods: {
+	methods:   {
 		sendCmd: function () {
 			const data = new FormData
 			data.append('cmd', this.cmd)
 			axios({
-				method: 'POST',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/sysCmd/`,
-				data: data,
+				method:  'POST',
+				url:     `/utils/sysCmd/`,
+				data:    data,
 				headers: {
-					'auth': this.$store.getters.apiToken,
+					'auth':         this.$store.getters.apiToken,
 					'Content-Type': 'multipart/form-data'
 				}
 			})

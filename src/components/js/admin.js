@@ -1,24 +1,27 @@
 import axios from 'axios'
 
 export default {
-	name: 'admin',
-	data: function() {
+	name:     'admin',
+	data:     function () {
 		return {
-			activeTabId: 1,
+			activeTabId:          1,
 			settingSearchKeyword: '',
-			tabs: {
+			tabs:                 {
 				1: {
-					'icon': 'fas fa-cogs',
-					'id': 1,
+					'icon':     'fas fa-cogs',
+					'id':       1,
 					'position': 0
 				},
 				2: {
-					'icon': 'fas fa-tools',
-					'id': 2,
+					'icon':     'fas fa-tools',
+					'id':       2,
 					'position': 1
 				}
 			},
-			categoriesVisibility: ''
+			categoriesVisibility: '',
+			actions:              {
+				'save': {'action': this.save}
+			}
 		}
 	},
 	computed: {
@@ -26,7 +29,7 @@ export default {
 			return (categoryName) => {
 				let settings = {}
 				for (const [settingName, settingTemplate] of Object.entries(this.$store.state.settingTemplates)) {
-					if (!settingTemplate['hidden'] && settingTemplate['category'].toLowerCase() === categoryName.toLowerCase() && this.checkSettingVisibility(settingName)) {
+					if (settingTemplate['display'] !== 'hidden' && categoryName === '' || settingTemplate['category'].toLowerCase() === categoryName.toLowerCase() && this.checkConfigVisibility(settingName)) {
 						settings[settingName] = settingTemplate
 					}
 				}
@@ -44,8 +47,8 @@ export default {
 			}
 		}
 	},
-	methods: {
-		checkSetters: function (settingName) {
+	methods:  {
+		checkSetters:              function (settingName) {
 			if ('sets' in this.$store.state.settingTemplates[settingName]) {
 				let setters = this.$store.state.settingTemplates[settingName]['sets']
 				const myValue = this.$store.state.settings[settingName]
@@ -66,13 +69,10 @@ export default {
 				})
 			}
 		},
-		checkCategoryVisibility: function (categoryName) {
-			const parent = document.querySelector(`#${categoryName.toLowerCase().replace(' ', '_')}`)
-			if (parent !== null) {
-				return parent.querySelector('.input') !== null
-			}
+		checkCategoryVisibility:   function (categoryName) {
+			return Object.keys(this.categorySettings(categoryName)).length > 0
 		},
-		checkSettingVisibility: function (settingName) {
+		checkSettingVisibility:    function (settingName) {
 			let visible = true
 			if ('parent' in this.$store.state.settingTemplates[settingName]) {
 				const parentTemplate = this.$store.state.settingTemplates[settingName]['parent']
@@ -97,48 +97,51 @@ export default {
 				}
 
 				if (visible && this.settingSearchKeyword !== '') {
-					visible = settingName.toLowerCase().includes(this.settingSearchKeyword.toLowerCase());
+					visible = settingName.toLowerCase().includes(this.settingSearchKeyword.toLowerCase())
 				}
 			} else {
 				if (this.settingSearchKeyword !== '') {
-					visible = settingName.toLowerCase().includes(this.settingSearchKeyword.toLowerCase());
+					visible = settingName.toLowerCase().includes(this.settingSearchKeyword.toLowerCase())
 				}
 			}
 
 			return visible
 		},
-		save: function(event) {
+		save:                      function (event) {
 			let self = this
 			event.target['data-success'] = false
 			axios({
-				method: 'PATCH',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/config/`,
+				method:  'PATCH',
+				url:     `/utils/config/`,
 				headers: {
-					'auth': this.$store.getters.apiToken,
+					'auth':         this.$store.getters.apiToken,
 					'content-type': 'application/json'
 				},
-				data: this.$store.state.settings
+				data:    this.$store.state.settings
 			}).then(function () {
 				event.target['data-success'] = true
 				self.$i18n.locale = self.$store.state.settings['activeLanguage']
 			})
 		},
-		utilityRequestAndRedirect: function(id) {
+		utilityRequestAndRedirect: function (id) {
 			const icon = this.startIcon(id)
 			const self = this
 
 			axios({
-				method: 'GET',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/${id}/`,
-				headers: {'auth': this.$store.getters.apiToken},
-			}).then(function() {
+				method:  'GET',
+				url:     `/utils/${id}/`,
+				headers: {'auth': this.$store.getters.apiToken}
+			}).then(function () {
+				icon.classList.add('green')
 				setTimeout(() => {
-					icon.classList.add('green')
-					self.$router.replace('/syslog').catch()
+					icon.classList.remove('fa-spin')
+					self.$router.replace('/syslog').catch(() => {
+					}) //unused but required!
 				}, 2000)
-			}).catch(function() {
+			}).catch(function () {
+				icon.classList.add('red')
 				setTimeout(() => {
-					icon.classList.add('red')
+					icon.classList.remove('fa-spin')
 				}, 2000)
 			}).finally(() => {
 				setTimeout(() => {
@@ -148,31 +151,31 @@ export default {
 				}, 4000)
 			})
 		},
-		utilityRequestAndCheck: function(id, state) {
+		utilityRequestAndCheck:    function (id, state) {
 			const icon = this.startIcon(id)
 			const self = this
 
 			axios({
-				method: 'GET',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/${id}/`,
+				method:  'GET',
+				url:     `/utils/${id}/`,
 				headers: {'auth': this.$store.getters.apiToken}
-			}).then(function() {
+			}).then(function () {
 				self.checkState(state, icon)
-			}).catch(function() {
+			}).catch(function () {
 				setTimeout(() => {
 					icon.classList.remove('fa-spin')
 					icon.classList.add('red')
 				}, 1000)
 			})
 		},
-		utilitySimpleRequest: function(id) {
+		utilitySimpleRequest:      function (id) {
 			const icon = this.startIcon(id)
 			axios({
-				method: 'GET',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/utils/${id}/`,
+				method:  'GET',
+				url:     `/utils/${id}/`,
 				headers: {
 					'auth': this.$store.getters.apiToken,
-					'uid': localStorage.getItem('interfaceUid')
+					'uid':  localStorage.getItem('interfaceUid')
 				}
 			}).then(response => {
 				if ('success' in response.data && response.data['success']) {
@@ -183,7 +186,7 @@ export default {
 				} else {
 					icon.classList.add('red')
 				}
-			}).catch(function() {
+			}).catch(function () {
 				setTimeout(() => {
 					icon.classList.remove('fa-spin')
 					icon.classList.add('red')
@@ -197,32 +200,37 @@ export default {
 				this.$router.replace('/dialogView').then()
 			})
 		},
-		startIcon: function(id) {
+		startIcon:                 function (id) {
 			const icon = document.querySelector(`#utility${id.charAt(0).toUpperCase() + id.slice(1)}`)
 			icon.classList.add('fa-spin')
 			return icon
 		},
-		checkState: function(state, icon) {
+		checkState:                function (state, icon) {
+			let self = this
 			axios({
-				method: 'GET',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/state/${state}/`,
+				method:  'GET',
+				url:     `/state/${state}/`,
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then(response => {
 				if ('state' in response.data) {
 					if (response.data['state'] === 4) {
 						icon.classList.remove('fa-spin')
 						icon.classList.add('green')
-						setTimeout(function() {
+						setTimeout(function () {
 							icon.classList.remove('green')
 						}, 2000)
 					} else if (response.data['state'] === 9) {
 						icon.classList.remove('fa-spin')
 						icon.classList.add('red')
 					} else if (response.data['state'] === 1) {
-						setTimeout(this.checkState(state, icon), 1000)
+						setTimeout(function () {
+							self.checkState(state, icon)
+						}, 1000)
 					}
 				} else {
-					setTimeout(this.checkState(state, icon), 1000)
+					setTimeout(function () {
+						self.checkState(state, icon)
+					}, 1000)
 				}
 			}).catch(() => {
 				icon.classList.remove('fa-spin')

@@ -1,142 +1,142 @@
 import axios from 'axios'
-import * as C from '@/utils/constants';
+import * as C from '@/utils/constants'
 
 export default {
-	name: 'skills',
-	data: function () {
+	name:      'skills',
+	data:      function () {
 		return {
-			shopOpen: false,
+			shopOpen:         false,
 			skillsToDownload: [],
-			dummySkills: {},
-			menuItems: [
+			dummySkills:      {},
+			menuItems:        [
 				{
-					name: this.$t('tooltips.shop'),
-					icon: 'fas fa-download',
+					name:         this.$t('tooltips.shop'),
+					icon:         'fas fa-download',
 					extendedIcon: 'fas fa-times-circle',
 					extendedName: this.$t('tooltips.close'),
-					isToggle: true,
-					callback: this.toggleShop
+					isToggle:     true,
+					callback:     this.toggleShop
 				},
 				{
-					name: this.$t('tooltips.download'),
-					icon: 'fas fa-check-circle',
+					name:     this.$t('tooltips.download'),
+					icon:     'fas fa-check-circle',
 					isToggle: true,
 					callback: this.doDownload
 				}
 			],
-			steps: [
+			steps:            [
 				{
-					target: '[data-tour="0"]',
-					header: {
+					target:  '[data-tour="0"]',
+					header:  {
 						title: this.$t('tours.skills.yourSkills')
 					},
 					content: this.$t('tours.skills.data0'),
-					before: _ => new Promise((resolve) => {
+					before:  _ => new Promise((resolve) => {
 						// Add a dummy skill for function tour
 						this.dummySkills['dummy'] = {
-							name: 'ProjectAliceDemo',
-							author: 'Alice',
-							delayed: false,
-							active: true,
-							description: this.$t('skill.demoDesc'),
-							icon: 'fas fa-biohazard',
-							instructions: this.$t('skill.demoInstructions'),
-							required: false,
-							settings: {dummy: true},
+							name:            'ProjectAliceDemo',
+							author:          'Alice',
+							delayed:         false,
+							active:          true,
+							description:     this.$t('skill.demoDesc'),
+							icon:            'fas fa-biohazard',
+							instructions:    this.$t('skill.demoInstructions'),
+							required:        false,
+							settings:        {dummy: true},
 							updateAvailable: true,
-							version: '1.0.0',
+							version:         '1.0.0',
 							aliceMinVersion: '1.0.0',
-							category: 'system',
-							maintainers: ['project', 'alice']
+							category:        'system',
+							maintainers:     ['project', 'alice']
 						}
 						setTimeout(resolve, 500)
 					}),
-					params: {
+					params:  {
 						highlight: true
 					}
 				},
 				{
-					target: '[data-tour="1"]',
+					target:  '[data-tour="1"]',
 					content: this.$t('tours.skills.data1'),
-					params: {
+					params:  {
 						highlight: true
 					}
 				},
 				{
-					target: '[data-tour="2"]',
+					target:  '[data-tour="2"]',
 					content: this.$t('tours.skills.data2'),
-					params: {
+					params:  {
 						highlight: true
 					}
 				},
 				{
-					target: '[data-tour="3"]',
+					target:  '[data-tour="3"]',
 					content: this.$t('tours.skills.data3'),
-					params: {
+					params:  {
 						highlight: true
 					}
 				},
 				{
-					target: '[data-tour="4"]',
+					target:  '[data-tour="4"]',
 					content: this.$t('tours.skills.data4'),
-					params: {
+					params:  {
 						highlight: true
 					}
 				},
 				{
-					target: '[data-tour="5"]',
+					target:  '[data-tour="5"]',
 					content: this.$t('tours.skills.data5'),
-					params: {
+					params:  {
 						highlight: true
 					}
 				},
 				{
-					target: '[data-tour="6"]',
+					target:  '[data-tour="6"]',
 					content: this.$t('tours.skills.data6'),
-					params: {
+					params:  {
 						highlight: true
 					}
 				},
 				{
-					target: '[data-tour="7"]',
+					target:  '[data-tour="7"]',
 					content: this.$t('tours.skills.data7'),
-					params: {
+					params:  {
 						placement: 'right',
 						highlight: true
 					}
 				},
 				{
-					target: '[data-tour="8"]',
+					target:  '[data-tour="8"]',
 					content: this.$t('tours.skills.data8'),
-					params: {
+					params:  {
 						placement: 'right',
 						highlight: true
 					}
 				},
 				{
-					target: '[data-tour="9"]',
+					target:  '[data-tour="9"]',
 					content: this.$t('tours.skills.data9'),
-					params: {
+					params:  {
 						placement: 'right',
 						highlight: true
 					}
 				},
 				{
-					target: '[data-tour="10"]',
+					target:  '[data-tour="10"]',
 					content: this.$t('tours.skills.data10'),
-					params: {
+					params:  {
 						placement: 'left',
 						highlight: true
 					}
 				}
 			],
-			tourCallbacks: {
-				onSkip: this.finishTour,
+			tourCallbacks:    {
+				onSkip:   this.finishTour,
 				onFinish: this.finishTour
 			}
 		}
 	},
-	computed: {
+	computed:  {
 		skillsToDisplay: function () {
 			if (this.$store.state.skillTourCompleted) {
 				return this.$store.state.installedSkills
@@ -145,7 +145,7 @@ export default {
 			}
 		}
 	},
-	mounted: function () {
+	mounted:   function () {
 		if (!this.$store.state.skillTourCompleted) {
 			this.$tours['skills'].start()
 		}
@@ -153,7 +153,7 @@ export default {
 		setInterval(this.reloadStoreSkills, 5 * 60 * 1000)
 		this.reloadStoreSkills()
 	},
-	created: function () {
+	created:   function () {
 		let self = this
 		this.unwatch = this.$store.watch(
 			function (state) {
@@ -163,8 +163,8 @@ export default {
 				if (msg.topic === C.SKILL_INSTALLED_TOPIC) {
 					const payload = JSON.parse(msg.payloadString)
 					axios({
-						method: 'GET',
-						url: `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/skills/${payload.skillName}/`,
+						method:  'GET',
+						url:     `/skills/${payload.skillName}/`,
 						headers: {'auth': self.$store.getters.apiToken}
 					}).then(response => {
 						if ('skill' in response.data) {
@@ -190,18 +190,18 @@ export default {
 	activated: function () {
 		this.shopOpen = false
 	},
-	methods: {
-		finishTour: function () {
+	methods:   {
+		finishTour:        function () {
 			this.$store.commit('setSkillTourCompleted')
 		},
-		toggleShop: function () {
+		toggleShop:        function () {
 			if (this.$tours['skills'].currentStep !== -1) return
 			this.shopOpen = !this.shopOpen
 		},
 		reloadStoreSkills: function () {
 			axios({
 				method: 'GET',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/getStore/`
+				url:    `/skills/getStore/`
 			}).then(response => {
 				if ('store' in response.data) {
 					this.$store.commit('setStoreSkills', response.data['store'])
@@ -222,9 +222,9 @@ export default {
 				return
 			}
 			axios({
-				method: 'PUT',
-				url: `http://${this.$store.state.settings['aliceIp']}:${this.$store.state.settings['apiPort']}/api/v1.0.1/skills/installSkills/`,
-				data: this.skillsToDownload,
+				method:  'PUT',
+				url:     `/skills/installSkills/`,
+				data:    this.skillsToDownload,
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then(response => {
 				if ('status' in response.data) {

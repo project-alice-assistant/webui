@@ -3,3 +3,85 @@
 	height: 250px;
 	width: 300px;
 }
+
+.stretched {
+	height: 100%;
+	width: 100%;
+}
+
+.stretched >>> textarea {
+	height: 100%;
+	width: 100%;
+}
+
+.utility {
+	background-color: var(--windowBG);
+	display: flex;
+	flex-direction: column;
+	height: 200px;
+	margin: 15px;
+	max-height: 200px;
+	max-width: 200px;
+	transition: var(--shortAnimation);
+	width: 200px;
+}
+
+.utility:hover {
+	transform: var(--lightLift);
+}
+
+.utilityIcon {
+	align-items: center;
+	display: flex;
+	font-size: 5em;
+	height: 150px;
+	justify-content: center;
+	margin: 0;
+	min-height: 150px;
+}
+
+.utilityName {
+	display: flex;
+	font-size: 1.25em;
+	justify-content: center;
+	margin: 0;
+}
+
+>>> .categoryHead {
+	background-color: var(--accent);
+	line-height: 2em;
+	text-align: center;
+	width: 100%;
+}
+
+>>> .leftBar {
+	display: flex;
+	flex-direction: column;
+}
+
+
+.waiting {
+	background-color: rgba(64, 64, 64, 0.75);
+	height: 100%;
+	left: 0;
+	padding-bottom: 25%;
+	padding-top: 20%;
+	position: absolute;
+	top: 0;
+	transition: 0s;
+	width: 100%;
+	z-index: 998;
+}
+
+.waitHidden {
+	background-color: rgba(64, 64, 64, 0.0);
+	height: 100%;
+	left: 0;
+	padding-bottom: 25%;
+	pointer-events: none;
+	position: absolute;
+	top: -100px;
+	transition: 1s;
+	width: 100%;
+	z-index: 998;
+}
