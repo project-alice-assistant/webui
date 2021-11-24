@@ -15,6 +15,9 @@
 		<div class="download" @click="handleDownloadClick">
 			<i :class="{'fa-download': !isWanted && !isDownloading, 'fa-check': isWanted && !isDownloading, 'fa-spinner fa-spin': !isWanted && isDownloading}" aria-hidden="true" class="fas clickable"/>
 		</div>
+		<div class="compatibility">
+			<i v-tooltip="isCompatible ? $t('tooltips.compatible') : notCompatibleExplained" :class="{'fa-check green': isCompatible, 'fa-times red': !isCompatible}" aria-hidden="true" class="fas"/>
+		</div>
 	</div>
 </template>
 

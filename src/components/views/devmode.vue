@@ -161,16 +161,6 @@
 						</p>
 					</div>
 				</div>
-				<div v-else class="container flexrow">
-					<div class="utility clickable" @click="utilityRequest('setModified')">
-						<p class="utilityIcon">
-							<i id="utilitySetModified" class="fas fa-pen-alt"/>
-						</p>
-						<p class="utilityName">
-							{{ $t('skill.utilities.modify') }}
-						</p>
-					</div>
-				</div>
 			</div>
 			<div v-else-if="activeTabId === 'devices'">
 				<actions-menu :alwaysExtended="true" :menuItems="menuItems"/>
