@@ -239,6 +239,7 @@ header {
 	height: 100%;
 	left: 0;
 	overflow: hidden;
+	padding-bottom: 15px;
 	position: absolute;
 	right: 0;
 	top: 0;
