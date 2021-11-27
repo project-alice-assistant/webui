@@ -221,6 +221,7 @@ export default {
 				this.toggleShop()
 				return
 			}
+			let self = this
 			axios({
 				method:  'PUT',
 				url:     `/skills/installSkills/`,
@@ -228,9 +229,11 @@ export default {
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then(response => {
 				if ('status' in response.data) {
-					for (const skillName of Object.keys(response.data.status)) {
-						this.$refs[skillName.toLowerCase()][0].setIsDownloading()
-						this.shopOpen = false
+					for (const [skillName, status] of Object.entries(response.data.status)) {
+						if (status === 'ok') {
+							self.$refs[skillName.toLowerCase()][0].setIsDownloading()
+							self.shopOpen = false
+						}
 					}
 				}
 			})
