@@ -33,8 +33,13 @@ export default {
 				method:  'GET',
 				url:     `/skills/${this.skill.name}/toggleActiveState/`,
 				headers: {'auth': this.$store.getters.apiToken}
-			}).then(() => (this.skill.active = !this.skill.active))
-
+			}).then(response => {
+				if ('success' in response.data && response.data.success) {
+					this.skill.active = !this.skill.active
+				} else {
+					self.showError(self.$t('notifications.errors.skillNotActivated'))
+				}
+			})
 		},
 		update:       function () {
 			if (this.$tours['skills'].currentStep !== -1) return
