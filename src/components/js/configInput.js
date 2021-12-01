@@ -37,7 +37,28 @@ export default {
 			return this.holder[this.configName]
 		}
 	},
-	methods:  {
+	methods: {
+		checkSetters: function (settingName) {
+			if ('sets' in this.$store.state.settingTemplates[settingName]) {
+				let setters = this.$store.state.settingTemplates[settingName]['sets']
+				const myValue = this.$store.state.settings[settingName]
+				let values
+				if (setters.includes(' - ')) {
+					setters = setters.split(' - ')
+					values = this.$store.state.settingTemplates[settingName]['values'] || this.$store.state.settingTemplates[settingName]['defaultValue']
+					for (const [text, value] of Object.entries(values)) {
+						if (value.toLowerCase() !== myValue.toLowerCase()) continue
+						values = text.split(' - ')
+					}
+				} else {
+					setters = [setters]
+					values = [myValue]
+				}
+				setters.forEach((setter, index) => {
+					this.$store.state.settings[setter] = values[index]
+				})
+			}
+		},
 		hex2rgba() {
 			let hex = this.holder['background']
 			let alpha = this.holder['background-opacity']

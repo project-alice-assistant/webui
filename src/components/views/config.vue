@@ -25,7 +25,8 @@
 												:configName="configName"
 												:holder="holder"
 												:template="template"
-												:translate="(val) => $t(val)"/>
+												:translate="(val) => $t(val)"
+						/>
 					</div>
 				</div>
 			</div>
@@ -34,7 +35,8 @@
 										:configName="configName"
 										:holder="holder"
 										:template="template"
-										:translate="translate"/>
+										:translate="translate"
+				/>
 			</div>
 		</div>
 		<div class="configActions">

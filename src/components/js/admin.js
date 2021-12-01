@@ -1,12 +1,11 @@
 import axios from 'axios'
 
 export default {
-	name:     'admin',
-	data:     function () {
+	name:    'admin',
+	data:    function () {
 		return {
-			activeTabId:          1,
-			settingSearchKeyword: '',
-			tabs:                 {
+			activeTabId: 1,
+			tabs:        {
 				1: {
 					'icon':     'fas fa-cogs',
 					'id':       1,
@@ -18,95 +17,12 @@ export default {
 					'position': 1
 				}
 			},
-			categoriesVisibility: '',
-			actions:              {
+			actions:     {
 				'save': {'action': this.save}
 			}
 		}
 	},
-	computed: {
-		categorySettings() {
-			return (categoryName) => {
-				let settings = {}
-				for (const [settingName, settingTemplate] of Object.entries(this.$store.state.settingTemplates)) {
-					if (settingTemplate['display'] !== 'hidden' && categoryName === '' || settingTemplate['category'].toLowerCase() === categoryName.toLowerCase() && this.checkConfigVisibility(settingName)) {
-						settings[settingName] = settingTemplate
-					}
-				}
-				return settings
-			}
-		},
-		settingsCategories() {
-			if (this.settingSearchKeyword === '') {
-				return this.$store.state.settingCategories
-			} else {
-				let self = this
-				return Object.values(this.$store.state.settingCategories).filter(categoryName => {
-					return self.checkCategoryVisibility(categoryName)
-				})
-			}
-		}
-	},
-	methods:  {
-		checkSetters:              function (settingName) {
-			if ('sets' in this.$store.state.settingTemplates[settingName]) {
-				let setters = this.$store.state.settingTemplates[settingName]['sets']
-				const myValue = this.$store.state.settings[settingName]
-				let values
-				if (setters.includes(' - ')) {
-					setters = setters.split(' - ')
-					values = this.$store.state.settingTemplates[settingName]['values'] || this.$store.state.settingTemplates[settingName]['defaultValue']
-					for (const [text, value] of Object.entries(values)) {
-						if (value.toLowerCase() !== myValue.toLowerCase()) continue
-						values = text.split(' - ')
-					}
-				} else {
-					setters = [setters]
-					values = [myValue]
-				}
-				setters.forEach((setter, index) => {
-					this.$store.state.settings[setter] = values[index]
-				})
-			}
-		},
-		checkCategoryVisibility:   function (categoryName) {
-			return Object.keys(this.categorySettings(categoryName)).length > 0
-		},
-		checkSettingVisibility:    function (settingName) {
-			let visible = true
-			if ('parent' in this.$store.state.settingTemplates[settingName]) {
-				const parentTemplate = this.$store.state.settingTemplates[settingName]['parent']
-				const parentConfig = parentTemplate['config']
-				const reqCondition = parentTemplate['condition']
-				const reqValue = parentTemplate['value']
-				let parentValue = this.$store.state.settings[parentConfig]
-
-				if (Array.isArray(parentConfig)) {
-					const type = parentTemplate['checkType'] || 'and'
-					for (const parent of parentConfig) {
-						parentValue = this.$store.state.settings[parent]
-						visible = (reqCondition === 'is' && parentValue === reqValue) || (reqCondition === 'isnot' && parentValue !== reqValue) || (reqCondition === 'isgreater' && parentValue > reqValue) || (reqCondition === 'islower' && parentValue < reqValue)
-						if (type === 'or' && visible) {
-							break
-						} else if (type === 'and' && !visible) {
-							break
-						}
-					}
-				} else {
-					visible = (reqCondition === 'is' && parentValue === reqValue) || (reqCondition === 'isnot' && parentValue !== reqValue) || (reqCondition === 'isgreater' && parentValue > reqValue) || (reqCondition === 'islower' && parentValue < reqValue)
-				}
-
-				if (visible && this.settingSearchKeyword !== '') {
-					visible = settingName.toLowerCase().includes(this.settingSearchKeyword.toLowerCase())
-				}
-			} else {
-				if (this.settingSearchKeyword !== '') {
-					visible = settingName.toLowerCase().includes(this.settingSearchKeyword.toLowerCase())
-				}
-			}
-
-			return visible
-		},
+	methods: {
 		save:                      function (event) {
 			let self = this
 			event.target['data-success'] = false
