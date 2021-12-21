@@ -11,6 +11,7 @@
 			:value="configValue"
 			checkedBg="var(--windowBG)"
 			uncheckedBg="var(--windowBG)"
+			@change="checkSetters(configName)"
 			@click="configValue = !configValue"
 		/>
 		<input
@@ -23,6 +24,7 @@
 			:placeholder="template['defaultValue']"
 			:readonly="template['readonly']"
 			type="text"
+			@change="checkSetters(configName)"
 		/>
 		<input
 			v-else-if="template['dataType'] === 'string' && template['isSensitive']"
@@ -33,6 +35,7 @@
 			:minlength="template['min']"
 			:placeholder="template['defaultValue']"
 			type="password"
+			@change="checkSetters(configName)"
 		/>
 		<input
 			v-else-if="template['dataType'] === 'email'"
@@ -41,6 +44,7 @@
 			:placeholder="template['defaultValue']"
 			:readonly="template['readonly']"
 			type="email"
+			@change="checkSetters(configName)"
 		/>
 		<input
 			v-else-if="template['dataType'] === 'integer' && !template['isSensitive']"
@@ -49,24 +53,27 @@
 			:placeholder="template['defaultValue']"
 			:readonly="template['readonly']"
 			type="number"
+			@change="checkSetters(configName)"
 		/>
 		<input
 			v-else-if="template['dataType'] === 'integer' && template['isSensitive']"
 			v-model="configValue"
 			:placeholder="template['defaultValue']"
 			type="password"
+			@change="checkSetters(configName)"
 		/>
-		<span v-else-if="template['dataType'] === 'faIcon'"
-					class="centerLine">
+		<span v-else-if="template['dataType'] === 'faIcon'" class="centerLine">
 		<input
 			v-model="configValue"
 			:placeholder="template['defaultValue']"
 			type="text"
+			@change="checkSetters(configName)"
 		/> <i :class="icon" aria-hidden="true" class="fa-2x" style="margin-left: .33em;"/>
 	</span>
 		<select
 			v-else-if="template['dataType'] === 'list'"
 			v-model="configValue"
+			@change="checkSetters(configName)"
 		>
 			<option
 				v-for="(value, text) in template['values']"
@@ -90,7 +97,9 @@
 				:placeholder="template['defaultValue']"
 				:step="template['step']"
 				type="range"
-			/><span v-if="template['unit'] === '%'" class="inputRangeValue">{{ configValue * 100 }}%</span>
+				@change="checkSetters(configName)"
+			/>
+			<span v-if="template['unit'] === '%'" class="inputRangeValue">{{ configValue * 100 }}%</span>
 			<span v-else-if="template['unit'] === 'em'" class="inputRangeValue">{{ configValue }}em</span>
 			<span v-else class="inputRangeValue">{{ configValue }}</span>
 		</div>
@@ -103,8 +112,10 @@
 				:placeholder="template['defaultValue']"
 				:step="template['step']"
 				type="range"
+				@change="checkSetters(configName)"
 				@input="hex2rgba"
-			/><span v-if="template['unit'] === '%'" class="inputRangeValue">{{ configValue * 100 }}%</span>
+			/>
+			<span v-if="template['unit'] === '%'" class="inputRangeValue">{{ configValue * 100 }}%</span>
 			<span v-else class="inputRangeValue">{{ configValue }}{{ template['unit'] }}</span>
 		</div>
 		<textarea v-else-if="template['dataType'] === 'longstring'"
@@ -112,28 +123,34 @@
 							v-init="configValue"
 							:class="{missing: missing()}"
 							:placeholder="template['defaultValue']"
+							@change="checkSetters(configName)"
 		/>
 		<input v-else-if="template['dataType'] === 'color'"
 					 v-model="configValue"
 					 v-init="configValue"
 					 type="color"
+					 @change="checkSetters(configName)"
 		/>
 		<input v-else-if="template['dataType'] === 'color2rgba'"
 					 v-model="configValue"
 					 v-init="configValue"
 					 type="color"
+					 @change="checkSetters(configName)"
 					 @input="hex2rgba"
 		/>
 		<configInputList v-else-if="template['dataType'] === 'userList'"
 										 v-model="configValue"
 										 v-init="configValue"
-										 :template="template"/>
+										 :template="template"
+		/>
 		<input v-else
 					 v-model="configValue"
 					 v-init="configValue"
 					 :placeholder="template['defaultValue']"
 					 type="text"
-		/><span/>
+					 @change="checkSetters(configName)"
+		/>
+		<span/>
 	</div>
 </template>
 
@@ -201,6 +218,4 @@ textarea.missing {
 	align-items: center;
 	display: flex;
 }
-
-
 </style>

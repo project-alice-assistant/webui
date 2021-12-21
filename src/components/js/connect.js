@@ -60,7 +60,11 @@ export default {
 								self.$store.commit('uiConnected', true)
 								self.$store.commit('setConnectVue', self)
 								if (lastVisitedPage !== '/alicewatch') {
-									self.$router.replace(lastVisitedPage).then()
+									if (self.$store.state.loggedInUser) {
+										self.$router.replace(lastVisitedPage).then()
+									} else {
+										self.$router.replace('/widgets').then()
+									}
 								}
 							})
 						})

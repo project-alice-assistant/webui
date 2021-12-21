@@ -46,7 +46,7 @@ export default {
 					'Content-Type': 'application/json'
 				}
 			}).then(response => {
-				// save data to own variable so it is saved for later
+				// save data to own variable, so it is saved for later
 				this.overview = response.data
 				this.buildSelection()
 			})
@@ -70,7 +70,7 @@ export default {
 						return false
 					}
 				}
-				// second, the drop down filters - if set
+				// second, the dropdown filters - if set
 				if (tt && li['type'] !== tt) {
 					return false
 				}
@@ -97,7 +97,7 @@ export default {
 			// check all available combinations if they are relevant to be shown
 			for (const combination of this.overview) {
 
-				// checks for the drop down filters
+				// checks for the dropdown filters
 				if (!this.available.telemetryType.includes(combination['type'])
 					&& filterLine('', this.filter.device, this.filter.location, this.filter.service, combination, this)) {
 					this.available.telemetryType.push(combination['type'])

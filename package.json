@@ -17,6 +17,7 @@
 		"moveable": "^0.21.1",
 		"paho-mqtt": "^1.1.0",
 		"portal-vue": "^2.1.7",
+		"recordrtc": "^5.6.2",
 		"uuid": "^8.3.2",
 		"v-tooltip": "^2.0.3",
 		"vue": "^2.6.11",
@@ -31,8 +32,7 @@
 		"vue-tour": "^1.5.0",
 		"vuejs-dialog": "^1.4.2",
 		"vuejs-overlay": "^0.0.28",
-		"vuex": "^3.5.1",
-		"recordrtc": "^5.6.2"
+		"vuex": "^3.5.1"
 	},
 	"devDependencies": {
 		"@vue/cli-plugin-babel": "~4.5.0",

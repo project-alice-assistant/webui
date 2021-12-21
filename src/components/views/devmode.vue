@@ -69,7 +69,8 @@
 				<dialogTemplateEditor ref="dialogTemplateEditor"
 															:currentLang="currentLang"
 															:editingSkill="editingSkill"
-															v-on:waiting="function(v) { waiting = v }"/>
+															v-on:waiting="function(v) { waiting = v }"
+				/>
 			</div>
 			<div v-else-if="activeTabId === 'configTemplate'" class="tab_page">
 				<div class="WIP"><i class="fab fa-hotjar yellow"></i> new feature - handle with care!
@@ -125,7 +126,8 @@
 				<talkFileEditor ref="talkFileEditor"
 												:currentLang="currentLang"
 												:editingSkill="editingSkill"
-												v-on:waiting="function(v) { waiting = v }"/>
+												v-on:waiting="function(v) { waiting = v }"
+				/>
 			</div>
 			<div v-else-if="activeTabId === 'cloud'" class="tab_page">
 				<actions-menu :alwaysExtended="true" :menuItems="menuItems"/>
@@ -158,16 +160,6 @@
 						</p>
 						<p class="utilityName">
 							{{ $t('skill.utilities.createPR') }}
-						</p>
-					</div>
-				</div>
-				<div v-else class="container flexrow">
-					<div class="utility clickable" @click="utilityRequest('setModified')">
-						<p class="utilityIcon">
-							<i id="utilitySetModified" class="fas fa-pen-alt"/>
-						</p>
-						<p class="utilityName">
-							{{ $t('skill.utilities.modify') }}
 						</p>
 					</div>
 				</div>

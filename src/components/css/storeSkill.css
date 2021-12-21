@@ -94,3 +94,16 @@
 	margin-left: 5px;
 	position: absolute;
 }
+
+.compatibility {
+	bottom: 0;
+	font-size: 1.5em;
+	margin-right: 5px;
+	position: absolute;
+	right: 0;
+}
+
+.compatibility:hover {
+	cursor: pointer;
+	font-size: 1.75em;
+}
