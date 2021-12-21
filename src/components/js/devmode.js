@@ -141,7 +141,7 @@ export default {
 					this.$dialog.confirm({
 						title:      'Your changes will be lost!',
 						body:       'Close to return to ' + oldVal + ' or continue to ' + newVal + '?',
-						okText:     'Okilidoki',
+						okText:     'Okidoki',
 						cancelText: this.$t('buttons.cancel')
 					}).then(function (_dialog) {
 						self.loadInstruction()
@@ -191,7 +191,7 @@ export default {
 			return this.$dialog.confirm({
 				title:      'Your changes will be lost!',
 				body:       'Do you want to continue and lose your changes?',
-				okText:     'Oki doki',
+				okText:     'Okidoki',
 				cancelText: this.$t('buttons.cancel')
 			})
 		},

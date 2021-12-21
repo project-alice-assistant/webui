@@ -69,7 +69,8 @@
 				<dialogTemplateEditor ref="dialogTemplateEditor"
 															:currentLang="currentLang"
 															:editingSkill="editingSkill"
-															v-on:waiting="function(v) { waiting = v }"/>
+															v-on:waiting="function(v) { waiting = v }"
+				/>
 			</div>
 			<div v-else-if="activeTabId === 'configTemplate'" class="tab_page">
 				<div class="WIP"><i class="fab fa-hotjar yellow"></i> new feature - handle with care!
@@ -125,7 +126,8 @@
 				<talkFileEditor ref="talkFileEditor"
 												:currentLang="currentLang"
 												:editingSkill="editingSkill"
-												v-on:waiting="function(v) { waiting = v }"/>
+												v-on:waiting="function(v) { waiting = v }"
+				/>
 			</div>
 			<div v-else-if="activeTabId === 'cloud'" class="tab_page">
 				<actions-menu :alwaysExtended="true" :menuItems="menuItems"/>

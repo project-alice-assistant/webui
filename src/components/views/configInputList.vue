@@ -275,7 +275,7 @@ export default {
 			* This is used for the default (string) list as well as for the utterances list!
 			*/
 			//ignore empty inputs
-			if (this.newItem.length <= 0 || this.newItem === undefined) {
+			if (this.newItem.length <= 0) {
 				this.$refs.newListItem.focus()
 				return
 			}
@@ -309,7 +309,7 @@ export default {
 			*/
 			let output = input
 			for (let [key, slot] of Object.entries(this.newItemSlots)) {
-				//REGEX: find the FIRST occurrence of key that is NOT inside of <> brackets
+				//REGEX: find the FIRST occurrence of key that is NOT inside <> brackets
 				//capturing everything before key as $1 and the key itself as $2
 				let regex = new RegExp('(^(?:.*<.*>)*?[^<]*?)(' + key + ')')
 				//Test if the slot still exists, replace with the correct utterance form if it does
