@@ -102,7 +102,6 @@ Vue.dialog.registerComponent('addDevicePromptDialog', addDeviceDialog)
 Vue.dialog.registerComponent('deviceOptionsPromptDialog', deviceOptions)
 Vue.dialog.registerComponent('deviceReplyListSelect', deviceReplyListSelect)
 
-
 // Workaround to init v-models
 Vue.directive('init', {
 	bind(el, binding, vnode) {
