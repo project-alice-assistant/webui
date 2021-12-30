@@ -273,22 +273,7 @@ export default {
 			data.append('speakableName', this.values['speakableName'])
 			data.append('description', this.values['desc'])
 			data.append('category', this.values['category'])
-			data.append('pipRequirements', this.values['skillPipRequirements'])
-			data.append('skillSystemRequirements', this.values['.skillSystemRequirements'])
-			data.append('skillRequiredSkills', this.values['.skillRequiredSkills'])
-			data.append('skillConflictingSkills', this.values['.skillConflictingSkills.'])
-			data.append('skillRequiredManagers', this.values['.skillRequiredManagers'])
-			data.append('skillWidgets', this.values['.skillWidgets'])
-			data.append('skillScenarioNodes', this.values['.skillScenarioNodes'])
-			data.append('skillDevices', this.values['.skillDevices'])
-			data.append('fr', this.values['fr'])
-			data.append('de', this.values['de'])
-			data.append('it', this.values['it'])
-			data.append('pl', this.values['pl'])
-			data.append('pt', this.values['pt'])
-			data.append('skillOnline', this.values['internet'])
-			data.append('skillInstructions', this.values['instructions'])
-			data.append('skillArbitrary', this.values['arbitrary'])
+			data.append('icon', this.values['icon'])
 
 			let self = this
 			axios({
@@ -855,51 +840,6 @@ export default {
 						'weather'
 					],
 					'category':     'general'
-				},
-				'conditions':    {
-					'subConfig': true,
-					'dataType':  'userList',
-					'subType':   'toggles',
-					'category':  'lang',
-					'values':    {
-						'en': {
-							'defaultValue': true,
-							'dataType':     'boolean',
-							'description':  'English must be supported. A skill without english translation won\'t be accepted in the store.',
-							'obligatory':   true,
-							'category':     'language'
-						},
-						'de': {
-							'defaultValue': false,
-							'dataType':     'boolean',
-							'description':  '',
-							'category':     'language'
-						},
-						'fr': {
-							'defaultValue': false,
-							'dataType':     'boolean',
-							'description':  '',
-							'category':     'language'
-						},
-						'it': {
-							'defaultValue': false,
-							'dataType':     'boolean',
-							'description':  '',
-							'category':     'language'
-						},
-						'pt': {
-							'defaultValue': false,
-							'dataType':     'boolean',
-							'description':  '',
-							'category':     'language'
-						},
-						'pl': {
-							'defaultValue': false,
-							'dataType':     'boolean',
-							'description':  '',
-							'category':     'language'
-						}
-					}
 				}
 			}
 		}
