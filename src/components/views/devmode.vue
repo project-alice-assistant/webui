@@ -163,6 +163,16 @@
 						</p>
 					</div>
 				</div>
+				<div v-else>
+					<div class="utility clickable" @click="utilityRequest('checkUpdate')">
+						<p class="utilityIcon">
+							<i id="utilityCheckUpdate" class="fas fa-redo-alt"/>
+						</p>
+						<p class="utilityName">
+							{{ $t('skill.utilities.update') }}
+						</p>
+					</div>
+				</div>
 			</div>
 			<div v-else-if="activeTabId === 'devices'">
 				<actions-menu :alwaysExtended="true" :menuItems="menuItems"/>

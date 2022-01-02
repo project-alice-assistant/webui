@@ -482,9 +482,6 @@ export default {
 			if (this.changedSkill.installFile !== this.backedUpSkill.installFile) {
 				this.saveInstallFile()
 			}
-//			if(this.$refs.installFileEditor){
-//				this.$refs.installFileEditor.save()
-//			}
 			if (this.$refs.dialogTemplateEditor) {
 				this.$refs.dialogTemplateEditor.save()
 			}
