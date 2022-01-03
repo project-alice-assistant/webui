@@ -527,8 +527,8 @@ export default {
 				url:     `/skills/${this.editingSkill.name}/${id}/`,
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then(function (resp) {
-				if (resp['success'] !== undefined && !resp['success']) {
-					throw resp['message']
+				if (resp.data['success'] !== undefined && !resp.data['success']) {
+					throw resp.data['message']
 				} else {
 					icon.classList.add('green')
 					if (id === 'setModified') {
@@ -543,9 +543,9 @@ export default {
 			}).catch(function (e) {
 				console.log(e)
 				icon.classList.add('red')
+				self.showError(self.$t('notifications.errors.somethingWentWrong'))
 				setTimeout(() => {
 					icon.classList.remove('fa-spin')
-					self.showError(self.$t('notifications.errors.somethingWentWrong'))
 				}, 2000)
 			}).finally(() => {
 				setTimeout(() => {
