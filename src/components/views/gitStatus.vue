@@ -2,15 +2,18 @@
 	<div>
 		<div v-if="status !== 'unknown'" class="container">
 			<div v-for="st of status" class="flexrow">
-				<label>{{ st.name }}</label>
+				<label style="width: 5em;">{{ st.name }}</label>
 				<input :value="st.url" readonly/>
 				<i v-if="st.status" class="fas fa-check-circle" style="color: green"></i>
 				<i v-if="!st.status" class="fas fa-times-circle" style="color: red"></i>
+				<i v-if="st.commitsBehind > 0" class="fas fa-arrow-up" style="color: yellow">{{ st.commitsBehind }}</i>
+				<i v-if="st.commitsAhead > 0" class="fas fa-arrow-down" style="color: yellow">{{ st.commitsAhead }}</i>
 				{{ request }}
 			</div>
 		</div>
 		<div v-else>
 			<i class="fab fa-github fa-spin size-4x centered"></i>
+			<span class="centered">fetching..</span>
 		</div>
 	</div>
 
