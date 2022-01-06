@@ -135,7 +135,6 @@
 					<div style="width: 100%; padding: 1em;">
 						<div class="WIP"><i class="fab fa-hotjar yellow"></i> new feature - handle with care!
 							<i class="fab fa-hotjar yellow"></i><br/></div>
-						<div> You might need to hit upload twice on the initial upload!</div>
 					</div>
 					<git-status :skill="editingSkill.name" style="width: 100%"></git-status>
 					<div class="utility clickable" @click="utilityRequest('revert')">
@@ -164,6 +163,7 @@
 					</div>
 				</div>
 				<div v-else>
+					<git-status :skill="editingSkill.name" style="width: 100%"></git-status>
 					<div class="utility clickable" @click="utilityRequest('checkUpdate')">
 						<p class="utilityIcon">
 							<i id="utilityCheckUpdate" class="fas fa-redo-alt"/>
