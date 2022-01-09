@@ -376,6 +376,9 @@ export default {
 		save() {
 			let self = this
 			for (const lang of Object.keys(this.dialogTemplates)) {
+				if (! 'skill' in this.dialogTemplates[lang] || this.dialogTemplates[lang]['skill'] == undefined ){
+					this.dialogTemplates[lang]['skill'] = this.editingSkill.name
+				}
 				let data = {
 					'lang':           lang,
 					'dialogTemplate': this.dialogTemplates[lang]
