@@ -131,47 +131,7 @@
 			</div>
 			<div v-else-if="activeTabId === 'cloud'" class="tab_page">
 				<actions-menu :alwaysExtended="true" :menuItems="menuItems"/>
-				<div v-if="editingSkill.modified" class="container flexrow">
-					<div style="width: 100%; padding: 1em;">
-						<div class="WIP"><i class="fab fa-hotjar yellow"></i> new feature - handle with care!
-							<i class="fab fa-hotjar yellow"></i><br/></div>
-					</div>
 					<git-status :skill="editingSkill.name" style="width: 100%"></git-status>
-					<div class="utility clickable" @click="utilityRequest('revert')">
-						<p class="utilityIcon">
-							<i id="utilityRevert" class="fas fa-undo-alt"/>
-						</p>
-						<p class="utilityName">
-							{{ $t('skill.utilities.revert') }}
-						</p>
-					</div>
-					<div class="utility clickable" @click="utilityRequest('upload')">
-						<p class="utilityIcon">
-							<i id="utilityUpload" class="fas fa-cloud-upload-alt"/>
-						</p>
-						<p class="utilityName">
-							{{ $t('skill.utilities.upload') }}
-						</p>
-					</div>
-					<div class="utility clickable" @click="createPR()">
-						<p class="utilityIcon">
-							<i id="utilityCreatePR" class="fas fa-share-alt"/>
-						</p>
-						<p class="utilityName">
-							{{ $t('skill.utilities.createPR') }}
-						</p>
-					</div>
-				</div>
-				<div v-else>
-					<git-status :skill="editingSkill.name" style="width: 100%"></git-status>
-					<div class="utility clickable" @click="utilityRequest('checkUpdate')">
-						<p class="utilityIcon">
-							<i id="utilityCheckUpdate" class="fas fa-redo-alt"/>
-						</p>
-						<p class="utilityName">
-							{{ $t('skill.utilities.update') }}
-						</p>
-					</div>
 				</div>
 			</div>
 			<div v-else-if="activeTabId === 'devices'">
