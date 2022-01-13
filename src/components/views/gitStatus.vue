@@ -45,9 +45,9 @@
 				<div class="flexrow">
 					<button>Checkout</button>
 					<button v-if="st.name == 'Private'" v-on:mouseup="upload()">Upload</button>
-					<button v-if="st.name == 'Private'" v-on:mouseup="open(st.url)">Settings</button>
 					<button v-if="!privateExists && st.name == 'Public'" v-on:mouseup="fork()">Fork</button>
-					<button v-if="PRpossible" v-on:mouseup="createPR(st.user)">Create PR</button>
+					<button v-if="publicExists && st.name == 'Private'" v-on:mouseup="createPR(st.user)">Create PR</button>
+					<button v-on:mouseup="open(st.url)">Web</button>
 				</div>
 				<br/>
 				<br/>
