@@ -16,7 +16,7 @@
 		<div v-if="Object.keys(notifications).length !== 0" class="notifications">
 			<span class="notification">
     		<i aria-hidden="true" class="fas fa-envelope clickable notificationIcon" @click="notificationsDisplayToggle = !notificationsDisplayToggle"></i>
-    		<span class="notificationCounter">{{ notifications.length }}</span>
+    		<span class="notificationCounter">{{ Object.keys(notifications).length }}</span>
   		</span>
 			<div v-if="notificationsDisplayToggle" class="notificationHolder">
 				<notification v-for="notification in notifications" :key="notification.id" :notification="notification"/>
