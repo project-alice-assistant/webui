@@ -67,3 +67,27 @@
 	width: 300px;
 	z-index: 999;
 }
+
+.notification {
+	display: inline;
+	position: relative;
+}
+
+.notificationCounter {
+	align-items: center;
+	background-color: tomato;
+	border-radius: 99px;
+	box-sizing: border-box;
+	display: flex;
+	font-family: var(--bold);
+	font-size: 0.85em;
+	justify-content: center;
+	left: -15px;
+	min-height: 20px;
+	min-width: 20px;
+	padding: 3px;
+	pointer-events: none;
+	position: absolute;
+	text-align: center;
+	top: -15px;
+}

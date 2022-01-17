@@ -5,7 +5,7 @@ export default {
 	name: 'pa-header',
 	data() {
 		return {
-			notifications:              {},
+			notifications:              [],
 			notificationsDisplayToggle: false,
 			title:                      '',
 			unwatch:                    {},
