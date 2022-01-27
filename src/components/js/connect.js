@@ -433,7 +433,7 @@ export default {
 				})
 			})
 		},
-		loadMyHome:            function () {
+		loadMyHome:        function () {
 			const self = this
 			return new Promise(function (resolve, reject) {
 				axios({
@@ -456,7 +456,25 @@ export default {
 				})
 			})
 		},
-		loadData:              function () {
+		loadNotifications: function () {
+			// Trigger notification loads here also in case we connect after webui has loaded
+			const self = this
+			return new Promise(function (resolve, reject) {
+				axios({
+					method:  'GET',
+					url:     `/utils/notifications/`,
+					headers: {
+						'auth': self.$store.getters.apiToken,
+						'uid':  localStorage.getItem('interfaceUid')
+					}
+				}).then(() => {
+					resolve()
+				}).catch(reason => {
+					reject(Error('Failed loading notifications: ' + reason))
+				})
+			})
+		},
+		loadData:          function () {
 			const self = this
 			return new Promise(function (resolve, reject) {
 				Promise.all([
@@ -469,7 +487,8 @@ export default {
 					self.loadFloorTiles(),
 					self.loadConstructionTiles(),
 					self.loadFurnitureTiles(),
-					self.loadMyHome()
+					self.loadMyHome(),
+					self.loadNotifications()
 				]).then(() => {
 					resolve()
 				}).catch(reason => {
@@ -477,7 +496,7 @@ export default {
 				})
 			})
 		},
-		onConnected:           function () {
+		onConnected:       function () {
 			console.log('Mqtt connected')
 			this.$store.state.mqtt.subscribe(C.UI_NOTIFICATION_TOPIC)
 			this.$store.state.mqtt.subscribe(C.RESOURCE_USAGE_TOPIC)
