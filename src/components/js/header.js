@@ -33,6 +33,14 @@ export default {
 				}
 			}
 		)
+		axios({
+			method:  'GET',
+			url:     `/utils/notifications/`,
+			headers: {
+				'auth': self.$store.getters.apiToken,
+				'uid':  localStorage.getItem('interfaceUid')
+			}
+		})
 	},
 	beforeDestroy: function () {
 		this.$store.state.mqtt.unsubscribe(C.RESOURCE_USAGE_TOPIC)

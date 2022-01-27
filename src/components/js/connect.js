@@ -456,20 +456,6 @@ export default {
 				})
 			})
 		},
-		loadNotifications:     function () {
-			const self = this
-			return new Promise(function (resolve, reject) {
-				axios({
-					method:  'GET',
-					url:     `/utils/notifications/`,
-					headers: {'auth': self.$store.getters.apiToken, 'uid': localStorage.getItem('interfaceUid')}
-				}).then(() => {
-					resolve()
-				}).catch(reason => {
-					reject(Error('Failed loading notifications: ' + reason))
-				})
-			})
-		},
 		loadData:              function () {
 			const self = this
 			return new Promise(function (resolve, reject) {
@@ -483,8 +469,7 @@ export default {
 					self.loadFloorTiles(),
 					self.loadConstructionTiles(),
 					self.loadFurnitureTiles(),
-					self.loadMyHome(),
-					self.loadNotifications()
+					self.loadMyHome()
 				]).then(() => {
 					resolve()
 				}).catch(reason => {
