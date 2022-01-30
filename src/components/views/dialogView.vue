@@ -6,7 +6,7 @@
 		</div>
 		<div class="dvInput">
 			<!--suppress HtmlFormInputWithoutLabel -->
-			<input type="text" v-bind:value="say" v-on:input="say = $event.target.value" @keyup.enter="sendQuery"/>
+			<input type="text" v-bind:value="say" v-on:input="say = $event.target.value" @keyup.enter="sendQuery" @keyup.up="historyUp" @keyup.down="historyDown"/>
 			<button @click="sendQuery"><i aria-hidden="true" class="fas fa-paper-plane"></i></button>
 			<micStreamer icon="fas fa-microphone fa-2x"></micStreamer>
 		</div>

@@ -9,13 +9,15 @@ export default {
 	},
 	data:       function () {
 		return {
-			cmd:            '',
-			unwatch:        {},
-			msgs:           [],
-			say:            '',
-			currentSpeech:  undefined,
-			currentSession: undefined,
-			menuItems:      [
+			cmd:             '',
+			unwatch:         {},
+			msgs:            [],
+			say:             '',
+			history:         [],
+			historyPosition: 0,
+			currentSpeech:   undefined,
+			currentSession:  undefined,
+			menuItems:       [
 				{
 					name:         this.$t('tooltips.close'),
 					icon:         'far fa-pause-circle',
@@ -67,12 +69,14 @@ export default {
 		this.unwatch()
 	},
 	methods:    {
-		sendQuery: function () {
+		sendQuery:   function () {
 			if (this.say === '') return
 
 			const data = new FormData
 			data.append('query', this.say)
 			data.append('deviceUid', localStorage.getItem('interfaceUid'))
+			this.history.push(this.say)
+			this.historyPosition = this.history.length
 			//if no session is available start new one
 			if (this.currentSession === undefined) {
 				axios({
@@ -102,6 +106,22 @@ export default {
 				})
 			}
 			this.say = ''
+		},
+		historyUp:   function () {
+			if (this.historyPosition <= 0) {
+				this.say = this.history[0]
+			} else {
+				this.historyPosition -= 1
+				this.say = this.history[this.historyPosition]
+			}
+		},
+		historyDown: function () {
+			if (this.historyPosition >= this.history.length - 1) {
+				this.say = this.history[-1]
+			} else {
+				this.historyPosition += 1
+				this.say = this.history[this.historyPosition]
+			}
 		}
 	}
 }
