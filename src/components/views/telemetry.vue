@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="topContainer">
 		<div v-if="advancedMode">
 			<label>
 				Filter:
@@ -7,22 +7,26 @@
 			</label>
 		</div>
 		<div v-if="!advancedMode" id="filter">
-			<label for="service">Service:</label><select id="service" v-model="filter.service" @change="buildSelection()">
-			<option selected/>
-			<option v-for="item in available.services" :value="item">{{ item }}</option>
-		</select>
-			<label for="locations">Locations:</label><select id="locations" v-model="filter.location" @change="buildSelection()">
-			<option selected/>
-			<option v-for="item in available.locations" :value="item.id">{{ item.id }} - {{ item.name }}</option>
-		</select>
-			<label for="devices">Devices:</label><select id="devices" v-model="filter.device" @change="buildSelection()">
-			<option selected/>
-			<option v-for="item in available.devices" :value="item.id">{{ item.id }} - {{ item.name }}</option>
-		</select>
-			<label for="telemetryType">Telemetry Type:</label><select id="telemetryType" v-model="filter.telemetryType" @change="buildSelection()">
-			<option selected/>
-			<option v-for="item in available.telemetryType" :value="item">{{ item }}</option>
-		</select>
+			<label for="service">Service:</label>
+			<select id="service" v-model="filter.service" @change="buildSelection()">
+				<option selected/>
+				<option v-for="item in available.services" :value="item">{{ item }}</option>
+			</select>
+			<label for="locations">Locations:</label>
+			<select id="locations" v-model="filter.location" @change="buildSelection()">
+				<option selected/>
+				<option v-for="item in available.locations" :value="item.id">{{ item.id }} - {{ item.name }}</option>
+			</select>
+			<label for="devices">Devices:</label>
+			<select id="devices" v-model="filter.device" @change="buildSelection()">
+				<option selected/>
+				<option v-for="item in available.devices" :value="item.id">{{ item.id }} - {{ item.name }}</option>
+			</select>
+			<label for="telemetryType">Telemetry Type:</label>
+			<select id="telemetryType" v-model="filter.telemetryType" @change="buildSelection()">
+				<option selected/>
+				<option v-for="item in available.telemetryType" :value="item">{{ item }}</option>
+			</select>
 		</div>
 		<div class="selections">
 			<div id="listPossibles" class="floaty">
@@ -36,14 +40,19 @@
 				</div>
 			</div>
 		</div>
-		<div style="display: flex;text-align: center;align-items: center; margin-left: 1em;">
+		<div style="display: flex;text-align: center;align-items: center; margin: 10px;">
 			<label>Time (dummy):
 				<input v-model="new Date(new Date()-(24*3600000)).toISOString()">
 				-
 				<input v-model="new Date().toISOString()"/>
 			</label>
 		</div>
-		<button @click="advancedMode = !advancedMode">A</button>
+		<button v-if="advancedMode" @click="advancedMode = false">
+			Normal mode
+		</button>
+		<button v-if="!advancedMode" @click="advancedMode = true">
+			Advanced mode
+		</button>
 		<button @click="clearFilters()">
 			Clear Filters
 		</button>
