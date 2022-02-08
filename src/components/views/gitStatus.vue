@@ -198,9 +198,14 @@ export default {
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then(function (resp) {
 				if(resp.data.success == true){
-					let tmpUpstream = resp.data.upstream.split('/')
-					self.upstream.remote = tmpUpstream[0]
-					self.upstream.branch = tmpUpstream[1]
+					if(resp.data.upstream) {
+						let tmpUpstream = resp.data.upstream.split('/')
+						self.upstream.remote = tmpUpstream[0]
+						self.upstream.branch = tmpUpstream[1]
+					} else {
+						self.upstream.remote = "origin"
+						self.upstream.branch = "master"
+					}
 					for(let st in resp.data.result) {
 						//console.log(resp.data.result[st])
 						if( resp.data.result[st].repoType === 'Private'){
