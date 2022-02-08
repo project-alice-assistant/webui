@@ -26,24 +26,28 @@
 					<button>Initialise Git</button>
 				</div>
 			</div>
-
 			<div v-for="st of status">
-				<div class="flexrow">
-				<label style="width: 5em;">{{ st.name }}</label>
+				<div class="flexrow" v-bind:class="{ active: st.name == upstream.remote }">
+				<label style="width: 5em;">{{ st.name }}<div>{{ st.repoType }}</div></label>
 				<input :value="st.url" readonly/>
 				<i v-if="st.status" class="fas fa-check-circle" style="color: green"></i>
 				<i v-if="!st.status" class="fas fa-times-circle" style="color: red"></i>
-				<i v-if="st.commitsBehind > 0" class="fas fa-level-up-alt" style="color: yellow">{{ st.commitsBehind }}</i>
-				<i v-if="st.commitsAhead > 0" class="fas fa-level-down-alt" style="color: yellow">{{ st.commitsAhead }}</i>
+				<i v-if="st.commitsBehind > 0" class="fas fa-minus" style="color: yellow"> {{ st.commitsBehind }}</i>
+				<i v-if="st.commitsAhead > 0" class="fas fa-plus" style="color: yellow"> {{ st.commitsAhead }}</i>
 					<i v-if="st.commitsAhead == 0 && st.commitsBehind == 0" class="fas fa-equals"></i>
 					<i v-if="st.commitsAhead == -1 || st.commitsBehind == -1" class="fas fa-question" style="color: gray"></i>
 				{{ request }}
+				</div>
+				<div>
+					<select v-model="selectedBranch[st.name]">
+						<option v-for="branch of Object.keys(st.lsRemote)">{{branch}}</option>
+					</select>
 				</div>
 				<div v-if="st.name == 'Public'" class="small">
 					changing tags/branches might cause unexpected results!
 				</div>
 				<div class="flexrow">
-					<button>Checkout</button>
+					<button v-on:mouseup="checkout(st.name)">Checkout</button>
 					<button v-if="st.name == 'Private'" v-on:mouseup="upload()">Upload</button>
 					<button v-if="!privateExists && st.name == 'Public'" v-on:mouseup="fork()">Fork</button>
 					<button v-if="publicExists && st.name == 'Private'" v-on:mouseup="createPR(st.user)">Create PR</button>
@@ -79,6 +83,8 @@ export default {
 	data:  () => ({
 		status:  {},
 		changes: {},
+		upstream: {},
+		selectedBranch: {},
 		request: undefined,
 		privateExists: false,
 		publicExists: false,
@@ -92,13 +98,29 @@ export default {
 		this.reload()
 	},
 	methods:  {
-		upload() {
+		checkout(remote) {
+			let self = this
+			this.activeCommand = 'git checkout'
+			axios({
+				method:  'GET',
+				url:     `/skills/${this.$parent.editingSkill.name}/checkout/${remote}/${this.selectedBranch[remote]}/`,
+				headers: {'auth': this.$store.getters.apiToken}
+			}).then(function (resp) {
+				if(resp.data.success == true){
+					self.reload()
+				} else {
+					console.log(resp.data)
+					self.status = undefined
+				}
+			})
+		},
+		upload(remote) {
 			this.activeCommand = 'git push'
 			this.init()
 			let self = this
 			axios({
 				method: 'GET',
-				url: `/skills/${self.skill}/upload/`,
+				url: `/skills/${self.skill}/upload/${remote}/`,
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then(function (resp) {
 				if(resp.data.success == true){
@@ -159,7 +181,7 @@ export default {
 				.then(function (dialogue) {
 					let prTitle = dialogue.data
 					window.open('https://github.com/project-alice-assistant/skill_'
-						+ self.editingSkill.name + '/compare/master...' + source + ':master'
+						+ self.$parent.editingSkill.name + '/compare/master...' + source + ':master'
 						+ '?diff=split&quick_pull=1&title=' + prTitle)
 				})
 		},
@@ -176,12 +198,20 @@ export default {
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then(function (resp) {
 				if(resp.data.success == true){
+					let tmpUpstream = resp.data.upstream.split('/')
+					self.upstream.remote = tmpUpstream[0]
+					self.upstream.branch = tmpUpstream[1]
 					for(let st in resp.data.result) {
-						console.log(resp.data.result[st])
-						if( resp.data.result[st].name === 'Private'){
+						//console.log(resp.data.result[st])
+						if( resp.data.result[st].repoType === 'Private'){
 							self.privateExists = true
-						} else if ( resp.data.result[st].name === 'Public'){
+						} else if ( resp.data.result[st].repoType === 'Public'){
 							self.publicExists = true
+						}
+						if( resp.data.result[st].name == self.upstream.remote ) {
+							self.selectedBranch[self.upstream.remote] = self.upstream.branch
+						} else {
+							self.selectedBranch[resp.data.result[st].name] = "master"
 						}
 					}
 					self.status = resp.data.result
