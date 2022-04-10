@@ -228,12 +228,25 @@ export default {
 				}
 			})
 		},
+		sanitizeZ(page) {
+			// required when a widget is deleted by some background process or manually via DB
+			let listing = this.listOfWidgetOnPage(page)
+			let list = listing.sort((a, b) => (a.settings['z'] > b.settings['z']) ? 1 : -1)
+			let counter = 1
+			for (const w of list) {
+				if(w.settings['z'] !== counter){
+					console.log('Fixed z-ordering for', w.name)
+					w.settings['z'] = counter
+					this.saveWidget(w)
+				}
+			counter++;
+			}
+		},
 		moveZUp(widget) {
+			this.sanitizeZ(widget['page'])
 			const myIndex = widget.settings['z']
 			const myNewIndex = myIndex + 1
 			const listing = this.listOfWidgetOnPage(widget['page'])
-
-			console.log(myIndex, myNewIndex, listing)
 
 			if (myNewIndex > listing.length) {
 				return
@@ -250,6 +263,7 @@ export default {
 			}
 		},
 		moveZDown(widget) {
+			this.sanitizeZ(widget['page'])
 			const myIndex = widget.settings['z']
 			const myNewIndex = myIndex - 1
 			const listing = this.listOfWidgetOnPage(widget['page'])
