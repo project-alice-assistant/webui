@@ -299,20 +299,28 @@ export default {
 			return null
 		},
 		drawDeviceLinks: function ({specificLinkId, specificDeviceId, specificLocationId} = {}) {
+			let that = this
 			for (const link of Object.values(this.$store.state.deviceLinks)) {
 				if ((specificLinkId !== undefined && link.id !== specificLinkId) ||
 					(specificDeviceId !== undefined && link.deviceId !== specificDeviceId) ||
 					(specificLocationId !== undefined && link.targetLocation !== specificLocationId)) continue
 
 				let device = null
-				for (const location of this.$children.filter(loc => loc.$options.name === 'location')) {
-					device = location.$children.find(dev => dev.$options.name === 'device' && dev.data.id === link.deviceId)
-					if (device) break
+				function getDeviceRecursive(that, id){
+					if(that.$options.name === 'location' || that.$options.name === 'myhome'){
+						for (const sub of that.$children) {
+							let found = getDeviceRecursive(sub, id)
+							if(found)
+								return found
+						}
+					} else if(that.$options.name === 'device' && that.data.id === id){
+						return that
+					}
 				}
-
-				if (!device) continue
-
-				this.newDeviceLink(link, device)
+				device = getDeviceRecursive(that, link.deviceId)
+				if(device) {
+					this.newDeviceLink(link, device)
+				}
 			}
 		},
 		newDeviceLink(link, device) {
