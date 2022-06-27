@@ -11,7 +11,7 @@
 			<h5>{{ parent.$t('dialogs.titles.linkTo') }}: {{
 					$data.parent.$store.state.locations[$data.parent.$store.state.deviceLinks[linkId].targetLocation].name
 				}}</h5>
-			<config :holder="$data.parent.$store.state.deviceLinks[linkId]"
+			<config :holder="$data.parent.$store.state.deviceLinks[linkId].configs"
 							:templates="myLinkConfigTemplates"
 							:translate="(val) => parent.$t(val)"/>
 		</div>
