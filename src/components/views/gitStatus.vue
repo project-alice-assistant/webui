@@ -5,6 +5,7 @@
 				<button v-on:mouseup="reload()"><i class="fas fa-sync-alt size-2x"></i> Refresh Status</button>
 				<button v-if="advanced" v-on:mouseup="advanced = !advanced"><i class="fas fa-user-secret size-2x"></i> Advanced Mode</button>
 				<button v-else v-on:mouseup="advanced = !advanced"><i class="fas fa-user size-2x"></i> Standard Mode</button>
+				<button v-on:mouseup="revert()"><i class="fas fa-history size-2x"></i> Revert all changes</button>
 			</div>
 			<br/>
 			<br/>
@@ -184,6 +185,24 @@ export default {
 						+ self.$parent.editingSkill.name + '/compare/master...' + source + ':master'
 						+ '?diff=split&quick_pull=1&title=' + prTitle)
 				})
+		},
+		revert() {
+			/*
+			* revert the changes and checkout recommended
+			*/
+			this.init()
+			this.activeCommand = 'git stash'
+			let self = this
+			axios({
+				method: 'GET',
+				url: `/skills/${self.skill}/revert/`,
+				headers: {'auth': this.$store.getters.apiToken}
+			}).then(function (resp) {
+				self.reload()
+			}).catch(function (e) {
+				self.status = {}
+				self.request = e
+			})
 		},
 		reload() {
 			/*
