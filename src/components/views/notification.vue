@@ -17,11 +17,12 @@ export default {
 	],
 	computed: {
 		icon: function () {
-			if (this.notification['type'] === 0) {
+			console.log(this.notification)
+			if (parseInt(this.notification['type']) === 0) {
 				return 'far fa-times-circle'
-			} else if (this.notification['type'] === 1) {
+			} else if (parseInt(this.notification['type']) === 1) {
 				return 'far fa-comment-dots'
-			} else if (this.notification['type'] === 2) {
+			} else if (parseInt(this.notification['type']) === 2) {
 				return 'fas fa-exclamation-triangle'
 			}
 		}

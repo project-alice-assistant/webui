@@ -19,8 +19,8 @@
 			</ul>
 		</overlay>
 		<overlay :header="`${$t('skill.intents')} - ${skill.name}`" :opened="viewIntents" :visible="viewIntents" animate="zoom-in" @closed="viewIntents = false">
-			<p v-for="(utterances, intent) in skill['intents']" v-if="intent.startsWith('hermes/intent/') && utterances.length > 0">
-				<strong>{{ intent.split('hermes/intent/')[1] }}: «</strong>
+			<p v-for="(utterances, intent) in skill['intents']" v-if="utterances.length > 0">
+				<strong>{{ intent }}: «</strong>
 				<i>{{ utterances[Math.floor(Math.random() * utterances.length)] }}</i> <strong>»</strong>
 			</p>
 		</overlay>

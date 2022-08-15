@@ -39,7 +39,7 @@ export default {
 	},
 	methods: {
 		checkSetters: function (settingName) {
-			if ('sets' in this.$store.state.settingTemplates[settingName]) {
+			if (this.$store?.state?.settingTemplates[settingName] && 'sets' in this.$store.state.settingTemplates[settingName]) {
 				let setters = this.$store.state.settingTemplates[settingName]['sets']
 				const myValue = this.$store.state.settings[settingName]
 				let values

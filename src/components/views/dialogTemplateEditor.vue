@@ -82,8 +82,6 @@
 							<label></label>
 							<label>Name</label>
 							<label>SlotType</label> <!-- TODO: link to inputs missing! -->
-							<label>Required?</label>
-							<label>Missing Question</label>
 						</div>
 						<div v-for="slot of intent.slots" class="lineContainer">
 							<button @click="removeSlotFromIntent(intent, slot)"><i class="fas fa-minus-circle size-15x"></i></button>
@@ -92,8 +90,6 @@
 								<i class="fas fa-pen"></i>
 							</div>
 							<input v-model="slot.type"/>
-							<input v-model="slot.required" type="checkbox"/>
-							<input v-model="slot.missingQuestion"/>
 						</div>
 						<div class="lineContainer">
 							<button @click="addSlot(intent.slots)"><i class="fas fa-plus-circle size-15x"></i></button>
@@ -335,7 +331,7 @@ export default {
 			}
 			this.$refs.newSlotInput[0].setCustomValidity('')
 			this.$refs.newSlotInput[0].reportValidity()
-			slots.push({'name': this.newSlotName, 'type': '', 'required': false, 'missingQuestion': ''})
+			slots.push({'name': this.newSlotName, 'type': ''})
 			this.newSlotName = ''
 		},
 		removeSlotFromIntent(intent, slot) {
@@ -380,6 +376,9 @@ export default {
 		save() {
 			let self = this
 			for (const lang of Object.keys(this.dialogTemplates)) {
+				if (! 'skill' in this.dialogTemplates[lang] || this.dialogTemplates[lang]['skill'] == undefined ){
+					this.dialogTemplates[lang]['skill'] = this.editingSkill.name
+				}
 				let data = {
 					'lang':           lang,
 					'dialogTemplate': this.dialogTemplates[lang]

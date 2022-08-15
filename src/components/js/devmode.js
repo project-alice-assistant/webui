@@ -273,21 +273,7 @@ export default {
 			data.append('speakableName', this.values['speakableName'])
 			data.append('description', this.values['desc'])
 			data.append('category', this.values['category'])
-			data.append('pipRequirements', this.values['skillPipRequirements'])
-			data.append('skillSystemRequirements', this.values['.skillSystemRequirements'])
-			data.append('skillRequiredSkills', this.values['.skillRequiredSkills'])
-			data.append('skillConflictingSkills', this.values['.skillConflictingSkills.'])
-			data.append('skillRequiredManagers', this.values['.skillRequiredManagers'])
-			data.append('skillWidgets', this.values['.skillWidgets'])
-			data.append('skillScenarioNodes', this.values['.skillScenarioNodes'])
-			data.append('skillDevices', this.values['.skillDevices'])
-			data.append('fr', this.values['french'])
-			data.append('de', this.values['german'])
-			data.append('it', this.values['italian'])
-			data.append('pl', this.values['polish'])
-			data.append('skillOnline', this.values['internet'])
-			data.append('skillInstructions', this.values['instructions'])
-			data.append('skillArbitrary', this.values['arbitrary'])
+			data.append('icon', this.values['icon'])
 
 			let self = this
 			axios({
@@ -462,30 +448,6 @@ export default {
 			this.editingSkill = null
 			this.createNew = false
 		},
-		createPR() {
-			let gitUser = this.$store.state.settings['githubUsername']
-			if (!gitUser) {
-				alert('please maintain a github user!')
-			} else {
-
-				self = this
-				this.$dialog.prompt({
-					title: 'Please name your Pull Request',
-					body:  'Make sure you have Uploaded all your changes and changed the skills Version!'
-									 + 'The name should be short and precisely describe your changes'
-				}, {
-					promptHelp: '',
-					okText:     this.$t('buttons.ok'),
-					cancelText: this.$t('buttons.cancel')
-				})
-						.then(function (dialogue) {
-							let prTitle = dialogue.data
-							window.open('https://github.com/project-alice-assistant/skill_'
-								+ self.editingSkill.name + '/compare/master...' + gitUser + ':master'
-								+ '?diff=split&quick_pull=1&title=' + prTitle)
-						})
-			}
-		},
 		saveSkill() {
 			if (this.createNew) {
 				this.createSkill()
@@ -496,9 +458,6 @@ export default {
 			if (this.changedSkill.installFile !== this.backedUpSkill.installFile) {
 				this.saveInstallFile()
 			}
-//			if(this.$refs.installFileEditor){
-//				this.$refs.installFileEditor.save()
-//			}
 			if (this.$refs.dialogTemplateEditor) {
 				this.$refs.dialogTemplateEditor.save()
 			}
@@ -544,8 +503,8 @@ export default {
 				url:     `/skills/${this.editingSkill.name}/${id}/`,
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then(function (resp) {
-				if (resp['success'] !== undefined && !resp['success']) {
-					throw resp['message']
+				if (resp.data['success'] !== undefined && !resp.data['success']) {
+					throw resp.data['message']
 				} else {
 					icon.classList.add('green')
 					if (id === 'setModified') {
@@ -560,9 +519,9 @@ export default {
 			}).catch(function (e) {
 				console.log(e)
 				icon.classList.add('red')
+				self.showError(self.$t('notifications.errors.somethingWentWrong'))
 				setTimeout(() => {
 					icon.classList.remove('fa-spin')
-					self.showError(self.$t('notifications.errors.somethingWentWrong'))
 				}, 2000)
 			}).finally(() => {
 				setTimeout(() => {
@@ -854,51 +813,6 @@ export default {
 						'weather'
 					],
 					'category':     'general'
-				},
-				'conditions':    {
-					'subConfig': true,
-					'dataType':  'userList',
-					'subType':   'toggles',
-					'category':  'lang',
-					'values':    {
-						'en': {
-							'defaultValue': true,
-							'dataType':     'boolean',
-							'description':  'English must be supported. A skill without english translation won\'t be accepted in the store.',
-							'obligatory':   true,
-							'category':     'language'
-						},
-						'de': {
-							'defaultValue': false,
-							'dataType':     'boolean',
-							'description':  '',
-							'category':     'language'
-						},
-						'fr': {
-							'defaultValue': false,
-							'dataType':     'boolean',
-							'description':  '',
-							'category':     'language'
-						},
-						'it': {
-							'defaultValue': false,
-							'dataType':     'boolean',
-							'description':  '',
-							'category':     'language'
-						},
-						'pt': {
-							'defaultValue': false,
-							'dataType':     'boolean',
-							'description':  '',
-							'category':     'language'
-						},
-						'pl': {
-							'defaultValue': false,
-							'dataType':     'boolean',
-							'description':  '',
-							'category':     'language'
-						}
-					}
 				}
 			}
 		}

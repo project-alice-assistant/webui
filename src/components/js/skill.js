@@ -1,4 +1,5 @@
 import axios from 'axios'
+import * as C from '@/utils/constants';
 
 export default {
 	name:    'skill',
@@ -13,6 +14,22 @@ export default {
 	props:   [
 		'skill'
 	],
+	created: function () {
+		let self = this
+		this.unwatch = this.$store.watch(
+			function (state) {
+				return state.mqttMessage
+			},
+			function (msg) {
+				if (C.SKILL_UPDATED_TOPIC === msg.topic) {
+					let payload = JSON.parse(msg.payloadString)
+					if (payload.skillName === self.skill.skillName) {
+						self.skill.updateAvailable = false
+					}
+				}
+			}
+		)
+	},
 	methods: {
 		reloadSkill:  function () {
 			if (this.$tours['skills'].currentStep !== -1) return
