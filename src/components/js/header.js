@@ -1,6 +1,5 @@
 import * as C from '@/utils/constants'
 import axios from 'axios'
-import notification from '@/components/views/notification'
 
 export default {
 	name: 'pa-header',
