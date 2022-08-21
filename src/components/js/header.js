@@ -1,5 +1,6 @@
 import * as C from '@/utils/constants'
 import axios from 'axios'
+import notification from '@/components/views/notification'
 
 export default {
 	name: 'pa-header',
@@ -66,6 +67,12 @@ export default {
 				url:     `/utils/notifications/${id}/`,
 				headers: {'auth': this.$store.getters.apiToken}
 			}).then()
+		},
+		dismissAll: function() {
+			const notifications = {...this.notifications}
+			for (const id of Object.keys(notifications)) {
+				this.dismissNotification(id)
+			}
 		}
 	}
 }

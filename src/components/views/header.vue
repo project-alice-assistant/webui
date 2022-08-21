@@ -19,6 +19,14 @@
     		<span class="notificationCounter">{{ Object.keys(notifications).length }}</span>
   		</span>
 			<div v-if="notificationsDisplayToggle" class="notificationHolder">
+				<div class="notification clickable" @click="dismissAll" v-if="Object.keys(notifications).length > 1">
+					<div class="title">
+						<i aria-hidden="true" class="far fa-check-double fa-fw"/>
+					</div>
+					<div class="content">
+						{{ $t('utilities.dismissAllNotification') }}
+					</div>
+				</div>
 				<notification v-for="notification in notifications" :key="notification.id" :notification="notification"/>
 			</div>
 		</div>

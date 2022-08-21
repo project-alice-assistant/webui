@@ -1,9 +1,9 @@
 <template>
 	<div class="notification clickable" @click="dismiss(notification.id)">
-		<div class="title">
+		<div class="notificationTitle">
 			<i :class=icon aria-hidden="true" class="fa-fw"/> {{ notification['title'] }}
 		</div>
-		<div class="content">
+		<div class="notificationContent">
 			{{ notification['text'] }}
 		</div>
 	</div>
@@ -17,7 +17,6 @@ export default {
 	],
 	computed: {
 		icon: function () {
-			console.log(this.notification)
 			if (parseInt(this.notification['type']) === 0) {
 				return 'far fa-times-circle'
 			} else if (parseInt(this.notification['type']) === 1) {
@@ -36,22 +35,4 @@ export default {
 }
 </script>
 
-<style scoped>
-.notification {
-	background-color: var(--secondary);
-	box-sizing: border-box;
-	font-size: 1em;
-	margin-bottom: 5px;
-	padding: 5px;
-	width: 100%;
-}
-
-.title {
-	font-weight: bolder;
-	margin-bottom: 10px;
-}
-
-.content {
-	margin-left: 25px;
-}
-</style>
+<style scoped src="../css/header.css"/>

@@ -68,10 +68,6 @@
 	z-index: 999;
 }
 
-.notification {
-	position: relative;
-}
-
 .notificationCounter {
 	align-items: center;
 	background-color: tomato;
@@ -89,4 +85,23 @@
 	position: absolute;
 	text-align: center;
 	top: -15px;
+}
+
+.notification {
+	position: relative;
+	background-color: var(--secondary);
+	box-sizing: border-box;
+	font-size: 1em;
+	margin-bottom: 5px;
+	padding: 5px;
+	width: 100%;
+}
+
+.notificationTitle {
+	font-weight: bolder;
+	margin-bottom: 10px;
+}
+
+.notificationContent {
+	margin-left: 25px;
 }
