@@ -24,7 +24,7 @@
 						<i aria-hidden="true" class="far fa-check-double fa-fw"/>
 					</div>
 					<div class="content">
-						{{ $t('utilities.dismissAllNotification') }}
+						{{ $t('buttons.dismissAllNotification') }}
 					</div>
 				</div>
 				<notification v-for="notification in notifications" :key="notification.id" :notification="notification"/>
