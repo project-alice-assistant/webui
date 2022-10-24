@@ -17,7 +17,7 @@ export default {
 	],
 	methods: {
 		formatName: function (name) {
-			let temp = name.replace(/((?<=[a-z])[A-Z]|[A-Z](?=[a-z]))/g, ' $1').trim().replace(this.confPrefix, '')
+			let temp = name.replace(/([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g, '$1$4 $2$3$5').trim().replace(this.confPrefix, '')
 			return temp.charAt(0).toUpperCase() + temp.slice(1)
 		}
 	}
