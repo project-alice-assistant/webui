@@ -1,5 +1,5 @@
 <template>
-	<div :class="{'modified':skill.modified}" class="skill">
+	<div :class="{'modified':skill.modified}" class="skill" @click="startEditing">
 		<div class="skillTitle">
 			<svg class="skillName">
 				<text y="15">{{ skill.name }}</text>
