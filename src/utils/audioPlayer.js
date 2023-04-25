@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 export default class AudioPlayer {
 	constructor() {
 		if (!window.AudioContext) {
@@ -12,8 +14,10 @@ export default class AudioPlayer {
 	}
 
 
-	playBytes(bytes) {
+	playBytes(msg) {
 		let self = this
+		let bytes = msg.payloadBytes
+		let sessionId = msg.topic.split('/').pop()
 		let buffer = new ArrayBuffer(bytes.length)
 		let bufferView = new Uint8Array(buffer)
 		for (let i = 0; i < bytes.length; i++) {
@@ -22,7 +26,19 @@ export default class AudioPlayer {
 
 		this.context.decodeAudioData(buffer, function (buffer) {
 			self.play(buffer)
-		}).then()
+		}).then(buf => {
+			let data = new FormData
+			data.append('sessionId', sessionId)
+			axios({
+				method:  'POST',
+				url:     `/dialog/playBytesFinished/`,
+				data:    data,
+				headers: {
+					'auth':         this.$store.getters.apiToken,
+					'Content-Type': 'multipart/form-data'
+				}
+			})
+		})
 	}
 
 

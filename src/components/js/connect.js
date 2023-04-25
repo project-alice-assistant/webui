@@ -530,7 +530,7 @@ export default {
 		},
 		onMessage:             function (msg) {
 			if (msg.topic.includes('playBytes')) {
-				this.audioPlayer.playBytes(msg.payloadBytes)
+				this.audioPlayer.playBytes(msg)
 			} else {
 				this.$store.commit('mqttMessage', msg)
 			}
