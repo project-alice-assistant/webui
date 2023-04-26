@@ -17,7 +17,9 @@ export default class AudioPlayer {
 	playBytes(msg) {
 		let self = this
 		let bytes = msg.payloadBytes
-		let sessionId = msg.topic.split('/').pop()
+		let split = msg.topic.split('/')
+		let sessionId = split.pop()
+		let uid = split[2]
 		let buffer = new ArrayBuffer(bytes.length)
 		let bufferView = new Uint8Array(buffer)
 		for (let i = 0; i < bytes.length; i++) {
@@ -29,9 +31,10 @@ export default class AudioPlayer {
 		}).then(buf => {
 			let data = new FormData
 			data.append('sessionId', sessionId)
+			data.append('uid', uid)
 			axios({
 				method:  'POST',
-				url:     `/dialog/playBytesFinished/`,
+				url:     `/dialog/ttsFinished/`,
 				data:    data,
 				headers: {
 					'auth':         self.store.getters.apiToken,
