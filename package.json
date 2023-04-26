@@ -3,8 +3,8 @@
 	"version": "1.0.0-rc5",
 	"private": true,
 	"scripts": {
-		"serve": "NODE_OPTIONS=--openssl-legacy-provider vue-cli-service serve",
-		"build": "NODE_OPTIONS=--openssl-legacy-provider vue-cli-service build"
+		"serve": "set NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service serve",
+		"build": "set NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service build"
 	},
 	"dependencies": {
 		"axios": "^1.1.3",
