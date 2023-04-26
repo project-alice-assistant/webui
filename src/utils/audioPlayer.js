@@ -11,10 +11,15 @@ export default class AudioPlayer {
 		}
 		this.store = store
 		this.context = new AudioContext()
+		this.playerTimeout = null
 	}
 
 
 	playBytes(msg) {
+		if (this.playerTimeout !== null) {
+			clearTimeout(this.playerTimeout)
+		}
+
 		let self = this
 		let bytes = msg.payloadBytes
 		let split = msg.topic.split('/')
@@ -28,19 +33,22 @@ export default class AudioPlayer {
 
 		this.context.decodeAudioData(buffer, function (buffer) {
 			self.play(buffer)
-		}).then(buf => {
-			let data = new FormData
-			data.append('sessionId', sessionId)
-			data.append('uid', uid)
-			axios({
-				method:  'POST',
-				url:     `/dialog/ttsFinished/`,
-				data:    data,
-				headers: {
-					'auth':         self.store.getters.apiToken,
-					'Content-Type': 'multipart/form-data'
-				}
-			})
+		}).then(_buf => {
+			self.playerTimeout = setTimeout(() => {
+				self.playerTimeout = null
+				let data = new FormData
+				data.append('sessionId', sessionId)
+				data.append('uid', uid)
+				axios({
+					method:  'POST',
+					url:     `/dialog/ttsFinished/`,
+					data:    data,
+					headers: {
+						'auth':         self.store.getters.apiToken,
+						'Content-Type': 'multipart/form-data'
+					}
+				})
+			}, 300)
 		})
 	}
 
