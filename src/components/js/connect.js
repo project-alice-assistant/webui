@@ -12,7 +12,7 @@ export default {
 			port:        5001,
 			ip:          '',
 			remember:    false,
-			audioPlayer: new AudioPlayer()
+			audioPlayer: new AudioPlayer(this.$store)
 		}
 	},
 	created:       function () {

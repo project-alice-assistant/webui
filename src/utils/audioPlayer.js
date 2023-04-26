@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export default class AudioPlayer {
-	constructor() {
+	constructor(store) {
 		if (!window.AudioContext) {
 			if (!window.webkitAudioContext) {
 				console.warn('Your browser doesn\'t support audio playback.')
@@ -9,7 +9,7 @@ export default class AudioPlayer {
 			}
 			window.AudioContext = window.webkitAudioContext
 		}
-
+		this.store = store
 		this.context = new AudioContext()
 	}
 
@@ -34,7 +34,7 @@ export default class AudioPlayer {
 				url:     `/dialog/playBytesFinished/`,
 				data:    data,
 				headers: {
-					'auth':         this.$store.getters.apiToken,
+					'auth':         self.store.getters.apiToken,
 					'Content-Type': 'multipart/form-data'
 				}
 			})

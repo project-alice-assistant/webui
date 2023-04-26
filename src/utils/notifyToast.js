@@ -58,7 +58,7 @@ const notifyToast = {
 						}).then(function (dialog) {
 							axios({
 								method:  'POST',
-								url:     `http://${self.$store.state.settings['aliceIp']}:${self.$store.state.settings['apiPort']}/api/v1.0.1/myHome/devices/${self.data.id}/reply/`,
+								url:     `/myHome/devices/${self.data.id}/reply/`,
 								data:    {
 									secret:   ret['reply']['secret'],
 									concerns: ret['reply']['concerns'],
